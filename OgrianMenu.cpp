@@ -120,6 +120,7 @@ void Menu::button_join()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
 }
 
@@ -134,6 +135,7 @@ void Menu::button_host()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
 }
 
@@ -144,9 +146,9 @@ void Menu::button_disconnect()
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->show();
-	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 }
 
