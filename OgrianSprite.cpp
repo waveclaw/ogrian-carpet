@@ -112,6 +112,13 @@ void Sprite::setMaterial(String material)
 
 //----------------------------------------------------------------------------
 
+String Sprite::getMaterial()
+{
+	return mMaterial;
+}
+
+//----------------------------------------------------------------------------
+
 void Sprite::addToRenderer()
 {
 	// dont do this twice!

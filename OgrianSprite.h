@@ -57,6 +57,9 @@ public:
 
 	// set the material used by this sprite
 	virtual void setMaterial(String material);
+
+	// get the material used by this sprite
+	virtual String getMaterial();
 	
 	// unused
 	virtual int addPose(String basename) { return 0; }

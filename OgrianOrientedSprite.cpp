@@ -40,7 +40,11 @@ namespace Ogrian
 
 OrientedSprite::OrientedSprite()
 {
+	mCurrentPose = 0;
+	mCurrentSprite = 0;
 	mInRenderer = false;
+
+	frame();
 }
 
 //----------------------------------------------------------------------------
@@ -69,7 +73,7 @@ void OrientedSprite::setPosition(Vector3 pos)
 {
 	mPos = pos;
 
-	if (mInRenderer)
+	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setPosition(pos);
 }
 
@@ -79,7 +83,7 @@ void OrientedSprite::setWidth(Real width)
 {
 	mWidth = width;
 
-	if (mInRenderer)
+	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setWidth(width);
 }
 
@@ -89,7 +93,7 @@ void OrientedSprite::setHeight(Real height)
 {
 	mHeight = height;
 	
-	if (mInRenderer)
+	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setHeight(height);
 }
 
@@ -100,11 +104,13 @@ void OrientedSprite::addToRenderer()
 	// dont do this twice!
 	if (mInRenderer) return;
 
-	mCurrentSprite->setPosition(mPos);
-	mCurrentSprite->setWidth(mWidth);
-	mCurrentSprite->setHeight(mHeight);
-	mCurrentSprite->addToRenderer();
-
+	if (mCurrentSprite != 0)
+	{
+		mCurrentSprite->setPosition(mPos);
+		mCurrentSprite->setWidth(mWidth);
+		mCurrentSprite->setHeight(mHeight);
+		mCurrentSprite->addToRenderer();
+	}
 	mInRenderer = true;
 }
 
@@ -115,7 +121,8 @@ void OrientedSprite::removeFromRenderer()
 	// dont do this twice!
 	if (!mInRenderer) return;
 
-	mCurrentSprite->removeFromRenderer();
+	if (mCurrentSprite != 0)
+		mCurrentSprite->removeFromRenderer();
 
 	mInRenderer = false;
 }
@@ -149,14 +156,23 @@ void OrientedSprite::setOrientation(Real orientation)
 
 void OrientedSprite::frame()
 {
+	if (mCurrentPose == 0) return;
+
 	Sprite* newSprite = mCurrentPose->getSprite(
 		Renderer::getSingleton().getCamera()->getPosition(), mPos, mOrientation);
 
+	LogManager::getSingleton().logMessage(String("Using Sprite: ") << newSprite->getMaterial());
+
 	if (mCurrentSprite != newSprite)
 	{
+		LogManager::getSingleton().logMessage(String("Setting Sprite: ") << newSprite->getMaterial());
 		if (mInRenderer)
 		{
-			mCurrentSprite->removeFromRenderer(); 
+			if (mCurrentSprite != 0) mCurrentSprite->removeFromRenderer(); 
+
+			newSprite->setPosition(mPos);
+			newSprite->setWidth(mWidth);
+			newSprite->setHeight(mHeight);
 			newSprite->addToRenderer();
 		}
 

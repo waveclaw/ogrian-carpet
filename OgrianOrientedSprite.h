@@ -69,19 +69,19 @@ public:
 
 	Sprite* getSprite(Vector3 campos, Vector3 pos, float offset)
 	{
-		float dir = atan2(campos.x - pos.x, campos.z - pos.z) + offset;
+		float dir = -atan2(campos.x - pos.x, campos.z - pos.z) - offset;
 
-		float pi = Math::PI;
+		if (dir <= (-7/8.0)*Math::PI) return b;
+		if (dir <= (-5/8.0)*Math::PI && dir >= (-7/8.0)*Math::PI) return bl;
+		if (dir <= (-3/8.0)*Math::PI && dir >= (-5/8.0)*Math::PI) return l;
+		if (dir <= (-1/8.0)*Math::PI && dir >= (-3/8.0)*Math::PI) return fl;
+		if (dir <= (1/8.0)*Math::PI && dir >= (-1/8.0)*Math::PI) return f;
+		if (dir <= (3/8.0)*Math::PI && dir >= (1/8.0)*Math::PI) return fr;
+		if (dir <= (5/8.0)*Math::PI && dir >= (3/8.0)*Math::PI) return r;
+		if (dir <= (7/8.0)*Math::PI && dir >= (5/8.0)*Math::PI) return br;
+		if (dir >= (7/8.0)*Math::PI) return b;
 
-		if (dir < (-7/8)*pi) return b;
-		if (dir < (-5/8)*pi && dir > (-7/8)*pi) return bl;
-		if (dir < (-3/8)*pi && dir > (-5/8)*pi) return l;
-		if (dir < (-1/8)*pi && dir > (-3/8)*pi) return fl;
-		if (dir < (1/8)*pi && dir > (-1/8)*pi) return f;
-		if (dir < (3/8)*pi && dir > (1/8)*pi) return fr;
-		if (dir < (5/8)*pi && dir > (3/8)*pi) return r;
-		if (dir < (7/8)*pi && dir > (5/8)*pi) return br;
-		if (dir > (7/8)*pi) return b;
+		LogManager::getSingleton().logMessage(String("ERROR! dir: ") << dir*8/Math::PI << "/8*Math::PI");
 
 		return 0;
 	}
@@ -119,7 +119,7 @@ public:
 	// set which pose to use 
 	virtual void setPose(int index);
 
-	// set the orientation from -pi to pi 
+	// set the orientation from -Math::PI to Math::PI 
 	virtual void setOrientation(Real orientation);
 	
 	// unused

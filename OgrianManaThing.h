@@ -47,10 +47,13 @@ class ManaThing : public FloatingThing
 {
 public:
 	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
-		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
+		: FloatingThing("Ogrian/Mana", ORIENTEDSPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
 		playSound("OgrianMedia/sounds/hum1.wav", true);
+
+		getVisRep()->addPose("Ogrian/Spider/Sitting/");
+		getVisRep()->setPose(0);
 	}
 
 	// setting the amount automatically sets the scale
