@@ -435,11 +435,6 @@ void Multiplayer::updateScores()
 {
 	if (!isServer()) return;
 
-	//LogManager::getSingleton().logMessage("Updating Scores");
-
-	// update the server's scores
-	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
-
 	// send each client its score
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{

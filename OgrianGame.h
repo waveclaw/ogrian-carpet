@@ -44,6 +44,8 @@ public:
 
 	void startGame();
 
+	void updateScores();
+
 	static Game& getSingleton(void);
 private:
 	Game();

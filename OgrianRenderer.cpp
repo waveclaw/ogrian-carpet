@@ -316,14 +316,14 @@ void Renderer::loadMap(String configfile, bool server)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-	// dont make foliage for a client
-	if (server)	createFoliage(CONI("FOLIAGE_NUM"));
-
     // Position the camera with an offset
     mCamera->setPosition(Vector3(CONR("START_X"),0,CONR("START_Z")));
     //mCamera->lookAt(Vector3(0,0,0));
 	createCameraThing();
 	
+	// dont make foliage for a client
+	if (server)	createFoliage(CONI("FOLIAGE_NUM"));
+
 	Vector3 offset;
 	Real wdo = CONR("WIZARD_DEATH_OFFSET");
 	offset.x = Math::RangeRandom(-wdo, wdo);

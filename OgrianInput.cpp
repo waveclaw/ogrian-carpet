@@ -93,7 +93,8 @@ bool Input::processKeyInput(InputReader* input)
 		pos += vel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
 		vel *= CONR("FIREBALL_SPEED");
 	
-		Physics::getSingleton().addThing(new FireballThing(0, pos,vel));
+		Physics::getSingleton().addThing(new FireballThing(
+			Renderer::getSingleton().getCameraThing()->getUID(), pos,vel));
         mTimeUntilNextCast = CONR("FIREBALL_CAST_PERIOD");
 	}
 

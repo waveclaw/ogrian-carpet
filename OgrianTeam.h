@@ -32,6 +32,7 @@ Description: This is a team, it has a wizard and a score
 #define __OgrianTeam_H__
 
 #include <Ogre.h>
+#include "OgrianGame.h"
 
 using namespace Ogre;
 
@@ -59,7 +60,7 @@ public:
 
 		mScore = score;
 			
-		Multiplayer::getSingleton().updateScores();
+		Game::getSingleton().updateScores();
 	}
 
 	int getScore()
@@ -71,7 +72,7 @@ public:
 	{
 		mScore++;
 
-		Multiplayer::getSingleton().updateScores();
+		Game::getSingleton().updateScores();
 	}
 
 private:

@@ -29,6 +29,7 @@ starting games and detecting victory.
 #include "OgrianGame.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
@@ -52,13 +53,27 @@ Game::~Game()
 
 //----------------------------------------------------------------------------
 
+void Game::updateScores()
+{
+	//LogManager::getSingleton().logMessage("Updating Scores");
+
+	// update the scores
+	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
+
+	// propogate the new scores if this is a server
+	if (Multiplayer::getSingleton().isServer()) 
+		Multiplayer::getSingleton().updateScores();
+}
+
+//----------------------------------------------------------------------------
+
 void Game::startGame()
 {
 	Audio::getSingleton().start();
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
 	Renderer::getSingleton().getCameraThing()->setHealth(CONR("WIZARD_HEALTH"));
 
-	if (Multiplayer::getSingleton().isClient()) startClientGame();
+	if (Multiplayer::getSingleton().wasClient()) startClientGame();
 	else if (Multiplayer::getSingleton().isServer()) startServerGame();
 	else startSkirmishGame();
 }
@@ -82,7 +97,7 @@ void Game::startServerGame()
 void Game::startSkirmishGame()
 {
 	// make a team for the player
-	Physics::getSingleton().newTeam(Renderer::getSingleton().getCameraThing()->getUID()); 
+	Physics::getSingleton().newTeam(0); 
 
 	// load AI Wizards
 	for (int i=0; i<CONI("NUM_BOTS"); i++)

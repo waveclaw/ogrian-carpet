@@ -78,6 +78,8 @@ void WizardThing::die()
 	{
 		Team* team = Physics::getSingleton().getTeam(getLastDamageSourceTeamNum());
 		if (team > 0) team->incrementScore();
+		else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: ") 
+			<< getLastDamageSourceTeamNum());
 
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{

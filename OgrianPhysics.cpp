@@ -417,7 +417,6 @@ void Physics::addThing(Thing* thing)
 					"Physics::addThing" );
 		}
 
-
 		// add to grid
 		Vector3 pos = thing->getPosition();
 		_addThing(thing, getGridU(pos.x), getGridV(pos.z));
