@@ -57,15 +57,11 @@ class Thing
 public:
 	Vector3 mPos;
 
-	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
+	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0));
 	virtual ~Thing();
 
-	virtual void setVelocity(const Vector3 vel);
-	virtual void setPosition(const Vector3 pos);
-
-	virtual void setPosition(Real x, Real y, Real z);
-
-	virtual void setVelocity(Real x, Real y, Real z);
+	virtual void setVelocity(Vector3 vel);
+	virtual void setPosition(Vector3 pos);
 
 	virtual void setScale(Real scale);
 

@@ -42,8 +42,8 @@ namespace Ogrian
 class RollingThing : public Thing
 {
 public:
-	RollingThing(String material, String prefix="RollingThing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
-		: Thing(material, prefix, fixed_y, scale, x, y, z)
+	RollingThing(String material, String prefix="RollingThing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0))
+		: Thing(material, prefix, fixed_y, scale, pos)
 	{
 		
 	}
@@ -52,16 +52,10 @@ public:
 		return ROLLINGTHING;
 	}
 
-	virtual void setPosition(const Vector3 pos)
+	virtual void setPosition(Vector3 pos)
 	{
-		setPosition(pos.x, pos.y, pos.z);
-	}
-
-	virtual void setPosition(Real x, Real y, Real z)
-	{
-		Thing::setPosition(x,
-			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
-			z);
+		pos.y = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();
+		Thing::setPosition(pos);
 	}
 };
 

@@ -43,8 +43,8 @@ namespace Ogrian
 class FloatingThing : public Thing
 {
 public:
-	FloatingThing(String material, String prefix="FloatingThing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
-		: Thing(material, prefix, fixed_y, scale, x, y, z)
+	FloatingThing(String material, String prefix="FloatingThing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0)) 
+		: Thing(material, prefix, fixed_y, scale, pos)
 	{
 		
 	}
@@ -53,35 +53,37 @@ public:
 		return FLOATINGTHING;
 	}
 
-	virtual void setPosition(const Vector3 pos)
+	virtual void setPosition(Vector3 pos)
 	{
-		setPosition(pos.x, pos.y, pos.z);
-	}
-
-	virtual void setVelocity(Real x, Real y, Real z)
-	{
-		Thing::setVelocity(x,mVel.y,z);
-	}
-
-	virtual void setPosition(Real x, Real y, Real z)
-	{
-		Real ground = HeightMap::getSingleton().getHeightAt(x,z) + getRadius();
+		Real ground = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();
 		if (ground > mPos.y) 
 		{
-			Thing::setVelocity(mVel.x,0,mVel.y);
-			Thing::setPosition(x,ground,z);
+			mVel.y = 0;
+			pos.y = ground;
+			Thing::setVelocity(mVel);
+			Thing::setPosition(pos);
 		}
 		else 
 		{
-			Thing::setPosition(x,y,z);
+			Thing::setPosition(pos);
 		}
 	}
+
+	virtual void setVelocity(Vector3 vel)
+	{
+		vel.y = mVel.y;
+		Thing::setVelocity(vel);
+	}
+
 
 	virtual void move(Real time)
 	{
 		// fall
 		if (mVel.y > -FLOAT_FALL_MAX)
-			Thing::setVelocity(mVel.x, mVel.y-FLOAT_GRAV*time, mVel.z);
+		{
+			mVel.y -= FLOAT_GRAV*time;
+			Thing::setVelocity(mVel);
+		}
 
 		Thing::move(time);
 	}

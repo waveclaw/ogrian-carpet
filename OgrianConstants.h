@@ -51,6 +51,9 @@ const Real SKYPLANE_DISTANCE = 75;
 const Real SKYPLANE_BOW = .75;
 const Real MAX_THING_RADIUS = 20;
 
+const Real FOLIAGE_SCALE = 10;
+const Real FOLIAGE_SCALE_VAR = 3;
+
 const int FOLIAGE_LINE_MIN = 5;
 const int FOLIAGE_LINE_MAX = 50;
 

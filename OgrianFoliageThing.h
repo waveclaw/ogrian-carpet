@@ -41,8 +41,8 @@ namespace Ogrian
 class FoliageThing : public RollingThing
 {
 public:
-	FoliageThing(String material, Real scale, Real x=0, Real y=0, Real z=0) 
-		: RollingThing(material, "Foliage", true, scale, x, y, z)
+	FoliageThing(String material, Real scale, Vector3 pos=Vector3(0,0,0)) 
+		: RollingThing(material, "Foliage", true, scale, pos)
 	{
 	}
 

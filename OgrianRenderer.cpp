@@ -218,14 +218,14 @@ void Renderer::createFoliage(const String& material, int num)
         // Random translate
         Real x = Math::SymmetricRandom() * 1000.0;
         Real z = Math::SymmetricRandom() * 1000.0;
-		//x+= 5;
-		//Real z = x;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
 		if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
 		{
 			i++;
-			FoliageThing* fol = new FoliageThing("Ogrian/PalmTree",10,x,0,z);
+			Vector3 pos = Vector3(x,0,z);
+			Real scale = FOLIAGE_SCALE + (Math::SymmetricRandom()-.5) * FOLIAGE_SCALE_VAR;
+			FoliageThing* fol = new FoliageThing("Ogrian/PalmTree",scale,pos);
 			Physics::getSingleton().addThing(fol);
 		}
 	}

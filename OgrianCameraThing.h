@@ -68,27 +68,34 @@ public:
 				
 		if (ground > mPos.y) 
 		{
-			Thing::setVelocity(mVel.x,0,mVel.y);
-			Thing::setPosition(pos.x,ground,pos.z);
+			mVel.y = 0;
+			Thing::setVelocity(mVel);
+
+			pos.y = ground;
+			Thing::setPosition(pos);
 		}
 		else 
 		{
-			Thing::setPosition(pos.x,mPos.y,pos.z);
+			Thing::setPosition(pos);
 		}
 		
 
 		camera->setPosition(mPos);
 	}
 
-	virtual void setVelocity(Real x, Real y, Real z)
+	virtual void setVelocity(Vector3 vel)
 	{
-		Thing::setVelocity(x, mVel.y, z);
+		vel.y = mVel.y;
+		Thing::setVelocity(mVel);
 	}
 	virtual void move(Real time)
 	{
 		// fall
 		if (mVel.y > -CAMERA_FALL_MAX)
-			Thing::setVelocity(mVel.x, mVel.y-CAMERA_GRAV*time, mVel.z);
+		{
+			mVel.y -= CAMERA_GRAV*time;
+			Thing::setVelocity(mVel);
+		}
 
 		Thing::move(time);
 	}

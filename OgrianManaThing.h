@@ -43,8 +43,8 @@ namespace Ogrian
 class ManaThing : public FloatingThing
 {
 public:
-	ManaThing(unsigned int amount, Real x=0, Real y=0, Real z=0) 
-		: FloatingThing("Ogrian/Mana", "Mana", false, 1, x, y, z)
+	ManaThing(unsigned int amount, Vector3 pos = Vector3(0,0,0)) 
+		: FloatingThing("Ogrian/Mana", "Mana", false, 1, pos)
 	{
 		setAmount(amount);
 	}
@@ -92,7 +92,8 @@ public:
 		vel.normalise();
 		vel *= MANA_DRIFT_SPEED;
 
-		setVelocity(vel.x,0,vel.z);
+		vel.y = 0;
+		setVelocity(vel);
 
 		FloatingThing::move(time);
 	}

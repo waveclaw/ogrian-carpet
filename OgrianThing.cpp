@@ -38,7 +38,7 @@ namespace Ogrian
 
 unsigned long Thing::msNextGeneratedNameExt = 1;
 
-Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, Real y, Real z)
+Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 pos)
 {
 	// initialize the mvars
 	mAlive = true;
@@ -53,8 +53,8 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, R
 	// set the settings
 	mFixed_y = fixed_y;
 	setMaterial(material);
-	setVelocity(0,0,0);
-	setPosition(x, y, z);
+	setVelocity(Vector3(0,0,0));
+	setPosition(pos);
 	setScale(scale);
 
 	// add it to the renderer
@@ -119,29 +119,14 @@ bool Thing::isAlive()
 
 void Thing::setVelocity(Vector3 vel)
 {
-	setVelocity(vel.x, vel.y, vel.z);
+	mVel = vel;
 }
 void Thing::setPosition(Vector3 pos)
 {
-	setPosition(pos.x, pos.y, pos.z);
-}
-
-void Thing::setPosition(Real x, Real y, Real z)
-{
-	mPos.x = x;
-	mPos.y = y;
-	mPos.z = z;
+	mPos = pos;
 
 	if (mInRenderer)
-		mNode->setPosition(x,y,z);
-}
-
-
-void Thing::setVelocity(Real x, Real y, Real z)
-{
-	mVel.x = x;
-	mVel.y = y;
-	mVel.z = z;
+		mNode->setPosition(pos);
 }
 
 void Thing::setScale(Real scale)
@@ -177,10 +162,7 @@ void Thing::setMaterial(String material)
 
 void Thing::move(Real time)
 {
-	setPosition(
-		mPos.x + mVel.x * time,
-		mPos.y + mVel.y * time,
-		mPos.z + mVel.z * time);
+	setPosition(mPos + mVel * time);
 
 	_updateVisibility();
 }
