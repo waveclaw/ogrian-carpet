@@ -73,11 +73,9 @@ Multiplayer::~Multiplayer()
 void Multiplayer::loadConfig()
 {
 	/* Set up the options */
-	ConfigFile config;
-	config.load( "config.txt" );
-	mPlayerName = config.getSetting( "name" );
-	mServerName = config.getSetting( "server" );
-	mSkin = config.getSetting( "skin" );
+	mPlayerName = CONS("PLAYER_NAME");
+	mServerName = CONS("SERVER_ADDRESS");
+	mSkin = CONI("PLAYER_SKIN");
 
 	// trim the name
 	std::string name = mPlayerName;

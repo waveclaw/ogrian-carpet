@@ -50,16 +50,14 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	mForeward = mBack = mLeft = mRight = false;
 
 	// set the sensitivity
-	ConfigFile config;
-	config.load( "config.txt" );
-	mSensitivity = atof(config.getSetting( "sensitivity" ).c_str());
+	mSensitivity = CONR("MOUSE_SENSITIVITY");
 	if (mSensitivity == 0) mSensitivity = 1;
 
 	// set the color
 	ColourValue colour;
-	colour.r = atof(config.getSetting( "red" ).c_str()) / 255.0;
-	colour.b = atof(config.getSetting( "blue" ).c_str()) / 255.0;
-	colour.g = atof(config.getSetting( "green" ).c_str()) / 255.0;
+	colour.r = CONI("COLOUR_RED") / 255.0;
+	colour.g = CONI("COLOUR_GREEN") / 255.0;
+	colour.b = CONI("COLOUR_BLUE") / 255.0;
 
 	// check for white
 	if (colour == ColourValue(1,1,1))
@@ -67,8 +65,7 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 
 	setColour(colour);
 
-	int skin = atoi(config.getSetting( "skin" ).c_str());
-	setSkin(skin);
+	setSkin(CONI("PLAYER_SKIN"));
 
 	setLava(true);
 }
