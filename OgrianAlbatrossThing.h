@@ -63,7 +63,7 @@ public:
 class AlbatrossThing : public DamageableThing
 {
 public:
-	AlbatrossThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0));
+	AlbatrossThing(int teamNum, ColourValue& colour=ColourValue(0,0,0), Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0));
 
 	virtual ThingType getType() { return ALBATROSSTHING; }
 

@@ -38,10 +38,12 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-AlbatrossThing::AlbatrossThing(int teamNum, Vector3 pos, Vector3 vel) 
+AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Vector3 vel) 
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "AlbatrossThing", false, CONR("TICK_SCALE"), pos, SPHERE)
 {
 	setTeamNum(teamNum);
+	setColour(colour);
+
 	setThinkPeriod(CONR("ALBATROSS_THINK_PERIOD"));
 	
 	if (!Multiplayer::getSingleton().isClient())
@@ -50,8 +52,6 @@ AlbatrossThing::AlbatrossThing(int teamNum, Vector3 pos, Vector3 vel)
 		Team* team = Physics::getSingleton().getTeam(teamNum);
 		Castle* castle = team->getCastle();
 		castle->setMana(castle->getMana() - CONI("ALBATROSS_COST"));
-
-		setColour(team->getColour());
 	}
 
 	getVisRep()->addPose("Ogrian/Crane/Up/");
@@ -99,7 +99,7 @@ void AlbatrossThing::collided(Thing* e)
 	// explode stuff
 	if (e->isDamageable() && e->getTeamNum() != getTeamNum())
 	{
-		e->damage(CONI("TICK_DAMAGE"), getTeamNum());
+		e->damage(CONI("ALBATROSS_DAMAGE"), getTeamNum());
 		die();
 	}
 }

@@ -198,8 +198,16 @@ void OrientedSprite::setPose(int index)
 				"OrientedSprite::setPose" );
 
 	mCurrentPose = mPoses[index];
+	mPoseIndex = index;
 
 	frame();
+}
+
+//----------------------------------------------------------------------------
+
+int OrientedSprite::getPose()
+{
+	return mPoseIndex;
 }
 
 //----------------------------------------------------------------------------

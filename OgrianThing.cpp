@@ -622,6 +622,8 @@ void Thing::generateBitStream(BitStream& bitstream, int pid)
 	bitstream.Write(colour.r);
 	bitstream.Write(colour.b);
 	bitstream.Write(colour.g);
+
+	bitstream.Write(getVisRep()->getPose());
 }
 
 //----------------------------------------------------------------------------
@@ -629,7 +631,7 @@ void Thing::generateBitStream(BitStream& bitstream, int pid)
 void Thing::interpretBitStream(BitStream& bitstream)
 {
 	Vector3 pos,vel;
-	int pid,uid,type;
+	int pid,uid,type,pose;
 	Real orientation, height, width;
 
 	bitstream.Read(pid);
@@ -652,6 +654,8 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(colour.b);
 	bitstream.Read(colour.g);
 
+	bitstream.Read(pose);
+
 	assert(type == getType());
 
 	setPosition(pos);
@@ -660,6 +664,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	setHeight(height);
 	setWidth(width);
 	setColour(colour);
+	getVisRep()->setPose(pose);
 }
 
 //----------------------------------------------------------------------------

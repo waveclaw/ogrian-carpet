@@ -58,8 +58,9 @@ public:
 	// add a pose (only used by Oriented Sprites)
 	virtual int addPose(String basename) = 0;
 	
-	// add a pose (only used by Oriented Sprites)
+	// set/get a pose (only used by Oriented Sprites)
 	virtual void setPose(int index) = 0;
+	virtual int getPose() = 0;
 
 	// clear the poses (only used by Oriented Sprites)
 	virtual void clearPoses() = 0;

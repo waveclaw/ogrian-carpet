@@ -80,7 +80,7 @@ public:
 	// play a sound when the colour changes
 	virtual void setColour(ColourValue& colour)
 	{
-		if (colour != getColour())
+		if (colour != getColour() && colour != ColourValue(.9,.9,.9))
 			playSound(Game::getSingleton().SOUND_HUM);
 	
 		FloatingThing::setColour(colour);		

@@ -57,13 +57,17 @@ public:
 	virtual void setColour(ColourValue& colour)
 	{
 		if (colour == ColourValue::White)
+		{
 			setMaterial("Ogrian/Clear");
+		}
 		else
+		{
 			setMaterial("Ogrian/HutBall");
+			playSound(Game::getSingleton().SOUND_HUM);
+		}
 
 		Thing::setColour(colour);
 
-		playSound(Game::getSingleton().SOUND_HUM);
 	}
 	
 	virtual ThingType getType()	{ return EFFECT; }

@@ -125,6 +125,7 @@ public:
 	
 	// set which pose to use 
 	virtual void setPose(int index);
+	virtual int getPose();
 
 	// clear the poses
 	virtual void clearPoses();
@@ -156,6 +157,7 @@ public:
 	virtual void frame();
 
 private:
+	int mPoseIndex;
 	Pose* mCurrentPose;
 	Sprite* mCurrentSprite;
 	std::vector<Pose*> mPoses;

@@ -73,6 +73,7 @@ public:
 	// unused
 	virtual int addPose(String basename) { return 0; }
 	virtual void setPose(int index) {}
+	virtual int getPose() { return 0; }
 	virtual void clearPoses() {} 
 	virtual void frame() {}
 	virtual void setOrientation(Radian orientation) {}
