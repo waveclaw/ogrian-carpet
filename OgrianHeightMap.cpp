@@ -87,7 +87,7 @@ Real HeightMap::getHeightAt(Real x, Real z)
 	z /= mScalez;
 
 	// a smoothing constant
-	float c = 4;
+	const float c = HEIGHTMAP_SMOOTHING;
 
 	// calculate the matrix indeces for the grid cell
 	int fx = int(x/c)*c;

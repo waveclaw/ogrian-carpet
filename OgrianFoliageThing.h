@@ -32,7 +32,7 @@ This is a very simple Thing, mainly used to demonstrate that collision detection
 #define __OgrianFoliageThing_H__
 
 #include <Ogre.h>
-#include "OgrianRollingThing.h"
+#include "OgrianThing.h"
 
 using namespace Ogre;
 
@@ -40,14 +40,15 @@ namespace Ogrian
 {
 
 // extend RollingThing to automatically be placed on the ground
-class FoliageThing : public RollingThing
+class FoliageThing : public Thing
 {
 public:
 	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
-		: RollingThing("Ogrian/PalmTree", "Foliage", true, scale, pos)
+		: Thing("Ogrian/PalmTree", "Foliage", true, scale, pos)
 	{
 		setShape(CYLINDER);
 		setHeight(scale*1.5);
+		setPosY(getGroundY() + scale*.45);
 	}
 
 	virtual ThingType getType()

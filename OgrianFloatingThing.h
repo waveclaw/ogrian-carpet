@@ -58,12 +58,12 @@ public:
 	// stay above ground
 	virtual void setPosition(Vector3 pos)
 	{
-		Real ground = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getHeight()/2;
+		Real ground = getGroundY() + getHeight()/2;
 		if (ground > getPosY()) 
 		{
 			setVelY(0);
+			pos.y = ground;
 			Thing::setPosition(pos);
-			setPosY(ground);
 		}
 		else 
 		{

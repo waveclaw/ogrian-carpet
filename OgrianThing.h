@@ -121,6 +121,9 @@ public:
 	virtual Real getPosY();
 	virtual Real getVelY();
 
+	virtual Real getGroundY();
+	virtual Real getGroundY(Vector3 pos);
+
 	
 private:
 	Vector3 mPos;

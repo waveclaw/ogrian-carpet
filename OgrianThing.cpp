@@ -236,6 +236,7 @@ void Thing::destroy()
 void Thing::setPosY(Real y)
 {
 	mPos.y = y;
+	setPosition(mPos);
 }
 
 Real Thing::getPosY()
@@ -251,6 +252,16 @@ void Thing::setVelY(Real y)
 Real Thing::getVelY()
 {
 	return mVel.y;
+}
+
+Real Thing::getGroundY()
+{
+	return getGroundY(mPos);
+}
+
+Real Thing::getGroundY(Vector3 pos)
+{
+	return HeightMap::getSingleton().getHeightAt(pos.x,pos.z);
 }
 
 }

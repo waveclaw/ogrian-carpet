@@ -67,7 +67,7 @@ public:
 
 		// follow the landscape
 		Vector3 pos = camera->getPosition();
-		float ground = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + CAMERA_HEIGHT;
+		float ground = getGroundY(pos) + CAMERA_HEIGHT;
 				
 		if (ground > getPosY()) 
 		{
