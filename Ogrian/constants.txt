@@ -2,17 +2,6 @@
 # modify these to change the way the game plays
 # all units are in meters, seconds, or meters per second
 
-# the number of starting stuff in skirmish mode
-NUM_TOWERS=6
-NUM_TICKS=30
-NUM_SENTINELS=30
-
-# the number of huts
-NUM_HUTS=10
-
-# starting mana
-MANA_START_NUM=40
-MANA_START_AMOUNT=20
 
 # portal numbers
 PORTAL_SCALE=5
@@ -194,13 +183,9 @@ CASTLE_BEACON_HEIGHT=500
 CASTLE_BEACON_WIDTH=10
 
 # foliage numbers
-FOLIAGE_SCALE=10
-FOLIAGE_SCALE_VAR=5
-FOLIAGE_LINE_MIN=5
-FOLIAGE_LINE_MAX=500
-FOLIAGE_HEALTH=40
 FOLIAGE_SKEW=1.5
 FOLIAGE_HEIGHT_OFF=.49
+FOLIAGE_HEALTH=40
 
 # mana numbers
 MANA_THINK_PERIOD=.5

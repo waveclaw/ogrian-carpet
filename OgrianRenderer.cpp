@@ -255,33 +255,6 @@ void Renderer::createOcean(const String& material)
 
 //----------------------------------------------------------------------------
 
-void Renderer::createFoliage(int num)
-{
-	LogManager::getSingleton().logMessage("Making Foliage...");
-
-	// set up some foliage
-	int i=0;
-	Real size = HeightMap::getSingleton().getWorldSize();
-	while (i<num)
-	{
-        // Random translate
-        Real x = Math::SymmetricRandom() * size;
-        Real z = Math::SymmetricRandom() * size;
-		Real y = HeightMap::getSingleton().getHeightAt(x, z);
-
-		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
-		{
-			i++;
-			Vector3 pos = Vector3(x,0,z);
-			Real scale = CONR("FOLIAGE_SCALE") + (Math::SymmetricRandom()-.5) * CONR("FOLIAGE_SCALE_VAR");
-
-			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
-		}
-	}
-}
-
-//----------------------------------------------------------------------------
-
 void Renderer::loadMap(String configfile, bool server)
 {
 	unloadMap();
@@ -292,7 +265,6 @@ void Renderer::loadMap(String configfile, bool server)
 	String skyMaterial = config.getSetting( "SkyMaterial" );
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" ).c_str();
-	int foliageNum = atoi(config.getSetting( "FoliageAmount" ).c_str());
 	int lava = atoi(config.getSetting( "Lava" ).c_str());
 
 	// set the fog
@@ -317,11 +289,8 @@ void Renderer::loadMap(String configfile, bool server)
 	// set the lava
 	mCameraThing->setLava(lava > 0);
 
-	// dont make foliage for a client
-	if (server)	createFoliage(foliageNum);
-
 	// start the game
-	Game::getSingleton().startGame();
+	Game::getSingleton().startGame(config);
 
 	mMapLoaded = true;
 }

@@ -6,7 +6,7 @@ to add:
 amry counters
 health/mana hud bars
 monster health bars
-teleport to/from towers
+death scream
 
 
 
@@ -15,6 +15,7 @@ Sounds needed:
 claim ding
 tick jump
 crane chirp
+death scream
 
 
 

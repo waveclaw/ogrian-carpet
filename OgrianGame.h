@@ -43,7 +43,7 @@ class Game : public Singleton< Game >
 public:
 	virtual ~Game();
 
-	void startGame();
+	void startGame(ConfigFile config);
 
 	// while in pregame mode, claimthings cannot be made
 	void setPreGame(bool active);
@@ -57,6 +57,9 @@ public:
 	// read in the game configuration
 	void readConfig();
 
+	// where all wizards should start
+	Vector3 getStartPos();
+
 	static Game& getSingleton(void);
 
 	// sound indexes
@@ -65,7 +68,11 @@ public:
 	int SOUND_HISS;
 	int SOUND_CHIRP;
 	int SOUND_HUM;
+
 private:
+	Vector3 mStartPos;
+	ConfigFile mConfig;
+
 	Game();
 
 	void startSkirmishGame();

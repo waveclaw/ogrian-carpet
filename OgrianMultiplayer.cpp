@@ -808,6 +808,15 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			// sync the new client
 			Physics::getSingleton().syncClient(player);
 
+			// tell them where to start
+			Vector3 spos = Game::getSingleton().getStartPos();
+			BitStream bs2;
+			bs2.Write(ID_TELEPORT);
+			bs2.Write(spos.x);
+			bs2.Write(spos.y);
+			bs2.Write(spos.z);
+			serverSend(&bs2, player.id);
+
 			return true;
 		}
 

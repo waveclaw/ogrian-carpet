@@ -56,9 +56,6 @@ public:
     /// Start the renderer
     void go(void);
 
-	// create random foilage using the specified material
-	void createFoliage(int num);
-
 	// get the SceneManager
 	SceneManager* getSceneManager(void);
 

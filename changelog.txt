@@ -5,7 +5,8 @@
 -nerfed ticks
 -improved gnomes
 -added a map option to make lava deadly
--gave towers a healing ball
+-gave towers a healing ball and a teleport portal
+-lots more settings for maps including start location(s)
 
 
 

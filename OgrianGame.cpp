@@ -40,6 +40,7 @@ starting games and detecting victory.
 #include "OgrianSentinelThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianHutThing.h"
+#include "OgrianFoliageThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
@@ -51,6 +52,7 @@ namespace Ogrian
 Game::Game()
 {
 	mPreGame = false;
+	mStartPos = Vector3(0,0,0);
 	loadSounds();
 }
 
@@ -59,6 +61,13 @@ Game::Game()
 Game::~Game()
 {
 
+}
+
+//----------------------------------------------------------------------------
+
+Vector3 Game::getStartPos()
+{
+	return mStartPos;
 }
 
 //----------------------------------------------------------------------------
@@ -148,9 +157,20 @@ void Game::updateScores()
 
 //----------------------------------------------------------------------------
 
-void Game::startGame()
+// note: this is called from Renderer::loadMap()
+void Game::startGame(ConfigFile config)
 {
+	mConfig = config;
+
+	// read the start locations
+	mStartPos.x = atoi(mConfig.getSetting( "startX" ).c_str());
+	mStartPos.z = atoi(mConfig.getSetting( "startZ" ).c_str());
+	Renderer::getSingleton().getCameraThing()->setPosition(mStartPos);
+
+	// start the frame listener
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
+
+	// reset our wizard's health
 	Renderer::getSingleton().getCameraThing()->setHealth(CONR("WIZARD_HEALTH"));
 
 	// start the audio
@@ -186,10 +206,37 @@ void Game::startClientGame()
 
 void Game::startServerGame()
 {
+
 	// activate pregame mode
 	mPreGame = true;
 
+	// make some foliage
+	LogManager::getSingleton().logMessage("Making Foliage...");
+	int foliageNum = atoi(mConfig.getSetting( "FoliageAmount" ).c_str());
+	Real foliageLineMin = atoi(mConfig.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
+	Real foliageLineMax = atoi(mConfig.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
+	Real foliageScale = atoi(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
+	Real foliageScaleVar = atoi(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
 
+	// set up some foliage
+	int i=0;
+	Real size = HeightMap::getSingleton().getWorldSize();
+	while (i<foliageNum)
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > foliageLineMin && y < foliageLineMax)
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+			Real scale = foliageScale + (Math::SymmetricRandom()-.5) * foliageScaleVar;
+
+			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -198,24 +245,27 @@ void Game::serverEndPreGame()
 {
 	setPreGame(false);
 
-	// set up some wild mana
+	// set up some wild mana and huts
+	Real numHuts = atoi(mConfig.getSetting( "NUM_HUTS" ).c_str());
+	Real numMana = atoi(mConfig.getSetting( "MANA_START_NUM" ).c_str());
+	Real manaAmount = atoi(mConfig.getSetting( "MANA_START_AMOUNT" ).c_str());
 	int i=0;
-	while(i<CONI("MANA_START_NUM"))
+	while(i<numMana)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * 1000.0;
         Real z = Math::SymmetricRandom() * 1000.0;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 
-			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
+			ManaThing* mana = new ManaThing(manaAmount,pos);
 			Physics::getSingleton().addThing(mana);
 			
-			if (i < CONI("NUM_HUTS"))
+			if (i < numHuts)
 			{
 				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 				HutThing* hut = new HutThing(pos);
@@ -226,10 +276,21 @@ void Game::serverEndPreGame()
 	
 	// build a list of start locations
 	std::vector<Vector3> slocs;
-	slocs.push_back(Vector3(100,0,100));
-	slocs.push_back(Vector3(900,0,100));
-	slocs.push_back(Vector3(100,0,900));
-	slocs.push_back(Vector3(900,0,900));
+	slocs.push_back(Vector3(
+		atoi(mConfig.getSetting( "p1startX" ).c_str()) ,0,
+		atoi(mConfig.getSetting( "p1startZ" ).c_str()) ));
+
+	slocs.push_back(Vector3(
+		atoi(mConfig.getSetting( "p2startX" ).c_str()) ,0,
+		atoi(mConfig.getSetting( "p2startZ" ).c_str()) ));
+
+	slocs.push_back(Vector3(
+		atoi(mConfig.getSetting( "p3startX" ).c_str()) ,0,
+		atoi(mConfig.getSetting( "p3startZ" ).c_str()) ));
+
+	slocs.push_back(Vector3(
+		atoi(mConfig.getSetting( "p4startX" ).c_str()) ,0,
+		atoi(mConfig.getSetting( "p4startZ" ).c_str()) ));
 
 	// chose an sloc for the camera
 	Vector3 sloc = Vector3(500,0,500);
@@ -283,30 +344,38 @@ void Game::serverEndPreGame()
 
 void Game::startSkirmishGame()
 {
-	// set up some wild mana
-	Real size = HeightMap::getSingleton().getWorldSize();
+	// make some foliage
+	LogManager::getSingleton().logMessage("Making Foliage...");
+	int foliageNum = atoi(mConfig.getSetting( "FoliageAmount" ).c_str());
+	Real foliageLineMin = atoi(mConfig.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
+	Real foliageLineMax = atoi(mConfig.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
+	Real foliageScale = atoi(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
+	Real foliageScaleVar = atoi(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
 
+	// set up some foliage
 	int i=0;
-	while(i<CONI("MANA_START_NUM_SKIRMISH"))
+	Real size = HeightMap::getSingleton().getWorldSize();
+	while (i<foliageNum)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
         Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		if (y > foliageLineMin && y < foliageLineMax)
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
+			Real scale = foliageScale + (Math::SymmetricRandom()-.5) * foliageScaleVar;
 
-			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
-			Physics::getSingleton().addThing(mana);
+			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
 		}
 	}
 
 	// add some huts
+	Real numHuts = atoi(mConfig.getSetting( "NUM_HUTS" ).c_str());
 	i=0;
-	while(i<CONI("NUM_HUTS"))
+	while(i<numHuts)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -332,8 +401,9 @@ void Game::startSkirmishGame()
 	ai->destroy();
 
 	// set up some enemy towers
+	Real numTowers = atoi(mConfig.getSetting( "NUM_TOWERS" ).c_str());
 	i=0;
-	while(i<CONI("NUM_TOWERS"))
+	while(i<numTowers)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -352,8 +422,9 @@ void Game::startSkirmishGame()
 	}
 
 	// set up some ticks
+	Real numTicks = atoi(mConfig.getSetting( "NUM_TICKS" ).c_str());
 	i=0;
-	while(i<CONI("NUM_TICKS"))
+	while(i<numTicks)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -371,8 +442,9 @@ void Game::startSkirmishGame()
 	}
 
 	// set up some sentinels
+	Real numSentinels = atoi(mConfig.getSetting( "NUM_SENTINELS" ).c_str());
 	i=0;
-	while(i<CONI("NUM_SENTINELS"))
+	while(i<numSentinels)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -403,6 +475,7 @@ void Game::startSkirmishGame()
 
 	// reset the player
 	Renderer::getSingleton().getCameraThing()->die();
+	Renderer::getSingleton().getCameraThing()->setPosition(mStartPos);
 	Hud::getSingleton().reinit();
 }
 
