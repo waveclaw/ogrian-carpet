@@ -57,8 +57,8 @@ Sprite::Sprite(String name, bool fixed_y)
 			mName += num.str();
 	}
 
-	mWidth = 1;
-	mHeight = 1;
+	mWidth = -1;
+	mHeight = -1;
 	mColour = ColourValue::White;
 
 	mInRenderer = false;
@@ -127,7 +127,7 @@ void Sprite::setWidth(Real width)
 
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
-	else 
+	else if (mDot)
 		addToRenderer(); // not sure why this is necessary, but it is
 }
 
@@ -139,7 +139,7 @@ void Sprite::setHeight(Real height)
 	
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
-	else 
+	else if (mDot) 
 		addToRenderer(); // not sure why this is necessary, but it is
 }
 

@@ -248,6 +248,8 @@ void Thing::setScale(Real scale)
 
 void Thing::setHeight(Real height)
 {
+	if (mHeight == height) return;
+
 	mHeight = height;
 	
 	mVisRep->setHeight(height);
@@ -257,6 +259,8 @@ void Thing::setHeight(Real height)
 
 void Thing::setWidth(Real width)
 {
+	if (mWidth == width) return;
+
 	mWidth = width;
 
 	mVisRep->setWidth(width);
