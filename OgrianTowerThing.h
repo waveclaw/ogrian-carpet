@@ -39,6 +39,7 @@ a flock of cranes
 #include "OgrianModel.h"
 #include "OgrianCraneThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianManaThing.h"
 
 using namespace Ogre;
 
@@ -65,7 +66,9 @@ public:
 		// start at zero and rise
 		setPosY(getGroundY() - CONR("TOWER_OFFSET"));
 		mTargetY = getPosY();
-		setPercentage(1);
+
+		// set the health
+		setHealth(CONI("TOWER_HEALTH"));
 
 		// set the team
 		setTeamNum(teamNum);
@@ -86,13 +89,18 @@ public:
 
 	virtual void destroy()
 	{
-		DamageableThing::destroy();
+		// drop a manathing
+		ManaThing* mana = new ManaThing(CONI("TOWER_COST"), getPosition());
+		mana->setTeamNum(getTeamNum());
+		Physics::getSingleton().addThing(mana);;
 
 		// remove the cranes
 		for (int i=0; i<(int)mCranes.size(); i++)
 			mCranes[i]->destroy();
 
 		mCranes.clear();
+
+		DamageableThing::destroy();
 	}
 
 	// set how far up this block should go to

@@ -694,7 +694,7 @@ void Physics::deleteThing(Thing* thing)
 		removed = _removeThing(thing, getGridU(pos), getGridV(pos));
 
 	// remove it from allThings
-	size_t s = mAllThings.size();
+	//size_t s = mAllThings.size();
 	for (int i=0; i<(int)mAllThings.size(); i++)
 	{
 		if (mAllThings[i] == thing)
@@ -705,8 +705,16 @@ void Physics::deleteThing(Thing* thing)
 		}
 	}
 
-	// assert that one was removed
-	assert(mAllThings.size() == s-1);
+	// remove it from buildigns
+	for (int i=0; i<(int)mBuildings.size(); i++)
+	{
+		if (mBuildings[i] == thing)
+		{
+			// erase it
+			mBuildings.erase(mBuildings.begin()+i);
+			break;
+		}
+	}
 
 	// delete it
 	if (removed)
@@ -753,9 +761,13 @@ int Physics::getGridV(Vector3 pos)
 
 void Physics::_delete(Thing* thing)
 {
-	// confirm that it is not in physics
+	//// confirm that it is not in physics
 	//if (getThing(thing->getUID()))
 	//	((Thing*)0)->isAlive(); // stop!
+
+	//for (int i=0; i<(int)mBuildings.size(); i++)
+	//	if (mBuildings[i] == thing)
+	//		((Thing*)0)->isAlive(); // stop!
 
 	//Vector3 pos = thing->getPosition();
 	//int x = getGridU(pos);
@@ -781,6 +793,9 @@ void Physics::clear()
 				while (!mThingGrid[i][j].empty())
 					mThingGrid[i][j].pop_back();
 	}
+
+	// clear mBuildings
+	mBuildings.clear();
 
 	// delete each thing from mAllThings
 	while(!mAllThings.empty())
