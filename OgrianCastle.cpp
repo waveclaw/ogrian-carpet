@@ -46,13 +46,13 @@ Castle::Castle(int teamNum, Vector3 pos)
 
 	Real W = CONR("CASTLE_WIDTH");
 
-	// make a baloon
-	mBaloons[0] = new BaloonThing(teamNum, getPosition());
+	mBaloons[0] = 0; 
 	mBaloons[1] = 0;
 	mBaloons[2] = 0;
 	mBaloons[3] = 0;
 	mBaloons[4] = 0;
-	Physics::getSingleton().addThing(mBaloons[0]);
+
+	mNumBaloons = 0;
 
 	// build the castle
 	mBlocks[0] = mCenterTower = new CastleTowerThing(this, pos);
@@ -114,7 +114,15 @@ Castle::Castle(int teamNum, Vector3 pos)
 		Physics::getSingleton().addThing(mBlocks[i]);
 
 	// start at level 0
-	setMana(200);
+	setMana(0);
+
+	// add existing claimed mana to the list
+	for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	{
+		Thing* thing = Physics::getSingleton().getThingByIndex(i);
+		if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
+			claimedManaThing(thing);
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -129,9 +137,7 @@ void Castle::move(Real time)
 		if (mBaloons[i] && mBaloons[i]->needsOrders())
 		{
 			BaloonThing* baloon = mBaloons[i];
-			Vector3 pos = baloon->getPosition();
-			int amount = baloon->getAmount();
-			Thing* target = generateTarget(pos, amount);
+			Thing* target = generateTarget(baloon);
 
 			// set the target unless its got no mana to get and is already at the castle
 			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth() + baloon->getWidth())
@@ -180,10 +186,83 @@ void Castle::damage(int amount, int sourceTeamNum)
 
 //----------------------------------------------------------------------------
 
-Thing* Castle::generateTarget(Vector3 pos, int amount)
+Thing* Castle::generateTarget(BaloonThing* baloon)
 {
-	if ((int)mManaThings.size() > 0 && mManaThings[0]->isAlive()) return mManaThings[0];
+	// if the baloon is full, return to the castle
+	if (baloon->getAmount() >= CONI("BALOON_CAPACITY"))
+		return this;
 
+	// pick a target mana
+	ManaThing* target = 0;
+	if ((int)mManaThings.size() > 0)
+	{
+		// build a list of the other targets
+		std::vector<ManaThing*> targets;
+		for (int i=0; i<mNumBaloons; i++)
+			if (mBaloons[i]->getTarget() && mBaloons[i]->getTarget()->getType() == MANATHING
+				&& mBaloons[i]->getTarget()->isAlive())
+				targets.push_back((ManaThing*)mBaloons[i]->getTarget());
+
+		// if there are no other targets, chose the mana closest to this baloon
+		if (targets.size() == 0) 
+		{
+			Real bestScore = 0;
+
+			// check each mana in the list
+			for (int i=0; i<(int)mManaThings.size(); i++)
+			{
+				ManaThing* candidate = (ManaThing*)mManaThings[i];
+
+				// skip dead manas
+				if (candidate->isAlive())
+				{
+					Real score = 1.0f / baloon->sphereDistance(candidate);
+										
+					// if its the best so far, store it
+					if (score > bestScore)
+					{
+						bestScore = score;
+						target = candidate;
+					}
+				}
+			}
+		}
+		else // chose the mana farthest away from the other targets
+		{
+			Real bestScore = 0;
+			// check each mana in the list
+			for (int i=0; i<(int)mManaThings.size(); i++)
+			{
+				ManaThing* candidate = (ManaThing*)mManaThings[i];
+
+				// skip dead manas
+				if (candidate->isAlive())
+				{
+					// generate a score equal to the sum of the distances between the candidate and the other targets
+					int score=0;
+					for (int j=0; j<(int)targets.size(); j++)
+						score += candidate->cylinderDistance(targets[j]);
+
+					// if its the best so far, store it
+					if (score > bestScore)
+					{
+						bestScore = score;
+						target = candidate;
+					}
+				}
+			}
+
+			if (bestScore == 0) // if all the mana is already targetted
+				return this; // come back to the castle
+		}
+
+		if (target) // if a valid target was found,
+			return target; // return it
+		else 
+			return this; // otherwise, wait at the castle
+	}
+	
+	// there is no mana, so wait at the castle
 	else return this;
 }
 
@@ -270,6 +349,45 @@ void Castle::setLevel(Real level)
 	// place the second set
 	for (i=25; i<49; i++)
 		mBlocks[i]->setPercentage(level-3);
+
+	// set the number of baloons equal to the level+1
+	setNumBaloons(level+1);
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::setNumBaloons(int num)
+{
+	// 0 <= num <= NUM_BALOONS
+	if (num < 0) num = 0;
+	if (num > NUM_BALOONS) num = NUM_BALOONS;
+
+	// loop through each baloon slot
+	for (int i=1; i<=NUM_BALOONS; i++)
+	{
+		// if the baloon there is being removed
+		if (mNumBaloons >= i && num < i)
+		{
+			// drop any mana that it is carrying
+			ManaThing* mana = new ManaThing(mBaloons[i-1]->unload(), mBaloons[i-1]->getPosition());
+			mana->setTeamNum(getTeamNum());
+			Physics::getSingleton().addThing(mana);
+			
+			// remove the baloon
+			mBaloons[i-1]->destroy();
+			mBaloons[i-1] = 0;
+		}
+		// else if a baloon needs to be added to this slot
+		else if (mNumBaloons < i && num >= i)
+		{
+			// add the baloon
+			mBaloons[i-1] = new BaloonThing(getTeamNum(), getPosition());
+			Physics::getSingleton().addThing(mBaloons[i-1]);
+		}
+	}
+
+	// update mNumBaloons
+	mNumBaloons = num;
 }
 
 //----------------------------------------------------------------------------

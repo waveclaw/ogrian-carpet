@@ -56,7 +56,7 @@ public:
 		// start at zero
 		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2);
 		mTargetY = getPosY();
-		setPercentage(1);
+		setPercentage(0);
 	}
 
 	// set how far up this block should go to
@@ -266,9 +266,17 @@ private:
 	CastleWallThing* mOuterWallW6;
 	CastleWallThing* mOuterWallW7;
 
+	// the current number of baloons
+	int mNumBaloons;
+
+	// set the castle level
 	void setLevel(Real level);
 
-	Thing* generateTarget(Vector3 pos, int amount);
+	// set the number of baloons
+	void setNumBaloons(int num);
+
+	// genearate a target for a baloon
+	Thing* generateTarget(BaloonThing* baloon);
 };
 
 }

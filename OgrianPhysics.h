@@ -75,6 +75,9 @@ public:
 	// get the thing with the specified uid
 	Thing* getThing(int uid);
 
+	// get thing by index (for iterating through all things
+	Thing* getThingByIndex(int index);
+
 	// remove and delete all things in the world
 	void clear();
 

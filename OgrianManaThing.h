@@ -59,11 +59,11 @@ public:
 	{
 		// remove it from the old castle
 		Team*  oldTeam = Physics::getSingleton().getTeam(getTeamNum());
-		if (oldTeam) oldTeam->getCastle()->unclaimedManaThing(this);
+		if (oldTeam && oldTeam->hasCastle()) oldTeam->getCastle()->unclaimedManaThing(this);
 
 		// add it to the new castle
 		Team*  newTeam = Physics::getSingleton().getTeam(teamNum);
-		if (newTeam) newTeam->getCastle()->claimedManaThing(this);
+		if (newTeam && newTeam->hasCastle()) newTeam->getCastle()->claimedManaThing(this);
 
 		// change the colour
 		if (newTeam) setColour(newTeam->getColour());

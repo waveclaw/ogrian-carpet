@@ -416,6 +416,16 @@ Thing* Physics::getThing(int uid)
 
 	return 0;
 }
+
+//----------------------------------------------------------------------------
+
+Thing* Physics::getThingByIndex(int index)
+{
+	if (mAllThings.size() == 0) return 0;
+
+	return mAllThings[index];
+}
+
 //----------------------------------------------------------------------------
 
 // checks to see if a thing is in the list mAllThings
