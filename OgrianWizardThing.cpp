@@ -210,7 +210,10 @@ void WizardThing::makeGhost()
 	// remove it from the teams enemy lists
 	if (!Multiplayer::getSingleton().isClient())
 		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
-			Physics::getSingleton().getTeam(i)->removeEnemy(this);
+		{
+			Team* team = Physics::getSingleton().getTeam(i);
+			if (team) team->removeEnemy(this);
+		}
 }
 
 //----------------------------------------------------------------------------
@@ -266,7 +269,7 @@ void WizardThing::setHealth(int health)
 
 	DamageableThing::setHealth(health);
 
-	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
+	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING && getUID() >= 0)
 	{
 		// find the wizard's player
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());

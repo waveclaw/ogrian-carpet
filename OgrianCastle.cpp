@@ -44,7 +44,8 @@ CastleHeartThing::CastleHeartThing(DamageableThing* castle, Vector3 pos)
 	mCastle = castle;
 
 	// set the colour
-	setColour(castle->getColour());
+	if (castle)
+		setColour(castle->getColour());
 
 	// set the team
 	if (castle)

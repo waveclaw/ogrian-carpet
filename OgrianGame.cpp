@@ -124,11 +124,14 @@ void Game::serverVictoryCheck()
 	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
 	{
 		Team* team = Physics::getSingleton().getTeam(i);
-		Thing* wizard =  Physics::getSingleton().getThing(team->getWizardUID());
-		if (wizard && !((WizardThing*)wizard)->isGhost())
+		if (team)
 		{
-			numLivingWizards++;
-			winner = wizard;
+			Thing* wizard =  Physics::getSingleton().getThing(team->getWizardUID());
+			if (wizard && !((WizardThing*)wizard)->isGhost())
+			{
+				numLivingWizards++;
+				winner = wizard;
+			}
 		}
 	}
 

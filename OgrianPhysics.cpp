@@ -372,10 +372,9 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case PORTALTHING: return new PortalThing();
 
 		case CASTLEKEEPTHING: return new CastleKeepThing(0);
-
 		case CASTLETURRETTHING: return new CastleTurretThing(0);
-
 		case CASTLEFLAGTHING: return new CastleFlagThing();
+		case CASTLEHEARTTHING: return new CastleHeartThing(0);
 
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
