@@ -12,3 +12,12 @@ music:
 =============
 Riding the Dragon - by Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/RidingTheDragon_medquality_stereo_44Khz_128Kbps.ogg)
 Last Glimpse - by Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/LastGlimpse_medquality_stereo_44Khz_128Kbps.ogg)
+
+
+
+
+photography: Jeff Knous
+
+Models:
+Jeff Knous
+Mike Prosser
