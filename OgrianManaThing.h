@@ -52,6 +52,7 @@ public:
 	{
 		setAmount(amount);
 		setColour(ColourValue(1,1,1));
+		mFlag = true;
 	}
 
 	// change the colour to reflect team ownership
@@ -100,7 +101,7 @@ public:
 		{
 			ManaThing* m = static_cast<ManaThing*>(e);
 
-			if(getAmount() > 0 && m->getAmount() > 0)
+			if(mFlag && m->mFlag && getAmount() > 0 && m->getAmount() > 0)
 			{
 
 				// set the position as a weighted average of the two
@@ -110,7 +111,9 @@ public:
 						
 				// absorb the other
 				setAmount(getAmount() + m->getAmount());
-				m->setAmount(0);
+				m->setAmount(-1);
+				m->mFlag = false;
+				mFlag = false;
 		
 				setUpdateFlag();
 			}
@@ -130,11 +133,13 @@ public:
 
 		setVelocity(vel);
 
-		if (getAmount() == 0)
+		if (getAmount() <= 0)
 		{
 			// be absorbed
 			destroy();
 		}
+
+		mFlag = true;
 	}
 
 	virtual ThingType getType()
@@ -150,7 +155,8 @@ public:
 	}
 
 private:
-	unsigned int mAmount;
+	int mAmount;
+	bool mFlag;
 };
 
 }
