@@ -366,6 +366,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case HUTBALLTHING: return new HutBallThing(0);
 
 		case TOWERTHING: return new TowerThing(0);
+		case TOWERBALLTHING: return new TowerBallThing(0);
 
 		case CASTLEKEEPTHING: return new CastleKeepThing(0);
 

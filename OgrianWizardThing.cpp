@@ -255,6 +255,10 @@ void WizardThing::setColour(ColourValue& colour)
 
 void WizardThing::setHealth(int health)
 {
+	// dont exceed the max health
+	if (health >= CONI("WIZARD_HEALTH"))
+		health = CONI("WIZARD_HEALTH");
+
 	DamageableThing::setHealth(health);
 
 	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)

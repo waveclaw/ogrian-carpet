@@ -3,13 +3,11 @@ Ogrian Carpet Notes
 
 to add:
 =========
-Hand Sprites - two frames, idle and casting, for each spell
 amry counters
 health/mana hud bars
 monster health bars
 bind mouse buttons to spell selections
 teleport to/from towers
-towers provide some regen
 
 
 
@@ -41,7 +39,6 @@ Spells
 
 need new art for:
 =========
-hand sprites - photos of my hands
 hud spell sprites
 
 

@@ -318,6 +318,9 @@
 				RelativePath="OgrianTimedThing.h">
 			</File>
 			<File
+				RelativePath="OgrianTowerThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianTowerThing.h">
 			</File>
 			<File
