@@ -21,26 +21,25 @@ music=false
 MUSIC_VOLUME=128
 
 # set the RGB values of the colour you want your team to be
-
-# 255   255   255 = White
-# 0   0   0 = Black
-# 255   0   0 = Red
-# 0   255   0 = Green
-# 0   0   255 = Blue
-# 255   0   255 = Purple
-# 255   255   0 = Yellow
-# 0   255   255 = Cyan
-# 128 64  0 = Brown
-# 255  128 64 = Orange
-# 128  0   0 = Dark Red
-# 0   0  128 = Dark Blue
-# 0  128   0 = Dark Green
-# 0   255  128 = Turquoise
-
+# red	green	blue
+# 255   255   	255 	= White
+# 0   	0   	0 	= Black
+# 255   0   	0 	= Red
+# 0   	255   	0 	= Green
+# 0   	0   	255 	= Blue
+# 255   0   	255 	= Purple
+# 255   255   	0 	= Yellow
+# 0   	255   	255 	= Cyan
+# 128 	64  	0 	= Brown
+# 255  	128 	64 	= Orange
+# 128  	0   	0 	= Dark Red
+# 0   	0  	128 	= Dark Blue
+# 0  	128   	0 	= Dark Green
+# 0   	255  	128 	= Turquoise
 
 red=0
-blue=255
 green=255
+blue=255
 
 
 # Performance variables
