@@ -80,7 +80,7 @@ void TowerBallThing::collided(Thing* e)
 //----------------------------------------------------------------------------
 
 TowerThing::TowerThing(int teamNum, Vector3 pos) 
-	: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("TOWER_WIDTH"), pos, CUBE)
+	: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("TOWER_WIDTH"), pos, CUBE, false)
 {
 	mLastCastTime = 0;
 	mUnbuildMode = false;

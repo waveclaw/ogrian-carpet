@@ -62,7 +62,7 @@ class FoliageThing : public DamageableThing
 public:
 	FoliageThing(Real scale=1, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing(Renderer::getSingleton().getFoliageMaterial(),
-			SPRITE, "Foliage", true, scale, pos, CYLINDER)
+			SPRITE, "Foliage", true, scale, pos, CYLINDER, false)
 	{
 		// place it slightly underground
 		setHeight(scale*CONR("FOLIAGE_SKEW"));

@@ -24,6 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: DamageableThing is a thing that can take damage, and will die
+It also has an optional health bar
 
 /*------------------------------------*/
 
@@ -39,30 +40,64 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+//////////////////////////////////////////////////////////////////////////////////////
+class HealthBarEffect : public Thing
+{
+public:
+	HealthBarEffect(Vector3 pos, Real height, Real width)
+		: Thing("Ogrian/Wizard/HealthBar", SPRITE, "HealthBar", true, 1, pos)
+	{
+		setHeight(height);
+		mOffset = Vector3(0,CONR("HEALTHBAR_OFFSET"),0);
+
+		update(pos, width);
+	}
+
+	virtual void update(Vector3 pos, Real width)
+	{	
+		setPosition(pos+mOffset);
+		setWidth(width);
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+
+private:
+	Vector3 mOffset;
+};
+
+//////////////////////////////////////////////////////////////////////////////////////
 class DamageableThing : public Thing
 {
 public:
 
 	DamageableThing(String material, ThingVisRep visrep=SPRITE, String prefix="Thing", bool fixed_y=false, 
-		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
+		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE, bool hasBar=true);
 
+	// makes damage happen
 	virtual void setHealth(int health);
-
 	virtual int getHealth();
-
 	virtual void damage(int amount, int sourceTeamNum);
-
 	virtual int getLastDamageSourceTeamNum();
-
 	virtual void setTeamNum(int teamNum);
-
 	virtual void destroy();
-
 	virtual bool isDamageable()	{ return true; }
+
+	// used for health bars
+	virtual void reset();
+	virtual void setColour(ColourValue& colour);
+	virtual void move(Real time);
+
+	// to update the health bar
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
+	virtual void interpretBitStream(BitStream& bitstream);
 
 private:
 	int mHealth;
 	int mLastDamageSource;
+
+	bool mHasBar;
+
+	HealthBarEffect* mBar;
 };
 
 }

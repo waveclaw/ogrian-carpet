@@ -10,8 +10,8 @@ death scream
 teams by colour w/mana sharing
 teleport home w/posse
 castle heart
-spellmanager handles spell enabling 
-
+castle under attack message
+players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 
 
 Sounds needed:

@@ -54,7 +54,6 @@ WizardThing::WizardThing(bool visible, int skin)
 	mActiveMana = 0;
 	mBaseMana = 0;
 	mNumHuts = 0;
-	mBar = 0;
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
@@ -71,6 +70,8 @@ WizardThing::WizardThing(bool visible, int skin)
 
 void WizardThing::reset()
 {
+	DamageableThing::reset();
+
 	if (mTeam)
 		delete mTeam;
 
@@ -81,7 +82,6 @@ void WizardThing::reset()
 	mActiveMana = 0;
 	mBaseMana = 0;
 	mNumHuts = 0;
-	mBar = 0;
 	mTeam = 0;
 	mGhost = false;
 
@@ -96,13 +96,6 @@ void WizardThing::reset()
 		std::ostringstream num("");
 		num << teamNum;
 		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
-	}
-
-	// make the health bar
-	if (mVisible)
-	{
-		mBar = new HealthBarEffect(getPosition(), getHeight());
-		Physics::getSingleton().addEffect(mBar);
 	}
 
 	// add this player to the server
@@ -211,8 +204,7 @@ void WizardThing::damage(int amount, int sourceTeamNum)
 void WizardThing::makeGhost()
 {
 	mGhost = true;
-	if (mBar) mBar->destroy();
-	mBar = 0;
+	setWidth(0);
 	
 	// remove it from the teams enemy lists
 	if (!Multiplayer::getSingleton().isClient())
@@ -260,7 +252,6 @@ void WizardThing::setSkin(int skin)
 void WizardThing::setColour(ColourValue& colour)
 {
 	DamageableThing::setColour(colour);
-	if (mBar) mBar->setColour(colour);
 	if (mTeam) mTeam->setColour(colour);
 }
 
@@ -421,10 +412,6 @@ void WizardThing::move(Real time)
 	}
 
 	DamageableThing::move(time);
-
-	// update health bar
-	if (mBar)
-		mBar->update(getPosition(), getHealth()/100.0*getWidth());
 }
 
 //----------------------------------------------------------------------------
@@ -466,9 +453,6 @@ void WizardThing::setVelY(Real vel)
 
 void WizardThing::destroy()
 {
-	if (mBar) mBar->destroy();
-	mBar = 0;
-
 	if (mTeam) Physics::getSingleton().removeTeam(getTeamNum());
 	mTeam = 0;
 
@@ -481,7 +465,6 @@ void WizardThing::generateBitStream(BitStream& bitstream, int pid)
 {
 	DamageableThing::generateBitStream(bitstream,pid);
 
-	bitstream.Write(getHealth());
 	bitstream.Write(mSkin);
 }
 
@@ -491,13 +474,10 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 {
 	DamageableThing::interpretBitStream(bitstream);
 
-	int health, skin;
+	int skin;
 
-	bitstream.Read(health);
 	bitstream.Read(skin);
 
-	// ignore incoming health if this is a server
-	if (Multiplayer::getSingleton().isClient()) setHealth(health);
 	setSkin(skin);
 }
 

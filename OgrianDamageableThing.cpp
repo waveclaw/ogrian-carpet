@@ -24,6 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: DamageableThing is a thing that can take damage, and will die
+It also has an optional health bar
 
 /*------------------------------------*/
 
@@ -35,22 +36,66 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 DamageableThing::DamageableThing(String material, ThingVisRep visrep, String prefix, bool fixed_y, 
-	Real scale, Vector3 pos, ThingShape shape)
+	Real scale, Vector3 pos, ThingShape shape, bool hasBar)
 	: Thing(material, visrep, prefix, fixed_y, scale, pos, shape)
 {
 	mHealth = 0;
+	mBar = 0;
+	mHasBar = hasBar;
+
+	reset();
 }
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::reset()
+{
+	// make the health bar
+	if (mHasBar)
+	{
+		mBar = new HealthBarEffect(getPosition(), getHeight(), getWidth());
+		Physics::getSingleton().addEffect(mBar);
+	}
+	else mBar = 0;
+}
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::setColour(ColourValue& colour)
+{
+	Thing::setColour(colour);
+	if (mBar) mBar->setColour(colour);
+}
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::move(Real time)
+{
+	Thing::move(time);
+	
+	// update health bar
+	if (mBar)
+		mBar->update(getPosition(), mHealth/100.0*getWidth());
+}
+
+//----------------------------------------------------------------------------
 
 void DamageableThing::setHealth(int health)
 {
 	mHealth = health;
 }
 
+//----------------------------------------------------------------------------
+
 int DamageableThing::getHealth()
 {
 	return mHealth;
 }
+
+//----------------------------------------------------------------------------
 
 void DamageableThing::damage(int amount, int sourceTeamNum)
 {
@@ -60,10 +105,14 @@ void DamageableThing::damage(int amount, int sourceTeamNum)
 	if (mHealth <= 0) die();
 }
 
+//----------------------------------------------------------------------------
+
 int DamageableThing::getLastDamageSourceTeamNum()
 {
 	return mLastDamageSource;
 }
+
+//----------------------------------------------------------------------------
 
 void DamageableThing::setTeamNum(int teamNum)
 {
@@ -83,9 +132,14 @@ void DamageableThing::setTeamNum(int teamNum)
 		Physics::getSingleton().getTeam(i)->addEnemy(this);
 }
 
+//----------------------------------------------------------------------------
+
 void DamageableThing::destroy()
 {
 	Thing::destroy();
+
+	if (mBar) mBar->destroy();
+	mBar = 0;
 
 	// remove it from the teams enemy lists
 	if (getTeamNum() >= 0)
@@ -93,5 +147,31 @@ void DamageableThing::destroy()
 			if (i != getTeamNum())
 				Physics::getSingleton().getTeam(i)->removeEnemy(this);
 }
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::generateBitStream(BitStream& bitstream, int pid)
+{
+	Thing::generateBitStream(bitstream,pid);
+
+	if (mBar)
+		bitstream.Write(mBar->getWidth());
+}
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::interpretBitStream(BitStream& bitstream)
+{
+	Thing::interpretBitStream(bitstream);
+
+	int width;
+
+	bitstream.Read(width);
+
+	if (mBar)
+		mBar->setWidth(width);
+}
+
+//----------------------------------------------------------------------------
 
 }

@@ -52,7 +52,7 @@ CastleFlagThing::CastleFlagThing()
 //----------------------------------------------------------------------------
 
 CastleBlockThing::CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height) 
-	: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE)
+	: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE, false)
 {
 	setHeight(height);
 
@@ -192,7 +192,7 @@ void CastleKeepThing::destroy()
 //----------------------------------------------------------------------------
 
 Castle::Castle(int teamNum, Vector3 pos) 
-	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE)
+	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE, false)
 {
 	setTeamNum(teamNum);
 	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());

@@ -41,30 +41,6 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-//////////////////////////////////////////////////////////////////////////////////////
-class HealthBarEffect : public Thing
-{
-public:
-	HealthBarEffect(Vector3 pos, Real height)
-		: Thing("Ogrian/Wizard/HealthBar", SPRITE, "HealthBar", true, 1, pos)
-	{
-		setHeight(height);
-		mOffset = Vector3(0,CONR("WIZARD_HEALTHBAR_OFFSET"),0);
-	}
-
-	virtual void update(Vector3 pos, Real width)
-	{	
-		setPosition(pos+mOffset);
-		setWidth(width);
-	}
-
-	virtual ThingType getType()	{ return EFFECT; }
-
-private:
-	Vector3 mOffset;
-};
-
-//////////////////////////////////////////////////////////////////////////////////////
 class WizardThing : public DamageableThing
 {
 public:
@@ -104,8 +80,9 @@ public:
 
 	virtual Team* getTeam();
 	
-	virtual void WizardThing::generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
-	virtual void WizardThing::interpretBitStream(BitStream& bitstream);
+	// for keeping the skin updated
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
+	virtual void interpretBitStream(BitStream& bitstream);
 
 	virtual void _setUID(int uid);
 
@@ -123,7 +100,6 @@ public:
 	virtual void placedInPhysics(int uid);
 
 private:
-	HealthBarEffect* mBar;
 	Team* mTeam;
 	int mSkin;
 	bool mVisible;

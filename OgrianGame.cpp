@@ -236,6 +236,7 @@ void Game::startServerGame()
 {
 	Hud::getSingleton().reinit();
 	SpellManager::getSingleton().setLevel(-2);
+	Renderer::getSingleton().getCameraThing()->reset();
 
 	// activate pregame mode
 	mPreGame = true;

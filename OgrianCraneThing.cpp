@@ -41,7 +41,7 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 
 CraneThing::CraneThing(int teamNum, Vector3 orbitPos) 
-	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, CONR("CRANE_SCALE"), orbitPos, SPHERE)
+	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, CONR("CRANE_SCALE"), orbitPos, SPHERE, false)
 {
 	mOrbitPos = orbitPos;
 	mLastFlap = false;
