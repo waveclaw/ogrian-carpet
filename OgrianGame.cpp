@@ -77,6 +77,9 @@ void Game::frame(Real time)
 	// victory check
 	if (Multiplayer::getSingleton().isServer())
 		serverVictoryCheck();
+
+	// tick the clock
+	Clock::getSingleton().frame();
 }
 
 //----------------------------------------------------------------------------
@@ -226,6 +229,8 @@ void Game::serverEndPreGame()
 		slocs.erase(slocs.begin()+index);
 	}
 
+	sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
+
 	// kill the camera
 	Renderer::getSingleton().getCameraThing()->die();
 	Renderer::getSingleton().getCameraThing()->setPosition(sloc);
@@ -233,7 +238,7 @@ void Game::serverEndPreGame()
 	// enable the build spell
 	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
 
-	// kill all wizards and enable the build spell
+	// kill all wizards
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
 	{
 		Thing* thing = Physics::getSingleton().getThingByIndex(i);
@@ -249,10 +254,13 @@ void Game::serverEndPreGame()
 			}
 			else sloc = Vector3(500,0,500);
 
+			sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
+
 			Multiplayer::getSingleton().killWizard(thing, sloc);
 		}
 	}
 
+	//  enable the build spell
 	for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
 	{
 		PlayerInfo player = Multiplayer::getSingleton().getClient(i);

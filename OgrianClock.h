@@ -57,6 +57,9 @@ public:
 	// this should be called at the start of main()
 	void init();
 
+	// this should be called every frame
+	void frame();
+
 	// Call this to get the current time
 	Time getTime();
 
@@ -72,7 +75,8 @@ private:
 		timeval tp, initialTime;
 	#endif
 
-	bool initialized;
+	bool mInitialized;
+	Time mTime;
 };
 
 }

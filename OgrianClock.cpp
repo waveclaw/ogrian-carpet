@@ -39,7 +39,8 @@ namespace Ogrian
 
 Clock::Clock()
 {
-	initialized=false;
+	mInitialized=false;
+	mTime = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -53,17 +54,7 @@ Clock::~Clock()
 
 Time Clock::getTime()
 {
-	if (initialized==false) init();
-
-	#ifdef _WIN32
-		LARGE_INTEGER PerfVal;
-		QueryPerformanceCounter(&PerfVal);
-		return (Time)(PerfVal.QuadPart/counts);
-	#else
-		gettimeofday(&tp, 0);
-		// Seconds to ms and microseconds to ms
-		return (tp.tv_sec - initialTime.tv_sec) * 1000 + (tp.tv_usec - initialTime.tv_usec) / 1000;
-	#endif
+	return mTime;
 }
 
 //----------------------------------------------------------------------------
@@ -77,7 +68,24 @@ void Clock::init()
 		gettimeofday(&initialTime, 0); 
 	#endif
 
-	initialized=true; 
+	mInitialized=true; 
+}
+
+//----------------------------------------------------------------------------
+
+void Clock::frame()
+{
+	if (mInitialized==false) return;
+
+	#ifdef _WIN32
+		LARGE_INTEGER PerfVal;
+		QueryPerformanceCounter(&PerfVal);
+		mTime = (Time)(PerfVal.QuadPart/counts);
+	#else
+		gettimeofday(&tp, 0);
+		// Seconds to ms and microseconds to ms
+		mTime = (tp.tv_sec - initialTime.tv_sec) * 1000 + (tp.tv_usec - initialTime.tv_usec) / 1000;
+	#endif
 }
 
 //----------------------------------------------------------------------------
