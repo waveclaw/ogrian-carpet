@@ -55,7 +55,11 @@ public:
 
 	void setScore(int score)
 	{
+		if (mScore == score) return;
+
 		mScore = score;
+			
+		Multiplayer::getSingleton().updateScores();
 	}
 
 	int getScore()
@@ -66,6 +70,8 @@ public:
 	void incrementScore()
 	{
 		mScore++;
+
+		Multiplayer::getSingleton().updateScores();
 	}
 
 private:

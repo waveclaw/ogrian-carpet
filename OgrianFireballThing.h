@@ -120,11 +120,7 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// get points for killing wizards
-		if (e->getType() == FOLIAGETHING)
-		{
-			Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
-			Multiplayer::getSingleton().updateScores();
-		}
+		if (e->getType() == FOLIAGETHING) Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
 
 		// destroy it
 		e->destroy();

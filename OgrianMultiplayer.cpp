@@ -399,7 +399,31 @@ PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 
 void Multiplayer::updateScores()
 {
+	if (!isServer()) return;
+
+	// update the server's scores
 	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
+
+	// send each client its score
+	for (int i=0; i<(int)mPlayers.size(); i++)
+		serverSendText(String("Score: ") << 
+			Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
+			ID_SETSCORE, mPlayers[i].id);
+
+	// clear all the scoreboards
+	serverSendAllText(" ", ID_CLEAR_SCOREBOARD);
+	PlayerList::getSingleton().clear();
+
+	// re-add all the players + scores
+	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		String str = String("") << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore()
+			<< "   " << mPlayers[i].name;
+			
+		serverSendAllText(str, ID_ADD_SCORE);
+		PlayerList::getSingleton().addPlayer(str);
+	}
+
 }
 
 //----------------------------------------------------------------------------
