@@ -54,18 +54,52 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 	setHealth(CONI("GNOME_HEALTH"));
 
 	setPosY(getGroundY()+CONR("GNOME_SCALE")/2);
+
+	// set our formation offset
+	Real angle = Math::RangeRandom(0,2*Math::PI);
+	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+	mFormationOffset.x = sin(angle)*distance;
+	mFormationOffset.z = cos(angle)*distance;
+}
+
+//----------------------------------------------------------------------------
+
+// stay on the ground and in formation
+void GnomeThing::move(Real time)
+{
+	DamageableThing::move(time);
+
+	setPosY(getGroundY() + getHeight()/2);
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	if (team)
+	{
+		// stay in formation
+		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz)
+		{
+			Vector3 vel(0,0,0);
+			vel = (wiz->getPosition() + mFormationOffset) - getPosition();
+
+			if (vel.length() > CONR("GNOME_FORMATION_THRESHOLD"))
+			{
+				vel.normalise();
+				vel *= CONR("GNOME_FORMATION_SPEED");
+			}
+			else vel = Vector3(0,0,0);
+
+			setVelocity(vel);
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void GnomeThing::think()
 {
-	if (getVelocity().length() > 0) return;
-
-	// jump at the nearest enemy
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 	if (team)
 	{
+		// target the nearest enemy
 		Thing* target = team->getNearestEnemy(this, CONR("GNOME_SIGHT_RANGE"));
 		if (target) 
 		{
@@ -101,6 +135,13 @@ void GnomeThing::think()
 			// shoot at it
 			Physics::getSingleton().addThing(new FireballThing(getTeamNum(), team->getColour(),
 				pos, vel, CONI("GNOME_DAMAGE"), false, false));
+
+			// set the attack pose
+			getVisRep()->setPose(1);
+		}
+		else
+		{
+			getVisRep()->setPose(0);			
 		}
 	}
 }

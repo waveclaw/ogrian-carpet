@@ -49,8 +49,13 @@ public:
 
 	virtual ThingType getType() { return GNOMETHING; }
 
+	virtual void move(Real time);
 	virtual void think();
 	virtual void die();
+
+private:
+	Vector3 mFormationOffset; 
+	Vector3 mFormation;
 };
 
 /////////////////////////////////////////////////////////////////////////////
