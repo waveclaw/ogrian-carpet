@@ -265,6 +265,12 @@ public:
 	// get the last time a bitstream was generated for this thing
 	virtual Time lastUpdateTime();
 
+	// send a message to instances of this thing on clients
+	virtual void sendMessage(int msg, Vector3 vec);
+
+	// handle messages sent to this thing from the server
+	virtual void handleMessage(int msg, Vector3 vec) { }
+
 	// BE VERY CAREFUL WITH THIS
 	virtual void _setUID(int uid);
 

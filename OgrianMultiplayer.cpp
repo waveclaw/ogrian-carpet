@@ -716,6 +716,25 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				thing->playSound(sound);
 			return true;
 		}
+		case ID_THINGMESSAGE: //////////////////////////////////////////////////////
+		{
+			// get the thing uid and message
+			int pid, uid, msg;			
+			Vector3 pos;
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(uid);
+			bs.Read(msg);
+			bs.Read(pos.x);
+			bs.Read(pos.y);
+			bs.Read(pos.z);
+
+			// handle the message
+			Thing* thing = Physics::getSingleton().getThing(uid);
+			if (thing)
+				thing->handleMessage(msg, pos);
+			return true;
+		}
 	}
 	return false;
 }

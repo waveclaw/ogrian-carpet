@@ -144,12 +144,20 @@ void CraneThing::think()
 
 //----------------------------------------------------------------------------
 
+void CraneThing::handleMessage(int msg, Vector3 vec)
+{
+	Physics::getSingleton().addEffect(new CraneBlastEffect(vec));
+}
+
+//----------------------------------------------------------------------------
+
 void CraneThing::collided(Thing* e)
 {
 	if (e->isDamageable() && e->isAlive() && e->getTeamNum() != getTeamNum())
 	{
 		e->damage(CONI("CRANE_DAMAGE"), getTeamNum());
 		Physics::getSingleton().addEffect(new CraneBlastEffect(getPosition()));
+		sendMessage(1, getPosition());
 		die();
 	}
 }

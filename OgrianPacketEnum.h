@@ -113,6 +113,7 @@ enum PacketID
 	ID_DISABLESPELL,
 	
 	ID_PLAYSOUND,
+	ID_THINGMESSAGE,
 };
 
 #endif

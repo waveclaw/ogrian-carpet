@@ -32,12 +32,31 @@ Description: The albatross is like a cruise missile, it just flies straight unti
 #define __OgrianAlbatrossThing_H__
 
 #include <Ogre.h>
+#include "OgrianGame.h"
 #include "OgrianDamageableThing.h"
+#include "OgrianTimedThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
+
+/////////////////////////////////////////////////////////////////////////////
+
+class AlbatrossBlastEffect : public TimedThing
+{
+public:
+	AlbatrossBlastEffect(Vector3 pos) 
+		: TimedThing("Ogrian/CraneBlast", SPRITE, "AlbatrossBlast", false, CONR("ALBATROSS_SCALE")*2, pos, SPHERE)
+	{
+		playSound(Game::getSingleton().SOUND_BANG);
+		setRelativeExpirationTime(CONR("CRANE_BLAST_LIFETIME"));
+		setFlickerPeriod(CONR("CRANE_BLAST_FLICKER_PERIOD"));
+		setColour(ColourValue(1,0,0));
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
 
 /////////////////////////////////////////////////////////////////////////////
 

@@ -115,6 +115,9 @@ void AlbatrossThing::collidedGround()
 	
 void AlbatrossThing::die()
 {
+	// make an explosion
+	Physics::getSingleton().addEffect(new AlbatrossBlastEffect(getPosition()));
+
 	// drop our mana
 	ManaThing* mana = new ManaThing(CONI("ALBATROSS_DROP"), getPosition());
 	Physics::getSingleton().addThing(mana);

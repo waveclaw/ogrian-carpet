@@ -495,6 +495,25 @@ Real Thing::getGroundY(Vector3 pos)
 
 //----------------------------------------------------------------------------
 
+void Thing::sendMessage(int msg, Vector3 vec)
+{
+	// send this sound to clients if necessary
+	if (Multiplayer::getSingleton().isServer())
+	{
+		BitStream bs;
+		bs.Write(ID_THINGMESSAGE);
+		bs.Write(getUID());
+		bs.Write(msg);
+		bs.Write(vec.x);
+		bs.Write(vec.y);
+		bs.Write(vec.z);
+
+		Multiplayer::getSingleton().serverSendAll(&bs);
+	}
+}
+
+//----------------------------------------------------------------------------
+
 void Thing::playSound(int id, bool sendUpdate)
 {
 	mSoundId = id;
