@@ -249,9 +249,10 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
     else
     {
         mRotX = -mInputDevice->getMouseRelativeX() * 0.13;
+
+		// this handles inverting the mouse y axis
 		mRotY =  mInputDevice->getMouseRelativeY() * 0.13 * (mYinvert ? 1 : -1);
     }
-
 
 	return true;
 }

@@ -44,14 +44,19 @@ class Menu : public Singleton< Menu >
 public:
 	virtual ~Menu();
 
+	// go into menu mode and display the menu
 	virtual void showMenu();
 
+	// go into game mode and hide the menu
 	virtual void hideMenu();
 
+	// this is called by the OgrianFrameListener when in Menu mode
 	virtual bool processKeyInput(InputReader* input);
 
+	// returns true when in menu mode
 	virtual bool isActive();
 
+	// this should be called every frame
 	virtual void frame(Real time);
 
 	static Menu& getSingleton(void);
@@ -59,9 +64,9 @@ public:
 private:
 	Menu();
 
-	bool mActive;
-    Real mTimeUntilNextToggle ;
-	Overlay* mOverlay;
+	bool mActive; // wether or not the menu mode is active
+    Real mTimeUntilNextToggle; // prevents rapid toggling
+	Overlay* mOverlay; // the menu overlay
 };
 
 }

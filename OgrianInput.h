@@ -43,18 +43,20 @@ class Input : public Singleton< Input >
 public:
 	virtual ~Input();
 
+	// this is called by OgrianFrameListener when not in menu mode
 	virtual bool processKeyInput(InputReader* input);
 
 	// ignore keypresses for this amount of time
 	virtual void delay(Real time);
 
+	// this should be called every frame
 	virtual void frame(Real time);
 
 	static Input& getSingleton(void);
 
 private:
 	Input();
-    Real mTimeUntilNextToggle ;
+    Real mTimeUntilNextToggle; // prevents rapid toggling
 };
 
 }

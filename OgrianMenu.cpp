@@ -64,11 +64,13 @@ Menu::~Menu()
 
 bool Menu::processKeyInput(InputReader* input)
 {
+	// Q Quits
     if ( input->isKeyDown( KC_Q) )
     {            
         return false;
     }
 
+	// ESC goes back to the game
     if ( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
     {            
         hideMenu();
@@ -102,8 +104,9 @@ bool Menu::processKeyInput(InputReader* input)
 
 void Menu::frame(Real time)
 {
+	// decrement mTimeUntilNextToggle
 	if (mTimeUntilNextToggle >= 0) 
-	mTimeUntilNextToggle -= time;
+		mTimeUntilNextToggle -= time;
 }
 
 void Menu::showMenu()
@@ -112,6 +115,7 @@ void Menu::showMenu()
 
 	mOverlay->show();
 
+	// to prevent immediately going back to the game
     mTimeUntilNextToggle = KEY_DELAY;
 
 	mActive = true;
@@ -123,6 +127,7 @@ void Menu::hideMenu()
 
 	mOverlay->hide();
 
+	// to prevent immediately going back into the menu
 	Input::getSingleton().delay(KEY_DELAY);
 
 	mActive = false;
