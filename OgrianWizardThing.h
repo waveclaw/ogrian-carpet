@@ -89,6 +89,7 @@ public:
 
 private:
 	HealthBarEffect* mBar;
+	bool mOnBuilding;
 };
 
 }

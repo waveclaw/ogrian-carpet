@@ -55,7 +55,7 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = -20;
-		setPosY(getGroundY()+getHeight()*CONR("CASTLE_OFFSET")*per);
+		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per);
 	}
 
 	virtual void damage(int amount, int sourceTeamNum)

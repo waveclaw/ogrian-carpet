@@ -39,7 +39,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 {
 	setTeamNum(teamNum);
 
-	setPosition(pos + Vector3(0, CONR("CASTLEWALL_HEIGHT") + CONR("CASTLE_WIDTH"), 0));
+	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH"), 0));
 	Physics::getSingleton().addThing(this);
 
 	Real W = CONR("CASTLE_WIDTH");
@@ -131,7 +131,7 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	setLevel(mLevel+.5);
+	setLevel(mLevel+.1);
 }
 
 //----------------------------------------------------------------------------
