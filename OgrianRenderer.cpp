@@ -25,7 +25,7 @@ Additional Authors: Mike Prosser
 
 Description: This is the main interface with the Ogre rendering Engine. 
 It also handles all scene creation. 
-Later, Thing placing will be moved to a WorldMaker class. 
+Later, Non-Foliage world population is handled by Game 
 It is a Singleton.
 
 /*------------------------------------*/
@@ -108,7 +108,6 @@ SceneManager* Renderer::getSceneManager(void)
 	return mSceneMgr;
 }
 
-
 //----------------------------------------------------------------------------
 
 // These internal methods package up the stages in the startup process
@@ -178,7 +177,6 @@ void Renderer::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     mCamera->setNearClipDistance(CONR("CAMERA_NEAR_CLIP"));
-	//mCamera->setFarClipDistance(CONR("CAMERA_FAR_CLIP"));
 	mCamera->setFOVy(Degree(CONR("CAMERA_FOV")));
 }
 
@@ -215,14 +213,7 @@ void Renderer::createSky(const String& material)
 {
 	LogManager::getSingleton().logMessage(String("Making Sky... ") += material);
 
-	// Define the required skyplane
-    Plane plane;
-    // num of world units from the camera
-    plane.d = CONR("SKYPLANE_DISTANCE");
-    // Above the camera, facing down
-    plane.normal = -Vector3::UNIT_Y;
-    // Create the plane 1000 units wide, tile the texture 3 times
-    //mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"),10,10);
+    // Create the skydome
 	mSceneMgr->setSkyDome(true, material,10,8,40,true);
 }
 
@@ -269,11 +260,12 @@ void Renderer::createFoliage(int num)
 
 	// set up some foliage
 	int i=0;
+	Real size = HeightMap::getSingleton().getWorldSize();
 	while (i<num)
 	{
         // Random translate
-        Real x = Math::SymmetricRandom() * 1000.0;
-        Real z = Math::SymmetricRandom() * 1000.0;
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
 		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
@@ -300,14 +292,8 @@ void Renderer::loadMap(String configfile, bool server)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" ).c_str();
 	int foliageNum = atoi(config.getSetting( "FoliageAmount" ).c_str());
-	String fogColour = config.getSetting( "FogColour" );
 
 	// set the fog
-	ColourValue fogcol = ColourValue::White;
-	if (fogColour == "blue") fogcol = ColourValue::Blue;
-	else if (fogColour == "red") fogcol = ColourValue::Red;
-	else if (fogColour == "black") fogcol = ColourValue::Black;
-    //mSceneMgr->setFog( FOG_EXP2, fogcol, CONR("FOG_DENSITY"), 2500,  5500 );
 	mSceneMgr->setFog(FOG_NONE);
 	mSceneMgr->setAmbientLight(ColourValue::White);
 
@@ -323,19 +309,10 @@ void Renderer::loadMap(String configfile, bool server)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-    // Position the camera with an offset
-    mCamera->setPosition(Vector3(CONR("START_X"),0,CONR("START_Z")));
-    //mCamera->lookAt(Vector3(0,0,0));
 	createCameraThing();
 	
 	// dont make foliage for a client
 	if (server)	createFoliage(foliageNum);
-
-	Vector3 offset;
-	Real wdo = CONR("WIZARD_DEATH_OFFSET");
-	offset.x = Math::RangeRandom(-wdo, wdo);
-	offset.z = Math::RangeRandom(-wdo, wdo);
-	mCameraThing->setPosition(mCameraThing->getPosition() + offset);
 
 	// start the game
 	Game::getSingleton().startGame();
@@ -374,12 +351,6 @@ void Renderer::unloadMap()
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
-    // Set ambient light
-    mSceneMgr->setAmbientLight(ColourValue(.5, .5, .5));
-
-	// set the fog
-    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, CONR("FOG_DENSITY"), 2500,  5500 );
-
 	// show the menu
 	Menu::getSingleton().show();
 

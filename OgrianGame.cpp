@@ -381,9 +381,18 @@ void Game::startSkirmishGame()
 
 	// reset the score
 	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
+	Renderer::getSingleton().getCameraThing()->setBaseMana(0);
+	Renderer::getSingleton().getCameraThing()->setActiveMana(0);
 
-	// enable the build spell
+	// disable all spells
+	SpellManager::getSingleton().disableAllSpells();
+
+	// enable the claim and build spells
+	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
+
+	// kill the player
+	Renderer::getSingleton().getCameraThing()->die();
 }
 
 //----------------------------------------------------------------------------

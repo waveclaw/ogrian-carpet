@@ -67,8 +67,8 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mTeamNum = -1;
 	mPos = Vector3(0,0,0);
 	mThinkPeriod = 0;
-	mWidth = -1;
-	mHeight = -1;
+	mWidth = scale-1;
+	mHeight = scale-1;
 	
 	// name it
 	std::ostringstream num("");

@@ -238,10 +238,10 @@ void CameraThing::die()
 		{
 			// respawn at a random location
 			Vector3 pos;
-			Real wdo = CONR("WIZARD_DEATH_OFFSET");
-			pos.x = CONR("START_X") + Math::RangeRandom(-wdo, wdo);
-			pos.y = 0;
-			pos.z = CONR("START_Z") + Math::RangeRandom(-wdo, wdo);
+			Real size = HeightMap::getSingleton().getWorldSize();
+			pos.x = Math::RangeRandom(0, size);
+			pos.z = Math::RangeRandom(0, size);
+			pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + getHeight();
 			setPosition(pos);
 		}
 	}

@@ -401,8 +401,6 @@ void WizardThing::move(Real time)
 	
 	if (mRamp->isOnBuilding()) setVelY(0);
 
-	//if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING) setVelY(0);
-
 	DamageableThing::move(time);
 
 	// update health bar
@@ -432,8 +430,7 @@ void WizardThing::setPosition(Vector3 pos)
 
 	Vector3 lastPos = getPosition();
 
-	if (getGroundY() > getPosY() // if we are above ground and
-		&& !mSpeeding) // if we are not under the infuence of the speed spell
+	if (!mSpeeding) // if we are not under the infuence of the speed spell
 	{
 		// if this is not a teleport
 		Vector3 diff = pos - lastPos;
@@ -451,6 +448,10 @@ void WizardThing::setPosition(Vector3 pos)
 			pos = lastPos + diff;
 		}
 	}
+
+	// dont ever go below ground
+	if (ground > pos.y) 
+		pos.y = ground;
 
 	DamageableThing::setPosition(pos);
 
