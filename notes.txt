@@ -54,6 +54,5 @@ performance, tweaks:
 
 known bugs:
 ========
-camera doesn't interact with castles in the same way that it does with the ground
 two baloons get sent to one mana
 memory leak in making billboards

@@ -351,6 +351,31 @@ void WizardThing::removeHut()
 	
 //----------------------------------------------------------------------------
 	
+Real WizardThing::getGroundHeight()
+{
+	// check the terrain height
+	Vector3 pos = getPosition();
+	Real w = getWidth();
+	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
+	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
+	Real ground10 = getGroundY(pos + Vector3( w,0,-w));
+	Real ground11 = getGroundY(pos + Vector3( w,0, w));
+
+	Real ground = ground00;
+	if (ground01 > ground) ground = ground01;
+	if (ground10 > ground) ground = ground10;
+	if (ground11 > ground) ground = ground11;
+
+	// check the building ramp height
+	Real ramp = mRamp->getGroundHeight();
+
+	// return the greater of the two
+	if (ramp > ground) return ramp;
+	return ground;
+}
+
+//----------------------------------------------------------------------------
+
 void WizardThing::move(Real time)
 {
 	// check to see if its time to stop speeding yet
@@ -373,7 +398,7 @@ void WizardThing::move(Real time)
 
 	// float
 	if (!mSpeeding 
-		&& !mOnBuilding 
+		&& !mRamp->isOnBuilding()
 		&& getVelY() > -CONR("CAMERA_FALL_MAX")
 		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING))
 	{
@@ -383,11 +408,9 @@ void WizardThing::move(Real time)
 		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
 	
-	if (mOnBuilding) setVelY(0);
+	if (mRamp->isOnBuilding()) setVelY(0);
 
 	if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING) setVelY(0);
-
-	mOnBuilding = false;
 
 	DamageableThing::move(time);
 
@@ -404,18 +427,8 @@ void WizardThing::move(Real time)
 
 void WizardThing::setPosition(Vector3 pos)
 {
-	// follow the landscape
-	Real w = getWidth()/2;
-	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
-	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
-	Real ground10 = getGroundY(pos + Vector3( w,0,-w));
-	Real ground11 = getGroundY(pos + Vector3( w,0, w));
-
-	Real ground = ground00;
-	if (ground01 > ground) ground = ground01;
-	if (ground10 > ground) ground = ground10;
-	if (ground11 > ground) ground = ground11;
-
+	// follow the landscape (and building ramps)
+	Real ground = getGroundHeight();
 	ground += CONR("CAMERA_HEIGHT");
 			
 	if (ground > getPosY()) 
@@ -428,7 +441,7 @@ void WizardThing::setPosition(Vector3 pos)
 
 	Vector3 lastPos = getPosition();
 
-	if (!mSpeeding)
+	if (!mSpeeding) // if we are not under the infuence of the speed spell
 	{
 		// if this is not a teleport
 		Vector3 diff = pos - lastPos;
@@ -447,7 +460,6 @@ void WizardThing::setPosition(Vector3 pos)
 		}
 	}
 
-
 	DamageableThing::setPosition(pos);
 
 }
@@ -457,8 +469,6 @@ void WizardThing::setPosition(Vector3 pos)
 void WizardThing::setVelY(Real vel)
 {
 	DamageableThing::setVelY(vel);
-
-	if (vel == 0) mOnBuilding = true;
 }
 
 //----------------------------------------------------------------------------
