@@ -139,6 +139,20 @@ void Game::startSkirmishGame()
 
 //----------------------------------------------------------------------------
 
+void Game::readConfig()
+{
+	// invert the mouse according to the config file
+	ConfigFile config;
+	config.load( "config.txt" );
+	if (config.getSetting( "mouse_y_inv" ) == "true");
+	else Menu::getSingleton().button_invertMouseToggle();
+
+	// set the music preference
+	if (config.getSetting( "music" ) == "false")
+		Menu::getSingleton().button_musicToggle();
+}
+//----------------------------------------------------------------------------
+
 Game& Game::getSingleton(void)
 {
 	if (!ms_Singleton) 

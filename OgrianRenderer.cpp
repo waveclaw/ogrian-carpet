@@ -135,25 +135,10 @@ bool Renderer::setup(void)
 
     createFrameListener();
 
-	readConfig();
+	Game::getSingleton().readConfig();
 
     return true;
 
-}
-
-//----------------------------------------------------------------------------
-
-void Renderer::readConfig()
-{
-	// invert the mouse according to the config file
-	ConfigFile config;
-	config.load( "config.cfg" );
-	if (config.getSetting( "mouse_y_inv" ) == "true");
-	else Menu::getSingleton().button_invertMouseToggle();
-
-	// set the music preference
-	if (config.getSetting( "music" ) == "false")
-		Menu::getSingleton().button_musicToggle();
 }
 
 //----------------------------------------------------------------------------

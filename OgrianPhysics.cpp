@@ -372,6 +372,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
+		case BALOONTHING: return new BaloonThing(teamNum);
+
 		default:
 			std::ostringstream num("");
 			num << type;

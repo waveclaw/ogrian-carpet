@@ -129,8 +129,6 @@ protected:
     /// Method which will define the source of resources (other than current folder)
     void setupResources(void);
 
-	// read in the game configuration
-	void readConfig(void);
 };
 
 }

@@ -49,7 +49,7 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 
 	// set the sensitivity
 	ConfigFile config;
-	config.load( "config.cfg" );
+	config.load( "config.txt" );
 	mSensitivity = atof(config.getSetting( "sensitivity" ).c_str());
 	if (mSensitivity == 0) mSensitivity = 1;
 

@@ -74,7 +74,7 @@ void Multiplayer::loadConfig()
 {
 	/* Set up the options */
 	ConfigFile config;
-	config.load( "config.cfg" );
+	config.load( "config.txt" );
 	mPlayerName = config.getSetting( "name" );
 	mServerName = config.getSetting( "server" );
 	mSkin = config.getSetting( "skin" );
@@ -141,7 +141,7 @@ void Multiplayer::serverStart()
 				"Multiplayer::serverStart" );
 
 	ConfigFile config;
-	config.load("config.cfg");
+	config.load("config.txt");
 	ColourValue colour;
 	colour.r = atoi(config.getSetting("red").c_str());
 	colour.g = atoi(config.getSetting("green").c_str());

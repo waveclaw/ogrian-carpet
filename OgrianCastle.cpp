@@ -134,7 +134,7 @@ void Castle::move(Real time)
 			Thing* target = generateTarget(pos, amount);
 
 			// set the target unless its got no mana to get and is already at the castle
-			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth()*2 + baloon->getWidth()*2)
+			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth() + baloon->getWidth())
 				baloon->setTarget(target);
 		}
 	}
@@ -175,7 +175,7 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	dropMana(amount);
+	dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
 }
 
 //----------------------------------------------------------------------------

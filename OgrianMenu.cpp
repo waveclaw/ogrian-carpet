@@ -226,11 +226,11 @@ void Menu::setMessage(String message)
 bool Menu::processKeyInput(InputReader* input)
 {
 	// Tab shows players //////////////////////////////
-    if ( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
-    {           
-		PlayerList::getSingleton().toggle();
-        mTimeUntilNextToggle = CONR("KEY_DELAY"); 
+    if( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
+    {            
+		PlayerList::getSingleton().show();
     }
+	else PlayerList::getSingleton().hide();
 
 	// ESC goes back to the game //////////////////////////////
     if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)

@@ -51,6 +51,9 @@ public:
 
 	void frame(Real time); // call this every frame
 
+	// read in the game configuration
+	void readConfig();
+
 	static Game& getSingleton(void);
 
 	// sound indexes

@@ -63,6 +63,8 @@ public:
 
 	virtual int getAmount();
 
+	virtual ThingType getType() { return BALOONTHING; }
+
 private:
 	Thing* mTarget;
 	bool mNeedOrders;

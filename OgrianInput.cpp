@@ -72,14 +72,14 @@ bool Input::processKeyInput(InputReader* input)
 	// show the PlayerList
     if( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
     {            
-		PlayerList::getSingleton().toggle();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
+		PlayerList::getSingleton().show();
     }
+	else PlayerList::getSingleton().hide();
 
 	// drop a manathing
     if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-		Physics::getSingleton().addThing(new ManaThing(1, 
+		Physics::getSingleton().addThing(new ManaThing(10, 
 			Renderer::getSingleton().getCameraThing()->getPosition()));
         mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
