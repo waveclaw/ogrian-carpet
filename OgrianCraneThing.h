@@ -90,7 +90,6 @@ public:
 private:
 	Vector3 mOrbitPos;
 	int mState;
-	Time mLastFlapTime;
 	bool mLastFlap;
 	Time mUnIdleTime;
 

@@ -19,64 +19,50 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSpellManager.h
+OgrianSentinelSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This manages the spells for the HUD, etc
+Description: This summons a sentinel
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianSpellManager_H__
-#define __OgrianSpellManager_H__
+#ifndef __OgrianSentinelSpell_H__
+#define __OgrianSentinelSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
 #include "OgrianSpell.h"
+#include "OgrianSentinelThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-
-#define SPELL_CLAIM				0
-#define SPELL_BUILD				1
-#define SPELL_FIREBALL			2
-#define SPELL_SENTINEL			3
-#define SPELL_SPEED				4
-#define SPELL_AKIMBO_FIREBALL	5
-#define SPELL_FIRESTORM			6
-#define NUM_SPELLS				7
-
-class SpellManager : public Singleton< SpellManager >
+class SentinelSpell : public Spell
 {
 public:
-	virtual ~SpellManager();
-    static SpellManager& getSingleton(void);
+	// make an instance of this spell
+	virtual void cast(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("SUMMONSPELL_SPEED");
+	
+		SentinelSummonSpellThing* thing = new SentinelSummonSpellThing(0, pos,dir);
+		Physics::getSingleton().addThing(thing);
+	}
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Sentinel/Ready"); }; 
 
-	virtual void disableAllSpells();
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Sentinel/Enabled"); }; 
 
-	virtual void readySpell(int num);
-	virtual void readyNextSpell();
-	virtual void readyPrevSpell();
-	virtual void readyDefaultSpell();
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Sentinel/Disabled"); }; 
+	
+	virtual Real getCastPeriod() { return CONR("SUMMONSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost();
+	virtual int getManaCost() { return 0; }
 
-	virtual Real castSpell();
-
-private:
-	SpellManager();
-	virtual void readyCurrentSpell();
-
-	int mCurrentSpell;
-	Spell* mSpells[NUM_SPELLS];
-
+	virtual String getString() { return String("Summon Sentinel"); }
 };
 
 }

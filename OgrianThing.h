@@ -34,6 +34,7 @@ It is rendered as a Billboard.
 
 #include <Ogre.h>
 
+#include "OgrianConst.h"
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
 #include "OgrianPacketEnum.h"
@@ -65,8 +66,10 @@ enum ThingType
 	HUTTHING,
 	CLAIMTHING,
 	BUILDTHING,
+	SUMMONTHING,
 	BALOONTHING,
 	CRANETHING,
+	SENTINELTHING,
 };
 
 enum ThingVisRep

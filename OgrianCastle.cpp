@@ -89,11 +89,8 @@ Castle::Castle(int teamNum, Vector3 pos)
 	// add them to physics
 	Physics::getSingleton().addThing(mBlocks[0]);
 
-	// start at level 0
-	setMana(0);
-
+	setMana(CONI("CASTLE_START_MANA"));
 	setHealth(CONI("CASTLE_HEALTH"));
-
 	setPosition(mBlocks[0]->getPosition() + Vector3(0, CONR("CASTLEKEEP_HEIGHT")*1.5 + CONR("CASTLE_WIDTH")/4, 0));
 
 	// add existing claimed mana to the list
@@ -447,13 +444,16 @@ void Castle::setSpells(int level)
 		if (level >= 0) SpellManager::getSingleton().enableSpell(SPELL_FIREBALL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_FIREBALL);
 
-		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
+		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_SENTINEL);
+		else			SpellManager::getSingleton().disableSpell(SPELL_SENTINEL);
+
+		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
 		else			SpellManager::getSingleton().disableSpell(SPELL_SPEED);
 
-		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
+		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
 
-		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
+		if (level >= 4) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
 		else			SpellManager::getSingleton().disableSpell(SPELL_FIRESTORM);
 	}
 	else if (Multiplayer::getSingleton().isServer())
@@ -469,6 +469,9 @@ void Castle::setSpells(int level)
 
 				if (level >= 0) Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_DISABLESPELL,player.id);
+
+				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_DISABLESPELL,player.id);
 
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_DISABLESPELL,player.id);

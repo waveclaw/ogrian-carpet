@@ -23,7 +23,7 @@ OgrianBuildSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a fireball spell
+Description: This builds a castle or a tower, or tears down a tower
 
 /*------------------------------------*/
 

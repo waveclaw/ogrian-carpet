@@ -44,7 +44,6 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, CONR("CRANE_SCALE"), orbitPos, SPHERE)
 {
 	mOrbitPos = orbitPos;
-	mLastFlapTime = 0;
 	mLastFlap = false;
 	mUnIdleTime = 0;
 
@@ -93,13 +92,8 @@ void CraneThing::move(Real time)
 void CraneThing::clientThink()
 {
 	// flap
-	if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
-	{
-		mLastFlap = !mLastFlap;
-		mLastFlapTime = Clock::getSingleton().getTime();
-
-		getVisRep()->setPose( mLastFlap ? 0 : 1 );
-	}
+	mLastFlap = !mLastFlap;
+	getVisRep()->setPose( mLastFlap ? 0 : 1 );
 }
 
 //----------------------------------------------------------------------------
@@ -108,10 +102,7 @@ void CraneThing::think()
 {
 	// flap
 	mLastFlap = !mLastFlap;
-	mLastFlapTime = Clock::getSingleton().getTime();
-
 	getVisRep()->setPose( mLastFlap ? 0 : 1 );
-
 
 	// state operation
 	if (mState == CRANE_STATE_FLY_IN)

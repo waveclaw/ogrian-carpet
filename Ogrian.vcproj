@@ -273,6 +273,15 @@
 				RelativePath="OgrianRollingThing.h">
 			</File>
 			<File
+				RelativePath="OgrianSentinelThing.cpp">
+			</File>
+			<File
+				RelativePath="OgrianSentinelThing.h">
+			</File>
+			<File
+				RelativePath="OgrianSummonSpellThing.h">
+			</File>
+			<File
 				RelativePath="OgrianThing.cpp">
 			</File>
 			<File
@@ -367,6 +376,9 @@
 			</File>
 			<File
 				RelativePath="OgrianFirestormSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianSentinelSpell.h">
 			</File>
 			<File
 				RelativePath="OgrianSpeedSpell.h">

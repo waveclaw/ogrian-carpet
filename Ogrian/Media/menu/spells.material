@@ -1,4 +1,52 @@
 
+material Ogrian/SpellIcon/Sentinel/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture sentinel/sentinel_f.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Sentinel/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Sentinel/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
 material Ogrian/SpellIcon/Speed/Ready
 {
 	technique

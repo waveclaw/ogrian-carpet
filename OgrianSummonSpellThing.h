@@ -19,64 +19,51 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSpellManager.h
+OgrianSummonSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This manages the spells for the HUD, etc
+Description: This is a base class to be used by monsters for summoning
 
 /*------------------------------------*/
 
-
-#ifndef __OgrianSpellManager_H__
-#define __OgrianSpellManager_H__
+#ifndef __OgrianSummonSpellThing_H__
+#define __OgrianSummonSpellThing_H__
 
 #include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpell.h"
+#include "OgrianTimedThing.h"
+#include "OgrianManaThing.h"
+#include "OgrianCastle.h"
+#include "OgrianTeam.h"
+#include "OgrianGame.h"
+#include "OgrianPhysics.h"
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-
-#define SPELL_CLAIM				0
-#define SPELL_BUILD				1
-#define SPELL_FIREBALL			2
-#define SPELL_SENTINEL			3
-#define SPELL_SPEED				4
-#define SPELL_AKIMBO_FIREBALL	5
-#define SPELL_FIRESTORM			6
-#define NUM_SPELLS				7
-
-class SpellManager : public Singleton< SpellManager >
+class SummonSpellThing : public TimedThing
 {
 public:
-	virtual ~SpellManager();
-    static SpellManager& getSingleton(void);
+	SummonSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+		: TimedThing("Ogrian/Clay", SPRITE, "SummonSpell", false, CONR("SUMMONSPELL_SCALE"), pos, SPHERE)
+	{
+		setTeamNum(teamNum);
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
+		setVelocity(vel);
+		playSound(Game::getSingleton().SOUND_WHOOSH);
+		setFlickerPeriod(CONR("SUMMONSPELL_FLICKER_PERIOD"));
+		setRelativeExpirationTime(CONR("SUMMONSPELL_LIFETIME"));
 
-	virtual void disableAllSpells();
+		setGroundScan(true);
+	}
 
-	virtual void readySpell(int num);
-	virtual void readyNextSpell();
-	virtual void readyPrevSpell();
-	virtual void readyDefaultSpell();
+	virtual ThingType getType() { return SUMMONTHING; }
 
-	virtual int getManaCost();
-
-	virtual Real castSpell();
-
-private:
-	SpellManager();
-	virtual void readyCurrentSpell();
-
-	int mCurrentSpell;
-	Spell* mSpells[NUM_SPELLS];
-
+	// override this to summon a monster
+	virtual void collidedGround() {}
 };
 
 }

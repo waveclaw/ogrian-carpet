@@ -12,6 +12,26 @@ material 1 - Default
 	}
 }
 
+material Ogrian/Clay
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{	
+
+				texture smoothclay.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
 material Ogrian/HutBall
 {
 	technique

@@ -35,6 +35,7 @@ When they combine, one transfers all of its amount to the other.
 #define __OgrianManaThing_H__
 
 #include <Ogre.h>
+#include "OgrianPhysics.h"
 #include "OgrianFloatingThing.h"
 #include "OgrianModel.h"
 
