@@ -4,6 +4,8 @@
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianManaThing.h"
+#include "OgrianCameraThing.h"
+#include "OgrianRenderer.h"
 
 namespace Ogrian
 {
@@ -262,18 +264,7 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 
 void OgrianFrameListener::moveCamera()
 {
-
-    // Make all the changes to the camera
-    // Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW (e.g. airplane)
-    mCamera->yaw(mRotX);
-    mCamera->pitch(mRotY);
-    mCamera->moveRelative(mTranslateVector);
-
-	// follow the landscape
-	Vector3 pos = mCamera->getPosition();
-	float altitude = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
-	pos.y = altitude + CAMERA_HEIGHT;
-	mCamera->setPosition(pos);
+	Renderer::getSingleton().getCameraThing()->moveCamera(mCamera, mRotX, mRotY, mTranslateVector);
 }
 
 void OgrianFrameListener::showDebugOverlay(bool show)

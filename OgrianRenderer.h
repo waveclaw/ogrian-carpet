@@ -5,6 +5,7 @@
 
 #include "Ogre.h"
 #include "OgrianFrameListener.h"
+#include "OgrianCameraThing.h"
 
 using namespace Ogre;
 
@@ -29,13 +30,14 @@ public:
 
 	SceneManager* getSceneManager(void);
 
-	Vector3 getCameraPos(void);
+	CameraThing* getCameraThing();
 
 	static Renderer& getSingleton(void);
 
 protected:
     Root *mRoot;
     Camera* mCamera;
+    CameraThing* mCameraThing;
     SceneManager* mSceneMgr;
     OgrianFrameListener* mFrameListener;
     RenderWindow* mWindow;

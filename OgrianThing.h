@@ -2,7 +2,6 @@
 #define __OgrianThing_H__
 
 #include <Ogre.h>
-#include "OgrianRenderer.h"
 #include "OgrianHeightMap.h"
 
 using namespace Ogre;
@@ -17,6 +16,7 @@ enum ThingType
 	FLOATINGTHING,
 	MANATHING,
 	FOLIAGETHING,
+	CAMERATHING,
 };
 
 
@@ -29,8 +29,8 @@ public:
 	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
 	virtual ~Thing();
 
-	virtual void setVelocity(Vector3 vel);
-	virtual void setPosition(Vector3 pos);
+	virtual void setVelocity(const Vector3 vel);
+	virtual void setPosition(const Vector3 pos);
 
 	virtual void setPosition(Real x, Real y, Real z);
 

@@ -2,7 +2,6 @@
 #define __OgrianRollingThing_H__
 
 #include <Ogre.h>
-#include "OgrianRenderer.h"
 #include "OgrianThing.h"
 #include "OgrianHeightMap.h"
 
@@ -24,7 +23,7 @@ public:
 		return ROLLINGTHING;
 	}
 
-	virtual void setPosition(Vector3 pos)
+	virtual void setPosition(const Vector3 pos)
 	{
 		setPosition(pos.x, pos.y, pos.z);
 	}

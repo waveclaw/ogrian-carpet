@@ -117,6 +117,11 @@ void Renderer::createCamera(void)
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
 	mCamera->setFOVy(CAMERA_FOV);
 
+	// make the camera thing
+	mCameraThing = new CameraThing(mCamera);
+	Physics::getSingleton().addThing(mCameraThing);
+	mCameraThing->setPosition(Vector3(100,0,100));
+
 }
 void Renderer::createFrameListener(void)
 {
@@ -125,9 +130,9 @@ void Renderer::createFrameListener(void)
     mRoot->addFrameListener(mFrameListener);
 }
 	
-Vector3 Renderer::getCameraPos(void)
+CameraThing* Renderer::getCameraThing(void)
 {
-	return mCamera->getPosition();
+	return mCameraThing;
 }
 
 void Renderer::createSky(const String& material)

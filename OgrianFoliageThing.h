@@ -2,7 +2,6 @@
 #define __OgrianFoliageThing_H__
 
 #include <Ogre.h>
-#include "OgrianRenderer.h"
 #include "OgrianRollingThing.h"
 
 using namespace Ogre;

@@ -1,5 +1,6 @@
 #include "OgrianThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
 
 namespace Ogrian
 {
@@ -24,9 +25,9 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, R
 	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 	mNode->attachObject(mBbset);
 
-	setMaterial(material);
+	if (material != "") setMaterial(material);
 	setVelocity(0,0,0);
-	setPosition(x, y, z);
+	Thing::setPosition(x, y, z);
 	setScale(scale);
 
 	mAlive = true;

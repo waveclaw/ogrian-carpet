@@ -134,6 +134,9 @@
 				RelativePath="OgrianApplication.h">
 			</File>
 			<File
+				RelativePath="OgrianCameraThing.h">
+			</File>
+			<File
 				RelativePath="OgrianConstants.h">
 			</File>
 			<File

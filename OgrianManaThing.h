@@ -2,7 +2,6 @@
 #define __OgrianManaThing_H__
 
 #include <Ogre.h>
-#include "OgrianRenderer.h"
 #include "OgrianFloatingThing.h"
 
 using namespace Ogre;

@@ -8,14 +8,17 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-const float CAMERA_MOVE_SPEED = 5;
-const float CAMERA_FOV = 80;
-const float CAMERA_NEAR_CLIP = 1;
-const float CAMERA_HEIGHT = 3;
-const float FOG_DENSITY = 0.008;
-const float SKYPLANE_DISTANCE = 75;
-const float SKYPLANE_BOW = .75;
-const float MAX_THING_RADIUS = 20;
+const Real CAMERA_MOVE_SPEED = 5;
+const Real CAMERA_FOV = 80;
+const Real CAMERA_NEAR_CLIP = 1;
+const Real CAMERA_HEIGHT = 3;
+const Real CAMERA_GRAV = 3;
+const Real CAMERA_FALL_MAX = 10;
+
+const Real FOG_DENSITY = 0.008;
+const Real SKYPLANE_DISTANCE = 75;
+const Real SKYPLANE_BOW = .75;
+const Real MAX_THING_RADIUS = 20;
 
 const int FOLIAGE_LINE_MIN = 5;
 const int FOLIAGE_LINE_MAX = 50;
