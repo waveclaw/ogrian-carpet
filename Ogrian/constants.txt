@@ -2,12 +2,10 @@
 # modify these to change the way the game plays
 # all units are in meters, seconds, or meters per second
 
-# the number of stuff in skirmish mode
-NUM_TOWERS=3
-NUM_TICKS=5
-NUM_SENTINELS=5
-SENTINEL_SPREAD=200
-TICK_SPREAD=300
+# the number of starting stuff in skirmish mode
+NUM_TOWERS=6
+NUM_TICKS=30
+NUM_SENTINELS=30
 
 # the number of huts
 NUM_HUTS=10
@@ -168,7 +166,7 @@ CASTLE_DAMAGE_PER_MANA=5
 CASTLE_MANA_RADIUS=40
 CASTLE_HEALTH=200
 CASTLE_RUBBLE=100
-CASTLE_START_MANA=1000
+CASTLE_START_MANA=10
 
 CASTLETURRET_HEIGHT=25
 CASTLETURRET_WIDTH=5

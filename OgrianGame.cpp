@@ -277,8 +277,9 @@ void Game::startSkirmishGame()
 {
 	// set up some wild mana
 	Real size = HeightMap::getSingleton().getWorldSize();
+
 	int i=0;
-	while(i<CONI("MANA_START_NUM"))
+	while(i<CONI("MANA_START_NUM_SKIRMISH"))
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -292,17 +293,31 @@ void Game::startSkirmishGame()
 
 			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
 			Physics::getSingleton().addThing(mana);
+		}
+	}
 
-			if (i < CONI("NUM_HUTS"))
-			{
-				HutThing* hut = new HutThing(pos);
-				Physics::getSingleton().addThing(hut);
-			}
+	// add some huts
+	i=0;
+	while(i<CONI("NUM_HUTS"))
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			HutThing* hut = new HutThing(pos);
+			Physics::getSingleton().addThing(hut);
 		}
 	}
 
 	int numSkins = SkinManager::getSingleton().numSkins();
 
+	// use an AI wizard to set up a team automatically
 	AIWizardThing* ai = new AIWizardThing(Vector3(0,0,0), int(Math::RangeRandom(0.8,numSkins+0.5)));
 	Physics::getSingleton().addThing(ai);
 	ai->destroy();
@@ -323,24 +338,44 @@ void Game::startSkirmishGame()
 
 			TowerThing* tower = new TowerThing(ai->getTeamNum(),pos);
 			Physics::getSingleton().addThing(tower);
+		}
+	}
 
-			// make sentinels for the towers
-			for (int j=0; j<CONI("NUM_SENTINELS"); j++)
-			{
-				Vector3 posb = pos;
-				posb.x += Math::RangeRandom(-1,1)*CONR("SENTINEL_SPREAD");
-				posb.z += Math::RangeRandom(-1,1)*CONR("SENTINEL_SPREAD");
-				Physics::getSingleton().addThing(new SentinelThing(ai->getTeamNum(), posb));
-			}
+	// set up some ticks
+	i=0;
+	while(i<CONI("NUM_TICKS"))
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-			// make ticks for the towers
-			for (int j=0; j<CONI("NUM_TICKS"); j++)
-			{
-				Vector3 posb = pos;
-				posb.x += Math::RangeRandom(-1,1)*CONR("TICK_SPREAD");
-				posb.z += Math::RangeRandom(-1,1)*CONR("TICK_SPREAD");
-				Physics::getSingleton().addThing(new TickThing(ai->getTeamNum(), posb));
-			}
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			TickThing* tick = new TickThing(ai->getTeamNum(),pos);
+			Physics::getSingleton().addThing(tick);
+		}
+	}
+
+	// set up some sentinels
+	i=0;
+	while(i<CONI("NUM_SENTINELS"))
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			SentinelThing* sentinel = new SentinelThing(ai->getTeamNum(),pos);
+			Physics::getSingleton().addThing(sentinel);
 		}
 	}
 
