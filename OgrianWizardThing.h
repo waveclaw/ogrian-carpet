@@ -85,6 +85,9 @@ public:
 	
 	virtual void destroy();
 
+	virtual void makeGhost(); // put this wizard into ghost mode
+	virtual bool isGhost();
+
 	virtual Team* getTeam();
 	
 	virtual void WizardThing::generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
@@ -99,6 +102,7 @@ private:
 	bool mOnBuilding;
 	Team* mTeam;
 	int mSkin;
+	bool mGhost;
 
 	virtual void setupSkins();
 };

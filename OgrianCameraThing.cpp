@@ -75,6 +75,14 @@ CameraThing::~CameraThing()
 
 //----------------------------------------------------------------------------
 
+void CameraThing::makeGhost()
+{
+	WizardThing::makeGhost();
+	setScale(0);
+}
+
+//----------------------------------------------------------------------------
+
 Vector3 CameraThing::getDirection()
 {
 	return mCamera->getDerivedDirection();	
@@ -196,21 +204,22 @@ void CameraThing::die()
 	
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		Castle* castle = getTeam()->getCastle();
+		makeGhost();
+		//Castle* castle = getTeam()->getCastle();
 
-		if (castle)
-		{
-			setPosition(castle->getPosition());
-		}
-		else
-		{
-			Vector3 offset;
-			Real wdo = CONR("WIZARD_DEATH_OFFSET");
-			offset.x = Math::RangeRandom(-wdo, wdo);
-			offset.y = 0;
-			offset.z = Math::RangeRandom(-wdo, wdo);
-			setPosition(getPosition() + offset);
-		}
+		//if (castle)
+		//{
+		//	setPosition(castle->getPosition());
+		//}
+		//else
+		//{
+		//	Vector3 offset;
+		//	Real wdo = CONR("WIZARD_DEATH_OFFSET");
+		//	offset.x = Math::RangeRandom(-wdo, wdo);
+		//	offset.y = 0;
+		//	offset.z = Math::RangeRandom(-wdo, wdo);
+		//	setPosition(getPosition() + offset);
+		//}
 	}
 }
 

@@ -85,7 +85,7 @@ bool Input::processKeyInput(InputReader* input)
     }
 
 	// cast a fireball
-	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0)
+	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost())
 	{
 		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
@@ -99,7 +99,8 @@ bool Input::processKeyInput(InputReader* input)
 	}
 
 	// cast claim
-	if (input->getMouseButton(1) && mTimeUntilNextCast <= 0)
+	if (input->getMouseButton(1) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
+		&& !Game::getSingleton().isPreGame())
 	{
 		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();

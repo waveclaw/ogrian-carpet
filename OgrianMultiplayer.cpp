@@ -596,6 +596,11 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Renderer::getSingleton().getCameraThing()->setPosition(pos);
 			return true;
 		}
+		case ID_GHOST: //////////////////////////////////////////////////////
+		{
+			Renderer::getSingleton().getCameraThing()->makeGhost();
+			return true;
+		}
 		case ID_SETSCORE: //////////////////////////////////////////////////////
 		{
 			// get the new score
@@ -788,6 +793,18 @@ void Multiplayer::killWizard(Thing* wizard, Vector3 pos)
 	bs.Write(pos.x);
 	bs.Write(pos.y);
 	bs.Write(pos.z);
+	serverSend(&bs, player->id);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::ghostWizard(Thing* wizard)
+{
+	// find the wizard's player
+	PlayerInfo* player = getPlayerInfo(getPlayerID(wizard->getUID()));
+
+	BitStream bs;
+	bs.Write(ID_GHOST);
 	serverSend(&bs, player->id);
 }
 

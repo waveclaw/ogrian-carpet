@@ -48,6 +48,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mBar = 0;
 	mTeam = 0;
 	mSkin = -1;
+	mGhost = false;
 
 	setSkin(skin);
 
@@ -86,6 +87,22 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::makeGhost()
+{
+	mGhost = true;
+	if (mBar) mBar->destroy();
+	mBar = 0;
+}
+
+//----------------------------------------------------------------------------
+
+bool WizardThing::isGhost()
+{
+	return mGhost;
 }
 
 //----------------------------------------------------------------------------
@@ -165,13 +182,14 @@ void WizardThing::die()
 	{
 		Team* team = Physics::getSingleton().getTeam(getLastDamageSourceTeamNum());
 		if (team > 0) team->incrementScore();
-		else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: "));
+		//else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: "));
 			//+ getLastDamageSourceTeamNum());
 
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{
 			// kill it
-			Multiplayer::getSingleton().killWizard(this);
+			//Multiplayer::getSingleton().killWizard(this);
+			Multiplayer::getSingleton().ghostWizard(this);
 		}			
 	}
 	

@@ -66,6 +66,8 @@ public:
 
 	virtual void setHealth(int health);
 
+	virtual void makeGhost();
+
 	// this must not be destroyed
 	virtual void destroy() {}
 

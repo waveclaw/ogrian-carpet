@@ -121,6 +121,9 @@ public:
 
 	// kill a player
 	void killWizard(Thing* wizard, Vector3 pos=Vector3(-1,-1,-1));
+	
+	// ghost a player
+	void ghostWizard(Thing* wizard);
 
 private:
 	Multiplayer();

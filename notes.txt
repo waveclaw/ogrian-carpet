@@ -42,13 +42,8 @@ tower/hut textures - ask banana?
 
 Ideas:
 =========
-sprite LOD system - have a billboardset for each colour, when a sprite is far from the camera, remove the sprite from the renderer and add another dot to the same-coloured billboardset in it's place. the coloured billboard sets should use flat shaded, round-cornered squares for the material and should be before sprites in the renderqueue. Since there should only be about half a dozen colours in use at a time, this should be feasible, and greatly improve performance.
-
-four players max, each starts at one corner of the island.
-
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
 
 
 performance, tweaks:
 ========
-Sprite LOD

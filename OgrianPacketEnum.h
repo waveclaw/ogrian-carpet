@@ -106,6 +106,7 @@ enum PacketID
 
 	ID_SETHEALTH,
 	ID_DIE,
+	ID_GHOST,
 };
 
 #endif
