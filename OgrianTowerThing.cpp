@@ -96,18 +96,6 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 
 	setThinkPeriod(CONR("TOWER_THINK_PERIOD"));
 
-	if (!Multiplayer::getSingleton().isClient())
-	{
-		mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
-		setColour(mColour);
-
-		mBall = new TowerBallThing(teamNum);
-		mBall->setColour(mColour);
-		bpos.y = pos.y + CONR("TOWER_HEIGHT");
-		mBall->setPosition(bpos);
-		Physics::getSingleton().addThing(mBall);
-	}
-
 	// set the mesh
 	static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
 		CONR("TOWER_MESH_SCALE"), CONR("TOWER_MESH_RATIO"));
@@ -138,9 +126,18 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 	// set the team
 	setTeamNum(teamNum);
 
-	// make the crane flock
 	if (!Multiplayer::getSingleton().isClient())
 	{
+		mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
+		setColour(mColour);
+
+		mBall = new TowerBallThing(teamNum);
+		mBall->setColour(mColour);
+		bpos.y = pos.y + CONR("TOWER_HEIGHT");
+		mBall->setPosition(bpos);
+		Physics::getSingleton().addThing(mBall);
+
+		// make the crane flock
 		Vector3 pos = getPosition();
 		pos.y += getHeight() - CONR("TOWER_OFFSET");
 		for (int i=0; i<CONI("TOWER_NUM_CRANES"); i++)
@@ -149,14 +146,15 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 			mCranes.push_back(crane);
 			Physics::getSingleton().addThing(crane);
 		}
+
+		// set up the portal
+		Vector3 ppos = pos;
+		ppos.x += CONR("PORTAL_TOWER_DIST");
+		ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
+		mPortal = new PortalThing(this, ppos);
+		Physics::getSingleton().addThing(mPortal);
 	}
 
-	// set up the portal
-	Vector3 ppos = pos;
-	ppos.x += CONR("PORTAL_TOWER_DIST");
-	ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
-	mPortal = new PortalThing(this, ppos);
-	Physics::getSingleton().addThing(mPortal);
 }
 
 //----------------------------------------------------------------------------

@@ -99,7 +99,10 @@ void PortalThing::collided(Thing* e)
 			}
 
 			// teleport the wizard to it
-			e->setPosition(nextTower->getPosition());
+			if (e->getType() == CAMERATHING)
+				e->setPosition(nextTower->getPosition());
+			else
+				Multiplayer::getSingleton().teleportWizard(e, nextTower->getPosition());
 		}
 }
 

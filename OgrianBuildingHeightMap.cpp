@@ -172,8 +172,8 @@ Real BuildingHeightMap::getHeightAt(Real x, Real z)
 
 void BuildingHeightMap::moldLandscape(Thing* building)
 {
-	if (building->getType() == HUTTHING)
-		LogManager::getSingleton().logMessage("molding hut");
+	//if (building->getType() == HUTTHING)
+	//	LogManager::getSingleton().logMessage("molding hut");
 
 	// get the coordinates
 	Vector3 pos = building->getPosition();

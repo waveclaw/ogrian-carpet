@@ -57,6 +57,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
+	mLava = false;
 
 	setSkin(skin);
 
@@ -406,6 +407,8 @@ void WizardThing::move(Real time)
 
 void WizardThing::setLava(bool lava)
 {
+	if (Multiplayer::getSingleton().isClient()) lava = false;
+
 	mLava = lava;
 }
 

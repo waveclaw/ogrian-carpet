@@ -665,6 +665,21 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Renderer::getSingleton().getCameraThing()->makeGhost();
 			return true;
 		}
+		case ID_TELEPORT: //////////////////////////////////////////////////////
+		{
+			int pid;
+
+			Vector3 pos;
+
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(pos.x);
+			bs.Read(pos.y);
+			bs.Read(pos.z);
+
+			Renderer::getSingleton().getCameraThing()->setPosition(pos);
+			return true;
+		}
 		case ID_CLEAR_SCOREBOARD: //////////////////////////////////////////////////////
 		{
 			PlayerList::getSingleton().clear();
@@ -935,6 +950,23 @@ void Multiplayer::killWizard(Thing* wizard, Vector3 pos)
 	serverSend(&bs, player->id);
 }
 
+//----------------------------------------------------------------------------
+
+void Multiplayer::teleportWizard(Thing* wizard, Vector3 pos)
+{
+	// find the wizard's player
+	PlayerInfo* player = getPlayerInfo(getPlayerID(wizard->getUID()));
+
+	// find the wizard's castle
+	Thing* castle = Physics::getSingleton().getTeam(wizard->getTeamNum())->getCastle();
+
+	BitStream bs;
+	bs.Write(ID_TELEPORT);
+	bs.Write(pos.x);
+	bs.Write(pos.y);
+	bs.Write(pos.z);
+	serverSend(&bs, player->id);
+}
 //----------------------------------------------------------------------------
 
 void Multiplayer::ghostWizard(Thing* wizard)

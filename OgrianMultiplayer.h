@@ -125,7 +125,10 @@ public:
 
 	PlayerInfo getClient(int i);
 
-	// kill a player
+	// teleport a wizard
+	void teleportWizard(Thing* wizard, Vector3 pos);
+
+	// kill a player (default pos means random)
 	void killWizard(Thing* wizard, Vector3 pos=Vector3(-1,-1,-1));
 	
 	// ghost a player

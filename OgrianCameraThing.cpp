@@ -66,8 +66,6 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	setColour(colour);
 
 	setSkin(CONI("PLAYER_SKIN"));
-
-	setLava(true);
 }
 
 //----------------------------------------------------------------------------
