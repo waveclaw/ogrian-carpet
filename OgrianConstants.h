@@ -15,7 +15,7 @@ const float CAMERA_HEIGHT = 3;
 const float FOG_DENSITY = 0.008;
 const float SKYPLANE_DISTANCE = 75;
 const float SKYPLANE_BOW = .75;
-const float MAX_ENTITY_RADIUS = 5;
+const float MAX_THING_RADIUS = 5;
 
 const int FOLIAGE_LINE_MIN = 5;
 const int FOLIAGE_LINE_MAX = 50;

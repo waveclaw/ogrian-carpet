@@ -3,7 +3,7 @@
 #include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
-#include "OgrianManaEntity.h"
+#include "OgrianManaThing.h"
 
 namespace Ogrian
 {
@@ -159,10 +159,10 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
     if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-        ManaEntity* e = new ManaEntity("Ogrian/Mana", 1);
+        ManaThing* e = new ManaThing("Ogrian/Mana", 1);
 		e->setPosition(mCamera->getPosition());
 
-		Physics::getSingleton().addPhysicalEntity(e);
+		Physics::getSingleton().addThing(e);
 
         mTimeUntilNextToggle = .1;
     }

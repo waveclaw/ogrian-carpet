@@ -1,10 +1,10 @@
-#include "OgrianPhysicalEntity.h"
+#include "OgrianThing.h"
 namespace Ogrian
 {
 
-unsigned long PhysicalEntity::msNextGeneratedNameExt = 1;
+unsigned long Thing::msNextGeneratedNameExt = 1;
 
-PhysicalEntity::PhysicalEntity(String material, bool fixed_y, Real scale, Real x, Real y, Real z)
+Thing::Thing(String material, bool fixed_y, Real scale, Real x, Real y, Real z)
 {
     // Generate a name
     static char name[64];
@@ -29,16 +29,16 @@ PhysicalEntity::PhysicalEntity(String material, bool fixed_y, Real scale, Real x
 	setScale(scale);
 }
 
-void PhysicalEntity::setVelocity(Vector3 vel)
+void Thing::setVelocity(Vector3 vel)
 {
 	setVelocity(vel.x, vel.y, vel.z);
 }
-void PhysicalEntity::setPosition(Vector3 pos)
+void Thing::setPosition(Vector3 pos)
 {
 	setPosition(pos.x, pos.y, pos.z);
 }
 
-void PhysicalEntity::setPosition(Real x, Real y, Real z)
+void Thing::setPosition(Real x, Real y, Real z)
 {
 	pos.x = x;
 	pos.y = y;
@@ -48,21 +48,21 @@ void PhysicalEntity::setPosition(Real x, Real y, Real z)
 }
 
 
-void PhysicalEntity::setVelocity(Real x, Real y, Real z)
+void Thing::setVelocity(Real x, Real y, Real z)
 {
 	vel.x = x;
 	vel.y = y;
 	vel.z = z;
 }
 
-void PhysicalEntity::setScale(Real scale)
+void Thing::setScale(Real scale)
 {
 	billboard->setDimensions(scale,scale);
 
 	radius = scale/2;
 }
 
-void PhysicalEntity::move(Real time)
+void Thing::move(Real time)
 {
 	setPosition(
 		pos.x + vel.x * time,
@@ -70,25 +70,25 @@ void PhysicalEntity::move(Real time)
 		pos.z + vel.z * time);
 }
 
-Real PhysicalEntity::distance(PhysicalEntity* e)
+Real Thing::distance(Thing* e)
 {
 	return sqrt((pos.x - e->pos.x)*(pos.x - e->pos.x) 
 			    + (pos.z - e->pos.z)*(pos.z - e->pos.z));
 }
 
-Real PhysicalEntity::getRadius()
+Real Thing::getRadius()
 {
 	return radius;
 }
 
-void PhysicalEntity::collided(PhysicalEntity* e)
+void Thing::collided(Thing* e)
 {
 	// override this for interesting behaviors
 	
 }
 
 // they are ordered by x location
-bool PhysicalEntity::operator<(PhysicalEntity* other)
+bool Thing::operator<(Thing* other)
 {
 	return (pos.x < other->pos.x);
 }

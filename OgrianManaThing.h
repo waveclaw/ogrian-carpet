@@ -1,20 +1,20 @@
-#ifndef __OgrianManaEntity_H__
-#define __OgrianManaEntity_H__
+#ifndef __OgrianManaThing_H__
+#define __OgrianManaThing_H__
 
 #include <Ogre.h>
 #include "OgrianRenderer.h"
-#include "OgrianRollingEntity.h"
+#include "OgrianRollingThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class ManaEntity : public PhysicalEntity
+class ManaThing : public Thing
 {
 public:
-	ManaEntity(String material, unsigned int amount, Real x=0, Real y=0, Real z=0) 
-		: PhysicalEntity(material, false, 1, x, y, z)
+	ManaThing(String material, unsigned int amount, Real x=0, Real y=0, Real z=0) 
+		: Thing(material, false, 1, x, y, z)
 	{
 		setAmount(amount);
 	}
@@ -37,12 +37,12 @@ public:
 
 	virtual void setPosition(Real x, Real y, Real z)
 	{
-		PhysicalEntity::setPosition(x,
+		Thing::setPosition(x,
 			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
 			z);
 	}
 
-	virtual void collided(PhysicalEntity* e)
+	virtual void collided(Thing* e)
 	{
 
 	}

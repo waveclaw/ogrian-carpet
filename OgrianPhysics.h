@@ -3,7 +3,7 @@
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianPhysicalEntity.h"
+#include "OgrianThing.h"
 
 using namespace Ogre;
 
@@ -17,13 +17,13 @@ public:
 	virtual ~Physics();
 
 	// add a physical entity to the world.
-	virtual void addPhysicalEntity(PhysicalEntity* ent);
+	virtual void addThing(Thing* ent);
 
 	// remove a physical entity from the world. 
-	virtual void removePhysicalEntity(PhysicalEntity* ent);
+	virtual void removeThing(Thing* ent);
 
 	// return the number of entities in the world
-	virtual int numPhysicalEntities();
+	virtual int numThings();
 
 	// remove all physical entities from the world.
 	virtual void removeAll();
@@ -42,7 +42,7 @@ public:
 private:
 	Physics();
 
-	std::vector<PhysicalEntity*> entities;
+	std::vector<Thing*> things;
 };
 
 }

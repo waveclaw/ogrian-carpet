@@ -6,7 +6,7 @@
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianManaEntity.h"
+#include "OgrianManaThing.h"
 
 using namespace Ogre;
 

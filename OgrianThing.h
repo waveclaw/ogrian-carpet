@@ -1,5 +1,5 @@
-#ifndef __OgrianPhysicalEntity_H__
-#define __OgrianPhysicalEntity_H__
+#ifndef __OgrianThing_H__
+#define __OgrianThing_H__
 
 #include <Ogre.h>
 #include "OgrianRenderer.h"
@@ -11,12 +11,12 @@ namespace Ogrian
 {
 
 // The OgrianPhysicalEntity class is the root of all objects that participate in physics. 
-class PhysicalEntity
+class Thing
 {
 public:
 	Vector3 pos;
 
-	PhysicalEntity(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
+	Thing(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
 
 	virtual void setVelocity(Vector3 vel);
 	virtual void setPosition(Vector3 pos);
@@ -30,14 +30,14 @@ public:
 
 	virtual void move(Real time);
 
-	virtual Real distance(PhysicalEntity* e);
+	virtual Real distance(Thing* e);
 
 	virtual Real getRadius();
 
-	virtual void collided(PhysicalEntity* e);
+	virtual void collided(Thing* e);
 
 	// they are ordered by x location
-	bool operator<(PhysicalEntity* other);
+	bool operator<(Thing* other);
 
 	
 private:
@@ -49,8 +49,8 @@ private:
 	Real radius;
 	Real height;
 
-	        /// Incremented count for next name extension
-        static unsigned long msNextGeneratedNameExt;
+	// Incremented count for next name extension
+    static unsigned long msNextGeneratedNameExt;
 };
 
 }

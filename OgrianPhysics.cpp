@@ -1,7 +1,7 @@
 
 
 #include "OgrianPhysics.h"
-#include "OgrianRollingEntity.h"
+#include "OgrianRollingThing.h"
 #include "OgrianConstants.h"
 
 using namespace Ogre;
@@ -16,24 +16,24 @@ Physics::Physics()
 
 }
 
-void Physics::addPhysicalEntity(PhysicalEntity* ent)
+void Physics::addThing(Thing* ent)
 {
 	assert(ent != NULL);
 
-	entities.push_back(ent);
+	things.push_back(ent);
 }
 
-void Physics::removePhysicalEntity(PhysicalEntity* ent)
+void Physics::removeThing(Thing* ent)
 {
 	assert(ent != NULL);
 
 	// find the entity
-	for (unsigned int i=0; i<entities.size(); i++)
+	for (unsigned int i=0; i<things.size(); i++)
 	{
-		if (entities[i] == ent)
+		if (things[i] == ent)
 		{
 			// erase it
-			entities.erase(entities.begin()+i);
+			things.erase(things.begin()+i);
 
 			break;
 		}
@@ -43,24 +43,24 @@ void Physics::removePhysicalEntity(PhysicalEntity* ent)
 void Physics::removeAll()
 {
 	// delete each entity
-	while(!entities.empty())
+	while(!things.empty())
 	{
-		delete entities[entities.size()-1];
-		entities.pop_back();
+		delete things[things.size()-1];
+		things.pop_back();
 	}
 }
 
 void Physics::moveAll(Real time)
 {
-	for (unsigned int i=0; i<entities.size(); i++)
+	for (unsigned int i=0; i<things.size(); i++)
 	{
-		entities[i]->move(time);
+		things[i]->move(time);
 	}
 }
 
-int Physics::numPhysicalEntities()
+int Physics::numThings()
 {
-	return int(entities.size());
+	return int(things.size());
 }
 
 /* this method works by keeping all of the entities in an ordered vector.
@@ -70,22 +70,22 @@ collisions.
 void Physics::collisionCheck()
 {
 	// sort the vector (by x location)
-	std::sort(entities.begin(), entities.end());
+	std::sort(things.begin(), things.end());
 
-	PhysicalEntity* a;
-	PhysicalEntity* b;
+	Thing* a;
+	Thing* b;
 
 	// for each entity
-	for (unsigned int i=0; i<entities.size(); i++)
+	for (unsigned int i=0; i<things.size(); i++)
 	{
-		a = entities[i];
-		for (unsigned int j=i+1; j<entities.size(); j++)
+		a = things[i];
+		for (unsigned int j=i+1; j<things.size(); j++)
 		{
-			b = entities[j];
+			b = things[j];
 			Real dist = b->pos.x - a->pos.x;
 
 			// if they are too far apart, stop
-			if (dist > MAX_ENTITY_RADIUS + a->getRadius()) break;
+			if (dist > MAX_THING_RADIUS + a->getRadius()) break;
 
 			Real maxdist = a->getRadius() + b->getRadius();
 
@@ -129,15 +129,15 @@ void Physics::test()
 
 	LogManager::getSingleton().logMessage("physics testing - start");
 
-	RollingEntity* a = new RollingEntity("Ogrian/Smoke", 2, 1, 1);
-	RollingEntity* b = new RollingEntity("Ogrian/Smoke", 4, 1, 1);
-	RollingEntity* c = new RollingEntity("Ogrian/Smoke", 6, 1, 1);
-	RollingEntity* d = new RollingEntity("Ogrian/Smoke", 8, 1, 1);
+	RollingThing* a = new RollingThing("Ogrian/Smoke", 2, 1, 1);
+	RollingThing* b = new RollingThing("Ogrian/Smoke", 4, 1, 1);
+	RollingThing* c = new RollingThing("Ogrian/Smoke", 6, 1, 1);
+	RollingThing* d = new RollingThing("Ogrian/Smoke", 8, 1, 1);
 
-	RollingEntity* aa = new RollingEntity("Ogrian/Smoke", 1, 1, 20);
-	RollingEntity* ab = new RollingEntity("Ogrian/Smoke", 2, 1, 20);
-	RollingEntity* ac = new RollingEntity("Ogrian/Smoke", 3, 1, 20);
-	RollingEntity* ad = new RollingEntity("Ogrian/Smoke", 4, 1, 10);
+	RollingThing* aa = new RollingThing("Ogrian/Smoke", 1, 1, 20);
+	RollingThing* ab = new RollingThing("Ogrian/Smoke", 2, 1, 20);
+	RollingThing* ac = new RollingThing("Ogrian/Smoke", 3, 1, 20);
+	RollingThing* ad = new RollingThing("Ogrian/Smoke", 4, 1, 10);
 
 	a->setScale(1);
 	b->setScale(1);
@@ -155,16 +155,16 @@ void Physics::test()
 	ad->setScale(2);
 
 	LogManager::getSingleton().logMessage("physics testing - add");
-	Physics::getSingleton().addPhysicalEntity(a);
-	Physics::getSingleton().addPhysicalEntity(b);
-	Physics::getSingleton().addPhysicalEntity(c);
-	Physics::getSingleton().addPhysicalEntity(d);
-	Physics::getSingleton().addPhysicalEntity(aa);
-	Physics::getSingleton().addPhysicalEntity(ab);
-	Physics::getSingleton().addPhysicalEntity(ac);
-	Physics::getSingleton().addPhysicalEntity(ad);
+	Physics::getSingleton().addThing(a);
+	Physics::getSingleton().addThing(b);
+	Physics::getSingleton().addThing(c);
+	Physics::getSingleton().addThing(d);
+	Physics::getSingleton().addThing(aa);
+	Physics::getSingleton().addThing(ab);
+	Physics::getSingleton().addThing(ac);
+	Physics::getSingleton().addThing(ad);
 
-	if (4 == Physics::getSingleton().numPhysicalEntities()) 
+	if (4 == Physics::getSingleton().numThings()) 
 		LogManager::getSingleton().logMessage("physics testing - correct number");
 	else 
 		LogManager::getSingleton().logMessage("physics testing - ERRRO! incorrect number");
@@ -174,15 +174,6 @@ void Physics::test()
 	
 	LogManager::getSingleton().logMessage("physics testing - collision test");
 	Physics::getSingleton().collisionCheck();
-
-	//LogManager::getSingleton().logMessage("physics testing - remove");
-	//Physics::getSingleton().removePhysicalEntity(b);
-	//Physics::getSingleton().removePhysicalEntity(c);
-	//
-	//if (2 == Physics::getSingleton().numPhysicalEntities()) 
-	//	LogManager::getSingleton().logMessage("physics testing - correct number");
-	//else 
-	//	LogManager::getSingleton().logMessage("physics testing - ERRRO! incorrect number");
 
 	LogManager::getSingleton().logMessage("physics testing - move again");
 	Physics::getSingleton().moveAll(10);

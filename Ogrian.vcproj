@@ -115,13 +115,13 @@
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File
-				RelativePath="OgrianPhysicalEntity.cpp">
-			</File>
-			<File
 				RelativePath="OgrianPhysics.cpp">
 			</File>
 			<File
 				RelativePath="OgrianRenderer.cpp">
+			</File>
+			<File
+				RelativePath="OgrianThing.cpp">
 			</File>
 			<File
 				RelativePath="main.cpp">
@@ -143,10 +143,7 @@
 				RelativePath="OgrianHeightMap.h">
 			</File>
 			<File
-				RelativePath="OgrianManaEntity.h">
-			</File>
-			<File
-				RelativePath="OgrianPhysicalEntity.h">
+				RelativePath="OgrianManaThing.h">
 			</File>
 			<File
 				RelativePath="OgrianPhysics.h">
@@ -155,7 +152,10 @@
 				RelativePath="OgrianRenderer.h">
 			</File>
 			<File
-				RelativePath="OgrianRollingEntity.h">
+				RelativePath="OgrianRollingThing.h">
+			</File>
+			<File
+				RelativePath="OgrianThing.h">
 			</File>
 		</Filter>
 		<Filter

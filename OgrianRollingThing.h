@@ -1,9 +1,9 @@
-#ifndef __OgrianRollingEntity_H__
-#define __OgrianRollingEntity_H__
+#ifndef __OgrianRollingThing_H__
+#define __OgrianRollingThing_H__
 
 #include <Ogre.h>
 #include "OgrianRenderer.h"
-#include "OgrianPhysicalEntity.h"
+#include "OgrianThing.h"
 #include "OgrianHeightMap.h"
 
 using namespace Ogre;
@@ -11,11 +11,11 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class RollingEntity : public PhysicalEntity
+class RollingThing : public Thing
 {
 public:
-	RollingEntity(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
-		: PhysicalEntity(material, fixed_y, scale, x, y, z)
+	RollingThing(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
+		: Thing(material, fixed_y, scale, x, y, z)
 	{
 		
 	}
@@ -27,7 +27,7 @@ public:
 
 	virtual void setPosition(Real x, Real y, Real z)
 	{
-		PhysicalEntity::setPosition(x,
+		Thing::setPosition(x,
 			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
 			z);
 	}
