@@ -41,7 +41,15 @@ namespace Ogrian
 CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 {
 	mCamera = camera;
+	mTempCam = new Camera("TempCam", 0);
 	mForeward = mBack = mLeft = mRight = false;
+}
+
+//----------------------------------------------------------------------------
+
+CameraThing::~CameraThing()
+{
+	delete mTempCam;
 }
 
 //----------------------------------------------------------------------------
@@ -97,10 +105,10 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 	// constrain the pitch
 	Vector3 dir = mCamera->getDirection();
 
-	Camera tcam("temp", 0);
-	tcam.setDirection(dir);
-	tcam.pitch(rotY);
-	dir = tcam.getDirection();
+	mTempCam->setDirection(Vector3(0,0,1));
+	mTempCam->setDirection(dir);
+	mTempCam->pitch(rotY);
+	dir = mTempCam->getDirection();
 
 	if (dir.y < CAMERA_PITCH_MAX && dir.y > -CAMERA_PITCH_MAX)
 		mCamera->setDirection(dir);

@@ -46,6 +46,7 @@ class CameraThing : public WizardThing
 {
 public:
 	CameraThing(Camera* camera);
+	virtual ~CameraThing();
 
 	virtual ThingType getType();
 
@@ -71,6 +72,7 @@ public:
 
 private:
 	Camera* mCamera;
+	Camera* mTempCam;
 	bool mForeward, mBack, mLeft, mRight;
 	Vector3 mForce;
 
