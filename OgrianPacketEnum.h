@@ -77,6 +77,7 @@ enum PacketID
 	// Ogrian Types
 	//
 	ID_ADD_PLAYER,
+	ID_REMOVE_PLAYER,
 	ID_MAP_NAME,
 
 	ID_MAKE_THING,

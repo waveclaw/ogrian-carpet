@@ -72,8 +72,7 @@ const Real KEY_DELAY = .4;
 const int PORT = 6006;
 
 const int MAX_PLAYERS = 8;
-const int PLAYER_NAME_MAX_LENGTH = 24;
-const int MAP_NAME_MAX_LENGTH = 16;
+const int STRING_MAX_LENGTH = 24;
 
 }
 #endif

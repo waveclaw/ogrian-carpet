@@ -71,7 +71,7 @@ void Multiplayer::loadConfig()
 
 	// trim the name
 	std::string name = mPlayerName;
-	mPlayerName = name.substr(0,PLAYER_NAME_MAX_LENGTH);
+	mPlayerName = name.substr(0,STRING_MAX_LENGTH);
 }
 
 //----------------------------------------------------------------------------
@@ -123,8 +123,11 @@ void Multiplayer::serverStart()
 	
 	Menu::getSingleton().setMessage("Server Started");
 
-	mPlayerNames.push_back(mPlayerName);
-	PlayerList::getSingleton().addPlayer(mPlayerName);
+	PlayerInfo server;
+	server.id.binaryAddress = 0;
+	server.name = mPlayerName;
+	mPlayers.push_back(server);
+	PlayerList::getSingleton().addPlayer(server.name);
 }
 
 //----------------------------------------------------------------------------
@@ -160,50 +163,32 @@ void Multiplayer::serverSend(BitStream* bitStream, PlayerID player)
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::clientSend(char* message)
+void Multiplayer::clientSendText(String message, int type)
 {
-	assert(!mIsServer);
-	assert(mActive);
+	BitStream bs;
+	stringToBitStream(message,bs,type);
 
-	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
-	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
-	// RELIABLE_ORDERED means make sure the message arrives in the right order
-	mClient->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0);
+	clientSend(&bs);
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::serverSend(char* message, PlayerID player)
+void Multiplayer::serverSendText(String message, int type, PlayerID player)
 {
-	assert(mIsServer);
-	assert(mActive);
+	BitStream bs;
+	stringToBitStream(message,bs,type);
 
-	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
-	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
-	// RELIABLE_ORDERED means make sure the message arrives in the right order
-	// We arbitrarily pick 0 for the ordering stream
-	// false to send to only one player
-	// true for security
-	mServer->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false, true);
+	serverSend(&bs,player);
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::serverSendAll(char* message)
+void Multiplayer::serverSendAllText(String message, int type)
 {
-	assert(mIsServer);
-	assert(mActive);
+	BitStream bs;
+	stringToBitStream(message,bs,type);
 
-	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
-	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
-	// RELIABLE_ORDERED means make sure the message arrives in the right order
-	// We arbitrarily pick 0 for the ordering stream
-	// false to send to only one player
-	// true for security
-	mServer->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);
+	serverSendAll(&bs);
 }
 
 //----------------------------------------------------------------------------
@@ -213,14 +198,6 @@ void Multiplayer::serverSendAll(BitStream* bitStream)
 	assert(mIsServer);
 	assert(mActive);
 
-	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
-	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
-	// RELIABLE_ORDERED means make sure the message arrives in the right order
-	// We arbitrarily pick 0 for the ordering stream
-	// false to send to only one player
-	// true for security
-	mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);
 }
 
 //----------------------------------------------------------------------------
@@ -374,13 +351,8 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
 		{
 			// get the name
-			char name[PLAYER_NAME_MAX_LENGTH];
-			int len, UID;
-
-			BitStream bs(packet->data,packet->length,false);
-			bs.Read(UID);
-			bs.Read(len);
-			bs.Read(name,len);
+			String name;
+			packetToString(packet,name);
 
 			// update the player list
 			PlayerList::getSingleton().addPlayer(name);
@@ -396,38 +368,24 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_MAP_NAME:
 		{
 			// get the name
-			char mname[MAP_NAME_MAX_LENGTH];
-			int mlen, UID;
-
-			BitStream mbs(packet->data,packet->length,false);
-			mbs.Read(UID);
-			mbs.Read(mlen);
-			mbs.Read(mname,mlen);	
+			String map;
+			packetToString(packet,map);
 
 			// if the map is different from the one we have loaded
-			if (mname != Renderer::getSingleton().getMapName())
+			if (map != Renderer::getSingleton().getMapName())
 			{
 				// disconnect
 				clientDisconnect();
 
 				// load the new map
-				Renderer::getSingleton().loadMap(mname);
+				Renderer::getSingleton().loadMap(map);
 
 				// reconnect
 				clientStart();
 			}
 
 			// send our name to the server
-			char name[PLAYER_NAME_MAX_LENGTH];
-			strcpy(name, mPlayerName);
-			int len = (int)strlen(name) + 1;
-
-			BitStream bs;
-			bs.Write(ID_ADD_PLAYER);
-			bs.Write(len);
-			bs.Write(name,len);
-
-			clientSend(&bs);
+			clientSendText(mPlayerName,ID_ADD_PLAYER);
 			return true;
 
 		}
@@ -450,69 +408,51 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
 		{
 			// get the name
-			char name[PLAYER_NAME_MAX_LENGTH];
-			int len, UID;
-
-			BitStream bs(packet->data,packet->length,true);
-			bs.Read(UID);
-			bs.Read(len);
-			bs.Read(name,len);
+			String playerName;
+			packetToString(packet,playerName);
 
 			// update the player list
-			mPlayerNames.push_back(name);
-			PlayerList::getSingleton().addPlayer(name);
+			PlayerInfo player;
+			player.id = packet->playerId;
+			player.name = playerName;
+			mPlayers.push_back(player);
+			PlayerList::getSingleton().addPlayer(playerName);
 
-			// forward the message to all clients
-			BitStream bt(packet->data, packet->length, false);
-			serverSendAll(&bt);
+			// forward the new player name to all clients
+			serverSendAllText(playerName,ID_ADD_PLAYER);
+
+			// send the names of the existing players to the one that connected
+			for (int i=0; i<(int)mPlayers.size(); i++)
+				serverSendText( mPlayers[i].name,ID_ADD_PLAYER,packet->playerId);
 
 			return true;
 		}
 
 		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
 		{
-			// Somebody connected.  We have their IP now
-			mPlayers.push_back(packet->playerId);
-
-			// send the names of the existing players
-			char name[PLAYER_NAME_MAX_LENGTH];
-			for (int i=0; i<(int)mPlayerNames.size(); i++)
-			{
-				strcpy(name, mPlayerName);
-				int len = (int)strlen(name) + 1;
-
-				BitStream bs;
-				bs.Write(ID_ADD_PLAYER);
-				bs.Write(len);
-				bs.Write(name,len);
-
-				serverSend(&bs,packet->playerId);
-			}
-				
 			// send the name of the map
-			char mname[MAP_NAME_MAX_LENGTH];
-			strcpy(mname, Renderer::getSingleton().getMapName());
-			int len = (int)strlen(mname) + 1;
-
-			BitStream bs;
-			bs.Write(ID_MAP_NAME);
-			bs.Write(len);
-			bs.Write(mname,len);
-
-			serverSend(&bs,packet->playerId);
-
+			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
 			return true;
 		}
+
 		case ID_DISCONNECTION_NOTIFICATION: //////////////////////////////////////////////////////
 		case ID_CONNECTION_LOST: 
 		{
-			// client no longer connected
+			// find the client no longer connected
+			for (int i=0; i<(int)mPlayers.size(); i++)
+			{
+				if (mPlayers[i].id == packet->playerId)
+				{
+                    // remove their name from the list
+					PlayerList::getSingleton().removePlayer(mPlayers[i].name);
 
-			// remove their name from the list
+					// remove their name from the other clients lists
 
-			// remove their ip from the list
+					// remove their ip from the list
+					mPlayers.erase(mPlayers.begin()+i);
+				}
+			}
 
-			
 			return true;
 		}
 	}
@@ -564,6 +504,35 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 	}
 	return false;
 }
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::stringToBitStream(String& string, BitStream& bs, int type)
+{
+	char cstr[STRING_MAX_LENGTH];
+	strcpy(cstr, string);
+	int len = (int)strlen(cstr) + 1;
+
+	bs.Write(type);
+	bs.Write(len);
+	bs.Write(cstr,len);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::packetToString(Packet* packet, String& string)
+{
+	char cstr[STRING_MAX_LENGTH];
+	int len, UID;
+
+	BitStream bs(packet->data,packet->length,false);
+	bs.Read(UID);
+	bs.Read(len);
+	bs.Read(cstr,len);
+
+	string << cstr;
+}
+
 //----------------------------------------------------------------------------
 
 Multiplayer& Multiplayer::getSingleton(void)

@@ -46,6 +46,12 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+struct PlayerInfo
+{
+	PlayerID id;
+	String name;
+};
+
 // The Pysics class handles collision detection and notification among all Thing objects.
 class Multiplayer : public Singleton< Multiplayer >
 {
@@ -61,13 +67,13 @@ public:
 
 	// send a message to the server
 	void clientSend(BitStream* bitStream);
-	void clientSend(char* message);
+	void clientSendText(String message, int type);
 
 	// send a message to a client
 	void serverSend(BitStream* bitStream, PlayerID player);
-	void serverSend(char* message, PlayerID player);
+	void serverSendText(String message, int type, PlayerID player);
 	void serverSendAll(BitStream* bitStream);
-	void serverSendAll(char* message);
+	void serverSendAllText(String message, int type);
 
 	// disconnect from the server
 	void clientDisconnect();
@@ -102,8 +108,7 @@ private:
 	RakServerInterface* mServer;
 
 	// a list of connected players
-	std::vector<PlayerID> mPlayers;
-	std::vector<String> mPlayerNames;
+	std::vector<PlayerInfo> mPlayers;
 
 	// load the config file
 	void loadConfig();
@@ -125,6 +130,12 @@ private:
 	
 	// handle misc Ogrian Client-recieved packets, returns true if the packet was handled
 	bool clientHandlePacket(Packet* p, PacketID pid);
+
+	// get a string out of a packet
+	void packetToString(Packet* packet, String& string);
+
+	// turn a string into a bitstream
+	void stringToBitStream(String& string, BitStream& bs, int type);
 };
 
 }
