@@ -192,9 +192,9 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	if (fz - width - 1 <= 0) fz = width + 2;
 	if (fz + width + 2 >= mSize - 1) fz = mSize - width - 1;
 
-	std::ostringstream msg("setting height: ");
-	msg << "(" << fx << ", " << y << ", " << fz << ")";
-	LogManager::getSingleton().logMessage(msg.str());
+	//std::ostringstream msg("setting height: ");
+	//msg << "(" << fx << ", " << y << ", " << fz << ")";
+	//LogManager::getSingleton().logMessage(msg.str());
 
 	// set the height at each grid point covered by the building
 	int rowf = fx - width - 1; // the first row

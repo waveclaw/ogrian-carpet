@@ -76,7 +76,7 @@ public:
 		// start at zero
 		setPosY(0.1 + mGroundY);
 		mTargetY = getPosY();
-		setPercentage(0.1);
+		setPercentage(0.5);
 
 		// set the team
 		if (castle)
@@ -88,7 +88,7 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = -0.1;
-		if (per <= CONR("CASTLETURRET_MIN_PER")) per = CONR("CASTLETURRET_MIN_PER");
+		//else if (per <= CONR("CASTLETURRET_MIN_PER")) per = CONR("CASTLETURRET_MIN_PER");
 
 		Real newTargetY = mGroundY + getHeight()*per;
 
@@ -105,6 +105,7 @@ public:
 			setVelY(0-CONR("CASTLE_RISE_SPEED"));
 		}
 
+		mPercentage = per;
 		setUpdateFlag();
 	}
 
@@ -144,6 +145,8 @@ private:
 	Real mTargetY;
 
 	Real mGroundY;
+
+	Real mPercentage;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -165,6 +168,8 @@ public:
 			mCrane->destroy();
 
 		mCrane = 0;
+
+		CastleBlockThing::destroy();
 	}
 
 	virtual ThingType getType()	{ return CASTLETURRETTHING; }

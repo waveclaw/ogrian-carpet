@@ -211,6 +211,7 @@ void Game::serverEndPreGame()
 			
 			if (i < CONI("NUM_HUTS"))
 			{
+				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 				HutThing* hut = new HutThing(pos);
 				Physics::getSingleton().addThing(hut);
 			}
