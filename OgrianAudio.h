@@ -42,29 +42,32 @@ class Audio : public Singleton< Audio >
 public:
 	virtual ~Audio();
 
+	// load a sound. returns the id number of the sound
+	int loadSound(String filename, bool loop=false);
+
 	// start playing a sound. Returns the channel of the sound.
-	virtual int playSound(String filename, Vector3 pos, bool loop=false);
+	int playSound(int id, Vector3 pos);
 	
 	// set the position of a sound
-	virtual void setSoundPosition(int channel, Vector3 pos);
+	void setSoundPosition(int channel, Vector3 pos);
 
 	// stop a sound
-	virtual void stopSound(int channel);
+	void stopSound(int channel);
 
 	// start playing a song. 
-	virtual void playSong(String filename);
+	void playSong(String filename);
 
 	// stop playing the song
-	virtual void stopSong();
+	void stopSong();
 
 	// update the 3d audio engine
-	virtual void frame(Real time);
+	void frame(Real time);
 
 	// start the Audio engine
-	virtual void start();
+	void start();
 
 	// stop the Audio engine
-	virtual void stop();
+	void stop();
 
 	static Audio& getSingleton(void);
 
@@ -74,8 +77,9 @@ private:
 	FSOUND_STREAM* mSongStream;
 	int mSongChannel;
 	bool mRunning; // wether or not the engine is running
-	
 	Real mScale; // a scalar applied to 3d positioning
+
+	std::vector<FSOUND_SAMPLE*> mSamples;
 };
 
 }

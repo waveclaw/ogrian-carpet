@@ -41,7 +41,7 @@ namespace Ogrian
 
 Game::Game()
 {
-
+	loadSounds();
 }
 
 //----------------------------------------------------------------------------
@@ -53,10 +53,16 @@ Game::~Game()
 
 //----------------------------------------------------------------------------
 
+void Game::loadSounds()
+{
+	SOUND_FIREBALL_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3");
+	SOUND_FIREBALL_BANG = Audio::getSingleton().loadSound("Media/sounds/boom2.mp3");
+}
+
+//----------------------------------------------------------------------------
+
 void Game::updateScores()
 {
-	//LogManager::getSingleton().logMessage("Updating Scores");
-
 	// update the scores
 	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
 

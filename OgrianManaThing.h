@@ -112,6 +112,9 @@ public:
 
 		setVelocity(vel);
 
+		getVisRep()->removeFromRenderer();
+		getVisRep()->addToRenderer();
+
 		FloatingThing::move(time);
 	}
 

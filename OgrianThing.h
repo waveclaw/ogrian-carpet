@@ -184,7 +184,7 @@ public:
 	virtual Real getGroundY(Vector3 pos);
 
 	// play a sound
-	virtual void playSound(String filename, bool loop=false);
+	virtual void playSound(int id);
 	virtual void stopSound();
 
 	// generate a bitstream from this thing
@@ -244,8 +244,7 @@ private:
 	bool mInEarshot; // if this thing can be heard by the camera
 	bool mPlayingSound; // if this thing is playing a sound
 	int mCurrentSound; // the index of the current sound
-	String mSoundFilename; // the filename of the sound
-	bool mSoundLoop;
+	int mSoundId; // the id of the sound
 
 	// the update type
 	ThingUpdateType mUpdateType;

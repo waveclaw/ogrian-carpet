@@ -78,10 +78,8 @@ void Audio::playSong(String filename)
 
 //----------------------------------------------------------------------------
 
-int Audio::playSound(String filename, Vector3 pos, bool loop)
+int Audio::loadSound(String filename, bool loop)
 {
-	if (!mRunning) return -1;
-
 	// load the sound
 	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename, 
 		loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF,
@@ -93,6 +91,20 @@ int Audio::playSound(String filename, Vector3 pos, bool loop)
 		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") << filename,
 				"Audio::playSound" );	
 	}
+
+	mSamples.push_back(sound);
+
+	return (int)mSamples.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+int Audio::playSound(int id, Vector3 pos)
+{
+	if (!mRunning) return -1;
+
+	// get the sample
+	FSOUND_SAMPLE* sound = mSamples[id];
 
 	// play the sound
 	int channel = FSOUND_PlaySound(FSOUND_FREE, sound);

@@ -92,7 +92,6 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 
 Thing::~Thing()
 {
-
 	stopSound();
 
 	if (mVisRep)
@@ -405,14 +404,13 @@ Real Thing::getGroundY(Vector3 pos)
 
 //----------------------------------------------------------------------------
 
-void Thing::playSound(String filename, bool loop)
+void Thing::playSound(int id)
 {
-	mSoundFilename = filename;
-	mSoundLoop = loop;
+	mSoundId = id;
 	mPlayingSound = true;
 
 	if (mInEarshot)
-		mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
+		mCurrentSound = Audio::getSingleton().playSound(mSoundId, getPosition());
 }
 
 //----------------------------------------------------------------------------
@@ -445,7 +443,7 @@ void Thing::_updateAudibility()
 
 		// start the sound again when it comes in range
 		if (!wasInEarshot && mInEarshot)
-			mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
+			mCurrentSound = Audio::getSingleton().playSound(mSoundId, getPosition());
 	}
 }
 

@@ -37,6 +37,7 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+
 class Game : public Singleton< Game >
 {
 public:
@@ -47,12 +48,18 @@ public:
 	void updateScores();
 
 	static Game& getSingleton(void);
+
+	// sound indexes
+	int SOUND_FIREBALL_WHOOSH;
+	int SOUND_FIREBALL_BANG;
 private:
 	Game();
 
 	void startSkirmishGame();
 	void startServerGame();
 	void startClientGame();
+
+	void loadSounds();
 };
 
 }
