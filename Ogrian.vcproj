@@ -106,113 +106,129 @@
 	</Configurations>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
 			<File
-				RelativePath="OgrianAudio.cpp">
+				RelativePath="Ogrian.rc">
 			</File>
 			<File
-				RelativePath="OgrianBaloonThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianBuildSpellThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianCameraThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianCastle.cpp">
-			</File>
-			<File
-				RelativePath="OgrianConst.cpp">
-			</File>
-			<File
-				RelativePath="OgrianCraneThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianDamageableThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianDotManager.cpp">
-			</File>
-			<File
-				RelativePath="OgrianFrameListener.cpp">
-			</File>
-			<File
-				RelativePath="OgrianGame.cpp">
-			</File>
-			<File
-				RelativePath="OgrianHeightMap.cpp">
-			</File>
-			<File
-				RelativePath="OgrianHud.cpp">
-			</File>
-			<File
-				RelativePath="OgrianInput.cpp">
-			</File>
-			<File
-				RelativePath="OgrianMenu.cpp">
-			</File>
-			<File
-				RelativePath="OgrianModel.cpp">
-			</File>
-			<File
-				RelativePath="OgrianMultiplayer.cpp">
-			</File>
-			<File
-				RelativePath="OgrianOrientedSprite.cpp">
-			</File>
-			<File
-				RelativePath="OgrianPhysics.cpp">
-			</File>
-			<File
-				RelativePath="OgrianPlayerList.cpp">
-			</File>
-			<File
-				RelativePath="OgrianRenderer.cpp">
-			</File>
-			<File
-				RelativePath="OgrianSkinManager.cpp">
-			</File>
-			<File
-				RelativePath="OgrianSprite.cpp">
-			</File>
-			<File
-				RelativePath="OgrianTeam.cpp">
-			</File>
-			<File
-				RelativePath="OgrianThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianTime.cpp">
-			</File>
-			<File
-				RelativePath="OgrianWizardThing.cpp">
-			</File>
-			<File
-				RelativePath="main.cpp">
+				RelativePath="icon1.ico">
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc">
+			Name="Singletons"
+			Filter="">
 			<File
-				RelativePath="OgrianAIWizardThing.h">
-			</File>
-			<File
-				RelativePath="OgrianApplication.h">
+				RelativePath="OgrianAudio.cpp">
 			</File>
 			<File
 				RelativePath="OgrianAudio.h">
 			</File>
 			<File
+				RelativePath="OgrianConst.cpp">
+			</File>
+			<File
+				RelativePath="OgrianConst.h">
+			</File>
+			<File
+				RelativePath="OgrianDotManager.cpp">
+			</File>
+			<File
+				RelativePath="OgrianDotManager.h">
+			</File>
+			<File
+				RelativePath="OgrianGame.cpp">
+			</File>
+			<File
+				RelativePath="OgrianGame.h">
+			</File>
+			<File
+				RelativePath="OgrianHeightMap.cpp">
+			</File>
+			<File
+				RelativePath="OgrianHeightMap.h">
+			</File>
+			<File
+				RelativePath="OgrianHud.cpp">
+			</File>
+			<File
+				RelativePath="OgrianHud.h">
+			</File>
+			<File
+				RelativePath="OgrianInput.cpp">
+			</File>
+			<File
+				RelativePath="OgrianInput.h">
+			</File>
+			<File
+				RelativePath="OgrianMenu.cpp">
+			</File>
+			<File
+				RelativePath="OgrianMenu.h">
+			</File>
+			<File
+				RelativePath="OgrianMultiplayer.cpp">
+			</File>
+			<File
+				RelativePath="OgrianMultiplayer.h">
+			</File>
+			<File
+				RelativePath="OgrianPhysics.cpp">
+			</File>
+			<File
+				RelativePath="OgrianPhysics.h">
+			</File>
+			<File
+				RelativePath="OgrianPlayerList.cpp">
+			</File>
+			<File
+				RelativePath="OgrianPlayerList.h">
+			</File>
+			<File
+				RelativePath="OgrianRenderer.cpp">
+			</File>
+			<File
+				RelativePath="OgrianRenderer.h">
+			</File>
+			<File
+				RelativePath="OgrianSkinManager.cpp">
+			</File>
+			<File
+				RelativePath="OgrianSkinManager.h">
+			</File>
+			<File
+				RelativePath="OgrianTime.cpp">
+			</File>
+			<File
+				RelativePath="OgrianTime.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Things"
+			Filter="">
+			<File
+				RelativePath="OgrianAIWizardThing.h">
+			</File>
+			<File
+				RelativePath="OgrianBaloonThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianBaloonThing.h">
+			</File>
+			<File
+				RelativePath="OgrianBuildSpellThing.cpp">
 			</File>
 			<File
 				RelativePath="OgrianBuildSpellThing.h">
 			</File>
 			<File
+				RelativePath="OgrianCameraThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianCameraThing.h">
+			</File>
+			<File
+				RelativePath="OgrianCastle.cpp">
 			</File>
 			<File
 				RelativePath="OgrianCastle.h">
@@ -221,16 +237,16 @@
 				RelativePath="OgrianClaimSpellThing.h">
 			</File>
 			<File
-				RelativePath="OgrianConst.h">
+				RelativePath="OgrianCraneThing.cpp">
 			</File>
 			<File
 				RelativePath="OgrianCraneThing.h">
 			</File>
 			<File
-				RelativePath="OgrianDamageableThing.h">
+				RelativePath="OgrianDamageableThing.cpp">
 			</File>
 			<File
-				RelativePath="OgrianDotManager.h">
+				RelativePath="OgrianDamageableThing.h">
 			</File>
 			<File
 				RelativePath="OgrianFireballThing.h">
@@ -242,67 +258,16 @@
 				RelativePath="OgrianFoliageThing.h">
 			</File>
 			<File
-				RelativePath="OgrianFrameListener.h">
-			</File>
-			<File
-				RelativePath="OgrianGame.h">
-			</File>
-			<File
-				RelativePath="OgrianHeightMap.h">
-			</File>
-			<File
-				RelativePath="OgrianHud.h">
-			</File>
-			<File
-				RelativePath="OgrianInput.h">
-			</File>
-			<File
 				RelativePath="OgrianManaThing.h">
-			</File>
-			<File
-				RelativePath="OgrianMenu.h">
-			</File>
-			<File
-				RelativePath="OgrianModel.h">
-			</File>
-			<File
-				RelativePath="OgrianMouseFrameListener.h">
-			</File>
-			<File
-				RelativePath="OgrianMultiplayer.h">
-			</File>
-			<File
-				RelativePath="OgrianOrientedSprite.h">
-			</File>
-			<File
-				RelativePath="OgrianPacketEnum.h">
-			</File>
-			<File
-				RelativePath="OgrianPhysics.h">
-			</File>
-			<File
-				RelativePath="OgrianPlayerList.h">
-			</File>
-			<File
-				RelativePath="OgrianRenderer.h">
 			</File>
 			<File
 				RelativePath="OgrianRollingThing.h">
 			</File>
 			<File
-				RelativePath="OgrianSkinManager.h">
-			</File>
-			<File
-				RelativePath="OgrianSprite.h">
-			</File>
-			<File
-				RelativePath="OgrianTeam.h">
+				RelativePath="OgrianThing.cpp">
 			</File>
 			<File
 				RelativePath="OgrianThing.h">
-			</File>
-			<File
-				RelativePath="OgrianTime.h">
 			</File>
 			<File
 				RelativePath="OgrianTimedThing.h">
@@ -311,26 +276,65 @@
 				RelativePath="OgrianTowerThing.h">
 			</File>
 			<File
-				RelativePath="OgrianVisRep.h">
+				RelativePath="OgrianWizardThing.cpp">
 			</File>
 			<File
 				RelativePath="OgrianWizardThing.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Other"
+			Filter="">
+			<File
+				RelativePath="OgrianApplication.h">
+			</File>
+			<File
+				RelativePath="OgrianFrameListener.cpp">
+			</File>
+			<File
+				RelativePath="OgrianFrameListener.h">
+			</File>
+			<File
+				RelativePath="OgrianModel.cpp">
+			</File>
+			<File
+				RelativePath="OgrianModel.h">
+			</File>
+			<File
+				RelativePath="OgrianMouseFrameListener.h">
+			</File>
+			<File
+				RelativePath="OgrianOrientedSprite.cpp">
+			</File>
+			<File
+				RelativePath="OgrianOrientedSprite.h">
+			</File>
+			<File
+				RelativePath="OgrianPacketEnum.h">
+			</File>
+			<File
+				RelativePath="OgrianSprite.cpp">
+			</File>
+			<File
+				RelativePath="OgrianSprite.h">
+			</File>
+			<File
+				RelativePath="OgrianTeam.cpp">
+			</File>
+			<File
+				RelativePath="OgrianTeam.h">
+			</File>
+			<File
+				RelativePath="OgrianVisRep.h">
 			</File>
 			<File
 				RelativePath="fmod.h">
 			</File>
 			<File
+				RelativePath="main.cpp">
+			</File>
+			<File
 				RelativePath="resource.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
-			<File
-				RelativePath="Ogrian.rc">
-			</File>
-			<File
-				RelativePath="icon1.ico">
 			</File>
 		</Filter>
 	</Files>
