@@ -67,6 +67,9 @@ public:
 	void button_join();
 	void button_host();
 
+	// set the message
+	void setMessage(String message);
+
 	static Menu& getSingleton(void);
 
 private:
@@ -75,8 +78,6 @@ private:
 	// load a map
 	void loadMap(String mapname);
 
-	// set the message
-	void setMessage(String message);
 
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling

@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Ogrian"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			CharacterSet="2">
@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMainD.lib fmodvc.lib RakNetLibStatic.lib"
+				AdditionalDependencies="OgreMain.lib fmodvc.lib RakNetLibStatic.lib"
 				OutputFile="$(OutDir)/Ogrian.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="C:\Code\RakNet\lib;C:\Code\fmodapi372win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"

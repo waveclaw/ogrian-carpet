@@ -28,6 +28,7 @@ Description: This handles all of the multiplayer networking code.
 /*------------------------------------*/
 
 #include "OgrianMultiplayer.h"
+#include "OgrianMenu.h"
 
 
 using namespace Ogre;
@@ -60,6 +61,7 @@ void Multiplayer::clientStart(char* server)
 	assert(!mActive);
 
 	mIsServer = false;
+	mActive = true;
 	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
@@ -70,6 +72,8 @@ void Multiplayer::clientStart(char* server)
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
 				"Multiplayer::startClient" );
+
+	Menu::getSingleton().setMessage("Client Started");
 }
 
 //----------------------------------------------------------------------------
@@ -79,6 +83,7 @@ void Multiplayer::serverStart()
 	assert(!mActive);
 
 	mIsServer = true; 
+	mActive = true;
 
 	mServer = RakNetworkFactory::GetRakServerInterface();
 
@@ -90,6 +95,8 @@ void Multiplayer::serverStart()
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::startServer" );
+	
+	Menu::getSingleton().setMessage("Server Started");
 }
 
 //----------------------------------------------------------------------------
@@ -161,6 +168,8 @@ void Multiplayer::clientDisconnect()
 	mClient->Disconnect();
 	
 	RakNetworkFactory::DestroyRakClientInterface(mClient);
+	
+	mActive = false;
 }
 
 //----------------------------------------------------------------------------
@@ -175,6 +184,8 @@ void Multiplayer::serverDisconnect()
 	mServer->Disconnect();
 	
 	RakNetworkFactory::DestroyRakServerInterface(mServer);
+
+	mActive = false;
 }
 
 //----------------------------------------------------------------------------

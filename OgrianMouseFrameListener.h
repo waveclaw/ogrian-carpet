@@ -23,7 +23,7 @@ OgrianFrameListener.h
 Original Author: The OGRE Team
 Additional Authors: Mike Prosser
 
-Description: 
+Description: this handles mouse input for the menu, including buttons. 
 /*------------------------------------*/
 
 
@@ -49,6 +49,8 @@ public:
     // Constructor takes a RenderWindow because it uses that to determine input context
     OgrianMouseFrameListener(RenderWindow* win)
     {
+		mQuit = false;
+
         mEventProcessor = new EventProcessor();
 		mEventProcessor->initialise(win);
         OverlayManager::getSingleton().createCursorOverlay();
@@ -83,6 +85,7 @@ public:
 	{
 		std::string action = e->getActionCommand();
 
+		// REMEMBER TO REGISTER THE BUTTON BELOW!
 		if (action == "SS/Setup/HostScreen/Exit") mQuit = true; 
 		else if (action == "SS/Setup/HostScreen/Load") Menu::getSingleton().button_load();
 		else if (action == "SS/Setup/HostScreen/Yinvert") Menu::getSingleton().button_invertMouseToggle();
@@ -100,15 +103,27 @@ protected:
 	
 	void registerButtons()
 	{
-		ActionTarget* quitButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
-		quitButton->addActionListener(this);
+		// REMEMBER TO CALL THE MENU ABOVE!!
+		ActionTarget* button;
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
+		button->addActionListener(this);
 
-		ActionTarget* loadButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Load"));
-		loadButton->addActionListener(this);
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Load"));
+		button->addActionListener(this);
 
-		ActionTarget* yinvButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert"));
-		yinvButton->addActionListener(this);
-		mQuit = false;
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Host"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Join"));
+		button->addActionListener(this);
 	}
 
 };

@@ -193,7 +193,7 @@ void Menu::frame(Real time)
 	}
 	else
 	{
-		setMessage("not connected");
+		//setMessage("not connected");
 	}
 }
 
