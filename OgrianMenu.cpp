@@ -164,12 +164,6 @@ void Menu::setMessage(String message)
 
 bool Menu::processKeyInput(InputReader* input)
 {
-	// Q Quits //////////////////////////////
-    if ( input->isKeyDown( KC_Q) )
-    {            
-        return false;
-    }
-
 	// Tab shows players //////////////////////////////
     if ( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
     {           
@@ -181,13 +175,6 @@ bool Menu::processKeyInput(InputReader* input)
     if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
         hide();
-    }
-
-	// Y toggles the inversion of the mouse Y axis //////////////////////////////
-    if ( input->isKeyDown( KC_Y) && mTimeUntilNextToggle <= 0)
-    {            
-		button_invertMouseToggle();
-        mTimeUntilNextToggle = KEY_DELAY;
     }
 
 	return true;
