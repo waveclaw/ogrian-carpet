@@ -6,6 +6,7 @@
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
+#include "OgrianManaEntity.h"
 
 using namespace Ogre;
 
@@ -101,7 +102,7 @@ bool Renderer::configure(void)
 void Renderer::chooseSceneManager(void)
 {
     // Get the SceneManager, in this case a generic one
-    mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_CLOSE);
+    mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_FAR);
 }
 void Renderer::createCamera(void)
 {
@@ -131,6 +132,60 @@ Vector3 Renderer::getCameraPos(void)
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
+	      Entity *waterEntity;
+        Plane waterPlane;
+
+        // Set ambient light
+        mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
+        // create a water plane/scene node
+        waterPlane.normal = Vector3::UNIT_Y; 
+        waterPlane.d = -30; 
+        MeshManager::getSingleton().createPlane(
+            "WaterPlane",
+            waterPlane,
+            2800, 2800,
+            20, 20,
+            true, 1, 
+            10, 10,
+            Vector3::UNIT_Z
+        );
+
+        waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
+        waterEntity->setMaterialName("Ogrian/OceanBed"); 
+
+        SceneNode *waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
+        waterNode->attachObject(waterEntity); 
+        waterNode->translate(1000, 0, 1000);
+
+
+
+        // Create a light
+        Light* l = mSceneMgr->createLight("MainLight");
+        // Accept default settings: point light, white diffuse, just set position
+        // NB I could attach the light to a SceneNode if I wanted it to move automatically with
+        //  other objects, but I don't
+        l->setPosition(20,80,50);
+
+        mSceneMgr->setWorldGeometry( "world.cfg" );
+
+        //mSceneMgr->setFog(FOG_EXP2, ColourValue(0.77, 0.86, 1.0), 0.0015, 0,0 );
+        //mSceneMgr->setFog(FOG_LINEAR, ColourValue(0.77, 0.86, 1.0), 0, 150, 500);
+       //mRoot -> showDebugOverlay( true );
+
+	// Define the required skyplane
+    Plane plane;
+    // num of world units from the camera
+    plane.d = SKYPLANE_DISTANCE;
+    // Above the camera, facing down
+    plane.normal = -Vector3::UNIT_Y;
+    // Create the plane 1000 units wide, tile the texture 3 times
+    mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, false, 0.5f);
+
+       mCamera->setPosition(2000,100,2000);
+
+
+
+	/*
 	//Physics::getSingleton().test();
 
     Entity *waterEntity;
@@ -189,8 +244,10 @@ void Renderer::createScene(void)
     l->setPosition(20,80,50);
 
 	// set up the terrain
-    mSceneMgr -> setWorldGeometry( "terrain.cfg" );
-	HeightMap::getSingleton().loadTerrain("terrain.cfg");
+    //mSceneMgr -> setWorldGeometry( "terrain.cfg" );
+	//HeightMap::getSingleton().loadTerrain("terrain.cfg");
+    mSceneMgr -> setWorldGeometry( "world.cfg" );
+	//HeightMap::getSingleton().loadTerrain("world.cfg");
 
 	// Define the required skyplane
     Plane plane;
@@ -211,22 +268,39 @@ void Renderer::createScene(void)
 	grassSet->setMaterialName("Ogrian/Grass");
 
 	int i=0;
-	while (i<1000)
+	while (i<100)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * 500.0;
         Real z = Math::SymmetricRandom() * 500.0;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > 10)
+		if (y > 5)
 		{
 			i++;
-			Billboard* billboard = grassSet->createBillboard(x, y, z);
-			billboard->setDimensions(1,10);
+			//Billboard* billboard = grassSet->createBillboard(x, y+5, z);
+			//billboard->setDimensions(10,10);
+			ManaEntity* e = new ManaEntity("Ogrian/Mana", 1);
+			e->setPosition(x,y+5,z);
+			e->setScale(10);
+			Physics::getSingleton().addPhysicalEntity(e);
 		}
 	}
 
 	sceneMgr->getRootSceneNode()->attachObject(grassSet);
+
+
+	//toss in some smoke
+	// Create shared node for 2 fountains
+    mFountainNode = static_cast<SceneNode*>(mSceneMgr->getRootSceneNode()->createChild());
+
+    // smoke
+    ParticleSystem* pSys2 = ParticleSystemManager::getSingleton().createSystem("fountain1", 
+        "Examples/Smoke");
+    // Point the fountain at an angle
+    SceneNode* fNode = static_cast<SceneNode*>(mFountainNode->createChild());
+    fNode->attachObject(pSys2);
+	*/
 }
 
 void Renderer::createViewports(void)

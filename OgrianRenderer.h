@@ -36,6 +36,7 @@ protected:
     SceneManager* mSceneMgr;
     OgrianFrameListener* mFrameListener;
     RenderWindow* mWindow;
+    SceneNode* mFountainNode;
 
     /// Standard constructor
     Renderer();

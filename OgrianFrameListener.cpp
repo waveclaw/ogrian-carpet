@@ -272,7 +272,7 @@ void OgrianFrameListener::moveCamera()
 	// follow the landscape
 	Vector3 pos = mCamera->getPosition();
 	float altitude = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
-	pos.y = altitude + CAMERA_HEIGHT;
+	//pos.y = altitude + CAMERA_HEIGHT;
 	mCamera->setPosition(pos);
 }
 
