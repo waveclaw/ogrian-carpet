@@ -420,6 +420,9 @@
 				RelativePath="OgrianTeleportSpell.h">
 			</File>
 			<File
+				RelativePath="OgrianTeleportSpellThing.h">
+			</File>
+			<File
 				RelativePath="OgrianTickSpell.h">
 			</File>
 		</Filter>

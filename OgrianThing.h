@@ -80,6 +80,7 @@ enum ThingType
 	TICKTHING,
 	GNOMETHING,
 	ALBATROSSTHING,
+	TELEPORTSPELLTHING,
 };
 
 enum ThingVisRep

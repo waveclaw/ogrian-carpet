@@ -52,6 +52,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianTickThing.h"
 #include "OgrianGnomeThing.h"
 #include "OgrianAlbatrossThing.h"
+#include "OgrianTeleportSpellThing.h"
 
 #include "OgreLogManager.h"
 
@@ -390,6 +391,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case SENTINELTHING: return new SentinelThing(teamNum);
 		case TICKTHING: return new TickThing(teamNum);
 		case GNOMETHING: return new GnomeThing(teamNum);
+
+		case TELEPORTSPELLTHING; return new TeleportSpellThing(teamNum);
 
 		default:
 			std::ostringstream num("");

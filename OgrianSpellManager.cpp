@@ -35,8 +35,6 @@ Description: This manages the spells for the HUD, etc
 #include "OgrianTickSpell.h"
 #include "OgrianSentinelSpell.h"
 #include "OgrianSpeedSpell.h"
-#include "OgrianFirestormSpell.h"
-#include "OgrianAkimboFireballSpell.h"
 #include "OgrianFireballSpell.h"
 #include "OgrianClaimSpell.h"
 #include "OgrianBuildSpell.h"

@@ -19,51 +19,57 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianTeleportSpell.h
+OgrianTeleportSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a teleport spell
+Description: TeleportSpellThing is a thing that helps the teleport spell work properly in multiplayer
 
 /*------------------------------------*/
 
+#ifndef __OgrianTeleportSpellThing_H__
+#define __OgrianTeleportSpellThing_H__
 
-#ifndef __OgrianTeleportSpell_H__
-#define __OgrianTeleportSpell_H__
-
-#include "OgrianSpell.h"
-#include "OgrianRenderer.h"
-#include "OgrianPhysics.h"
-#include "OgrianTeleportSpellThing.h"
+#include <Ogre.h>
+#include "OgrianClock.h"
+#include "OgrianThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class TeleportSpell : public Spell
+class TimedThing : public Thing
 {
 public:
 
-	// make an instance of this spell
-	virtual void cast(Vector3 pos, Vector3 dir)
+	TimedThing(int teamNum)
+		: Thing("Ogrian/Clear")
 	{
-		TeleportSpellThing* thing = new TeleportSpellThing(
-			Renderer::getSingleton().getCameraThing()->getTeamNum());
-		Physics::getSingleton().addThing(thing);
+		// get the castle
+		Team* team = Physics::getSingleton().getTeam(teamNum));
+		Thing* castle = team->getCastle();
+		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID)
+
+		// teleport the wizard back to his castle
+		wiz->die();
+
+		// teleport his posse back to his castle
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->getTeamNum() == getTeamNum() 
+				&& (thing->getType() == GNOMETHING || thing->getType() == TICKTHING))
+			{
+				thing->setPosition(castle->getPosition());
+			}
+		}
+		
+		destroy();
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Teleport/Ready"); }; 
+	virtual ThingType getType()	{ return TELEPORTSPELLTHING; }
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Teleport/Enabled"); }; 
-
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Teleport/Disabled"); }; 
-
-	virtual Real getCastPeriod() { return CONR("TELEPORTSPELL_CAST_PERIOD"); }
-
-	virtual int getManaCost() { return CONI("TELEPORTSPELL_MANA_COST"); }
-
-	virtual String getString() { return CONS("NAME_TELEPORT"); }
 };
 
 }

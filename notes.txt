@@ -5,9 +5,6 @@ to add:
 =========
 amry counters
 health/mana hud bars
-death scream
-teleport sound
-teleport home w/posse
 meteor that claims nearby mana
 castle under attack message
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
