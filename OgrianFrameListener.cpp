@@ -106,6 +106,11 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
     {
         mTranslateVector.z = -mMoveScale;
     }
+    /* Move camera forward fast by keypress. */
+    if (mInputDevice->isKeyDown(KC_LSHIFT) )
+    {
+        mTranslateVector.z = -mMoveScale * 5;
+    }
     /* Move camera forward by mousewheel. */
     if( mInputDevice->getMouseRelativeZ() > 0 )
     {

@@ -51,6 +51,15 @@ protected:
     virtual void createCamera(void);
     virtual void createFrameListener(void);
 
+	// Create a sky using the specified material
+	virtual void createSky(const String& material);
+
+	// create an ocean using the specified material
+	virtual void createOcean(const String& material);
+
+	// create random foilage using the specified material
+	virtual void createFoliage(const String& material, int num);
+
     // Just override the mandatory create scene method
     void createScene(void);
 

@@ -17,5 +17,8 @@ const float SKYPLANE_DISTANCE = 75;
 const float SKYPLANE_BOW = .75;
 const float MAX_ENTITY_RADIUS = 5;
 
+const int FOLIAGE_LINE_MIN = 5;
+const int FOLIAGE_LINE_MAX = 50;
+
 }
 #endif

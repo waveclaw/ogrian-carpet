@@ -129,8 +129,19 @@ Vector3 Renderer::getCameraPos(void)
 	return mCamera->getPosition();
 }
 
-// Just override the mandatory create scene method
-void Renderer::createScene(void)
+void Renderer::createSky(const String& material)
+{
+	// Define the required skyplane
+    Plane plane;
+    // num of world units from the camera
+    plane.d = SKYPLANE_DISTANCE;
+    // Above the camera, facing down
+    plane.normal = -Vector3::UNIT_Y;
+    // Create the plane 1000 units wide, tile the texture 3 times
+    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, SKYPLANE_BOW);
+}
+
+void Renderer::createOcean(const String& material)
 {
     Entity *waterEntity;
     Plane waterPlane;
@@ -149,86 +160,72 @@ void Renderer::createScene(void)
     );
 
     waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
-    waterEntity->setMaterialName("Ogrian/Ocean"); 
+    waterEntity->setMaterialName(material); 
 
     SceneNode *waterNode = 
         mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
     waterNode->attachObject(waterEntity); 
     waterNode->translate(0, 0, 0);
-	
-    Entity *bedEntity;
-    Plane bedPlane;
-    
-    // create a water plane/scene node
-    bedPlane.normal = Vector3::UNIT_Y; 
-    bedPlane.d = -1.5; 
-    MeshManager::getSingleton().createPlane(
-        "BedPlane",
-        bedPlane,
-        2800, 2800,
-        20, 20,
-        true, 1, 
-        100, 100,
-        Vector3::UNIT_Z
-    );
+}
 
-    bedEntity = mSceneMgr->createEntity("bed", "BedPlane"); 
-    bedEntity->setMaterialName("Ogrian/OceanBed"); 
-
-    SceneNode *bedNode = 
-        mSceneMgr->getRootSceneNode()->createChildSceneNode("BedNode"); 
-    bedNode->attachObject(bedEntity); 
-    bedNode->translate(0, -.1, 0);
-
-    // Set ambient light
-    mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-
-	// set up the terrain
-    mSceneMgr->setWorldGeometry( "world.cfg" );
-	HeightMap::getSingleton().loadTerrain("world.cfg");
-
-	// Define the required skyplane
-    Plane plane;
-    // num of world units from the camera
-    plane.d = SKYPLANE_DISTANCE;
-    // Above the camera, facing down
-    plane.normal = -Vector3::UNIT_Y;
-    // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, true, SKYPLANE_BOW);
-
-    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
-
+void Renderer::createFoliage(const String& material, int num)
+{
 	// set up some foliage
-	/*SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
-	BillboardSet* grassSet = sceneMgr->createBillboardSet("Foliage",1);
-	grassSet->setBillboardType(BBT_ORIENTED_COMMON);
-	grassSet->setCommonDirection(Vector3::UNIT_Y);
-	grassSet->setMaterialName("Ogrian/Grass");
+	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
 	int i=0;
-	while (i<100)
+	while (i<num)
 	{
         // Random translate
-        Real x = Math::SymmetricRandom() * 500.0;
-        Real z = Math::SymmetricRandom() * 500.0;
+        Real x = Math::SymmetricRandom() * 1000.0;
+        Real z = Math::SymmetricRandom() * 1000.0;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > 5)
+		if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
 		{
 			i++;
-			//Billboard* billboard = grassSet->createBillboard(x, y+5, z);
-			//billboard->setDimensions(10,10);
-			ManaEntity* e = new ManaEntity("Ogrian/Mana", 1);
-			e->setPosition(x,y+5,z);
-			e->setScale(10);
-			Physics::getSingleton().addPhysicalEntity(e);
+			
+			BillboardSet* grassSet = sceneMgr->createBillboardSet("FoliageBillSet_"+i,1);
+			grassSet->setBillboardType(BBT_ORIENTED_COMMON);
+			grassSet->setCommonDirection(Vector3::UNIT_Y);
+			grassSet->setMaterialName(material);
+
+			SceneNode* grassNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
+			grassNode->setPosition(x,y+5,z);
+			grassNode->attachObject(grassSet);
+
+			Billboard* billboard = grassSet->createBillboard(0, 0, 0);
+			billboard->setDimensions(10,10);
 		}
 	}
 
-	sceneMgr->getRootSceneNode()->attachObject(grassSet);
+}
 
+// Just override the mandatory create scene method
+void Renderer::createScene(void)
+{
+	String filename = "world.cfg";
 
-	//toss in some smoke
+	/* Set up the options */
+	ConfigFile config;
+	config.load( filename );
+	String skyMaterial = config.getSetting( "SkyMaterial" );
+	String oceanMaterial = config.getSetting( "OceanMaterial" );
+	String foliageMaterial = config.getSetting( "FoliageMaterial" );
+
+	// set up the terrain
+    mSceneMgr->setWorldGeometry( filename );
+	HeightMap::getSingleton().loadTerrain(filename);
+	createSky(skyMaterial);
+	createOcean(oceanMaterial);
+	createFoliage(foliageMaterial,200);
+
+    // Set ambient light
+    mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
+	// set the fog
+    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
+
+	// toss in some smoke
 	// Create shared node for 2 fountains
     mFountainNode = static_cast<SceneNode*>(mSceneMgr->getRootSceneNode()->createChild());
 
@@ -238,7 +235,7 @@ void Renderer::createScene(void)
     // Point the fountain at an angle
     SceneNode* fNode = static_cast<SceneNode*>(mFountainNode->createChild());
     fNode->attachObject(pSys2);
-	*/
+	fNode->setPosition(315,50,862);
 }
 
 void Renderer::createViewports(void)

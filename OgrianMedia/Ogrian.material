@@ -4,25 +4,6 @@ material Ogrian/Ocean
 	{
 		pass
 		{
-			ambient 1 1 1
-			scene_blend add
-			cull_hardware none
-			cull_software none
-
-			texture_unit
-			{
-				texture Water02.jpg
-				scroll_anim 0.01 0.01
-			}
-		}
-	}
-}
-material Ogrian/OceanBed
-{
-	technique
-	{
-		pass
-		{
 			ambient 0.3 0.3 0.3
 			cull_hardware none
 			cull_software none
@@ -30,6 +11,37 @@ material Ogrian/OceanBed
 			texture_unit
 			{
 				texture Water02.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/PalmTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture palmtree.png
+				tex_address_mode clamp
 			}
 		}
 	}
