@@ -149,7 +149,13 @@ public:
 		setHeight(CONR("CASTLETOWER_HEIGHT"));
 	}
 
-	virtual void destroy() { mCrane->destroy(); }
+	virtual void destroy() 
+	{ 
+		if (mCrane)
+			mCrane->destroy();
+
+		mCrane = 0;
+	}
 
 	virtual ThingType getType()	{ return CASTLETOWER; }
 	
