@@ -237,7 +237,7 @@ Thing* Castle::generateTarget(BaloonThing* baloon)
 				ManaThing* candidate = (ManaThing*)mManaThings[i];
 
 				// skip dead manas
-				if (candidate->isAlive())
+				if (candidate && candidate->isAlive())
 				{
 					// generate a score equal to the sum of the distances between the candidate and the other targets
 					int score=0;
@@ -297,6 +297,7 @@ void Castle::unclaimedManaThing(Thing* mana)
 	{
 		if (mManaThings[i] == mana)
 		{
+			mManaThings[i]=0;
 	        mManaThings.erase(mManaThings.begin()+i);
 		}
 	}

@@ -140,9 +140,9 @@ public:
 
 	virtual void destroy()
 	{
-		FloatingThing::destroy();
-
 		setTeamNum(-1);
+
+		FloatingThing::destroy();
 	}
 
 private:
