@@ -271,15 +271,71 @@ void Physics::collisionCheck()
 	}
 
 	// check the last row for collisions with the others
-	
+	for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	{
+		for (t=0; t<mThingGrid[i][PHYSICS_GRID_SIZE-1].size(); t++)
+		{
+			// get the thing
+			Thing* thing = mThingGrid[i][PHYSICS_GRID_SIZE-1][t];
+
+			// check it against all following things in this cell
+			for (u=0; u<mOtherThings.size(); u++)
+				pairCollisionCheck(thing, mOtherThings[u]);
+		}
+	}
+
 	// check the last column for collisions with the others
+	for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
+	{
+		for (t=0; t<mThingGrid[PHYSICS_GRID_SIZE-1][j].size(); t++)
+		{
+			// get the thing
+			Thing* thing = mThingGrid[PHYSICS_GRID_SIZE-1][j][t];
+
+			// check it against all other things
+			for (u=0; u<mOtherThings.size(); u++)
+				pairCollisionCheck(thing, mOtherThings[u]);
+		}
+	}
 
 	// check the others for collisions with the first row
+	for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	{
+		for (t=0; t<mThingGrid[i][0].size(); t++)
+		{
+			// get the thing
+			Thing* thing = mThingGrid[i][0][t];
+
+			// check it against all other things
+			for (u=0; u<mOtherThings.size(); u++)
+				pairCollisionCheck(thing, mOtherThings[u]);
+		}
+	}
 
 	// check the others for collisions with the first col
+	for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
+	{
+		for (t=0; t<mThingGrid[0][j].size(); t++)
+		{
+			// get the thing
+			Thing* thing = mThingGrid[0][j][t];
+
+			// check it against all other things
+			for (u=0; u<mOtherThings.size(); u++)
+				pairCollisionCheck(thing, mOtherThings[u]);
+		}
+	}
 
 	// check the others for collisions among themselves
+	for (i=0; i<mOtherThings.size(); i++)
+	{
+		// get the thing
+		Thing* thing = mOtherThings[i];
 
+		// check it against all following other things
+		for (u=i+1; u<mOtherThings.size(); u++)
+			pairCollisionCheck(thing, mOtherThings[u]);
+	}
 }
 
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
