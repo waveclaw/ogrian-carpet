@@ -1,5 +1,3 @@
-// a list of global constants
-
 #ifndef __OgrianHeightMap_H__
 #define __OgrianHeightMap_H__
 

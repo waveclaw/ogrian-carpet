@@ -37,6 +37,7 @@ Description: Main class for Ogrian Carpet
 #include "OgrianConstants.h"
 #include "OgrianFrameListener.h"
 #include "OgrianHeightMap.h"
+#include "OgrianPhysics.h"
 
 
 using namespace Ogre;
@@ -151,6 +152,8 @@ protected:
     // Just override the mandatory create scene method
     void createScene(void)
     {
+		OgrianPhysics::getSingleton().test();
+
         Entity *waterEntity;
         Plane waterPlane;
       

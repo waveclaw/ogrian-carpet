@@ -100,6 +100,6 @@ namespace Ogre
 
 	OgrianHeightMap::~OgrianHeightMap()
 	{
-		//if (mData) delete mData;
+		
 	}
 }

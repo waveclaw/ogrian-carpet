@@ -112,6 +112,9 @@
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File
+				RelativePath="OgrianPhysics.cpp">
+			</File>
+			<File
 				RelativePath="main.cpp">
 			</File>
 		</Filter>
@@ -129,6 +132,9 @@
 			</File>
 			<File
 				RelativePath="OgrianHeightMap.h">
+			</File>
+			<File
+				RelativePath="OgrianPhysics.h">
 			</File>
 		</Filter>
 		<Filter
