@@ -76,15 +76,24 @@ bool Input::processKeyInput(InputReader* input)
 		mKeys[i] = input->isKeyDown((Ogre::KeyCode)i);
 	}
 
+	// mousewheel up
+	if (input->getMouseRelativeZ() > 0)
+		SpellManager::getSingleton().readyPrevSpell();
+
+	// mousewheel down
+	if (input->getMouseRelativeZ() < 0) 
+		SpellManager::getSingleton().readyNextSpell();
+
 	// show the PlayerList
     if( input->isKeyDown( KC_TAB ))
-    {            
 		PlayerList::getSingleton().show();
-    }
-	else PlayerList::getSingleton().hide();
+	else 
+		PlayerList::getSingleton().hide();
 
 	// cast the selected spell
-	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost())
+	if (input->getMouseButton(0) 
+		&& mTimeUntilNextCast <= 0 
+		&& !Renderer::getSingleton().getCameraThing()->isGhost())
 	{
         mTimeUntilNextCast = SpellManager::getSingleton().castSpell();
 	}
@@ -98,21 +107,15 @@ void Input::keyPressed(int key)
 {
 	// show the menu
     if(key == KC_ESCAPE)
-    {            
 		Menu::getSingleton().show();
-    }
 
 	// select the next spell
 	if (key == KC_E)
-	{
 		SpellManager::getSingleton().readyNextSpell();
-	}
 
 	// select the prev spell
 	if (key == KC_Q)
-	{
 		SpellManager::getSingleton().readyPrevSpell();
-	}
 }
 
 //----------------------------------------------------------------------------
