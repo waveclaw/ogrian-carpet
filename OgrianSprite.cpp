@@ -52,6 +52,7 @@ Sprite::Sprite(String name, bool fixed_y)
 
 	mWidth = 1;
 	mHeight = 1;
+	mColour = ColourValue::Red;
 
 	mInRenderer = false;
 
@@ -71,7 +72,9 @@ void Sprite::setColour(ColourValue& colour)
 	mColour = colour;
 
 	if (mInRenderer)
+	{ 
 		mBillboard->setColour(colour);
+	}
 }
 
 //----------------------------------------------------------------------------

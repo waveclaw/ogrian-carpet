@@ -51,6 +51,7 @@ public:
 	{
 		setAmount(amount);
 		playSound("OgrianMedia/sounds/hum1.wav", true);
+		setColour(ColourValue(0,1,1));
 	}
 
 	// setting the amount automatically sets the scale

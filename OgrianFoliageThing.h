@@ -46,7 +46,6 @@ public:
 	FoliageCorpse(Vector3 pos, Real scale) 
 		: Thing("Ogrian/PalmTreeDead", SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
 	{
-
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }

@@ -7,6 +7,7 @@ material Ogrian/Wizard/f
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -24,6 +25,7 @@ material Ogrian/Wizard/fl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -41,6 +43,7 @@ material Ogrian/Wizard/l
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -58,6 +61,7 @@ material Ogrian/Wizard/bl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -75,6 +79,7 @@ material Ogrian/Wizard/b
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -92,6 +97,7 @@ material Ogrian/Wizard/br
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -109,6 +115,7 @@ material Ogrian/Wizard/r
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -126,6 +133,7 @@ material Ogrian/Wizard/fr
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{

@@ -123,9 +123,9 @@ material Ogrian/Mana
 	{
 		pass
 		{
+			lighting off
 			scene_blend alpha_blend
 			depth_write off
-			ambient 0.0 1 1
 
 			texture_unit
 			{

@@ -30,6 +30,7 @@ This is never rendered.
 
 /*------------------------------------*/
 
+#include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
 #include "OgrianHud.h"
 
@@ -58,6 +59,7 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	colour.b = atof(config.getSetting( "blue" ));
 	colour.g = atof(config.getSetting( "green" ));
 	setColour(colour);
+
 }
 
 //----------------------------------------------------------------------------
