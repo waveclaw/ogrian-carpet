@@ -181,7 +181,8 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
+	if (getTeamNum() != sourceTeamNum)
+		dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
 }
 
 //----------------------------------------------------------------------------
