@@ -103,7 +103,7 @@ void Game::serverVictoryCheck()
 		if (winner == Renderer::getSingleton().getCameraThing())
 		{
 			// we are the winner
-			Hud::getSingleton().setMessage("!!! a winner is you !!!");
+			Hud::getSingleton().setMessage("! ! !   a   winner   is   you   ! ! !");
 		}
 		else
 		{

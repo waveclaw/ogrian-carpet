@@ -86,7 +86,7 @@ void CameraThing::makeGhost()
 
 	setScale(0);
 
-	Hud::getSingleton().setHealth(0);
+	Hud::getSingleton().makeGhost();
 }
 
 //----------------------------------------------------------------------------

@@ -272,6 +272,8 @@ void WizardThing::setHealth(int health)
 void WizardThing::die()
 {
 	DamageableThing::die();
+		
+	setActiveMana(0);
 
 	if (!Multiplayer::getSingleton().isClient())
 	{

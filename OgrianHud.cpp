@@ -79,6 +79,20 @@ void Hud::hide()
 
 //----------------------------------------------------------------------------
 
+void Hud::makeGhost()
+{
+	mMana->hide();
+	mHealth->hide();
+	mSpellName->hide();
+
+	for (int i=0; i<NUM_SPELLS; i++)
+		mSpellIcons[i]->hide();
+
+	setMessage("you   are   dead   : (");
+}
+
+//----------------------------------------------------------------------------
+
 void Hud::setBaseMana(int baseMana)
 {
 	mBaseMana = baseMana;
