@@ -388,7 +388,7 @@ int Multiplayer::getWizardUID(PlayerID pid)
 		if (mPlayers[i].id == pid) return mPlayers[i].wizardUID;
 	}
 
-	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
+	LogManager::getSingleton().logMessage(String("Multiplayer::getWizardUID() failed, PlayerID not found: #") << pid.binaryAddress);
 	return -1;
 }
 
@@ -401,7 +401,7 @@ PlayerID Multiplayer::getPlayerID(int wizardUID)
 		if (mPlayers[i].wizardUID == wizardUID) return mPlayers[i].id;
 	}
 
-	LogManager::getSingleton().logMessage(String("WizardUID not found: #") << wizardUID);
+	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerID() failed, WizardUID not found: #") << wizardUID);
 	return mPlayers[0].id;
 }
 
@@ -414,7 +414,7 @@ PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 		if (mPlayers[i].id == pid) return &mPlayers[i];
 	}
 
-	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
+	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerInfo() failed, PlayerID not found: #") << pid.binaryAddress);
 	return 0;
 }
 
@@ -483,6 +483,10 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// set the camera UID
 			Renderer::getSingleton().getCameraThing()->_setUID(uid);
+
+			LogManager::getSingleton().logMessage(String("Setting wizUID: ") 
+				<< Renderer::getSingleton().getCameraThing()->getUID());
+
 			return true;
 		}
 
@@ -597,9 +601,16 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			PlayerInfo player;
 			player.id = packet->playerId;
 			player.name = playerName;
-			player.wizardUID = Physics::getSingleton().newWizardThing()->getUID();
+
+			WizardThing* wt = new WizardThing();
+			Physics::getSingleton().addThing(wt);
+			player.wizardUID = wt->getUID();
+
 			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
 			mPlayers.push_back(player);
+
+			Physics::getSingleton().listThings();
+			LogManager::getSingleton().logMessage(String("Client Wizard UID: ") << player.wizardUID);
 
 			// send a message to the client telling it what its wizardUID is
 			BitStream bs;

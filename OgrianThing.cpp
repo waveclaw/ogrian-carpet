@@ -38,7 +38,7 @@ It is rendered as a Billboard.
 namespace Ogrian
 {
 
-unsigned long Thing::msNextGeneratedNameExt = 1;
+unsigned long Thing::msNextGeneratedNameExt = 0;
 
 //----------------------------------------------------------------------------
 

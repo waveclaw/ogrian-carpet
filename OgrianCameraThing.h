@@ -48,7 +48,7 @@ public:
 	CameraThing(Camera* camera);
 	virtual ~CameraThing();
 
-	virtual ThingType getType();
+	virtual ThingType getType() { return CAMERATHING; }
 
 	virtual Vector3 getDirection();
 

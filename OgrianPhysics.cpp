@@ -92,13 +92,17 @@ void Physics::frame(Real time)
 
 void Physics::clientFrame(Real time)
 {
-	// notify the server of our camerathing
 	CameraThing* cthing = static_cast<CameraThing*>(Renderer::getSingleton().getCameraThing());
 
+	// do nothing if we dont have a camera thing yet
 	if (cthing == 0) return;
+
+	// do nothing if we don't have a wizardUID yet
+	if (Renderer::getSingleton().getCameraThing()->getUID() < 1) return;
 
 	if (cthing->lastUpdateTime() + THING_UPDATE_PERIOD/2 < Time::getSingleton().getTime())
 	{
+		// notify the server of our camerathing
 		BitStream bs;
 		cthing->generateBitStream(bs);
 		Multiplayer::getSingleton().clientSend(&bs, false);
@@ -159,7 +163,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			thing = newThing((ThingType)type, 0);
 
 			// log it
-			//LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
+			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -233,7 +237,10 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 			int uid = Multiplayer::getSingleton().getWizardUID(packet->playerId);
 			WizardThing* wthing = static_cast<WizardThing*>(getThing(uid));
 
-			if (wthing == 0) LogManager::getSingleton().logMessage(String("wizardthing not found: #") << uid);
+			if (wthing == 0)
+			{
+				LogManager::getSingleton().logMessage(String("wizardthing not found: #") << uid);
+			}
 			else
 			{
 				// send the update to it
@@ -287,21 +294,12 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 //----------------------------------------------------------------------------
 
-WizardThing* Physics::newWizardThing()
-{
-	WizardThing* wt = new WizardThing();
-	addThing(wt);
-	return wt;
-}
-
-//----------------------------------------------------------------------------
-
 void Physics::listThings()
 {
 	LogManager::getSingleton().logMessage("All Things:");
 
 	for (int i=0; i<(int)mAllThings.size(); i++)
-		LogManager::getSingleton().logMessage(String(" thing: ") << mAllThings[i]->getUID());
+		LogManager::getSingleton().logMessage(String(" thing: ") << mAllThings[i]->getString());
 }
 
 //----------------------------------------------------------------------------

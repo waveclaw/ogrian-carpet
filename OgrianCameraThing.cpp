@@ -55,13 +55,6 @@ CameraThing::~CameraThing()
 
 //----------------------------------------------------------------------------
 
-ThingType CameraThing::getType()
-{
-	return CAMERATHING;
-}
-
-//----------------------------------------------------------------------------
-
 Vector3 CameraThing::getDirection()
 {
 	return mCamera->getDerivedDirection();	

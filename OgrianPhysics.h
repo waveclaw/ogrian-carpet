@@ -88,9 +88,6 @@ public:
 	// handle client packet, return true if handled
 	bool handleClientPacket(Packet* p, PacketID pid);
 
-	// get a new WizardThing for a client
-	WizardThing* newWizardThing();
-
 	// add a new team
 	int addTeam(int wizardUID);
 
@@ -99,6 +96,9 @@ public:
 
 	// clear the teams
 	void clearTeams();
+
+	// send a list of all things to the log
+	void listThings();
 
     static Physics& getSingleton(void);
 
@@ -155,9 +155,6 @@ private:
 
 	// sort mAllThings by uid
 	void _sortAllThings();
-
-	// send a list of all things to the log
-	void listThings();
 
 	// make a new thing of the specified type
 	Thing* newThing(ThingType type, int teamNum);

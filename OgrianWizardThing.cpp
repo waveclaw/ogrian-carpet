@@ -41,13 +41,21 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 	
 WizardThing::WizardThing(bool visible) 
-	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, "WizardThing", true, CAMERA_HEIGHT)
+	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
+	visible?"WizardThing":"CameraThing", true, CAMERA_HEIGHT)
 {
 	if (visible)
 	{
 		getVisRep()->addPose("Ogrian/Wizard/");
 		getVisRep()->setPose(0);
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::placedInPhysics(int uid)
+{
+	DamageableThing::placedInPhysics(uid);
 
 	setHealth(WIZARD_HEALTH);
 }
