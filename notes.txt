@@ -1,0 +1,17 @@
+Ogrian Carpet Notes
+
+to add:
+=============
+music button
+OgrianConst singleton class
+Magus AI
+Hand Sprites
+
+To consider:
+==============
+use a real flower for firestalk sprites
+
+Spells:
+=============
+firestorm - very rapid fire with random trajectories
+inferno - several fireballs held in place relative to the camera
