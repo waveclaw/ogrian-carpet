@@ -48,6 +48,7 @@ BaloonThing::BaloonThing(int team, Vector3 pos, unsigned int amount)
 	setTeamNum(team);
 	setTarget(0);
 	setUpdateType(CONTINUOUS);
+	unload();
 }
 
 //----------------------------------------------------------------------------
@@ -167,12 +168,6 @@ void BaloonThing::collided(Thing* thing)
 
 void BaloonThing::setStateWait()
 {
-	if (mState == BAL_STATE_WAIT)
-	{
-		int i;
-		i++;
-	}
-
 	mState = BAL_STATE_WAIT;
 	mNeedOrders = true;
 	setVelocity(Vector3(0,0,0));

@@ -114,7 +114,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 		Physics::getSingleton().addThing(mBlocks[i]);
 
 	// start at level 0
-	setMana(400);
+	setMana(200);
 }
 
 //----------------------------------------------------------------------------
@@ -146,6 +146,10 @@ void Castle::setMana(int amount)
 {
 	mMana = amount;
 
+		std::ostringstream num("");
+		num << amount;
+		LogManager::getSingleton().logMessage("Castle setting mana: " + num.str());
+
 	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
 }
 
@@ -160,13 +164,18 @@ int Castle::getMana()
 
 void Castle::addMana(int amount)
 {
-	mMana += amount;
+		std::ostringstream num("");
+		num << amount;
+		LogManager::getSingleton().logMessage("Castle gaining mana: " + num.str());
+
+	setMana(mMana + amount);
 }
 
 //----------------------------------------------------------------------------
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
+	LogManager::getSingleton().logMessage("Castle taking fire...");
 	dropMana(amount);
 }
 
@@ -219,6 +228,10 @@ void Castle::dropMana(int amount)
 	// cant drop more then we have
 	if (amount > mMana) amount = mMana;
 
+		std::ostringstream num("");
+		num << amount;
+		LogManager::getSingleton().logMessage("Castle dropping mana: " + num.str());
+
 	// can't drop less then one mana
 	if (amount < 1) return;
 
@@ -243,6 +256,10 @@ void Castle::dropMana(int amount)
 
 void Castle::setLevel(Real level)
 {
+		std::ostringstream num("");
+		num << level;
+		LogManager::getSingleton().logMessage("Castle setting level: " + num.str());
+
 	mLevel = level;
 
 	mBlocks[0]->setPercentage(1);
