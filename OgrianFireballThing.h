@@ -67,6 +67,7 @@ public:
 		playSound(Game::getSingleton().SOUND_BANG);
 		setRelativeExpirationTime(CONR("FIREBALL_BLAST_LIFETIME"));
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
+		setColour(ColourValue(1,0,0));
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
