@@ -97,7 +97,7 @@ private:
 	Sprite* fr;
 };
 
-class OrientedSprite
+class OrientedSprite : public VisRep
 {
 public:
 	OrientedSprite();

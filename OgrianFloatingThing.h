@@ -44,9 +44,9 @@ namespace Ogrian
 class FloatingThing : public Thing
 {
 public:
-	FloatingThing(String material, String prefix="FloatingThing", bool fixed_y=false, 
+	FloatingThing(String material, ThingVisRep visrep=SPRITE, String prefix="FloatingThing", bool fixed_y=false, 
 		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE) 
-		: Thing(material, prefix, fixed_y, scale, pos, shape)
+		: Thing(material, visrep, prefix, fixed_y, scale, pos, shape)
 	{
 		
 	}

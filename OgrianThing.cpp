@@ -33,6 +33,7 @@ It is rendered as a Billboard.
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
 #include "OgrianTime.h"
+#include "OgrianOrientedSprite.h"
 
 namespace Ogrian
 {
@@ -41,7 +42,7 @@ unsigned long Thing::msNextGeneratedNameExt = 1;
 
 //----------------------------------------------------------------------------
 
-Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 pos, ThingShape shape)
+Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, Real scale, Vector3 pos, ThingShape shape)
 {
 	// initialize the mvars
 	mAlive = true;
@@ -55,9 +56,17 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
 
-	// make the sprite
-	Sprite* sprite = new Sprite(mName, fixed_y);
-	mVisRep = sprite;
+	if (visrep == SPRITE)
+	{
+		// make the sprite
+		Sprite* sprite = new Sprite(mName, fixed_y);
+		mVisRep = sprite;
+	}
+	else if (visrep == ORIENTEDSPRITE)
+	{
+		OrientedSprite* osprite = new OrientedSprite();
+		mVisRep = osprite;
+	}
 
 	// set the settings
 	setMaterial(material);
@@ -83,6 +92,13 @@ Thing::~Thing()
 
 		delete mVisRep;
 	}
+}
+
+//----------------------------------------------------------------------------
+
+VisRep* Thing::getVisRep()
+{
+	return mVisRep;
 }
 
 //----------------------------------------------------------------------------
@@ -220,6 +236,8 @@ void Thing::setMaterial(String material)
 // increment the position by the velocity times time
 void Thing::move(Real time)
 {
+	if (mVisRep->inRenderer()) mVisRep->frame();
+
 	setPosition(mPos + mVel * time);
 
 	_updateVisibility();

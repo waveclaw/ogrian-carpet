@@ -44,7 +44,7 @@ class FoliageThing : public Thing
 {
 public:
 	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
-		: Thing("Ogrian/PalmTree", "Foliage", true, scale, pos)
+		: Thing("Ogrian/PalmTree", SPRITE, "Foliage", true, scale, pos)
 	{
 		setShape(CYLINDER);
 		setHeight(scale*1.5);

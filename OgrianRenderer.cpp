@@ -294,7 +294,8 @@ void Renderer::loadMap(String configfile)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-	//createFoliage(foliageMaterial, FOLIAGE_NUM);
+	if (!Multiplayer::getSingleton().isClient())
+		createFoliage(foliageMaterial, FOLIAGE_NUM);
 
     // Position the camera
     mCamera->setPosition(Vector3(100,0,100));

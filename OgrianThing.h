@@ -55,6 +55,13 @@ enum ThingType
 	WIZARDTHING,
 };
 
+enum ThingVisRep
+{
+	SPRITE,
+	ORIENTEDSPRITE,
+	MESH,
+};
+
 // this is used for collision detection
 enum ThingShape
 {
@@ -66,7 +73,7 @@ enum ThingShape
 class Thing
 {
 public:
-	Thing(String material, String prefix="Thing", bool fixed_y=false, 
+	Thing(String material, ThingVisRep visrep=SPRITE, String prefix="Thing", bool fixed_y=false, 
 		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
 	virtual ~Thing();
 
@@ -80,6 +87,8 @@ public:
 	virtual void setHeight(Real height);
 
 	virtual void setMaterial(String material);
+
+	virtual VisRep* getVisRep();
 
 	virtual inline void setShape(ThingShape);
 	virtual inline ThingShape getShape();
