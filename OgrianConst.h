@@ -55,7 +55,9 @@ public:
 private:
 	Const();
 
-	ConfigFile mFile;
+	ConfigFile mFile1;
+	
+	ConfigFile mFile2;
 };
 
 }

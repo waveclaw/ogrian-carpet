@@ -40,7 +40,8 @@ namespace Ogrian
 
 Const::Const()
 {
-	mFile.load("constants.txt");
+	mFile1.load("constants.txt");
+	mFile2.load("config.txt");
 }
 
 //----------------------------------------------------------------------------
@@ -54,7 +55,8 @@ Const::~Const()
 
 int Const::getConstantInt(const String &key)
 {
-	int c = atoi(mFile.getSetting(key).c_str());
+	int c = atoi(mFile1.getSetting(key).c_str());
+	if (c == 0.0) c = atoi(mFile2.getSetting(key).c_str());
 	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
@@ -63,7 +65,8 @@ int Const::getConstantInt(const String &key)
 
 Real Const::getConstantReal(const String &key)
 {
-	Real c = atof(mFile.getSetting(key).c_str());
+	Real c = atof(mFile1.getSetting(key).c_str());
+	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
 	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }

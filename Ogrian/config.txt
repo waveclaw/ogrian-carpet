@@ -24,3 +24,7 @@ music=false
 red=0
 blue=1
 green=0
+
+
+# Performance variables
+THING_CULL_DIST=100
