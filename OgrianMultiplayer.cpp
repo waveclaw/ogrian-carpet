@@ -528,6 +528,29 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Menu::getSingleton().show();
 			return true;
 		}
+
+		case ID_SETSCORE: //////////////////////////////////////////////////////
+		{
+			// get the new score
+			String score;
+			packetToString(packet,score);
+
+			// set it
+			Hud::getSingleton().setScore(score);
+		}
+		case ID_CLEAR_SCOREBOARD: //////////////////////////////////////////////////////
+		{
+			PlayerList::getSingleton().clear();
+		}
+		case ID_ADD_SCORE: //////////////////////////////////////////////////////
+		{
+			// get the new score
+			String score;
+			packetToString(packet,score);
+
+			// add it
+			PlayerList::getSingleton().addPlayer(score);
+		}
 	}
 	return false;
 }

@@ -51,6 +51,8 @@ public:
 
 	void setScore(int score);
 
+	void setScore(String score);
+
 private:
 	Hud();
 

@@ -74,6 +74,13 @@ void Hud::setScore(int score)
 
 //----------------------------------------------------------------------------
 
+void Hud::setScore(String score)
+{
+	mScore->setCaption(score);
+}
+
+//----------------------------------------------------------------------------
+
 Hud& Hud::getSingleton(void)
 {
 	if (!ms_Singleton) 
