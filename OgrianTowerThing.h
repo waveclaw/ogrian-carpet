@@ -224,7 +224,7 @@ public:
 
 	virtual void think()
 	{
-		// if its time, claim a nearby mana
+		// if its time, claim a nearby mana or hut
 		if (Clock::getSingleton().getTime() > mLastCastTime + CONT("TOWER_CAST_PERIOD"))
 		{
 			mLastCastTime = Clock::getSingleton().getTime();
@@ -245,14 +245,14 @@ public:
 			if (health > CONI("TOWER_HEALTH"))
 				setHealth(CONI("TOWER_HEALTH"));
 
-			// cast a mana at the nearest manathing in range
+			// cast a mana at the nearest mana or hutin range
 			Thing* target = 0;
 			Real bestDist = CONR("TOWER_RANGE");
 			for (int i=0; i<Physics::getSingleton().numThings(); i++)
 			{
 				Thing* candidate = Physics::getSingleton().getThingByIndex(i);
 				if (candidate 
-					&& candidate->getType() == MANATHING 
+					&& (candidate->getType() == MANATHING || candidate->getType() == HUTTHING)
 					&& cylinderDistance(candidate) < bestDist
 					&& candidate->getTeamNum() != getTeamNum()
 					&& candidate->isAlive() )

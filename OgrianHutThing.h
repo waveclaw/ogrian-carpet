@@ -78,7 +78,7 @@ public:
 			CONR("HUT_MESH_SCALE"), CONR("HUT_MESH_RATIO"));
 
 		setHeight(CONR("HUT_HEIGHT"));
-		mTeamNum = -1;
+		Thing::setTeamNum(-1);
 		mBall = new HutBall();
 		Physics::getSingleton().addThing(mBall);
 
@@ -90,36 +90,34 @@ public:
 		mBall->destroy();
 	}
 
-	virtual void claim(int teamNum)
+	virtual void setTeamNum(int teamNum)
 	{
-		unclaim();
-
-		mTeamNum = teamNum;
-
-		Team* team = Physics::getSingleton().getTeam(mTeamNum);
-		if (team)
+		// remove from the old team
+		if (getTeamNum() >= 0)
 		{
-			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-			wizard->addHut();
+			Team* team = Physics::getSingleton().getTeam(getTeamNum());
+			if (team)
+			{
+				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+				wizard->removeHut();
+			}
 		}
 
-		setColour(team->getColour());
-	}
-
-	virtual void unclaim()
-	{
-		if (mTeamNum < 0) return;
-
-		Team* team = Physics::getSingleton().getTeam(mTeamNum);
-		if (team)
+		// add to the new team
+		if (teamNum >= 0)
 		{
-			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-			wizard->removeHut();
+			Team* team = Physics::getSingleton().getTeam(teamNum);
+			if (team)
+			{
+				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+				wizard->addHut();
+			}
+
+			setColour(team->getColour());
 		}
+		else setColour(ColourValue::White);
 
-		mTeamNum = -1;
-
-		setColour(ColourValue::White);
+		Thing::setTeamNum(teamNum);
 	}
 
 	virtual void setColour(ColourValue& colour)
@@ -142,7 +140,6 @@ public:
 	virtual ThingType getType()	{ return HUTTHING; }
 	
 private:
-	int mTeamNum;
 	HutBall* mBall;
 };
 

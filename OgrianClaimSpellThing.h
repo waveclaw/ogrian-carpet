@@ -60,17 +60,11 @@ public:
 
 	virtual void collided(Thing* e)
 	{
-		// claim mana
-		if (e->getType() == MANATHING)
+		// claim mana and huts
+		if ((e->getType() == MANATHING || e->getType() == HUTTHING)
+			&& e->getTeamNum() != getTeamNum())
 		{
 			e->setTeamNum(getTeamNum());
-			destroy();
-		}
-
-		// claim huts
-		if (e->getType() == HUTTHING)
-		{
-			((HutThing*)e)->claim(getTeamNum());
 			destroy();
 		}
 	}
