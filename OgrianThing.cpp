@@ -32,6 +32,7 @@ It is rendered as a Billboard.
 #include "OgrianThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
+#include "OgrianTime.h"
 
 namespace Ogrian
 {
@@ -398,6 +399,8 @@ void Thing::_updateAudibility()
 
 void Thing::generateBitStream(BitStream& bitstream)
 {
+	mLastUpdateTime = Time::getSingleton().getTime();
+
 	bitstream.Write(ID_UPDATE_THING);
 	bitstream.Write(mUID);
 	bitstream.Write(getType());
@@ -432,6 +435,12 @@ void Thing::interpretBitStream(BitStream& bitstream)
 
 	setPosition(pos);
 	setVelocity(vel);
+}
+//----------------------------------------------------------------------------
+
+Real Thing::lastUpdateTime()
+{
+	return mLastUpdateTime;
 }
 //----------------------------------------------------------------------------
 

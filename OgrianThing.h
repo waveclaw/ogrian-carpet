@@ -141,6 +141,9 @@ public:
 	// get the unique identifier
 	virtual int getUID();
 
+	// get the last time a bitstream was generated for this thing
+	virtual Real lastUpdateTime();
+
 	
 private:
 	Vector3 mPos;
@@ -170,6 +173,8 @@ private:
 
 	// a unique identifier
 	int mUID;
+
+	unsigned long mLastUpdateTime; // the last time a bitstream was generated for this thing
 
 	virtual void _addToRenderer();
 	virtual void _removeFromRenderer();

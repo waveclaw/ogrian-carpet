@@ -34,6 +34,7 @@ Description: This handles all of the multiplayer networking code.
 #include "OgrianPhysics.h"
 #include "OgreConfigFile.h"
 
+#include "GetTime.h"
 
 using namespace Ogre;
 
@@ -75,6 +76,7 @@ void Multiplayer::loadConfig()
 }
 
 //----------------------------------------------------------------------------
+
 void Multiplayer::clientStart()
 {
 	assert(!mActive);

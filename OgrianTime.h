@@ -19,31 +19,58 @@
 *****************************************************************************/
 
 /*------------------------------------*
-main.cpp
-Original Author: The OGRE Team
+OgrianTime.h
+Original Author: RakkarSoft
 Additional Authors: Mike Prosser
 
-Description: makes an app and makes it go
+Description: this is a re-do of the RakNet GetTime class to make it a proper singleton
 
 /*------------------------------------*/
 
-#include "Ogre.h"
-#include "OgrianApplication.h"
-#include <windows.h>
+#ifndef __OgrianTime_H__
+#define __OgrianTime_H__
 
-#include "OgrianTime.h"
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <sys/time.h>
+#endif
 
-using namespace Ogrian;
+#include <Ogre.h>
+#include <OgreSingleton.h>
 
-INT WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,INT) 
+using namespace Ogre;
+
+namespace Ogrian
 {
-	// start the clock
-	Time::getSingleton().init();
 
-	OgrianApplication theApp;		// Instanciate our subclass
-	try {			// This try-catch provides a nice way of popping up errors if they occur.
-		theApp.go();	// go
-	} catch (Ogre::Exception& e) {
-		MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occured!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-	}
+// A utility class to get a more accurate time than timeGetTime()
+class Time : public Singleton< Time >
+{
+public:
+	virtual ~Time();
+
+	// this should be called at the start of main()
+	void init();
+
+	// Call this to get the current time
+	unsigned long getTime();
+
+    static Time& getSingleton(void);
+
+private:
+	Time();
+
+    #ifdef _WIN32
+		LARGE_INTEGER yo;
+		LONGLONG counts;
+	#else
+		timeval tp, initialTime;
+	#endif
+
+	bool initialized;
+};
+
 }
+#endif
+
