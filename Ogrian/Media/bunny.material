@@ -1,0 +1,137 @@
+
+material Ogrian/Bunny/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Bunny/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/bunny/bunny_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

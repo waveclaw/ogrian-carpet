@@ -185,6 +185,9 @@
 				RelativePath="OgrianAudio.h">
 			</File>
 			<File
+				RelativePath="OgrianBaloonThing.h">
+			</File>
+			<File
 				RelativePath="OgrianCameraThing.h">
 			</File>
 			<File
@@ -280,10 +283,19 @@
 			<File
 				RelativePath="fmod.h">
 			</File>
+			<File
+				RelativePath="resource.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			<File
+				RelativePath="Ogrian.rc">
+			</File>
+			<File
+				RelativePath="icon1.ico">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

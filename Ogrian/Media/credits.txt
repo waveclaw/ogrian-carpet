@@ -16,7 +16,10 @@ Last Glimpse - by Adrian Ouarar, from WorldForge (http://purple.worldforge.org/w
 
 
 
-photography: Jeff Knous
+photography:
+Jeff Knous
+Mike Prosser
+Rick Prosser
 
 Models:
 Jeff Knous

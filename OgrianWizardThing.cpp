@@ -49,6 +49,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mSkin = skin;
 
 	setupSkins();
+	setSkin(skin);
 
 	if (visible)
 	{
@@ -97,6 +98,7 @@ void WizardThing::setupSkins()
 	getVisRep()->addPose("Ogrian/Mike/");
 	getVisRep()->addPose("Ogrian/Rick/");
 	getVisRep()->addPose("Ogrian/Jess/");
+	getVisRep()->addPose("Ogrian/Bunny/");
 
 }
 

@@ -292,6 +292,26 @@ material Ogrian/Mana
 		}
 	}
 }
+material Ogrian/Baloon
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture baloon.png
+				tex_address_mode clamp
+
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
 material Ogrian/Smoke
 {
 	technique
