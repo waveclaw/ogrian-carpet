@@ -33,17 +33,9 @@ It is a Singleton.
 #include "Ogre.h"
 #include "OgrianHeightMap.h"
 #include "OgrianConstants.h"
-#include <OgreTerrainSceneManager.h>
 #include <OgreImage.h>
 #include <OgreConfigFile.h>
-#include <OgreMaterial.h>
-#include <OgreTechnique.h>
-#include <OgrePass.h>
-#include <OgreCamera.h>
 #include "OgreException.h"
-#include "OgreStringConverter.h"
-#include <OgreRenderSystem.h>
-#include <fstream>
 
 using namespace Ogre;
 
