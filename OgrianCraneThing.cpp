@@ -73,8 +73,7 @@ void CraneThing::setVelocity(Vector3 vel)
 	vel.normalise();
 
 	Radian orientation = Math::ATan2(vel.x, vel.z);
-	//getVisRep()->
-		setOrientation(orientation.valueRadians());
+	setOrientation(orientation.valueRadians());
 }
 
 //----------------------------------------------------------------------------
@@ -107,17 +106,19 @@ void CraneThing::clientThink()
 void CraneThing::think()
 {
 	// flap
-	//if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
-	{
-		mLastFlap = !mLastFlap;
-		mLastFlapTime = Clock::getSingleton().getTime();
+	mLastFlap = !mLastFlap;
+	mLastFlapTime = Clock::getSingleton().getTime();
 
-		getVisRep()->setPose( mLastFlap ? 0 : 1 );
-	}
+	getVisRep()->setPose( mLastFlap ? 0 : 1 );
+
 
 	// state operation
 	if (mState == CRANE_STATE_FLY_IN)
 	{
+		// stay in the orbit zone
+		if (orbitDistance() > CONR("CRANE_ORBIT_MAX"))
+			setStateFlyIn();
+
 		// stay in the orbit zone
 		if (orbitDistance() < CONR("CRANE_ORBIT_MIN"))
 			setStateFlyOut();
@@ -147,8 +148,6 @@ void CraneThing::think()
 		if (Clock::getSingleton().getTime() > mUnIdleTime)
 			setStateFlyOut();
 	}
-
-	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
@@ -182,7 +181,19 @@ void CraneThing::setStateFlyIn()
 				
 	Vector3 dir = mOrbitPos - getPosition();
 	dir.normalise();
+
+	// randomize the direction by a little bit
+	Vector3 odir;
+	odir.x = Math::RangeRandom(-1,1);
+	odir.z = Math::RangeRandom(-1,1);
+	odir.normalise();
+
+	Real v = CONR("CRANE_VARIANCE");
+	dir = dir*(1-v) + odir*v;
+
 	setVelocity(dir * CONR("CRANE_SPEED"));
+
+	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
@@ -190,13 +201,16 @@ void CraneThing::setStateFlyIn()
 void CraneThing::setStateFlyOut()
 {
 	mState = CRANE_STATE_FLY_OUT;
-				
+		
+	// randomize the direction
 	Vector3 dir;
 	dir.x = Math::RangeRandom(-1,1);
 	dir.y = Math::RangeRandom(-.5,.5);
 	dir.z = Math::RangeRandom(-1,1);
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
+
+	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
@@ -216,6 +230,8 @@ void CraneThing::setStateAttack()
 		Vector3 dir = target->getPosition() - getPosition();
 		dir.normalise();
 		setVelocity(dir * CONR("CRANE_SPEED"));
+
+		setUpdateFlag();
 	}
 	else
 	{
@@ -233,6 +249,8 @@ void CraneThing::setStateIdle()
 	setVelocity(Vector3(0,0,0));
 	
 	mUnIdleTime = Clock::getSingleton().getTime() + CONR("CRANE_IDLE_TIME") * 1000;
+
+	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
