@@ -127,10 +127,10 @@ void Game::loadSounds()
 
 void Game::updateScores()
 {
-	if (Multiplayer::getSingleton().isClient()) return;
+	//if (Multiplayer::getSingleton().isClient()) return;
 
 	// update the scores
-	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
+	//Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
 
 	// propogate the new scores if this is a server
 	if (Multiplayer::getSingleton().isServer()) 

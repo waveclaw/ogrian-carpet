@@ -41,7 +41,7 @@ namespace Ogrian
 Hud::Hud()
 {
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
-	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
+	mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
@@ -50,6 +50,10 @@ Hud::Hud()
 	mSpellIcons[1] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/1");
 	mSpellIcons[2] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/2");
 	setMessage("");
+
+	mBaseMana = 0;
+	mActiveMana = 0;
+	setMana();
 }
 
 //----------------------------------------------------------------------------
@@ -75,18 +79,31 @@ void Hud::hide()
 
 //----------------------------------------------------------------------------
 
-void Hud::setScore(int score)
+void Hud::setBaseMana(int baseMana)
 {
-	std::ostringstream num("");
-	num << score;
-	setScore(String("Mana: ") + num.str());
+	mBaseMana = baseMana;
+	setMana();
 }
 
 //----------------------------------------------------------------------------
 
-void Hud::setScore(String score)
+void Hud::setActiveMana(int activeMana)
 {
-	mScore->setCaption(score);
+	mActiveMana = activeMana;
+	setMana();
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setMana()
+{
+	std::ostringstream active("");
+	active << mActiveMana;
+
+	std::ostringstream base("");
+	base << mBaseMana;
+
+	mMana->setCaption(String("Mana: ") +active.str() + "/" + base.str());
 }
 
 //----------------------------------------------------------------------------

@@ -385,7 +385,6 @@ void Renderer::createScene(void)
 
 	// show the hud
 	Hud::getSingleton().show();
-	Hud::getSingleton().setScore(0);
 }
 
 //----------------------------------------------------------------------------

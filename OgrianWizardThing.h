@@ -121,6 +121,10 @@ public:
 	virtual void setHealth(int health);
 	virtual void damage(int amount, int sourceTeamNum);
 	virtual void die();
+
+	virtual void setBaseMana(int baseMana);
+	virtual void setActiveMana(int activeMana);
+	virtual void subtractActiveMana(int amount);
 	
 	virtual void destroy();
 
@@ -145,6 +149,9 @@ private:
 	Team* mTeam;
 	int mSkin;
 	bool mGhost;
+
+	int mActiveMana;
+	int mBaseMana;
 
 	virtual void setupSkins();
 };

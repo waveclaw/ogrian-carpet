@@ -95,7 +95,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	Physics::getSingleton().addThing(mBlocks[0]);
 
 	// start at level 0
-	setMana(700);
+	setMana(0);
 
 	setHealth(CONI("CASTLE_HEALTH"));
 
@@ -165,6 +165,11 @@ void Castle::setMana(int amount)
 	team->setScore(amount);
 
 	if (amount > 0) setHealth(CONI("CASTLE_HEALTH"));
+
+	// inform the wizard
+	int wuid = Physics::getSingleton().getTeam(getTeamNum())->getWizardUID();
+	WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
+	wizard->setBaseMana(mMana);
 }
 
 //----------------------------------------------------------------------------

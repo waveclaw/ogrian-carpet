@@ -488,11 +488,11 @@ void Multiplayer::updateScores()
 	if (!isServer()) return;
 
 	// send each client its score
-	for (int i=0; i<(int)mPlayers.size(); i++)
-	{
-		serverSendInt(Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
-			ID_SETSCORE, mPlayers[i].id);
-	}
+	//for (int i=0; i<(int)mPlayers.size(); i++)
+	//{
+	//	serverSendInt(Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
+	//		ID_SETSCORE, mPlayers[i].id);
+	//}
 
 	// clear all the scoreboards
 	serverSendAllText(" ", ID_CLEAR_SCOREBOARD);
@@ -609,7 +609,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Hud::getSingleton().setMessage(msg);
 			return true;
 		}
-		case ID_SETHEALTH: //////////////////////////////////////////////////////
+		case ID_SET_HEALTH: //////////////////////////////////////////////////////
 		{
 			// get the new health
 			int pid, health;			
@@ -619,6 +619,30 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// set it
 			Hud::getSingleton().setHealth(health);
+			return true;
+		}
+		case ID_SET_BASE_MANA: //////////////////////////////////////////////////////
+		{
+			// get the new base mana
+			int pid, baseMana;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(baseMana);
+
+			// set it
+			Hud::getSingleton().setBaseMana(baseMana);
+			return true;
+		}
+		case ID_SET_ACTIVE_MANA: //////////////////////////////////////////////////////
+		{
+			// get the new base mana
+			int pid, activeMana;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(activeMana);
+
+			// set it
+			Hud::getSingleton().setBaseMana(activeMana);
 			return true;
 		}
 		case ID_DIE: //////////////////////////////////////////////////////
@@ -640,18 +664,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_GHOST: //////////////////////////////////////////////////////
 		{
 			Renderer::getSingleton().getCameraThing()->makeGhost();
-			return true;
-		}
-		case ID_SETSCORE: //////////////////////////////////////////////////////
-		{
-			// get the new score
-			int pid, score;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(score);
-
-			// set it
-			Hud::getSingleton().setScore(score);
 			return true;
 		}
 		case ID_CLEAR_SCOREBOARD: //////////////////////////////////////////////////////

@@ -31,6 +31,7 @@ Description: The wizard thing is the superclass of the CameraThing
 #include "OgrianWizardThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianHud.h"
 #include "OgrianSkinManager.h"
 
 using namespace Ogre;
@@ -97,6 +98,59 @@ WizardThing::WizardThing(bool visible, int skin)
 Thing* WizardThing::getRamp()
 {
 	return mRamp;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setActiveMana(int activeMana)
+{
+	mActiveMana = activeMana;
+
+	// update the hud if this is a camerathing
+	if (getType() == CAMERATHING)
+	{
+		Hud::getSingleton().setActiveMana(activeMana);
+	}
+
+	// send out the update if this is a server
+	else if (Multiplayer::getSingleton().isServer())
+	{
+		// find the wizard's player
+		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
+
+		// update it
+		Multiplayer::getSingleton().serverSendInt(activeMana, ID_SET_ACTIVE_MANA, player);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setBaseMana(int baseMana)
+{
+	mBaseMana = baseMana;
+	
+	// update the hud if this is a camerathing
+	if (getType() == CAMERATHING)
+	{
+		Hud::getSingleton().setBaseMana(baseMana);
+	}
+
+	// send out the update if this is a server
+	else if (Multiplayer::getSingleton().isServer())
+	{
+		// find the wizard's player
+		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
+
+		// update it
+		Multiplayer::getSingleton().serverSendInt(baseMana, ID_SET_BASE_MANA, player);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::subtractActiveMana(int amount)
+{
+	setActiveMana(mActiveMana - amount);
 }
 
 //----------------------------------------------------------------------------
@@ -193,7 +247,7 @@ void WizardThing::setHealth(int health)
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
 
 		// update it
-		Multiplayer::getSingleton().serverSendInt(health, ID_SETHEALTH, player);
+		Multiplayer::getSingleton().serverSendInt(health, ID_SET_HEALTH, player);
 	}
 }
 //----------------------------------------------------------------------------

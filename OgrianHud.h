@@ -52,8 +52,11 @@ public:
 	// hide the HUD
 	void hide();
 
-	// set the score
-	void setScore(int score);
+	// set the base Mana
+	void setBaseMana(int baseMana);
+
+	// set the active Mana
+	void setActiveMana(int activeMana);
 
 	// set the health 
 	void setHealth(int health);
@@ -69,11 +72,14 @@ public:
 
 private:
 	Hud();
-	void setScore(String score);
+	void setMana(); // acording to mBaseMana and mActiveMana
 	void setHealth(String health);
 
+	int mBaseMana;
+	int mActiveMana;
+
 	Overlay* mOverlay;
-	GuiElement* mScore;
+	GuiElement* mMana;
 	GuiElement* mHealth;
 	GuiElement* mMessage;
 	GuiElement* mSpellName;
