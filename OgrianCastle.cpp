@@ -169,7 +169,9 @@ void Castle::setMana(int amount)
 	// inform the wizard
 	int wuid = Physics::getSingleton().getTeam(getTeamNum())->getWizardUID();
 	WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
-	wizard->setBaseMana(mMana);
+
+	if (wizard)
+		wizard->setBaseMana(mMana);
 }
 
 //----------------------------------------------------------------------------

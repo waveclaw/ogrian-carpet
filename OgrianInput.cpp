@@ -127,6 +127,10 @@ void Input::keyPressed(int key)
 	// select the prev spell
 	if (key == KC_Q)
 		SpellManager::getSingleton().readyPrevSpell();
+
+	// if its a number key, select that spell 
+	if (key >= KC_1 && key <= KC_0)
+		SpellManager::getSingleton().readySpell(key - KC_1);
 }
 
 //----------------------------------------------------------------------------

@@ -134,6 +134,20 @@ void SpellManager::readyDefaultSpell()
 
 //----------------------------------------------------------------------------
 
+void SpellManager::readySpell(int num)
+{
+	if (num < 0) return;
+	if (num >= NUM_SPELLS) return;
+
+	// dont select a disabled spell
+	if (mSpells[num]->getEnabled())
+		mCurrentSpell = num;
+	
+	readyCurrentSpell();
+}
+
+//----------------------------------------------------------------------------
+
 void SpellManager::readyNextSpell()
 {
 	// increment the current spell

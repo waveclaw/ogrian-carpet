@@ -59,6 +59,7 @@ public:
 
 	virtual void disableAllSpells();
 
+	virtual void readySpell(int num);
 	virtual void readyNextSpell();
 	virtual void readyPrevSpell();
 	virtual void readyDefaultSpell();
