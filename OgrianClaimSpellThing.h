@@ -35,6 +35,7 @@ Description: This claims a hut or mana
 #include "OgrianCastle.h"
 #include "OgrianPhysics.h"
 #include "OgrianHutThing.h"
+#include "OgrianManaThing.h"
 
 using namespace Ogre;
 
@@ -61,10 +62,10 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// claim mana and huts
-		if ((e->getType() == MANATHING || e->getType() == HUTTHING)
+		if ((e->getType() == MANATHING || e->getType() == HUTTHING || e->getType() == HUTBALLTHING)
 			&& e->getTeamNum() != getTeamNum())
 		{
-			e->setTeamNum(getTeamNum());
+			e->claim(getTeamNum());
 			destroy();
 		}
 	}

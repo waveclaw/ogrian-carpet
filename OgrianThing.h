@@ -64,6 +64,7 @@ enum ThingType
 	CASTLETURRETTHING,
 	CASTLEFLAGTHING,
 	HUTTHING,
+	HUTBALLTHING,
 	CLAIMTHING,
 	BUILDTHING,
 	SUMMONTHING,
@@ -215,6 +216,9 @@ public:
 
 	virtual Real getGroundY();
 	virtual Real getGroundY(Vector3 pos);
+
+	// used by mana and huts
+	virtual void claim(int teamNum) { }
 
 	// play a sound
 	virtual void playSound(int id, bool sendUpdate=false); //set sendUpdate=true if this sound needs to be explicitly propogated in multiplayer

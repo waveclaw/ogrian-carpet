@@ -46,12 +46,13 @@ namespace Ogrian
 
 /////////////////////////////////////////////////////////////////////////////
 
-class HutBall : public Thing
+class HutBallThing : public Thing
 {
 public:
-	HutBall()
+	HutBallThing(Thing* hut)
 		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_WIDTH"), Vector3(0,0,0), SPHERE)
 	{
+		mHut = hut;
 	}
 
 	virtual void setColour(ColourValue& colour)
@@ -67,10 +68,18 @@ public:
 		}
 
 		Thing::setColour(colour);
+	}
 
+	virtual void claim(int teamNum)
+	{
+		if (mHut)
+			mHut->claim(teamNum);
 	}
 	
-	virtual ThingType getType()	{ return EFFECT; }
+	virtual ThingType getType()	{ return HUTBALLTHING; }
+
+private:
+	Thing* mHut;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -86,8 +95,8 @@ public:
 
 		setHeight(CONR("HUT_HEIGHT"));
 		Thing::setTeamNum(-1);
-		mBall = new HutBall();
-		Physics::getSingleton().addEffect(mBall);
+		mBall = new HutBallThing(this);
+		Physics::getSingleton().addThing(mBall);
 
 		if (!Multiplayer::getSingleton().isClient())
 			setColour(ColourValue::White);
@@ -99,6 +108,13 @@ public:
 	virtual void destroy()
 	{
 		mBall->destroy();
+	}
+
+	virtual void claim(int teamNum)
+	{
+		playSound(Game::getSingleton().SOUND_HUM, true);
+
+		setTeamNum(teamNum);
 	}
 
 	virtual void setTeamNum(int teamNum)
@@ -155,7 +171,7 @@ public:
 	virtual ThingType getType()	{ return HUTTHING; }
 	
 private:
-	HutBall* mBall;
+	HutBallThing* mBall;
 };
 
 }
