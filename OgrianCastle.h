@@ -48,14 +48,43 @@ public:
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
 		mCastle = castle;
+
+		// start at zero
+		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2);
 		setPercentage(1);
 	}
 
 	virtual void setPercentage(Real per)
 	{
 		if (per >= 1) per = 1;
-		if (per <= 0) per = -20;
-		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per);
+		if (per <= 0) per = 0;
+		Real newTargetHeight = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
+
+		if (newTargetHeight == mTargetHeight) return;
+
+		mTargetHeight = newTargetHeight;
+
+		if (mTargetHeight > getHeight())
+		{
+			setVelY(CONR("CASTLE_RISE_SPEED"));
+		}
+		else
+		{
+			setVelY(-CONR("CASTLE_RISE_SPEED"));
+		}
+	}
+
+	virtual void move(Real time)
+	{
+		// if it has reached its target height, stop
+		if (getVelY() > 0 && mTargetHeight < getPosY()
+			|| getVelY() < 0 && mTargetHeight > getPosY())
+		{
+			setPosY(mTargetHeight);
+			setVelY(0);
+		}
+
+		DamageableThing::move(time);
 	}
 
 	virtual void damage(int amount, int sourceTeamNum)
@@ -67,6 +96,8 @@ public:
 	
 private:
 	DamageableThing* mCastle;
+
+	Real mTargetHeight;
 };
 
 /////////////////////////////////////////////////////////////////////////////
