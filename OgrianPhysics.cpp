@@ -329,6 +329,16 @@ bool Physics::containsThing(Thing* thing)
 
 //----------------------------------------------------------------------------
 
+void Physics::addEffect(Thing* thing)
+{
+	mEffects.push_back(thing);
+		
+	// notify the thing
+	thing->placedInPhysics(EFFECT_UID);
+}
+
+//----------------------------------------------------------------------------
+
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
 {
@@ -471,6 +481,24 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 
 //----------------------------------------------------------------------------
 
+void Physics::deleteEffect(Thing* thing)
+{
+	// remove it from mEffects
+	for (unsigned int i=0; i<mEffects.size(); i++)
+	{
+		if (mEffects[i] == thing)
+		{
+			// erase it
+			mEffects.erase(mEffects.begin()+i);
+			break;
+		}
+	}
+
+	delete thing;
+}
+
+//----------------------------------------------------------------------------
+
 // remove a thing from the world
 void Physics::deleteThing(Thing* thing)
 {
@@ -561,6 +589,7 @@ void Physics::clear()
 // move all things, delete the ones not alive
 void Physics::moveAll(Real time)
 {
+	// move all things
 	for (unsigned int i=0; i<mAllThings.size(); i++)
 	{
 		Thing* thing = mAllThings[i];
@@ -569,6 +598,20 @@ void Physics::moveAll(Real time)
 		if (!thing->isAlive())
 		{
 			deleteThing(thing);
+		}
+		// otherwise move it
+		else thing->move(time);
+	}
+	
+	// move all effects
+	for (unsigned int i=0; i<mEffects.size(); i++)
+	{
+		Thing* thing = mEffects[i];
+
+		// delete anything thats not alive
+		if (!thing->isAlive())
+		{
+			deleteEffect(thing);
 		}
 		// otherwise move it
 		else thing->move(time);

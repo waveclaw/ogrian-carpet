@@ -167,7 +167,7 @@ void Thing::setPosition(Vector3 pos)
 	mVisRep->setPosition(pos);
 
 	// update physics
-	if (mInPhysics && pos != mPos)
+	if (mInPhysics && pos != mPos && mUID != EFFECT_UID)
 		Physics::getSingleton().updateThing(this, mPos, pos);
 
 	// update the sound

@@ -19,7 +19,7 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianFoliageThing.h
+OgrianFireballThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 

@@ -45,6 +45,8 @@ using namespace Ogre;
 
 namespace Ogrian
 {
+// effects have a UID of -1
+#define EFFECT_UID -1
 
 // The Pysics class handles collision detection and notification among all Thing objects.
 class Physics : public Singleton< Physics >
@@ -54,6 +56,9 @@ public:
 
 	// add a thing to the world 
 	void addThing(Thing* thing);
+
+	// add a thing to the world, but don't do collision detection for it. Useful for effects like smoke.
+	void addEffect(Thing* thing);
 
 	// this should be called by Thing::setPosition();
 	void updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos);
@@ -94,6 +99,8 @@ private:
 
 	std::vector<Thing*> mAllThings; // All things in the world
 
+	std::vector<Thing*> mEffects; // a list of effects
+
 	int mWorldSize;
 
 	int mCurrentUID; // each thing is assigned an incrementing UID
@@ -129,6 +136,9 @@ private:
 
 	// remove a thing from the world
 	void deleteThing(Thing* thing);
+
+	// remove an effect from the world
+	void deleteEffect(Thing* thing);
 
 	// add a thing as a client
 	void clientAddThing(Thing* thing, int uid);
