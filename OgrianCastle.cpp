@@ -86,11 +86,45 @@ Castle::Castle(int teamNum, Vector3 pos)
 	// build the castle
 	mBlocks[0] = mCenterTower = new CastleKeepThing(this, pos);
 
+	// add them to physics
+	Physics::getSingleton().addThing(mBlocks[0]);
+
+	// start at level 0
+	setMana(400);
+
+	setHealth(CONI("CASTLE_HEALTH"));
+
+	// add existing claimed mana to the list
+	for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	{
+		Thing* thing = Physics::getSingleton().getThingByIndex(i);
+		if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
+			claimedManaThing(thing);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::makeLevel1()
+{
+	Vector3 pos = getPosition();
+	Real W = CONR("CASTLE_WIDTH");
 	mBlocks[1] = mCornerTowerNE = new CastleTowerThing(this, pos + Vector3( 2*W, 0, 2*W));
 	mBlocks[2] = mCornerTowerSE = new CastleTowerThing(this, pos + Vector3( 2*W, 0,-2*W));
 	mBlocks[3] = mCornerTowerSW = new CastleTowerThing(this, pos + Vector3(-2*W, 0,-2*W));
 	mBlocks[4] = mCornerTowerNW = new CastleTowerThing(this, pos + Vector3(-2*W, 0, 2*W));
+	
+	// add them to physics
+	for (int i=1; i<5; i++)
+		Physics::getSingleton().addThing(mBlocks[i]);
+}
 
+//----------------------------------------------------------------------------
+
+void Castle::makeLevel2()
+{
+	Vector3 pos = getPosition();
+	Real W = CONR("CASTLE_WIDTH");
 	mBlocks[5]  = mInnerWallN1 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,  -W));
 	mBlocks[6]  = mInnerWallN2 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,   0));
 	mBlocks[7]  = mInnerWallN3 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,   W));
@@ -103,7 +137,18 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mBlocks[14] = mInnerWallW1 = new CastleWallNSThing(this, pos + Vector3(  -W, 0,-2*W));
 	mBlocks[15] = mInnerWallW2 = new CastleWallNSThing(this, pos + Vector3(   0, 0,-2*W));
 	mBlocks[16] = mInnerWallW3 = new CastleWallNSThing(this, pos + Vector3(   W, 0,-2*W));
+	
+	// add them to physics
+	for (int i=5; i<17; i++)
+		Physics::getSingleton().addThing(mBlocks[i]);
+}
 
+//----------------------------------------------------------------------------
+
+void Castle::makeLevel3()
+{
+	Vector3 pos = getPosition();
+	Real W = CONR("CASTLE_WIDTH");
 	mBlocks[17] = mFarCornerTowerN  = new CastleTowerThing(this, pos + Vector3(   0, 0, 4*W));
 	mBlocks[18] = mFarCornerTowerS  = new CastleTowerThing(this, pos + Vector3(   0, 0,-4*W));
 	mBlocks[19] = mFarCornerTowerE  = new CastleTowerThing(this, pos + Vector3( 4*W, 0,   0));
@@ -112,7 +157,18 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mBlocks[22] = mFarCornerTowerSE = new CastleTowerThing(this, pos + Vector3( 4*W, 0,-4*W));
 	mBlocks[23] = mFarCornerTowerSW = new CastleTowerThing(this, pos + Vector3(-4*W, 0,-4*W));
 	mBlocks[24] = mFarCornerTowerNW = new CastleTowerThing(this, pos + Vector3(-4*W, 0, 4*W));
+	
+	// add them to physics
+	for (int i=17; i<25; i++)
+		Physics::getSingleton().addThing(mBlocks[i]);
+}
 
+//----------------------------------------------------------------------------
+
+void Castle::makeLevel4()
+{
+	Vector3 pos = getPosition();
+	Real W = CONR("CASTLE_WIDTH");
 	mBlocks[25] = mOuterWallN1 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,-3*W));
 	mBlocks[26] = mOuterWallN2 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,-2*W));
 	mBlocks[27] = mOuterWallN3 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,  -W));
@@ -137,22 +193,65 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mBlocks[46] = mOuterWallW5 = new CastleWallNSThing(this, pos + Vector3(   W, 0,-4*W));
 	mBlocks[47] = mOuterWallW6 = new CastleWallNSThing(this, pos + Vector3( 2*W, 0,-4*W));
 	mBlocks[48] = mOuterWallW7 = new CastleWallNSThing(this, pos + Vector3( 3*W, 0,-4*W));
-
+	
 	// add them to physics
-	for (int i=0; i<49; i++)
+	for (int i=25; i<49; i++)
 		Physics::getSingleton().addThing(mBlocks[i]);
+}
 
-	// start at level 0
-	setMana(400);
+//----------------------------------------------------------------------------
 
-	setHealth(CONI("CASTLE_HEALTH"));
-
-	// add existing claimed mana to the list
-	for (int i=0; i<Physics::getSingleton().numThings(); i++)
+void Castle::destroyLevel1()
+{
+	for (int i=1; i<=4; i++)
 	{
-		Thing* thing = Physics::getSingleton().getThingByIndex(i);
-		if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
-			claimedManaThing(thing);
+		if (mBlocks[i])
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::destroyLevel2()
+{
+	for (int i=5; i<=16; i++)
+	{
+		if (mBlocks[i])
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::destroyLevel3()
+{
+	for (int i=17; i<=24; i++)
+	{
+		if (mBlocks[i])
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::destroyLevel4()
+{
+	for (int i=25; i<=48; i++)
+	{
+		if (mBlocks[i])
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
+		}
 	}
 }
 
@@ -429,25 +528,49 @@ void Castle::dropMana(int amount)
 
 void Castle::setLevel(Real level)
 {
-	mLevel = level;
-
 	mBlocks[0]->setPercentage(1);
 
-	// place the first set
-	for (int i=1; i<5; i++)
-		mBlocks[i]->setPercentage(level);
+	if (level >= 0)
+	{
+		if (mLevel < 0) makeLevel1();
 
-	// place the second set
-	for (i=5; i<17; i++)
-		mBlocks[i]->setPercentage(level-1);
+		// place the first set
+		for (int i=1; i<5; i++)
+			mBlocks[i]->setPercentage(level);
+	}
+	else destroyLevel1();
 
-	// place the second set
-	for (i=17; i<25; i++)
-		mBlocks[i]->setPercentage(level-2);
-	
-	// place the second set
-	for (i=25; i<49; i++)
-		mBlocks[i]->setPercentage(level-3);
+	if (level >= 1)
+	{
+		if (mLevel < 1) makeLevel2();
+
+		// place the second set
+		for (int i=5; i<17; i++)
+			mBlocks[i]->setPercentage(level-1);
+	}
+	else destroyLevel2();
+
+	if (level >= 2)
+	{
+		if (mLevel < 2) makeLevel3();
+
+		// place the second set
+		for (int i=17; i<25; i++)
+			mBlocks[i]->setPercentage(level-2);
+	}
+	else destroyLevel3();
+
+	if (level >= 3)
+	{
+		if (mLevel < 3) makeLevel4();
+
+		// place the second set
+		for (int i=25; i<49; i++)
+			mBlocks[i]->setPercentage(level-3);
+	}
+	else destroyLevel4();
+
+	mLevel = level;
 
 	// set the number of baloons equal to the level+1
 	setNumBaloons(level+1);

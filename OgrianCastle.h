@@ -386,6 +386,18 @@ private:
 
 	// genearate a target for a baloon
 	Thing* generateTarget(BaloonThing* baloon);
+
+	// make the levels
+	void makeLevel1();
+	void makeLevel2();
+	void makeLevel3();
+	void makeLevel4();
+
+	// destroy the levels
+	void destroyLevel1();
+	void destroyLevel2();
+	void destroyLevel3();
+	void destroyLevel4();
 };
 
 }
