@@ -47,11 +47,25 @@ namespace Ogrian
 {
 
 /////////////////////////////////////////////////////////////////////////////
+
+class TowerBeaconThing : public Thing
+{
+public:
+	TowerBeaconThing()
+		: Thing("Ogrian/TowerBeacon", SPRITE, "TowerBeacon", true, CONR("TOWER_BEACON_WIDTH"), Vector3(0,0,0), SPHERE)
+	{
+		setHeight(CONR("TOWER_BEACON_HEIGHT"));
+	}
+	
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
 class TowerThing : public DamageableThing
 {
 public:
 	TowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
+		: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("TOWER_WIDTH"), pos, CUBE)
 	{
 		mLastCastTime = 0;
 		mUnbuildMode = false;
@@ -60,6 +74,17 @@ public:
 			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
 		else 
 			mColour = ColourValue::White;
+
+		// set up the beacon
+		mBeacon = new TowerBeaconThing();
+		Physics::getSingleton().addEffect(mBeacon);
+
+		mBeacon->setColour(mColour);
+
+		Vector3 bpos = getPosition();
+		bpos.y += CONR("TOWER_BEACON_ALTITUDE");
+		mBeacon->setPosition(bpos);
+
 
 		// set the mesh
 		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
@@ -140,6 +165,8 @@ public:
 			mCranes[i]->destroy();
 
 		mCranes.clear();
+
+		mBeacon->destroy();
 
 		DamageableThing::destroy();
 	}
@@ -271,6 +298,8 @@ private:
 	Time mLastCastTime;
 
 	std::vector<CraneThing*> mCranes;
+
+	TowerBeaconThing* mBeacon;
 };
 
 }

@@ -204,7 +204,7 @@ class CastleBeaconThing : public Thing
 {
 public:
 	CastleBeaconThing()
-		: Thing("Ogrian/Beacon", SPRITE, "CastleBeacon", true, CONR("CASTLE_BEACON_WIDTH"), Vector3(0,0,0), SPHERE)
+		: Thing("Ogrian/CastleBeacon", SPRITE, "CastleBeacon", true, CONR("CASTLE_BEACON_WIDTH"), Vector3(0,0,0), SPHERE)
 	{
 		setHeight(CONR("CASTLE_BEACON_HEIGHT"));
 	}
