@@ -1,0 +1,210 @@
+material Ogrian/Clear
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			depth_check off
+
+			texture_unit
+			{	
+				texture clear.png
+			}
+		}
+	}
+}
+material Ogrian/Ocean
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.3 0.3 0.3
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/PalmTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture palmtree.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/PalmTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture palmtree_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/PineTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture sprites/pine.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/PineTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/pine_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Fireball
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture sprites/fireball.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/FireballBlast
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture sprites/fireballblast.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mana
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture mana.png
+				tex_address_mode clamp
+
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/Smoke
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture smoke.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/CloudySky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture clouds.jpg
+				scroll_anim 0.015 0
+			}
+		}
+	}
+}

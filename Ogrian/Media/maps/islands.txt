@@ -1,0 +1,11 @@
+HeightMap=h_islands.png
+WorldTexture=t_islands.jpg
+DetailTexture=terrain_detail.jpg
+
+Scale.x=1
+Scale.y=.5
+Scale.z=1
+
+OceanMaterial=Ogrian/Ocean
+SkyMaterial=Ogrian/CloudySky
+FoliageMaterial=Ogrian/PalmTree
