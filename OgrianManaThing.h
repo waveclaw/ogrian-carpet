@@ -13,8 +13,8 @@ namespace Ogrian
 class ManaThing : public RollingThing
 {
 public:
-	ManaThing(String material, unsigned int amount, Real x=0, Real y=0, Real z=0) 
-		: RollingThing(material, "Mana", false, 1, x, y, z)
+	ManaThing(unsigned int amount, Real x=0, Real y=0, Real z=0) 
+		: RollingThing("Ogrian/Mana", "Mana", false, 1, x, y, z)
 	{
 		setAmount(amount);
 	}
@@ -32,7 +32,7 @@ public:
 
 	virtual void collided(Thing* e)
 	{
-
+		setAmount(100);
 	}
 
 	virtual void move(Real time)

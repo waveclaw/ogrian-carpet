@@ -23,6 +23,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, R
 	mNode->attachObject(mBbset);
 
 	setMaterial(material);
+	setVelocity(0,0,0);
 	setPosition(x, y, z);
 	setScale(scale);
 }

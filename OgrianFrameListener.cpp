@@ -151,9 +151,10 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
         mCamera->yaw(mRotScale);
     }
 
+	// drop a manathing
     if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-        ManaThing* e = new ManaThing("Ogrian/Mana", 1);
+        ManaThing* e = new ManaThing(1);
 		e->setPosition(mCamera->getPosition());
 
 		Physics::getSingleton().addThing(e);

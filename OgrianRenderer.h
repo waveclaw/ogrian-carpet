@@ -24,6 +24,9 @@ public:
     /// Start the renderer
     void go(void);
 
+	// create random foilage using the specified material
+	virtual void createFoliage(const String& material, int num);
+
 	SceneManager* getSceneManager(void);
 
 	Vector3 getCameraPos(void);
@@ -57,8 +60,6 @@ protected:
 	// create an ocean using the specified material
 	virtual void createOcean(const String& material);
 
-	// create random foilage using the specified material
-	virtual void createFoliage(const String& material, int num);
 
     // Just override the mandatory create scene method
     void createScene(void);
