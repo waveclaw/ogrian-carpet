@@ -239,6 +239,9 @@ void Menu::show()
 	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
 	if (ofl != 0) ofl->setCameraFrozen(true);
 
+	// play menu music
+	Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+
 	mActive = true;
 }
 
@@ -258,6 +261,10 @@ void Menu::hide()
 
 	// unfreeze the camera
 	Renderer::getSingleton().getFrameListener()->setCameraFrozen(false);
+	
+	// play game music
+	Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
+
 	mActive = false;
 }
 

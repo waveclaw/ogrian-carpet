@@ -57,8 +57,6 @@ Audio::~Audio()
 
 void Audio::playSong(String filename)
 {
-	if (!mRunning) return;
-
 	stopSong();
 
 	// load teh new song
@@ -151,8 +149,15 @@ void Audio::frame(Real time)
 {
 	if (!mRunning) return;
 
-	Vector3 campos = Renderer::getSingleton().getCameraThing()->getPosition();
-	Vector3 f = Renderer::getSingleton().getCameraThing()->getDirection();
+	CameraThing* cam = Renderer::getSingleton().getCameraThing();
+
+	Vector3 campos;
+	Vector3 f = Vector3(0,0,1);
+	if (cam != 0) 
+	{
+		campos = cam->getPosition();
+		f = cam->getDirection();
+	}
 
 	listenerpos[0] = campos.x * mScale;
 	listenerpos[1] = campos.y * mScale;

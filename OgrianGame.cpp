@@ -69,9 +69,11 @@ void Game::updateScores()
 
 void Game::startGame()
 {
-	Audio::getSingleton().start();
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
 	Renderer::getSingleton().getCameraThing()->setHealth(CONR("WIZARD_HEALTH"));
+
+	// start the audio
+	Audio::getSingleton().start();
 
 	Physics::getSingleton().clearTeams();
 
