@@ -460,8 +460,13 @@ void Castle::setSpells(int level)
 		SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 
 		if (level >= 0) SpellManager::getSingleton().enableSpell(SPELL_FIREBALL);
+		else			SpellManager::getSingleton().disableSpell(SPELL_FIREBALL);
+
 		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
+		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
+
 		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
+		else			SpellManager::getSingleton().disableSpell(SPELL_FIRESTORM);
 	}
 	else if (Multiplayer::getSingleton().isServer())
 	{
@@ -475,8 +480,13 @@ void Castle::setSpells(int level)
 				Multiplayer::getSingleton().serverSendInt(SPELL_CLAIM,ID_ENABLESPELL,player.id);
 
 				if (level >= 0) Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_DISABLESPELL,player.id);
+
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
+
 				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_DISABLESPELL,player.id);
 			}
 		}
 	}

@@ -149,6 +149,8 @@ public:
 		setHeight(CONR("CASTLETOWER_HEIGHT"));
 	}
 
+	virtual void destroy() { mCrane->destroy(); }
+
 	virtual ThingType getType()	{ return CASTLETOWER; }
 	
 	virtual void setPercentage(Real per);
