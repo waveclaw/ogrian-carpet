@@ -89,7 +89,6 @@ void Sprite::setColour(ColourValue& colour)
 		mBillboard->setColour(colour);
 	else if (mDot)
 		mDot->setColour(colour);
-
 }
 
 //----------------------------------------------------------------------------
@@ -128,8 +127,8 @@ void Sprite::setWidth(Real width)
 
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
-	else if (mDot)
-		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
+	else 
+		addToRenderer(); // not sure why this is necessary, but it is
 }
 
 //----------------------------------------------------------------------------
@@ -140,8 +139,8 @@ void Sprite::setHeight(Real height)
 	
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
-	else if (mDot)
-		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
+	else 
+		addToRenderer(); // not sure why this is necessary, but it is
 }
 
 //----------------------------------------------------------------------------
@@ -241,7 +240,6 @@ void Sprite::removeFromRenderer(bool makeDot)
 		mDot = DotManager::getSingleton().newDot(mPos, mColour);
 		mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
 	}
-
 
 	mInRenderer = false;
 }

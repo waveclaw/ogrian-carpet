@@ -201,6 +201,9 @@ void Game::serverEndPreGame()
 
 			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
 			Physics::getSingleton().addThing(mana);
+			
+			HutThing* hut = new HutThing(pos);
+			Physics::getSingleton().addThing(hut);
 		}
 	}
 	
@@ -278,7 +281,6 @@ void Game::startSkirmishGame()
 
 			HutThing* hut = new HutThing(pos);
 			Physics::getSingleton().addThing(hut);
-
 		}
 	}
 

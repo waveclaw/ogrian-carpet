@@ -80,9 +80,10 @@ public:
 		setHeight(CONR("HUT_HEIGHT"));
 		Thing::setTeamNum(-1);
 		mBall = new HutBall();
-		Physics::getSingleton().addThing(mBall);
+		Physics::getSingleton().addEffect(mBall);
 
-		setColour(ColourValue::White);
+		if (!Multiplayer::getSingleton().isClient())
+			setColour(ColourValue::White);
 	}
 
 	virtual void destroy()
@@ -99,7 +100,8 @@ public:
 			if (team)
 			{
 				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-				wizard->removeHut();
+				if (wizard)
+					wizard->removeHut();
 			}
 		}
 
@@ -110,7 +112,8 @@ public:
 			if (team)
 			{
 				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-				wizard->addHut();
+				if (wizard)
+					wizard->addHut();
 			}
 
 			setColour(team->getColour());
@@ -118,11 +121,13 @@ public:
 		else setColour(ColourValue::White);
 
 		Thing::setTeamNum(teamNum);
+		setUpdateFlag();
 	}
 
 	virtual void setColour(ColourValue& colour)
 	{
 		mBall->setColour(colour);
+		Thing::setColour(colour);
 	}
 
 	virtual void setPosition(Vector3 pos)
