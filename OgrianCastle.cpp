@@ -330,6 +330,7 @@ void Castle::dropMana(int amount)
 	Real dir = Math::RangeRandom(0, 2*Math::PI);
 	Vector3 offset;
 	offset.x = sin(dir);
+	offset.y = 0;
 	offset.z = cos(dir);
 	offset.normalise();
 	offset *= CONR("CASTLE_MANA_RADIUS");

@@ -47,9 +47,8 @@ WizardThing::WizardThing(bool visible, int skin)
 {
 	mBar = 0;
 	mTeam = 0;
-	mSkin = skin;
+	mSkin = -1;
 
-	//setupSkins();
 	setSkin(skin);
 
 	if (visible)
@@ -85,6 +84,8 @@ void WizardThing::_setUID(int uid)
 
 void WizardThing::setSkin(int skin)
 {
+	if (mSkin == skin) return;
+
 	mSkin = skin;
 	
 	getVisRep()->clearPoses();
