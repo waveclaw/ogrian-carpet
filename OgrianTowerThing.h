@@ -151,6 +151,8 @@ public:
 
 	virtual void die()
 	{
+		if (!isAlive()) return;
+
 		if (mUnbuildMode)
 		{
 			// return the mana to the castle
