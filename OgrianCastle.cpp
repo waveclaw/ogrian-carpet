@@ -30,6 +30,7 @@ Description: This is a castle
 #include "OgrianCastle.h"
 #include "OgrianRenderer.h"
 #include "OgrianPhysics.h"
+#include "OgrianHud.h"
 #include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 
@@ -61,6 +62,20 @@ CastleHeartThing::CastleHeartThing(DamageableThing* castle, Vector3 pos)
 void CastleHeartThing::damage(int amount, int sourceTeamNum)
 {
 	DamageableThing::damage(amount, sourceTeamNum);
+
+	// report the attack
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+	{
+		// send it to the HUD
+		Hud::getSingleton().setMessage(CONS("CASTLE_HEART_UNDER_ATTACK"), true);
+	}
+	else
+	{
+		// send a message to the right player
+		PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+		Multiplayer::getSingleton().serverSendHudText(CONS("CASTLE_HEART_UNDER_ATTACK"), player);
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -423,6 +438,20 @@ void Castle::damage(int amount, int sourceTeamNum)
 		dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
 	else 
 		DamageableThing::damage(amount, sourceTeamNum);
+
+	// report the attack
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+	{
+		// send it to the HUD
+		Hud::getSingleton().setMessage(CONS("CASTLE_UNDER_ATTACK"), true);
+	}
+	else
+	{
+		// send a message to the right player
+		PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+		Multiplayer::getSingleton().serverSendHudText(CONS("CASTLE_UNDER_ATTACK"), player);
+	}
 }
 
 //----------------------------------------------------------------------------

@@ -187,9 +187,8 @@ void BuildSpellThing::collided(Thing* e)
 		// ... dont build inside other stuff
 		default: 
 		{
-			Team* team = Physics::getSingleton().getTeam(getTeamNum());
-
 			// report the problem
+			Team* team = Physics::getSingleton().getTeam(getTeamNum());
 			if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
 			{
 				// send it to the HUD

@@ -116,14 +116,14 @@ void Hud::reinit()
 
 void Hud::makeGhost()
 {
+	setMessage(CONS("HUD_DEAD"));
+
 	mMana->hide();
 	mHealth->hide();
 	mSpellName->hide();
 
 	for (int i=0; i<NUM_SPELLS; i++)
 		mSpellIcons[i]->hide();
-
-	setMessage(CONS("HUD_DEAD"));
 }
 
 //----------------------------------------------------------------------------
@@ -160,13 +160,21 @@ void Hud::setMana()
 void Hud::frame()
 {
 	if (mMessageClearTime && mMessageClearTime < Clock::getSingleton().getTime())
-		setMessage("");
+	{
+		if (!mMana->isVisible())
+			setMessage(CONS("HUD_DEAD"));
+		else
+			setMessage("");
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setMessage(String msg, bool temp)
 {
+	// ignore messages when in ghost mode
+	if (!mMana->isVisible()) return;
+
 	mMessage->setCaption(msg);
 
 	if (temp)
