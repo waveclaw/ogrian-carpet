@@ -125,31 +125,45 @@ public:
 		// set orientation
 		setOrientation(dir);
 
-		// circle strafe randomly //
+		Vector3 vel;
 
-		// set perpindicular velocity
-		Vector3 vel = pos-epos;
-		Vector3 fvel = vel; // note the original for fireballs
-		vel = vel.crossProduct(Vector3::UNIT_Y);
-		vel.normalise();
-		vel *= CONR("CAMERA_MOVE_SPEED");
-
-		// randomize direction
-		if (Math::RangeRandom(-1,1) < 0) vel *= -1;
-
-		setVelocity(vel);
-
-		// fire fireballs //
-		if (Math::RangeRandom(-1,1) < 0)
+		if (bestDist < CONR("FIREBALL_SPEED") * CONR("FIREBALL_LIFETIME"))
 		{
-			Vector3 fpos = getPosition();
-			fvel.normalise();
-			fvel *= -1;
+			// circle strafe randomly //
 
-			fpos += fvel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
-			fvel *= CONR("FIREBALL_SPEED");
-		
-			Physics::getSingleton().addThing(new FireballThing(-1, getColour(), fpos,fvel));
+			// set perpindicular velocity
+			vel = pos-epos;
+			Vector3 fvel = vel; // note the original for fireballs
+			vel = vel.crossProduct(Vector3::UNIT_Y);
+			vel.normalise();
+			vel *= CONR("CAMERA_MOVE_SPEED");
+
+			// randomize direction
+			if (Math::RangeRandom(-1,1) < 0) vel *= -1;
+
+			setVelocity(vel);
+
+			// fire fireballs //
+			if (Math::RangeRandom(-1,1) < 0)
+			{
+				Vector3 fpos = getPosition();
+				fvel.normalise();
+				fvel *= -1;
+
+				fpos += fvel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
+				fvel *= CONR("FIREBALL_SPEED");
+			
+				Physics::getSingleton().addThing(new FireballThing(-1, getColour(), fpos,fvel));
+			}
+		}
+		else
+		{
+			// move towards the target
+			vel = epos-pos;
+			vel.normalise();
+			vel *= CONR("CAMERA_MOVE_SPEED");
+
+			setVelocity(vel);
 		}
 	}
 
