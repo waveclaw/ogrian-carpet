@@ -1,11 +1,9 @@
 Ogrian Carpet Notes
 
-to do:
-tower regen
-tower unbuild
-tower build close
-touch flag for regen
-255 colour
+spell selection system:
+the Spell object will encapsulate the spellThing and the hud graphics.
+the hud will have a series of spell slots, each of which holds a Spell object.
+
 
 to add:
 =========
@@ -17,7 +15,7 @@ Huts - claim them to increase your mana regen
 Monsters
 =========
 -Crane - orbits castle towers for defense
--Albatross - cruise missile
+-Albatross! - cruise missile
 -Spider - follows the wizard around by jumping to a random spot near him, summoned with egg
 -spikeflower - shoots spikes, summoned with seed
 -Imp - island natives that guard huts and have some kind of group ritual spell.
@@ -26,12 +24,12 @@ Spells
 =========
 -fireball (done)
 -claim (mana, hut)
--build (castle, tower)
+-build (castle, tower, also unbuilds)
 -firestorm - very rapid fire with random trajectories
 -inferno - several fireballs held in place relative to the camera
 -firewave - pattern of fireballs the travel along the ground
 -summon monster
--unsummon (monster, tower, mana, hut, etc)
+-unsummon (monster, mana, hut, etc)
 -jump
 -speed
 -meteor
@@ -49,8 +47,10 @@ tower/hut textures - ask banana?
 
 Ideas:
 =========
+have think() have setThinkPeriod() per thing.
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
 
 
 performance, tweaks:
 ========
+do something about coastal fireball accumulation
