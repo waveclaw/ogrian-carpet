@@ -97,8 +97,8 @@ void Physics::clientFrame(Real time)
 	// do nothing if we dont have a camera thing yet
 	if (cthing == 0) return;
 
-	// do nothing if we don't have a wizardUID yet
-	if (Renderer::getSingleton().getCameraThing()->getUID() < 1) return;
+	// do nothing if we don't have a postive uid for the camera
+	if (cthing->getUID() < 1) return;
 
 	if (cthing->lastUpdateTime() + THING_UPDATE_PERIOD/2 < Time::getSingleton().getTime())
 	{
@@ -163,7 +163,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			thing = newThing((ThingType)type, 0);
 
 			// log it
-			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
+			//LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -514,10 +514,28 @@ void Physics::deleteThing(Thing* thing)
 	// if this is a server, propogate the deletion to clients
 	if (Multiplayer::getSingleton().isServer())
 	{
+		int uid = thing->getUID();
 		BitStream bs;
 		bs.Write(ID_REMOVE_THING);
-		bs.Write(thing->getUID());
-		Multiplayer::getSingleton().serverSendAll(&bs);
+		bs.Write(uid);
+
+		if (thing->getType() == WIZARDTHING)
+		{
+			// for wizardthings, 
+			for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
+			{
+				PlayerInfo client = Multiplayer::getSingleton().getClient(i);
+
+				// dont send it to the removed player
+				if (uid != client.wizardUID)
+					Multiplayer::getSingleton().serverSend(&bs, client.id);
+			}
+		}
+		else
+		{
+			// otherwise, just send it to all
+			Multiplayer::getSingleton().serverSendAll(&bs);
+		}
 	}
 
 	// remove it from the grid

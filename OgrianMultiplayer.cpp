@@ -609,7 +609,6 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
 			mPlayers.push_back(player);
 
-			Physics::getSingleton().listThings();
 			LogManager::getSingleton().logMessage(String("Client Wizard UID: ") << player.wizardUID);
 
 			// send a message to the client telling it what its wizardUID is
@@ -708,6 +707,9 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 
 void Multiplayer::clientRequestKick()
 {
+	// stop sending camera updates
+	Renderer::getSingleton().getCameraThing()->_setUID(0);
+
 	clientSendText(" ", ID_KICKME);
 }
 
