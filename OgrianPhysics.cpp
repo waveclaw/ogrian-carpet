@@ -103,14 +103,7 @@ void Physics::frame(Real time)
 
 void Physics::clientCollisionCheck()
 {
-	CameraThing* cam = Renderer::getSingleton().getCameraThing();
-	if (!cam) return;
 
-	Thing* ramp = cam->getRamp();
-	if (!ramp) return;
-
-	for (int i=0; i<(int)mBuildings.size(); i++)
-		pairCollisionCheck(ramp, mBuildings[i]);
 }
 
 //----------------------------------------------------------------------------
@@ -133,9 +126,6 @@ void Physics::clientFrame(Real time)
 		cam->generateBitStream(bs);
 		Multiplayer::getSingleton().clientSend(&bs, false);
 	}
-
-	// update the ramp
-	cam->getRamp()->move(0);
 }
 //----------------------------------------------------------------------------
 

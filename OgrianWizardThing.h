@@ -41,6 +41,7 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+//////////////////////////////////////////////////////////////////////////////////////
 class HealthBarEffect : public Thing
 {
 public:
@@ -63,78 +64,7 @@ private:
 	Vector3 mOffset;
 };
 
-class RampThing : public Thing
-{
-public:
-	RampThing(Thing* wizard) 
-		: Thing("Ogrian/Clear", SPRITE, "Ramp", true, CONR("WIZARD_RAMP_SCALE"), Vector3(0,0,0), CUBE)
-	{
-		mWizard = wizard;
-		mCountdown = 0;
-		mHeight = 0;
-
-		setUpdateType(NEVER);
-	}
-
-	virtual void move(Real time)
-	{
-		Thing::move(time);
-
-		// count down
-		if (mCountdown > 0)
-			mCountdown--;
-	}
-
-	virtual void collided(Thing* e)
-	{
-		if (e->isBuilding())
-		{
-			// calculate where the top of the building is
-			Real topPosY = e->getPosY() + e->getHeight()/2.0;
-
-			// calculate the distance from the edge of the building to the edge of the wizard (assuming a pyramid-shaped ramp)
-			Real dist = axisDistance(e) - e->getWidth()/2 - CONR("WIZARD_SCALE")/2;
-			if (dist < 0) dist = 0;
-
-			// calculate how far up the ramp we are
-			Real ratio = dist / (CONR("WIZARD_RAMP_SCALE")/2);
-
-			// calculate the height at this part of the ramp
-			Real height = topPosY - ratio * e->getHeight()/2;
-
-			// if we collide with multiple buildings, store the highest ramp value
-			if (height > mHeight)
-				mHeight = height;
-
-			// start the countdown - when this runs out we are not on the building anymore
-			mCountdown = 2;
-		}
-	}
-
-	virtual Real getGroundHeight()
-	{
-		// reset the height
-		Real height = mHeight;
-		mHeight = 0;
-
-		// if we are on the building, return the ramp height
-		if (mCountdown > 0)
-			return height;
-		else					// otherwise, just return zero
-			return 0;
-	}
-
-	virtual bool isOnBuilding()
-	{
-		return (mCountdown > 0);
-	}
-
-private:
-	Thing* mWizard;
-	Real mHeight;
-	int mCountdown;
-};
-
+//////////////////////////////////////////////////////////////////////////////////////
 class WizardThing : public DamageableThing
 {
 public:
@@ -178,8 +108,6 @@ public:
 
 	virtual void setSkin(int skin);
 
-	virtual Thing* getRamp();
-
 	virtual void speed(Real duration);
 	virtual bool isSpeeding();
 
@@ -187,8 +115,9 @@ public:
 	virtual void addHut();
 	virtual void removeHut();
 
+	virtual Real getGroundY(Vector3 pos);
+
 private:
-	RampThing* mRamp;
 	HealthBarEffect* mBar;
 	Team* mTeam;
 	int mSkin;

@@ -125,6 +125,12 @@
 				RelativePath="OgrianAudio.h">
 			</File>
 			<File
+				RelativePath="OgrianBuildingHeightMap.cpp">
+			</File>
+			<File
+				RelativePath="OgrianBuildingHeightMap.h">
+			</File>
+			<File
 				RelativePath="OgrianClock.cpp">
 			</File>
 			<File

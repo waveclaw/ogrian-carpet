@@ -19,11 +19,11 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHeightMap.cpp
+OgrianBuildingHeightMap.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: the HeightMap is used to determine the height of the terrain
+Description: the BuildingHeightMap is used to determine the height of the terrain
 at an arbitrary Real position.
 It is a Singleton.
 
@@ -40,14 +40,14 @@ It is a Singleton.
 
 using namespace Ogre;
 
-template<> Ogrian::HeightMap * Singleton< Ogrian::HeightMap >::ms_Singleton = 0;
+template<> Ogrian::BuildingHeightMap * Singleton< Ogrian::BuildingHeightMap >::ms_Singleton = 0;
 namespace Ogrian
 {
 
 //----------------------------------------------------------------------------
 
 // null the data pointer
-HeightMap::HeightMap()
+BuildingHeightMap::BuildingHeightMap()
 {
 	mData = 0;
 	mImage = 0;
@@ -56,7 +56,7 @@ HeightMap::HeightMap()
 //----------------------------------------------------------------------------
 
 // clean up
-HeightMap::~HeightMap()
+BuildingHeightMap::~BuildingHeightMap()
 {
 	if (mImage) delete mImage;
 
@@ -65,29 +65,30 @@ HeightMap::~HeightMap()
 
 //----------------------------------------------------------------------------
 
-int HeightMap::getWorldSize()
+void BuildingHeightMap::moldLandscape(Thing* building)
+{
+
+}
+
+//----------------------------------------------------------------------------
+
+Vector3 BuildingHeightMap::alignPosition(Vector3 pos)
+{
+
+	return pos;
+}
+
+//----------------------------------------------------------------------------
+
+int BuildingHeightMap::getWorldSize()
 {
 	return mSize * mScale.x;
 }
 
 //----------------------------------------------------------------------------
 
-Vector3 HeightMap::getScale()
-{
-	return mScale;
-}
-
-//----------------------------------------------------------------------------
-
-Image* HeightMap::getImage()
-{
-	return mImage;
-}
-
-//----------------------------------------------------------------------------
-
 // do a lookup in the array to find the height at a grid point
-int HeightMap::_worldheight( int x, int z )
+int BuildingHeightMap::_worldheight( int x, int z )
 {
 	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
 
@@ -107,7 +108,7 @@ int HeightMap::_worldheight( int x, int z )
 //----------------------------------------------------------------------------
 
 // get the height at any point
-Real HeightMap::getHeightAt(Real x, Real z)
+Real BuildingHeightMap::getHeightAt(Real x, Real z)
 {
 	// This interpolates between the four corners
 
@@ -141,7 +142,7 @@ Real HeightMap::getHeightAt(Real x, Real z)
 //----------------------------------------------------------------------------
 
 // return the height difference between this point and a close other point
-Real HeightMap::getXSlopeAt(Real x, Real z)
+Real BuildingHeightMap::getXSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x+CONR("HEIGTHMAP_SLOPE_DIFF"),z);
 }
@@ -149,7 +150,7 @@ Real HeightMap::getXSlopeAt(Real x, Real z)
 //----------------------------------------------------------------------------
 
 // return the height difference between this point and a close other point
-Real HeightMap::getZSlopeAt(Real x, Real z)
+Real BuildingHeightMap::getZSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x,z+CONR("HEIGTHMAP_SLOPE_DIFF"));
 }
@@ -157,42 +158,26 @@ Real HeightMap::getZSlopeAt(Real x, Real z)
 //----------------------------------------------------------------------------
 
 // load the array from the image file
-void HeightMap::loadTerrain(const String& filename)
+void BuildingHeightMap::loadTerrain()
 {
-	// make the image
-	if (mImage) delete mImage;
-	mImage = new Image();
-
-	/* Set up the options */
-	ConfigFile config;
-	config.load( filename );
-
-	mScale.x = mScale.z = atof( config.getSetting( "Scale.xz" ).c_str() );
-	mScale.y = atof( config.getSetting( "Scale.y" ).c_str() );
-
-	String terrain_filename = config.getSetting( "HeightMap" );
-
-	mImage->load( terrain_filename );
-
-	if ( mImage->getFormat() != PF_L8 )
-	{
-		Except( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
-				"HeightMap::loadTerrain" );
-	}
+	// make the data
+	mImage = new Image(*(HeightMap::getSingleton().getImage()));
 
 	mData = mImage->getData();
 	mSize = mImage->getWidth();
+
+	mScale = HeightMap::getSingleton().getScale();
 }
 
 //----------------------------------------------------------------------------
 
-HeightMap& HeightMap::getSingleton(void)
+BuildingHeightMap& BuildingHeightMap::getSingleton(void)
 {
 	if (!ms_Singleton) 
 	{
-		ms_Singleton = new HeightMap();
+		ms_Singleton = new BuildingHeightMap();
 	}
-    return Singleton<HeightMap>::getSingleton();
+    return Singleton<BuildingHeightMap>::getSingleton();
 }
 
 //----------------------------------------------------------------------------

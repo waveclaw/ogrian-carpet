@@ -32,6 +32,7 @@ Description: The wizard thing is the superclass of the CameraThing
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianHud.h"
+#include "OgrianBuildingHeightmap.h"
 #include "OgrianSkinManager.h"
 
 using namespace Ogre;
@@ -56,9 +57,6 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
-
-	mRamp = new RampThing(this);
-	Physics::getSingleton().addThing(mRamp);
 
 	setSkin(skin);
 
@@ -115,13 +113,6 @@ void WizardThing::speed(Real duration)
 bool WizardThing::isSpeeding()
 {
 	return mSpeeding;
-}
-
-//----------------------------------------------------------------------------
-
-Thing* WizardThing::getRamp()
-{
-	return mRamp;
 }
 
 //----------------------------------------------------------------------------
@@ -338,6 +329,13 @@ void WizardThing::removeHut()
 }
 	
 //----------------------------------------------------------------------------
+
+Real WizardThing::getGroundY(Vector3 pos)
+{
+	return BuildingHeightMap::getSingleton().getHeightAt(pos.x, pos.z);
+}
+
+//----------------------------------------------------------------------------
 	
 Real WizardThing::getGroundHeight()
 {
@@ -356,11 +354,6 @@ Real WizardThing::getGroundHeight()
 	if (ground11 > ground) ground = ground11;
 	if (groundc > ground)  ground = groundc;
 
-	// check the building ramp height
-	Real ramp = mRamp->getGroundHeight();
-
-	// return the greater of the two
-	if (ramp > ground) return ramp;
 	return ground;
 }
 
@@ -388,7 +381,6 @@ void WizardThing::move(Real time)
 
 	// float
 	if (!mSpeeding 
-		&& !mRamp->isOnBuilding()
 		&& getVelY() > -CONR("CAMERA_FALL_MAX")
 		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)
 		)
@@ -398,25 +390,19 @@ void WizardThing::move(Real time)
 
 		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
-	
-	if (mRamp->isOnBuilding()) setVelY(0);
 
 	DamageableThing::move(time);
 
 	// update health bar
 	if (mBar)
 		mBar->update(getPosition(), getHealth()/100.0*getWidth());
-
-	// update the ramp
-	if (mRamp)
-		mRamp->setPosition(getPosition());
 }
 
 //----------------------------------------------------------------------------
 
 void WizardThing::setPosition(Vector3 pos)
 {
-	// follow the landscape (and building ramps)
+	// follow the landscape 
 	Real ground = getGroundHeight();
 	ground += CONR("CAMERA_HEIGHT");
 			
@@ -473,9 +459,6 @@ void WizardThing::destroy()
 
 	if (mTeam) Physics::getSingleton().removeTeam(getTeamNum());
 	mTeam = 0;
-
-	if (mRamp) mRamp->destroy();
-	mRamp = 0;
 
 	DamageableThing::destroy();
 }

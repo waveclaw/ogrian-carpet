@@ -38,6 +38,7 @@ It is a Singleton.
 #include "OgrianRenderer.h"
 #include "OgrianFoliageThing.h"
 #include "OgrianGame.h"
+#include "OgrianBuildingHeightMap.h"
 #include "OgrianMenu.h"
 #include "OgrianHud.h"
 #include "OgrianManaThing.h"
@@ -304,6 +305,7 @@ void Renderer::loadMap(String configfile, bool server)
 	mMapName = configfile;
 
 	HeightMap::getSingleton().loadTerrain(configfile);
+	BuildingHeightMap::getSingleton().loadTerrain();
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 
 	createSky(skyMaterial);

@@ -35,6 +35,7 @@ It is rendered as a Billboard.
 #include "OgrianClock.h"
 #include "OgrianOrientedSprite.h"
 #include "OgrianModel.h"
+#include "OgrianBuildingHeightMap.h"
 
 #include <iostream>
 #include <sstream>
@@ -251,6 +252,12 @@ void Thing::setPosition(Vector3 pos)
 
 	// update mPos
 	mPos = pos;
+
+	if (isBuilding())
+	{
+		// update BuildingHeightMap
+		BuildingHeightMap::getSingleton().moldLandscape(this);
+	}
 }
 
 //----------------------------------------------------------------------------

@@ -19,36 +19,46 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHeightMap.h
+OgrianBuildingHeightMap.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: the HeightMap is used to determine the height of the terrain
-at an arbitrary Real position. 
+Description: the BuildingHeightMap is used to determine the height of the terrain
+at an arbitrary Real position. It adds buildings onto the heightmap for good wizard movment.
 It is a Singleton.
+
+This is basically a carbon copy of HeightMap with added code for buildings. It would be best 
+to make this a subclass of HeightMap, but because they are Singletons, subclassing
+is... difficult. 
 
 /*------------------------------------*/
 
-#ifndef __OgrianHeightMap_H__
-#define __OgrianHeightMap_H__
+#ifndef __OgrianBuildingHeightMap_H__
+#define __OgrianBuildingHeightMap_H__
 
 
 #include <OgreSingleton.h>
-#include "Ogre.h"
+#include "OgrianThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class HeightMap : public Singleton< HeightMap >
+class BuildingHeightMap : public Singleton< BuildingHeightMap >
 {
 public:
-	HeightMap();
-	virtual ~HeightMap();
+	BuildingHeightMap();
+	virtual ~BuildingHeightMap();
 
-	// load in the heightmap from a file
-	void loadTerrain(const String& filename);
+	// apply a building to the landscape
+	void moldLandscape(Thing* building);
+
+	// align a position vector to the array
+	Vector3 alignPosition(Vector3 pos);
+
+	// load in the heightmap
+	void loadTerrain();
 
 	// get the height at a Real point
 	Real getHeightAt(Real x, Real z);
@@ -60,16 +70,7 @@ public:
 	// get the size of the world
 	int getWorldSize();
 
-	// get the scaling factors
-	Vector3 getScale();
-
-	// get the image
-	Image* getImage();
-
-	// do an array lookup
-	inline int _worldheight( int x, int z );
-
-    static HeightMap& getSingleton(void);
+    static BuildingHeightMap& getSingleton(void);
 
 private:
 	Vector3 mScale;
@@ -77,6 +78,10 @@ private:
 
 	const uchar* mData;
 	Image* mImage;
+
+	// do an array lookup
+	inline int _worldheight( int x, int z );
+
 };
 
 }
