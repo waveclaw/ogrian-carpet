@@ -305,10 +305,15 @@ void Renderer::loadMap(String configfile, bool server)
 	// dont make foliage for a client
 	if (server)	createFoliage(foliageMaterial, FOLIAGE_NUM);
 
-    // Position the camera
-    mCamera->setPosition(Vector3(100,0,100));
-    mCamera->lookAt(Vector3(300,0,300));
+    // Position the camera with an offset
+    mCamera->setPosition(Vector3(START_X,0,START_Z));
+    //mCamera->lookAt(Vector3(0,0,0));
 	createCameraThing();
+	
+	Vector3 offset;
+	offset.x = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
+	offset.z = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
+	mCameraThing->setPosition(mCameraThing->getPosition() + offset);
 
 	// start the game
 	Audio::getSingleton().start();
