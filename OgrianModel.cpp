@@ -170,7 +170,7 @@ void Model::addToRenderer()
 
 //----------------------------------------------------------------------------
 
-void Model::removeFromRenderer()
+void Model::removeFromRenderer(bool makeDot)
 {
 	if (!mInRenderer) return;
 	if (mNode == 0) return;

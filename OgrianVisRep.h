@@ -80,7 +80,7 @@ public:
 	virtual void addToRenderer() = 0;
 
 	// remove this visrep from the renderer
-	virtual void removeFromRenderer() = 0;
+	virtual void removeFromRenderer(bool makeDot=true) = 0;
 
 	// returns true if its in the renderer
 	virtual inline bool inRenderer() = 0;

@@ -147,7 +147,7 @@ public:
 	virtual void addToRenderer();
 
 	// remove this visrep from the renderer
-	virtual void removeFromRenderer();
+	virtual void removeFromRenderer(bool makeDot=true);
 
 	// returns true if its in the renderer
 	virtual inline bool inRenderer();
@@ -159,6 +159,7 @@ private:
 	Pose* mCurrentPose;
 	Sprite* mCurrentSprite;
 	std::vector<Pose*> mPoses;
+	Billboard* mDot;
 
 	Real mWidth;
 	Real mHeight; 

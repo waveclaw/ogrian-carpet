@@ -218,7 +218,7 @@ void Sprite::addToRenderer()
 
 //----------------------------------------------------------------------------
 
-void Sprite::removeFromRenderer()
+void Sprite::removeFromRenderer(bool makeDot)
 {
 	// dont do this twice!
 	if (!mInRenderer) return;
@@ -236,8 +236,11 @@ void Sprite::removeFromRenderer()
 	mNode = 0;
 
 	// make a dot
-	mDot = DotManager::getSingleton().newDot(mPos, mColour);
-	mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+	if (!mDot && makeDot)
+	{
+		mDot = DotManager::getSingleton().newDot(mPos, mColour);
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+	}
 
 
 	mInRenderer = false;

@@ -30,6 +30,7 @@ the eight cardinal directions and also from any of an arbitrary number of poses.
 
 #include "OgrianOrientedSprite.h"
 #include "OgrianRenderer.h"
+#include "OgrianDotManager.h"
 
 using namespace Ogre;
 
@@ -42,6 +43,7 @@ OrientedSprite::OrientedSprite()
 {
 	mCurrentPose = 0;
 	mCurrentSprite = 0;
+	mDot = 0;
 	mInRenderer = false;
 
 	frame();
@@ -52,6 +54,13 @@ OrientedSprite::OrientedSprite()
 OrientedSprite::~OrientedSprite()
 {
 	removeFromRenderer();
+
+	// remove the dot
+	if (mDot) 
+	{
+		DotManager::getSingleton().remove(mDot);
+		mDot = 0;
+	}
 
 	while (mPoses.size() > 0)
 	{
@@ -68,6 +77,8 @@ void OrientedSprite::setColour(ColourValue& colour)
 
 	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setColour(mColour);
+	else if (mDot)
+		mDot->setColour(colour);
 }
 
 //----------------------------------------------------------------------------
@@ -94,6 +105,8 @@ void OrientedSprite::setPosition(Vector3 pos)
 
 	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setPosition(pos);
+	else if (mDot)
+		mDot->setPosition(pos);
 }
 
 //----------------------------------------------------------------------------
@@ -104,6 +117,8 @@ void OrientedSprite::setWidth(Real width)
 
 	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setWidth(width);
+	else if (mDot)
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
 }
 
 //----------------------------------------------------------------------------
@@ -114,6 +129,8 @@ void OrientedSprite::setHeight(Real height)
 	
 	if (mInRenderer && mCurrentSprite != 0)
 		mCurrentSprite->setHeight(height);
+	else if (mDot)
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
 }
 
 //----------------------------------------------------------------------------
@@ -122,6 +139,13 @@ void OrientedSprite::addToRenderer()
 {
 	// dont do this twice!
 	if (mInRenderer) return;
+
+	// remove the dot
+	if (mDot) 
+	{
+		DotManager::getSingleton().remove(mDot);
+		mDot = 0;
+	}
 
 	if (mCurrentSprite != 0)
 	{
@@ -136,13 +160,20 @@ void OrientedSprite::addToRenderer()
 
 //----------------------------------------------------------------------------
 
-void OrientedSprite::removeFromRenderer()
+void OrientedSprite::removeFromRenderer(bool makeDot)
 {
 	// dont do this twice!
 	if (!mInRenderer) return;
 
 	if (mCurrentSprite != 0)
-		mCurrentSprite->removeFromRenderer();
+		mCurrentSprite->removeFromRenderer(false);
+
+	// make a dot
+	if (!mDot && makeDot)
+	{
+		mDot = DotManager::getSingleton().newDot(mPos, mColour);
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+	}
 
 	mInRenderer = false;
 }
@@ -200,7 +231,7 @@ void OrientedSprite::frame()
 	{
 		if (mInRenderer)
 		{
-			if (mCurrentSprite != 0) mCurrentSprite->removeFromRenderer(); 
+			if (mCurrentSprite != 0) mCurrentSprite->removeFromRenderer(false); 
 
 			newSprite->setPosition(mPos);
 			newSprite->setWidth(mWidth);

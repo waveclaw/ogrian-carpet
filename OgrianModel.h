@@ -80,7 +80,7 @@ public:
 	virtual void addToRenderer();
 
 	// remove this model from the renderer
-	virtual void removeFromRenderer();
+	virtual void removeFromRenderer(bool makeDot=false);
 
 	// returns true if this model is in the renderer
 	virtual inline bool inRenderer();

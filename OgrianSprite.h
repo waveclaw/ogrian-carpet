@@ -81,7 +81,7 @@ public:
 	virtual void addToRenderer();
 
 	// remove this sprite from the renderer
-	virtual void removeFromRenderer();
+	virtual void removeFromRenderer(bool makeDot=true);
 
 	// returns true if this sprite is in the renderer
 	virtual inline bool inRenderer();
