@@ -124,6 +124,9 @@
 				RelativePath="OgrianConst.cpp">
 			</File>
 			<File
+				RelativePath="OgrianDotManager.cpp">
+			</File>
+			<File
 				RelativePath="OgrianFrameListener.cpp">
 			</File>
 			<File
@@ -207,6 +210,9 @@
 			</File>
 			<File
 				RelativePath="OgrianDamageableThing.h">
+			</File>
+			<File
+				RelativePath="OgrianDotManager.h">
 			</File>
 			<File
 				RelativePath="OgrianFireballThing.h">

@@ -90,6 +90,7 @@ private:
 	// graphical rendering stuff
 	BillboardSet* mBbset;
 	Billboard* mBillboard;
+	Billboard* mDot;
 	bool mFixed_y;
 	String mMaterial;
 	SceneNode* mNode;

@@ -38,6 +38,25 @@ material Ogrian/Wall
 		}
 	}
 }
+material Ogrian/Dot
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{	
+
+				texture dot.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/Flag
 {
 	technique

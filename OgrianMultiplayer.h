@@ -55,7 +55,7 @@ struct PlayerInfo
 	int wizardUID;
 };
 
-// The Pysics class handles collision detection and notification among all Thing objects.
+// The Multiplayer class handles all of the multiplayer networking code.
 class Multiplayer : public Singleton< Multiplayer >
 {
 public:

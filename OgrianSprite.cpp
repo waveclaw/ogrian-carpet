@@ -30,6 +30,7 @@ sorted and has a unique material.
 
 #include "OgrianSprite.h"
 #include "OgrianRenderer.h"
+#include "OgrianDotManager.h"
 
 using namespace Ogre;
 
@@ -44,6 +45,7 @@ Sprite::Sprite(String name, bool fixed_y)
 {
 	mBbset = 0;
 	mBillboard = 0;
+	mDot = 0;
 	mNode = 0;
 	mName = name;
 	mFixed_y = fixed_y;
@@ -68,6 +70,13 @@ Sprite::Sprite(String name, bool fixed_y)
 Sprite::~Sprite()
 {
 	removeFromRenderer();
+
+	// remove the dot
+	if (mDot) 
+	{
+		DotManager::getSingleton().remove(mDot);
+		mDot = 0;
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -76,10 +85,11 @@ void Sprite::setColour(ColourValue& colour)
 {
 	mColour = colour;
 
-	if (mInRenderer)
-	{ 
+	if (mInRenderer) 
 		mBillboard->setColour(colour);
-	}
+	else if (mDot)
+		mDot->setColour(colour);
+
 }
 
 //----------------------------------------------------------------------------
@@ -106,6 +116,8 @@ void Sprite::setPosition(Vector3 pos)
 
 	if (mInRenderer)
 		mNode->setPosition(pos);
+	else if (mDot)
+		mDot->setPosition(pos);
 }
 
 //----------------------------------------------------------------------------
@@ -116,6 +128,8 @@ void Sprite::setWidth(Real width)
 
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
+	else if (mDot)
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
 }
 
 //----------------------------------------------------------------------------
@@ -126,6 +140,8 @@ void Sprite::setHeight(Real height)
 	
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
+	else if (mDot)
+		mDot->setDimensions(mWidth*CONR("DOT_SIZE"),mHeight*CONR("DOT_SIZE"));
 }
 
 //----------------------------------------------------------------------------
@@ -160,6 +176,13 @@ void Sprite::addToRenderer()
 	// dont do this twice!
 	if (mInRenderer) return;
 
+	// remove the dot
+	if (mDot) 
+	{
+		DotManager::getSingleton().remove(mDot);
+		mDot = 0;
+	}
+
 	// create the billboardset
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
@@ -171,7 +194,7 @@ void Sprite::addToRenderer()
 	mBillboard = mBbset->createBillboard(0, 0, 0);
 	
 
-	mBbset->setRenderQueueGroup(RENDER_QUEUE_6);
+	mBbset->setRenderQueueGroup(RENDER_QUEUE_7);
 
 	if (mFixed_y)
 	{
@@ -211,6 +234,11 @@ void Sprite::removeFromRenderer()
 	mBbset = 0;
 	mBillboard = 0;
 	mNode = 0;
+
+	// make a dot
+	mDot = DotManager::getSingleton().newDot(mPos, mColour);
+	mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+
 
 	mInRenderer = false;
 }
