@@ -36,9 +36,12 @@ This will be changed to a quadtree or something for performance.
 
 
 #include "OgrianPhysics.h"
-#include "OgrianManaThing.h"
+#include "OgrianRenderer.h"
 #include "OgrianConstants.h"
 #include "OgrianTime.h"
+
+#include "OgrianManaThing.h"
+#include "OgrianCameraThing.h"
 
 #include "OgreLogManager.h"
 
@@ -69,13 +72,33 @@ void Physics::frame(Real time)
 		// clients dont do collision checking
 		collisionCheck();
 	}
-	if (Multiplayer::getSingleton().isServer())
+
+	if (Multiplayer::getSingleton().isClient())
+	{
+		// clients need to send updates
+		clientFrame(time);
+	}
+	else if (Multiplayer::getSingleton().isServer())
 	{
 		// servers need to send updates
 		serverFrame(time);
 	}
 }
 
+//----------------------------------------------------------------------------
+
+void Physics::clientFrame(Real time)
+{
+	// notify the server of our camerathing
+	CameraThing* cthing = static_cast<CameraThing*>(Renderer::getSingleton().getCameraThing());
+
+	if (cthing->lastUpdateTime() + THING_UPDATE_PERIOD/2 < Time::getSingleton().getTime())
+	{
+		BitStream bs;
+		cthing->generateBitStream(bs);
+		Multiplayer::getSingleton().clientSend(&bs, false);
+	}
+}
 //----------------------------------------------------------------------------
 
 void Physics::serverFrame(Real time)
@@ -117,17 +140,10 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		if (thing == 0) // we need to make a new one if we dont have it
 		{
 			// make a new thing
-			switch(type)
-			{
-				case MANATHING:
-					thing = new ManaThing();
-					break;
-
-				default: return true;
-			}
+			thing = newThing((ThingType)type);
 
 			// log it
-			LogManager::getSingleton().logMessage(String("Making New Thing for client: ") << uid);
+			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -183,7 +199,7 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 {
 	if (packet == 0) return false;
 
-	// if its a thing creation
+	// if its a thing creation or update
 	if (pid == ID_UPDATE_THING)
 	{
 		BitStream bitstream(packet->data, packet->length, true);
@@ -194,82 +210,59 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 		bitstream.Read(type);
 		bitstream.ResetReadPointer();
 
-		Thing* thing;
-
-		// make a new thing
-		switch(type)
+		// if its a client updating its wizardThing
+		if (type == WIZARDTHING)
 		{
-			case MANATHING:
-				thing = new ManaThing();
-				break;
+			// get the wizardThing
+			int uid = Multiplayer::getSingleton().getWizardUID(packet->playerId);
+			WizardThing* wthing = static_cast<WizardThing*>(getThing(uid));
+
+			// send the update to it
+			wthing->interpretBitStream(bitstream);
 		}
-
-		// send the bitstream to the thing
-		thing->interpretBitStream(bitstream);
-
-		// add it to the physics
-		addThing(thing);
-
-		// send it to the clients immediately
-		BitStream bs;
-		thing->generateBitStream(bs);
-		Multiplayer::getSingleton().serverSendAll(&bs, false);
-
-		return true;
-	}
-	// if its a thing update
-	/*if (pid == ID_UPDATE_THING)
-	{
-		// find the thing
-		BitStream bitstream(packet->data, packet->length, true);
-		int id, uid, type;
-
-		bitstream.Read(id);
-		bitstream.Read(uid);
-		bitstream.Read(type);
-		bitstream.ResetReadPointer();
-
-		Thing* thing = getThing(uid);
-
-		if (thing == 0) // we need to make a new one if we dont have it
+		else // otherwise, its a new thing
 		{
 			// make a new thing
-			switch(type)
-			{
-				case CAMERATHING:
-					//thing = new PlayerThing();
-					break;
-			}
+			Thing* thing = newThing((ThingType)type);
+
+			// send the bitstream to the thing
+			thing->interpretBitStream(bitstream);
 
 			// add it to the physics
 			addThing(thing);
+
+			// send it to the clients immediately
+			BitStream bs;
+			thing->generateBitStream(bs);
+			Multiplayer::getSingleton().serverSendAll(&bs, false);
 		}
-
-		// send the bitstream to the thing
-		thing->interpretBitStream(bitstream);
-
 		return true;
 	}
-	
-	// if its a thing deletion
-	else if (pid == ID_REMOVE_THING)
-	{
-		// find the thing
-		BitStream bitstream(packet->data, packet->length, true);
-		int id, uid;
 
-		bitstream.Read(id);
-		bitstream.Read(uid);
-		bitstream.ResetReadPointer();
-
-		Thing* thing = getThing(uid);
-
-		// destroy it
-		if (thing != 0) thing->destroy();
-
-		return true;
-	}*/
 	return false;
+}
+
+//----------------------------------------------------------------------------
+
+Thing* Physics::newThing(ThingType type)
+{
+	switch(type)
+	{
+		case MANATHING:	return new ManaThing();
+
+		case WIZARDTHING: return new WizardThing();
+
+		default: return 0;
+	}
+}
+
+//----------------------------------------------------------------------------
+
+WizardThing* Physics::newWizardThing()
+{
+	WizardThing* wt = new WizardThing();
+	addThing(wt);
+	return wt;
 }
 
 //----------------------------------------------------------------------------

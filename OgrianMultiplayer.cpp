@@ -366,6 +366,17 @@ PacketID Multiplayer::getPacketIdentifier(Packet* p)
 	else
 		return (PacketID) p->data[0];
 }
+//----------------------------------------------------------------------------
+
+int Multiplayer::getWizardUID(PlayerID pid)
+{
+	for (int i=0; (int)mPlayers.size(); i++)
+	{
+		if (mPlayers[i].id == pid) return mPlayers[i].wizardUID;
+	}
+
+	return -1;
+}
 
 //----------------------------------------------------------------------------
 
@@ -471,6 +482,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			PlayerInfo player;
 			player.id = packet->playerId;
 			player.name = playerName;
+			player.wizardUID = Physics::getSingleton().newWizardThing()->getUID();
 			mPlayers.push_back(player);
 			PlayerList::getSingleton().addPlayer(playerName);
 

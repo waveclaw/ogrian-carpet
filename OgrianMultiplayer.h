@@ -50,6 +50,7 @@ struct PlayerInfo
 {
 	PlayerID id;
 	String name;
+	int wizardUID; // the UID of the wizardthing
 };
 
 // The Pysics class handles collision detection and notification among all Thing objects.
@@ -95,6 +96,9 @@ public:
 
 	// too see if we are connected
 	bool isConnected();
+
+	// turn an player ID into a Thing UID for the associated WizardThing
+	int getWizardUID(PlayerID pid);
 
 private:
 	Multiplayer();

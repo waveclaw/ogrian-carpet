@@ -37,6 +37,7 @@ It is a Singleton.
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianThing.h"
+#include "OgrianWizardThing.h"
 #include "OgrianConstants.h"
 #include "OgrianMultiplayer.h"
 
@@ -81,6 +82,9 @@ public:
 	// handle client packet, return true if handled
 	bool handleClientPacket(Packet* p, PacketID pid);
 
+	// get a new WizardThing for a client
+	WizardThing* newWizardThing();
+
     static Physics& getSingleton(void);
 
 private:
@@ -115,6 +119,9 @@ private:
 	// call this every frame for servers
 	void serverFrame(Real time);
 
+	// call this every frame for clients
+	void clientFrame(Real time);
+
 	// add a thing to the grid
 	void _addThing(Thing* thing, int grid_u, int grid_v);
 	// remove a thing from the grid. 
@@ -131,6 +138,9 @@ private:
 
 	// send a list of all things to the log
 	void listThings();
+
+	// make a new thing of the specified type
+	Thing* newThing(ThingType type);
 };
 
 }
