@@ -68,7 +68,7 @@ public:
 	virtual ThingType getType() { return BALOONTHING; }
 
 private:
-	Thing* mTarget;
+	int mTarget;
 	bool mNeedOrders;
 	int mAmount;
 	int mState; 

@@ -39,7 +39,7 @@ Description: This is a castle
 #include "OgrianCraneThing.h"
 
 #define NUM_BALOONS 5
-#define NUM_BLOCKS 13
+#define NUM_BLOCKS 9
 
 using namespace Ogre;
 

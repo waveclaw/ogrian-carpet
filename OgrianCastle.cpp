@@ -90,7 +90,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	Physics::getSingleton().addThing(mBlocks[0]);
 
 	// start at level 0
-	setMana(0);
+	setMana(600);
 
 	setHealth(CONI("CASTLE_HEALTH"));
 
@@ -194,10 +194,6 @@ int Castle::getMana()
 
 void Castle::addMana(int amount)
 {
-		//std::ostringstream num("");
-		//num << amount;
-		//LogManager::getSingleton().logMessage("Castle gaining mana: " + num.str());
-
 	setMana(mMana + amount);
 }
 
@@ -230,80 +226,58 @@ Thing* Castle::generateTarget(BaloonThing* baloon)
 				&& mBaloons[i]->getTarget()->isAlive())
 				targets.push_back((ManaThing*)mBaloons[i]->getTarget());
 
-		// if there are no other targets, chose the mana closest to this baloon
-		if (targets.size() == 0) 
+		// chose the mana closest to this baloon
+		Real bestScore = 0;
+
+		// check each mana in the list
+		for (int i=0; i<(int)mManaThings.size(); i++)
 		{
-			Real bestScore = 0;
+			ManaThing* candidate = (ManaThing*)mManaThings[i];
 
-			// check each mana in the list
-			for (int i=0; i<(int)mManaThings.size(); i++)
+			// skip dead manas
+			if (candidate->isAlive())
 			{
-				ManaThing* candidate = (ManaThing*)mManaThings[i];
+				Real score = 1.0f / baloon->sphereDistance(candidate);
 
-				// skip dead manas
-				if (candidate->isAlive())
+				// see if its already a target
+				bool isATarget = false;
+				for (int j=0; j<(int)targets.size(); j++)
 				{
-					Real score = 1.0f / baloon->sphereDistance(candidate);
-										
-					// if its the best so far, store it
-					if (score > bestScore)
+					if (targets[j] == candidate)
 					{
-						bestScore = score;
-						target = candidate;
+						isATarget = true;
+						break;
 					}
+				}
+									
+				// if its the best so far, store it
+				if (score > bestScore
+					&& !isATarget)
+				{
+					bestScore = score;
+					target = candidate;
 				}
 			}
 		}
-		else // chose the mana farthest away from the other targets
-		{
-			Real bestScore = 0;
-			// check each mana in the list
-			for (int i=0; i<(int)mManaThings.size(); i++)
-			{
-				ManaThing* candidate = (ManaThing*)mManaThings[i];
-
-				// skip dead manas
-				if (candidate && candidate->isAlive())
-				{
-					// generate a score equal to the sum of the distances between the candidate and the other targets
-					int score=0;
-					for (int j=0; j<(int)targets.size(); j++)
-						score += candidate->cylinderDistance(targets[j]);
-
-					// if its the best so far, store it
-					if (score > bestScore)
-					{
-						bestScore = score;
-						target = candidate;
-					}
-				}
-			}
-
-			if (bestScore == 0) // if all the mana is already targetted
-				return this; // come back to the castle
-		}
-
-		if (target) // if a valid target was found,
-		{
-			// check to see if we should drop off what we have before proceeding to it
-			if (baloon->getAmount() > 0)
-			{
-				Real bcdist = baloon->sphereDistance(this); // baloon -> castle distance
-				Real bmdist = baloon->sphereDistance(target); // baloon -> mana distance
-				Real mcdist = target->sphereDistance(this); // castle -> mana distance
-
-				if (bmdist + mcdist > bcdist * CONR("BALOON_RETURN_THRESHOLD_RATIO")) 
-					return this;
-			}
-
-			return target; // return it
-		}
-		else 
-			return this; // otherwise, wait at the castle
 	}
-	
-	// there is no mana, so wait at the castle
-	else return this;
+
+	if (target) // if a valid target was found,
+	{
+		// check to see if we should drop off what we have before proceeding to it
+		if (baloon->getAmount() > 0)
+		{
+			Real bcdist = baloon->sphereDistance(this); // baloon -> castle distance
+			Real bmdist = baloon->sphereDistance(target); // baloon -> mana distance
+			Real mcdist = target->sphereDistance(this); // castle -> mana distance
+
+			if (bmdist + mcdist > bcdist * CONR("BALOON_RETURN_THRESHOLD_RATIO")) 
+				return this;
+		}
+
+		return target; // return it
+	}
+	else 
+		return this; // otherwise, wait at the castle
 }
 
 //----------------------------------------------------------------------------
@@ -445,10 +419,10 @@ CastleTurretThing* Castle::newCastleTurret(int level)
 	  	case 6: return new CastleTurretThing(this, pos + Vector3(   0, 0,-4*W));
 	  	case 7: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,   0));
 	  	case 8: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,   0));
-		case 9: return new CastleTurretThing(this, pos + Vector3( 4*W, 0, 4*W));
-		case 10: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,-4*W));
-		case 11: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,-4*W));
-		case 12: return new CastleTurretThing(this, pos + Vector3(-4*W, 0, 4*W));
+		//case 9: return new CastleTurretThing(this, pos + Vector3( 4*W, 0, 4*W));
+		//case 10: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,-4*W));
+		//case 11: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,-4*W));
+		//case 12: return new CastleTurretThing(this, pos + Vector3(-4*W, 0, 4*W));
 	}
 	return 0;
 }

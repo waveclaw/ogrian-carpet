@@ -3,7 +3,7 @@
 # all units are in meters, seconds, or meters per second
 
 # the number of bots in skirmish mode
-NUM_BOTS=5
+NUM_BOTS=0
 
 # the number of huts
 NUM_HUTS=10

@@ -19,18 +19,16 @@ Spells
 =========
 -claim (mana, hut)
 -build (castle, tower, also unbuilds)
--unsummon? (monster, mana, hut, etc)
 -fireball (done)
--speed (done)
 
+-speeed (done)
 -summon spider
 -akimbo fireball (done)
 -summon imp
--summon sentinel
--summon albatross!
 
+-summon sentinel
 -firestorm - very rapid fire with randomish trajectories (done)
--firewave - pattern of fireballs the travel along the ground
+-summon albatross!
 -meteor - launched from own castle to wizard location, large area of effect
 
 
@@ -54,5 +52,4 @@ performance, tweaks:
 
 known bugs:
 ========
-two baloons get sent to one mana
 memory leak in making billboards

@@ -71,9 +71,12 @@ void BaloonThing::setTeamNum(int teamNum)
 
 void BaloonThing::setTarget(Thing* target)
 {
-	mTarget = target;
+	if (target)
+		mTarget = target->getUID();
+	else
+		mTarget = -1;
 	
-	if (mTarget == 0)
+	if (mTarget == -1)
 	{
 		setStateWait();
 	}
@@ -88,7 +91,7 @@ void BaloonThing::setTarget(Thing* target)
 
 Thing* BaloonThing::getTarget()
 {
-	return mTarget;
+	return Physics::getSingleton().getThing(mTarget);
 }
 
 //----------------------------------------------------------------------------
@@ -110,7 +113,9 @@ void BaloonThing::move(Real time)
 
 void BaloonThing::think()
 {
-	if (mTarget && mTarget->getTeamNum() == getTeamNum())
+	Thing* target = Physics::getSingleton().getThing(mTarget);
+
+	if (target && target->getTeamNum() == getTeamNum())
 	{
 		mNeedOrders = false;
 
@@ -125,7 +130,7 @@ void BaloonThing::think()
 		if (mState == BAL_STATE_TRAVEL)
 		{
 			// move towards the target
-			Vector3 dir = mTarget->getPosition() - getPosition();
+			Vector3 dir = target->getPosition() - getPosition();
 			dir.y = 0;
 			dir.normalise();
 			setVelocity(dir * CONR("BALOON_SPEED"));
@@ -135,7 +140,7 @@ void BaloonThing::think()
 				setPosY(getGroundY() + CONR("BALOON_ALTITUDE"));
 
 			// if it is close enough to its target
-			if (cylinderDistance(mTarget) < getWidth())
+			if (cylinderDistance(target) < getWidth())
 				setStateDescend(); // descend
 		}
 			
@@ -143,12 +148,12 @@ void BaloonThing::think()
 		if (mState == BAL_STATE_DESCEND)
 		{
 			// move down to the target
-			Vector3 dir = mTarget->getPosition() - getPosition();
+			Vector3 dir = target->getPosition() - getPosition();
 			dir.normalise();
 			setVelocity(dir * CONR("BALOON_SPEED"));
 		}
 	}
-	else if (mTarget > 0)
+	else if (target > 0)
 	{
 		setTarget(0);
 	}
@@ -158,17 +163,17 @@ void BaloonThing::think()
 
 void BaloonThing::collided(Thing* thing)
 {
-	if (thing->getType() == MANATHING && thing == mTarget)
+	if (thing->getType() == MANATHING && thing->getUID() == mTarget)
 	{
 		// pick up the mana
-		load(((ManaThing*)mTarget)->getAmount());
-		mTarget->destroy();
+		load(((ManaThing*)thing)->getAmount());
+		thing->destroy();
 	}
 
-	if (thing->getType() ==	CASTLEFLAGTHING && thing == mTarget)
+	if (thing->getType() ==	CASTLEFLAGTHING && thing->getUID() == mTarget)
 	{
 		// drop off our mana
-		((Castle*)mTarget)->addMana(unload());
+		((Castle*)thing)->addMana(unload());
 
 		// wait for new orders
 		setTarget(0);
