@@ -61,9 +61,13 @@ public:
 
 	// send a message to the server
 	void clientSend(BitStream* bitStream);
+	void clientSend(char* message);
 
 	// send a message to a client
 	void serverSend(BitStream* bitStream, PlayerID player);
+	void serverSend(char* message, PlayerID player);
+	void serverSendAll(BitStream* bitStream);
+	void serverSendAll(char* message);
 
 	// recieve packets on the client
 	void clientRecieve();

@@ -132,6 +132,71 @@ void Multiplayer::serverSend(BitStream* bitStream, PlayerID player)
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::clientSend(char* message)
+{
+	assert(!mIsServer);
+	assert(mActive);
+
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	mClient->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::serverSend(char* message, PlayerID player)
+{
+	assert(mIsServer);
+	assert(mActive);
+
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	// We arbitrarily pick 0 for the ordering stream
+	// false to send to only one player
+	// true for security
+	mServer->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false, true);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::serverSendAll(char* message)
+{
+	assert(mIsServer);
+	assert(mActive);
+
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	// We arbitrarily pick 0 for the ordering stream
+	// false to send to only one player
+	// true for security
+	mServer->Send(message, (long)strlen(message), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::serverSendAll(BitStream* bitStream)
+{
+	assert(mIsServer);
+	assert(mActive);
+
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	// We arbitrarily pick 0 for the ordering stream
+	// false to send to only one player
+	// true for security
+	mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::clientRecieve()
 {
 	assert(!mIsServer);
@@ -140,6 +205,8 @@ void Multiplayer::clientRecieve()
 	Packet* p = mClient->Receive();
 
 	// do stuff here
+	if (p != 0)
+		Menu::getSingleton().setMessage(p->data);
 
 	mClient->DeallocatePacket(p);
 }
@@ -154,6 +221,8 @@ void Multiplayer::serverRecieve()
 	Packet* p = mServer->Receive();
 
 	// do stuff here
+	if (p != 0)
+		Menu::getSingleton().setMessage(p->data);
 
 	mServer->DeallocatePacket(p);
 }
