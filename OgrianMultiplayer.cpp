@@ -300,6 +300,9 @@ void Multiplayer::clientDisconnect()
 
 	// clear the player list
 	PlayerList::getSingleton().clear();
+
+	// clear the physics
+	Physics::getSingleton().clear();
 	
 	mActive = false;
 }
@@ -627,6 +630,9 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			{
 				if (mPlayers[i].id == packet->playerId)
 				{
+					// remove their wizard
+					Physics::getSingleton().getThing(mPlayers[i].wizardUID)->destroy();
+
 					// remove their ip from the list
 					mPlayers.erase(mPlayers.begin()+i);
 

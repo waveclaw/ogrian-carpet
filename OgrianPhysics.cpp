@@ -581,18 +581,30 @@ int Physics::getGridV(Real z)
 // remove and delete all things
 void Physics::clear()
 {
-	// clear the grid
-	for (int i=0; i<PHYSICS_GRID_SIZE; i++)
-		for (int j=0; j<PHYSICS_GRID_SIZE; j++)
-			while (!mThingGrid[i][j].empty())
-				mThingGrid[i][j].pop_back();
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		// clear the grid
+		for (int i=0; i<PHYSICS_GRID_SIZE; i++)
+			for (int j=0; j<PHYSICS_GRID_SIZE; j++)
+				while (!mThingGrid[i][j].empty())
+					mThingGrid[i][j].pop_back();
+	}
 
-	// delete each entity from mAllThings
+	// delete each thing from mAllThings
 	while(!mAllThings.empty())
 	{
-		delete mAllThings[mAllThings.size()-1];
+		Thing* thing = mAllThings[mAllThings.size()-1];
+		if (thing->getType() != CAMERATHING) delete thing;
 		mAllThings.pop_back();
 	}
+
+	// delete each effect from mEffects
+	while (!mEffects.empty())
+	{
+		delete mEffects[mEffects.size()-1];
+		mEffects.pop_back();
+	}
+
 }
 
 //----------------------------------------------------------------------------

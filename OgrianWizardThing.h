@@ -47,8 +47,6 @@ public:
 
 	virtual ThingType getType()	{ return WIZARDTHING; }
 
-	virtual void destroy()	{} // DONT
-
 	virtual void setHealth(int health);
 	virtual void die();
 };
