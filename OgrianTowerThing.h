@@ -168,12 +168,16 @@ public:
 		{
 			mLastCastTime = Time::getSingleton().getTime();
 
-			// regen
-			setHealth(getHealth() + CONI("TOWER_REGEN"));
+			// regenerate
+			int health = getHealth();
+			if (health < CONI("TOWER_HEALTH"))
+				setHealth(health + CONI("TOWER_REGEN"));
+			if (health > CONI("TOWER_HEALTH"))
+				setHealth(CONI("TOWER_HEALTH"));
 
 			// cast a mana at the nearest manathing in range
 			Thing* target = 0;
-			Real bestDist = CONR("TOWER_RANGE");;
+			Real bestDist = CONR("TOWER_RANGE");
 			for (int i=0; i<Physics::getSingleton().numThings(); i++)
 			{
 				Thing* candidate = Physics::getSingleton().getThingByIndex(i);

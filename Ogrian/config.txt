@@ -1,7 +1,7 @@
 # Your Name Here
 name=Player
 
-#skins:
+#choose your skin:
 # 0: Angry Face
 # 1: JeffK
 # 2: Mike
@@ -43,6 +43,7 @@ blue=255
 
 
 # Performance variables
+# all units are in meters, seconds, or meters per second
 THING_CULL_DIST=200
-SOUND_SCALE=.1
 THING_EARSHOT=300
+CORPSE_LIFETIME=10

@@ -992,7 +992,7 @@ void Physics::collisionCheck()
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
 	// dont collide with dead things
-	//if (!a->isAlive() || !b->isAlive()) return;
+	if (!a->isAlive() || !b->isAlive()) return;
 
 	Real maxdist = (a->getWidth() + b->getWidth())/2;
 	Real maxHdist = (a->getHeight() + b->getHeight())/2;

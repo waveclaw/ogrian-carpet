@@ -166,7 +166,8 @@ public:
 		WizardThing::die();
 
 		// drop a manathing
-		Physics::getSingleton().addThing(new ManaThing(CONI("BOT_MANA_DROP"), getPosition()));
+		if (CONI("BOT_MANA_DROP") > 0)
+			Physics::getSingleton().addThing(new ManaThing(CONI("BOT_MANA_DROP"), getPosition()));
 
 		// respawn at a random location
 		Vector3 pos;

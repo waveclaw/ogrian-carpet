@@ -37,7 +37,7 @@ Description: This handles all of the multiplayer networking code.
 
 #include "GetTime.h"
 
-#define STRING_MAX_LENGTH 128
+#define STRING_MAX_LENGTH 256
 
 using namespace Ogre;
 
