@@ -21,3 +21,5 @@ photography: Jeff Knous
 Models:
 Jeff Knous
 Mike Prosser
+Rick Prosser
+Jess Prosser

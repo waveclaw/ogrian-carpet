@@ -76,7 +76,7 @@ public:
 			setVelY(0-CONR("CASTLE_RISE_SPEED"));
 		}
 
-		requestUpdate();
+		setUpdateFlag();
 	}
 
 	virtual void move(Real time)
@@ -88,7 +88,7 @@ public:
 		{
 			setPosY(mTargetY);
 			setVelY(0);
-			requestUpdate();
+			setUpdateFlag();
 		}
 
 		DamageableThing::move(time);

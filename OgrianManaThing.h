@@ -63,7 +63,7 @@ public:
 
 		FloatingThing::setTeamNum(teamNum);
 
-		requestUpdate();
+		setUpdateFlag();
 	}
 
 	// setting the amount automatically sets the scale
@@ -103,7 +103,7 @@ public:
 				setAmount(getAmount() + m->getAmount());
 				m->setAmount(0);
 		
-				requestUpdate();
+				setUpdateFlag();
 			}
 			else
 			{

@@ -98,7 +98,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mVisRep->addToRenderer();
 
 	// request an update
-	requestUpdate();
+	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
@@ -501,7 +501,6 @@ int Thing::getTeamNum()
 void Thing::generateBitStream(BitStream& bitstream, int pid)
 {
 	mLastUpdateTime = Time::getSingleton().getTime();
-	mUpdateRequested = false;
 
 	bitstream.Write(pid);
 	bitstream.Write(mUID);
@@ -585,14 +584,21 @@ ThingUpdateType Thing::getUpdateType()
 
 //----------------------------------------------------------------------------
 
-void Thing::requestUpdate()
+void Thing::setUpdateFlag()
 {
 	mUpdateRequested = true;
 }
 
 //----------------------------------------------------------------------------
 
-bool Thing::updateRequested()
+void Thing::clearUpdateFlag()
+{
+	mUpdateRequested = false;
+}
+
+//----------------------------------------------------------------------------
+
+bool Thing::getUpdateFlag()
 {
 	return mUpdateRequested;
 }

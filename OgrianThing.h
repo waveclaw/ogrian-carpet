@@ -223,10 +223,13 @@ public:
 	virtual ThingUpdateType getUpdateType();
 
 	// request an update
-	virtual void requestUpdate();
+	virtual void setUpdateFlag();
+
+	// clear the flag after the update has happened
+	virtual void clearUpdateFlag();
 
 	// returns true when an update has been requested
-	virtual bool updateRequested();
+	virtual bool getUpdateFlag();
 
 	// get the last time a bitstream was generated for this thing
 	virtual unsigned long lastUpdateTime();

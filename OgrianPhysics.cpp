@@ -166,7 +166,7 @@ void Physics::serverFrame(Real time)
 			}
 			else
 			{
-				if (thing->updateRequested())
+				if (thing->getUpdateFlag())
 				{
 					BitStream bs;
 					thing->generateBitStream(bs);
@@ -174,6 +174,14 @@ void Physics::serverFrame(Real time)
 				}
 			}
 		}
+	}
+
+	// clear all the update flags
+	for (int i=0; i<(int)mAllThings.size(); i++)
+	{
+		Thing* thing = mAllThings[i];
+		if (thing->getUpdateType() != CONTINUOUS)
+			thing->clearUpdateFlag();
 	}
 }
 
