@@ -44,39 +44,21 @@ class DamageableThing : public Thing
 public:
 
 	DamageableThing(String material, ThingVisRep visrep=SPRITE, String prefix="Thing", bool fixed_y=false, 
-		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE)
-		: Thing(material, visrep, prefix, fixed_y, scale, pos, shape)
-	{
-		mHealth = 0;
-	}
+		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
 
-	virtual void setHealth(int health)
-	{
-		mHealth = health;
-	}
+	virtual void setHealth(int health);
 
-	virtual int getHealth()
-	{
-		return mHealth;
-	}
+	virtual int getHealth();
 
-	virtual void damage(int amount, int sourceTeamNum)
-	{
-		mLastDamageSource = sourceTeamNum;
+	virtual void damage(int amount, int sourceTeamNum);
 
-		setHealth(mHealth - amount);
-		if (mHealth <= 0) die();
-	}
+	virtual int getLastDamageSourceTeamNum();
 
-	virtual int getLastDamageSourceTeamNum()
-	{
-		return mLastDamageSource;
-	}
+	virtual void setTeamNum(int teamNum);
 
-	virtual bool isDamageable()
-	{
-		return true;
-	}
+	virtual void destroy();
+
+	virtual bool isDamageable()	{ return true; }
 
 private:
 	int mHealth;

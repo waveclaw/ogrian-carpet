@@ -997,7 +997,7 @@ void Physics::setWorldSize(int size)
 
 int Physics::newTeam(int wizardUID, ColourValue colour)
 {
-	mTeams.push_back(new Team(wizardUID, colour));
+	mTeams.push_back(new Team((int)mTeams.size()-1, wizardUID, colour));
 	return (int)mTeams.size()-1;
 }
 

@@ -34,6 +34,7 @@ Description: This is a team, it has a wizard and a score
 #include <Ogre.h>
 #include "OgrianGame.h"
 #include "OgrianCastle.h"
+#include "OgrianDamageableThing.h"
 
 using namespace Ogre;
 
@@ -43,74 +44,33 @@ namespace Ogrian
 class Team
 {
 public:
-	Team(int wizardUID, ColourValue colour)
-	{
-		mColour = colour;
-		mWizardUID = wizardUID;
-		mCastle = 0;
-		mScore = 0;
-	}
+	Team(int teamNum, int wizardUID, ColourValue colour);
 
-	virtual ~Team()
-	{
+	int getWizardUID();
 
-	}
+	void setWizardUID(int uid);
 
-	int getWizardUID()
-	{
-		return mWizardUID;
-	}
+	void setScore(int score);
 
-	void setWizardUID(int uid)
-	{
-		mWizardUID = uid;
-	}
+	int getScore();
 
-	void setScore(int score)
-	{
-		if (mScore == score) return;
+	void incrementScore();
 
-		mScore = score;
-			
-		Game::getSingleton().updateScores();
-	}
+	void setCastle(Castle* castle);
 
-	int getScore()
-	{
-		return mScore;
-	}
+	Castle* getCastle();
 
-	void incrementScore()
-	{
-		mScore++;
+	bool hasCastle();
 
-		Game::getSingleton().updateScores();
-	}
+	ColourValue getColour();
 
-	void setCastle(Castle* castle)
-	{
-		mCastle = castle;
-	}
+	void setColour(ColourValue& colour);
 
-	Castle* getCastle()
-	{
-		return mCastle;
-	}
+	void addEnemy(DamageableThing* enemy);
 
-	bool hasCastle()
-	{
-		return (mCastle != 0);
-	}
+	void removeEnemy(DamageableThing* enemy);
 
-	ColourValue getColour()
-	{
-		return mColour;
-	}
-
-	void setColour(ColourValue& colour)
-	{
-		mColour = colour;
-	}
+	DamageableThing* getNearestEnemy(Thing* thing, Real range);
 
 private:
 	int mScore;
@@ -118,6 +78,8 @@ private:
 	ColourValue mColour;
 
 	Castle* mCastle;
+
+	std::vector<DamageableThing*> mEnemies;
 };
 
 }

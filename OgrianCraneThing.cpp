@@ -38,6 +38,8 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 CraneThing::CraneThing(int teamNum, Vector3 orbitPos) 
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, CONR("CRANE_SCALE"), orbitPos, SPHERE)
 {
@@ -58,6 +60,8 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	setStateFlyOut();
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::setVelocity(Vector3 vel)
 {
 	DamageableThing::setVelocity(vel);
@@ -69,6 +73,8 @@ void CraneThing::setVelocity(Vector3 vel)
 	getVisRep()->setOrientation(orientation);
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::move(Real time)
 {
 	DamageableThing::move(time);
@@ -77,6 +83,8 @@ void CraneThing::move(Real time)
 	if (getPosY() < getGroundY() + CONR("CRANE_ALTITUDE_MIN")) 
 		setPosY(getGroundY() + CONR("CRANE_ALTITUDE_MIN"));
 }
+
+//----------------------------------------------------------------------------
 
 void CraneThing::think()
 {
@@ -95,12 +103,24 @@ void CraneThing::think()
 		// stay in the orbit zone
 		if (orbitDistance() < CONR("CRANE_ORBIT_MIN"))
 			setStateFlyOut();
+		
+		// look for enemies
+		mTarget = 
+			Physics::getSingleton().getTeam(getTeamNum())->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE"));
+		if (mTarget)
+			setStateAttack();
 	}
 	else if (mState == CRANE_STATE_FLY_OUT)
 	{
 		// stay in the orbit zone
 		if (orbitDistance() > CONR("CRANE_ORBIT_MAX"))
 			setStateFlyIn();
+		
+		// look for enemies
+		mTarget = 
+			Physics::getSingleton().getTeam(getTeamNum())->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE"));
+		if (mTarget)
+			setStateAttack();
 	}
 	else if (mState == CRANE_STATE_ATTACK)
 	{
@@ -122,6 +142,8 @@ void CraneThing::think()
 	setUpdateFlag();
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::collided(Thing* e)
 {
 	if (e->isDamageable() && e->isAlive() && e->getTeamNum() != getTeamNum())
@@ -132,6 +154,8 @@ void CraneThing::collided(Thing* e)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::die()
 {
 	DamageableThing::die();
@@ -141,6 +165,8 @@ void CraneThing::die()
 	setStateFlyOut();
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::setStateFlyIn()
 {
 	mState = CRANE_STATE_FLY_IN;
@@ -149,6 +175,8 @@ void CraneThing::setStateFlyIn()
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
 }
+
+//----------------------------------------------------------------------------
 
 void CraneThing::setStateFlyOut()
 {
@@ -162,6 +190,8 @@ void CraneThing::setStateFlyOut()
 	setVelocity(dir * CONR("CRANE_SPEED"));
 }
 
+//----------------------------------------------------------------------------
+
 void CraneThing::setStateAttack()
 {
 	mState = CRANE_STATE_ATTACK;
@@ -171,5 +201,7 @@ void CraneThing::setStateAttack()
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
 }
+
+//----------------------------------------------------------------------------
 
 }
