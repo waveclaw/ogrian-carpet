@@ -67,8 +67,6 @@ void BaloonThing::setTeamNum(int teamNum)
 
 void BaloonThing::setTarget(Thing* target)
 {
-	LogManager::getSingleton().logMessage("Baloon set target... ");
-
 	mTarget = target;
 	
 	if (mTarget == 0)
@@ -77,7 +75,6 @@ void BaloonThing::setTarget(Thing* target)
 	}
 	else
 	{
-		LogManager::getSingleton().logMessage(String("Baloon set target ")+target->getString());
 		setStateAscend();
 		mNeedOrders = false;
 	}
@@ -149,9 +146,6 @@ void BaloonThing::collided(Thing* thing)
 		// pick up the mana
 		load(((ManaThing*)mTarget)->getAmount());
 		mTarget->destroy();
-
-		// wait for new orders
-		//setTarget(0);
 	}
 
 	if (thing->getType() ==	CASTLEFLAG && thing == mTarget)
@@ -171,8 +165,6 @@ void BaloonThing::setStateWait()
 	mState = BAL_STATE_WAIT;
 	mNeedOrders = true;
 	setVelocity(Vector3(0,0,0));
-
-	LogManager::getSingleton().logMessage("Baloon set state wait");
 }
 
 //----------------------------------------------------------------------------
@@ -181,8 +173,6 @@ void BaloonThing::setStateAscend()
 {
 	mState = BAL_STATE_ASCEND;
 	setVelocity(Vector3(0,CONR("BALOON_SPEED"),0));
-
-	LogManager::getSingleton().logMessage("Baloon set state ascend");
 }
 
 //----------------------------------------------------------------------------
@@ -190,9 +180,6 @@ void BaloonThing::setStateAscend()
 void BaloonThing::setStateDescend()
 {
 	mState = BAL_STATE_DESCEND;
-
-	LogManager::getSingleton().logMessage("Baloon set state descend");
-
 }
 
 //----------------------------------------------------------------------------
@@ -200,8 +187,6 @@ void BaloonThing::setStateDescend()
 void BaloonThing::setStateTravel()
 {
 	mState = BAL_STATE_TRAVEL;
-
-	LogManager::getSingleton().logMessage("Baloon set state travel");
 }
 
 //----------------------------------------------------------------------------

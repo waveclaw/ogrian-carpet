@@ -175,7 +175,6 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	LogManager::getSingleton().logMessage("Castle taking fire...");
 	dropMana(amount);
 }
 
@@ -194,8 +193,6 @@ void Castle::claimedManaThing(Thing* mana)
 {
 	// add the mana to the list
 	mManaThings.push_back(mana);
-	
-	LogManager::getSingleton().logMessage("Mana added to castle");
 }
 
 //----------------------------------------------------------------------------
@@ -248,18 +245,12 @@ void Castle::dropMana(int amount)
 	Physics::getSingleton().addThing(mana);
 	mana->setTeamNum(getTeamNum());
 	mana->setPosY(mana->getGroundY());
-
-	//LogManager::getSingleton().logMessage(String("dropped mana: ") += mana->getPosition(). += " offset: " += offset);
 }
 
 //----------------------------------------------------------------------------
 
 void Castle::setLevel(Real level)
 {
-		std::ostringstream num("");
-		num << level;
-		LogManager::getSingleton().logMessage("Castle setting level: " + num.str());
-
 	mLevel = level;
 
 	mBlocks[0]->setPercentage(1);
