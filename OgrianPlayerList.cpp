@@ -95,7 +95,9 @@ void PlayerList::updateList()
 	{
 		// update the caption
 		String player = "Ogrian/PlayerList/Player";
-		GuiManager::getSingleton().getGuiElement(player += i)
+			std::ostringstream num("");
+			num << i;
+		GuiManager::getSingleton().getGuiElement(player += num.str())
 			->setCaption(mPlayers[i]);
 	}
 
@@ -104,7 +106,9 @@ void PlayerList::updateList()
 	{
 		// update the caption
 		String player = "Ogrian/PlayerList/Player";
-		GuiManager::getSingleton().getGuiElement(player += i)
+			std::ostringstream num("");
+			num << i;
+		GuiManager::getSingleton().getGuiElement(player + num.str())
 			->setCaption("");
 	}
 }

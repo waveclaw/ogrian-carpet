@@ -5,7 +5,7 @@ Scale.z=2
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
 FoliageMaterial=Ogrian/PineTree
-FoliageAmount=50
+FoliageAmount=300
 
 
 # The main world texture (if you wish the terrain manager to create a material for you)

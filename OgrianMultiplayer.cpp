@@ -115,6 +115,8 @@ void Multiplayer::clientStart()
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
 				"Multiplayer::clientStart" );
+
+	LogManager::getSingleton().logMessage("Client Started");
 }
 
 //----------------------------------------------------------------------------
@@ -523,6 +525,8 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 		case ID_MAP_NAME: //////////////////////////////////////////////////////
 		{
+			LogManager::getSingleton().logMessage("Got Map");
+
 			// get the name
 			String map;
 			packetToString(packet,map);
@@ -656,6 +660,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
 		{
 			// send the name of the map
+			LogManager::getSingleton().logMessage("Got New Incoming, sending map");
 			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
 			return true;
 		}
@@ -726,9 +731,6 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 			return true;
-
-		case ID_CONNECTION_RESUMPTION: // Client reconnected before getting disconnected
-			return true;
 	}
 	return false;
 }
@@ -770,7 +772,7 @@ void Multiplayer::packetToString(Packet* packet, String& string)
 	bs.Read(len);
 	bs.Read(cstr,len);
 
-	string += cstr;
+	string += String(cstr);
 }
 
 //----------------------------------------------------------------------------
