@@ -157,20 +157,8 @@ void Renderer::createScene(void)
         waterNode->attachObject(waterEntity); 
         waterNode->translate(1000, 0, 1000);
 
-
-
-        // Create a light
-        Light* l = mSceneMgr->createLight("MainLight");
-        // Accept default settings: point light, white diffuse, just set position
-        // NB I could attach the light to a SceneNode if I wanted it to move automatically with
-        //  other objects, but I don't
-        l->setPosition(20,80,50);
-
         mSceneMgr->setWorldGeometry( "world.cfg" );
 
-        //mSceneMgr->setFog(FOG_EXP2, ColourValue(0.77, 0.86, 1.0), 0.0015, 0,0 );
-        //mSceneMgr->setFog(FOG_LINEAR, ColourValue(0.77, 0.86, 1.0), 0, 150, 500);
-       //mRoot -> showDebugOverlay( true );
 
 	// Define the required skyplane
     Plane plane;
@@ -181,7 +169,7 @@ void Renderer::createScene(void)
     // Create the plane 1000 units wide, tile the texture 3 times
     mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, false, 0.5f);
 
-       mCamera->setPosition(2000,100,2000);
+       mCamera->setPosition(0,100,0);
 
 
 
