@@ -150,6 +150,13 @@ ThingShape Thing::getShape()
 void Thing::setVelocity(Vector3 vel)
 {
 	mVel = vel;
+
+	if (vel == Vector3(0,0,0))
+	{
+		mStopTime = Time::getSingleton().getTime();
+		mStopped = true;
+	}
+	else mStopped = false;
 }
 
 //----------------------------------------------------------------------------
@@ -436,7 +443,11 @@ Real Thing::getOrientation()
 
 bool Thing::isMoving()
 {
-	return (mPos == Vector3(0,0,0));
+	if (mStopped)
+		if (mStopTime > Time::getSingleton().getTime() + THING_STOP_DELAY) 
+			return false;
+
+	return true;
 }
 
 //----------------------------------------------------------------------------

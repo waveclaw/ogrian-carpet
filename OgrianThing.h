@@ -194,6 +194,9 @@ private:
 	Real mWidth;
 	Real mHeight; 
 
+	unsigned long mStopTime;
+	bool mStopped;
+
 	ThingShape mShape;
 
 	bool mAlive;

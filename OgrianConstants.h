@@ -75,6 +75,7 @@ const int MAX_PLAYERS = 8;
 const int STRING_MAX_LENGTH = 24;
 
 const unsigned long THING_UPDATE_PERIOD = 100;
+const unsigned long THING_STOP_DELAY = 300;
 
 }
 #endif

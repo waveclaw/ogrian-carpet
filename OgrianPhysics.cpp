@@ -114,17 +114,17 @@ void Physics::serverFrame(Real time)
 		for (int i=0; i<(int)mAllThings.size(); i++)
 		{
 			Thing* thing = mAllThings[i];
+			WizardThing* wiz = static_cast<WizardThing*>(getThing(player.wizardUID));
 
-
-			if (thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime() &&
-				thing->getUID() != player.wizardUID // dont send their own wizard to them
+			if (thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime() // only send periodically
+				&& thing->getUID() != player.wizardUID // dont send their own wizard to them
+				&& thing->axisDistance(wiz) < THING_CULL_DIST // dont send things they cant see
+				&& thing->isMoving() // dont send things that aren't moving
 				)
 			{
-				if (thing->getType() == CAMERATHING) LogManager::getSingleton().logMessage("Sending CameraThing");
-
 				BitStream bs;
 				thing->generateBitStream(bs);
-				Multiplayer::getSingleton().serverSend(&bs, player.id, false);
+				Multiplayer::getSingleton().serverSend(&bs, player.id, false); // send unreliably
 			}
 		}
 	}

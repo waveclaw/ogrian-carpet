@@ -88,6 +88,10 @@ public:
 		setPosition(pos);
 
 		camera->setPosition(getPosition());
+
+		// set the orientation of the thing to match the camera
+		Vector3 dir = camera->getDirection();
+		setOrientation(atan2(dir.x, dir.z));
 	}
 
 	// ignore external up/down velocity changes

@@ -54,17 +54,6 @@ public:
 	virtual ThingType getType()
 	{
 		return FOLIAGETHING;
-	}
-
-	virtual void collided(Thing* e)
-	{
-		// dies if it touches mana
-		if (e->getType() == MANATHING)
-		{
-			setMaterial("Ogrian/PalmTreeDead");
-			playSound("OgrianMedia/sounds/boom1.wav");
-			e->destroy();
-		}
 	}	
 };
 
