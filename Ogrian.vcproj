@@ -112,6 +112,9 @@
 				RelativePath="OgrianAudio.cpp">
 			</File>
 			<File
+				RelativePath="OgrianBaloonThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianCameraThing.cpp">
 			</File>
 			<File

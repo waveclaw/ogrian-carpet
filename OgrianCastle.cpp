@@ -46,6 +46,14 @@ Castle::Castle(int teamNum, Vector3 pos)
 
 	Real W = CONR("CASTLE_WIDTH");
 
+	// make a baloon
+	mBaloons[0] = new BaloonThing(teamNum, getPosition());
+	mBaloons[1] = 0;
+	mBaloons[2] = 0;
+	mBaloons[3] = 0;
+	mBaloons[4] = 0;
+	Physics::getSingleton().addThing(mBaloons[0]);
+
 	// build the castle
 	mBlocks[0] = mCenterTower = new CastleTowerThing(this, pos);
 
@@ -108,6 +116,30 @@ Castle::Castle(int teamNum, Vector3 pos)
 	// start at level 0
 	setMana(400);
 }
+
+//----------------------------------------------------------------------------
+
+void Castle::move(Real time)
+{
+	DamageableThing::move(time);
+
+	// every frame, we check the baloons
+	for (int i=0; i<NUM_BALOONS; i++)
+	{
+		if (mBaloons[i] && mBaloons[i]->needsOrders())
+		{
+			BaloonThing* baloon = mBaloons[i];
+			Vector3 pos = baloon->getPosition();
+			int amount = baloon->getAmount();
+			Thing* target = generateTarget(pos, amount);
+
+			// set the target unless its got no mana to get and is already at the castle
+			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth()*2 + baloon->getWidth()*2)
+				baloon->setTarget(target);
+		}
+	}
+}
+
 //----------------------------------------------------------------------------
 
 void Castle::setMana(int amount)
@@ -136,6 +168,48 @@ void Castle::addMana(int amount)
 void Castle::damage(int amount, int sourceTeamNum)
 {
 	dropMana(amount);
+}
+
+//----------------------------------------------------------------------------
+
+Thing* Castle::generateTarget(Vector3 pos, int amount)
+{
+	if ((int)mManaThings.size() > 0 && mManaThings[0]->isAlive()) return mManaThings[0];
+
+	else return this;
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::claimedManaThing(Thing* mana)
+{
+	// add the mana to the list
+	mManaThings.push_back(mana);
+	
+	LogManager::getSingleton().logMessage("Mana added to castle");
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::unclaimedManaThing(Thing* mana)
+{
+	// remove the mana from the list
+	for (int i=0; i<(int)mManaThings.size(); i++)
+	{
+		if (mManaThings[i] == mana)
+		{
+	        mManaThings.erase(mManaThings.begin()+i);
+		}
+	}
+
+	// retarget the baloon that was getting it
+	for (int i=0; i<NUM_BALOONS; i++)
+	{
+		if (mBaloons[i] && mBaloons[i]->getTarget() == mana)
+		{
+			mBaloons[i]->setTarget(0);
+		}
+	}
 }
 
 //----------------------------------------------------------------------------

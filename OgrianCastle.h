@@ -35,6 +35,9 @@ Description: This is a castle
 #include "OgrianModel.h"
 #include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianBaloonThing.h"
+
+#define NUM_BALOONS 5
 
 using namespace Ogre;
 
@@ -178,8 +181,17 @@ public:
 	// drop this amount of mana
 	virtual void dropMana(int amount);
 
+	// notify the castle of a newly claimed manathing
+	virtual void claimedManaThing(Thing* mana);
+
+	// notify the castle of a newly unclaimed or destroyed manathing
+	virtual void unclaimedManaThing(Thing* mana);
+
 	// take damage
 	virtual void damage(int amount, int sourceTeamNum);
+
+	// the castle doesn't move, but it does do stuff every frame
+	virtual void move(Real time);
 
 	virtual ThingType getType()
 	{
@@ -190,6 +202,12 @@ private:
 	int mMana;
 
 	Real mLevel;
+
+	// a vector holding all the claimed manathings
+	std::vector<Thing*> mManaThings;
+
+	// an array of the baloons
+	BaloonThing* mBaloons[NUM_BALOONS];
 
 	// an array of all the towers and walls for convenient looping
 	CastleBlockThing* mBlocks[49];
@@ -249,6 +267,8 @@ private:
 	CastleWallThing* mOuterWallW7;
 
 	void setLevel(Real level);
+
+	Thing* generateTarget(Vector3 pos, int amount);
 };
 
 }

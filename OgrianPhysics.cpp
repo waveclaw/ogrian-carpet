@@ -970,9 +970,6 @@ Team* Physics::getTeam(int index)
 {
 	if (index < 0 || index >= (int)mTeams.size())
 	{
-		std::ostringstream num("");
-		num << index;
-		LogManager::getSingleton().logMessage(String("Team not found: ") + num.str());
 		return 0;
 	}
 

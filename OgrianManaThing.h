@@ -57,13 +57,19 @@ public:
 	// change the colour to reflect team ownership
 	virtual void setTeamNum(int teamNum)
 	{
-		Team* team = Physics::getSingleton().getTeam(teamNum);
+		// remove it from the old castle
+		Team*  oldTeam = Physics::getSingleton().getTeam(getTeamNum());
+		if (oldTeam) oldTeam->getCastle()->unclaimedManaThing(this);
 
-		setColour(team->getColour());
+		// add it to the new castle
+		Team*  newTeam = Physics::getSingleton().getTeam(teamNum);
+		if (newTeam) newTeam->getCastle()->claimedManaThing(this);
+
+		// change the colour
+		if (newTeam) setColour(newTeam->getColour());
+		setUpdateFlag();
 
 		FloatingThing::setTeamNum(teamNum);
-
-		setUpdateFlag();
 	}
 
 	// setting the amount automatically sets the scale
@@ -131,6 +137,13 @@ public:
 	virtual ThingType getType()
 	{
 		return MANATHING;
+	}
+
+	virtual void destroy()
+	{
+		FloatingThing::destroy();
+
+		setTeamNum(-1);
 	}
 
 private:

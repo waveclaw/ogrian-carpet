@@ -34,10 +34,6 @@ Description: the Baloon collects mana and brings it back to the castle
 #include <Ogre.h>
 #include "OgrianThing.h"
 
-#define BAL_STATE_ASCEND 1
-#define BAL_STATE_DESCEND 2
-#define BAL_STATE_TRAVEL 3
-
 using namespace Ogre;
 
 namespace Ogrian
@@ -46,88 +42,38 @@ namespace Ogrian
 class BaloonThing : public Thing
 {
 public:
-	BaloonThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
-		: Thing("Ogrian/Baloon", SPRITE, "ManaThing", false, 1, pos, SPHERE)
-	{
-		mTaret = 0;
-		mNeedOrders = true;
-	}
+	BaloonThing(int team, Vector3 pos = Vector3(0,0,0), unsigned int amount=1);
 
 	// change the colour to reflect team ownership
-	virtual void setTeamNum(int teamNum)
-	{
-		Team* team = Physics::getSingleton().getTeam(teamNum);
+	virtual void setTeamNum(int teamNum);
 
-		setColour(team->getColour());
+	virtual void setTarget(Thing* target);
 
-		Thing::setTeamNum(teamNum);
+	virtual Thing* getTarget();
 
-		setUpdateFlag();
-	}
+	virtual void move(Real time);
 
-	virtual void setTarget(Thing* target)
-	{
-		mTarget = target;
-		mState = BAL_STATE_ASCENDING;
-		setVelocity(Vector3(0,CONR("BALOON_SPEED"),0));
-	}
+	virtual void collided(Thing* thing);
 
-	virtual Thing* getTarget()
-	{
-		return mTarget;
-	}
+	virtual bool needsOrders();
 
-	virtual void move(Real time)
-	{
-		if (mTarget && mTarget->getTeamNum() == getTeamNum())
-		{
-			mNeedOrders = false;
+	virtual void load(int amount);
 
-			//  if it's ascending and has gotten high enough
-			if (mState == BAL_STATE_ASCENDING && getPosY() > getGroundY() + CONR("BALOON_ALTITUDE"))
-			{
-				// change to travel mode
-				mState = BAL_STATE_TRAVEL;
-			}
-			
-			// if its travelling
-			if (mState == BAL_STATE_TRAVEL)
-			{
+	virtual int unload();
 
-			}
-				
-
-		}
-		else
-		{
-			mTarget = 0;
-			mNeedOrders = true;
-			setVelocity(Vector3(0,0,0));
-		}
-	}
-
-	virtual bool needOrders()
-	{
-		return mNeedOrders;
-	}
-
-	virtual void load(int amount)
-	{
-		mAmount += amount;
-	}
-
-	virtual int unload()
-	{
-		int a = mAmount;
-		mAmount = 0;
-		return a;
-	}
+	virtual int getAmount();
 
 private:
-	ManaThing* mTarget;
+	Thing* mTarget;
 	bool mNeedOrders;
 	int mAmount;
 	int mState; 
+
+	// state changes
+	inline void setStateWait();
+	inline void setStateAscend();
+	inline void setStateDescend();
+	inline void setStateTravel();
 };
 
 }
