@@ -324,30 +324,18 @@ void Thing::move(Real time)
 		if (mGroundScan && getGroundY() > getPosition().y && isAlive()) 
 			collidedGround();
 
-	// clients should not call think
-	if (!Multiplayer::getSingleton().isClient())
-	{
-		// see if it's time to think yet
-		unsigned long now = Time::getSingleton().getTime();
-		unsigned long period = unsigned long(CONR("THING_THINK_PERIOD") * 1000);
-		if (mLastThinkTime + period < now)
-		{
-			think();
+	// see if it's time to think yet
+	unsigned long now = Time::getSingleton().getTime();
+	unsigned long period = unsigned long(CONR("THING_THINK_PERIOD") * 1000);
 
-			mLastThinkTime = now + period * Math::RangeRandom(0,.1);
-		}
-	}
-	else
+	if (mLastThinkTime + period < now)
 	{
-		// see if it's time to think yet
-		unsigned long now = Time::getSingleton().getTime();
-		unsigned long period = unsigned long(CONR("THING_THINK_PERIOD") * 1000);
-		if (mLastThinkTime + period < now)
-		{
+		if (!Multiplayer::getSingleton().isClient())
+			think();
+		else
 			clientThink();
 
-			mLastThinkTime = now + period * Math::RangeRandom(0,.1);
-		}
+		mLastThinkTime = now + period * Math::RangeRandom(0,.1);
 	}
 }
 
