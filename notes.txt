@@ -6,7 +6,6 @@ to add:
 amry counters
 health/mana hud bars
 monster health bars
-bind mouse buttons to spell selections
 teleport to/from towers
 
 

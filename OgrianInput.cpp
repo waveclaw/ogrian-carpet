@@ -76,6 +76,12 @@ bool Input::processKeyInput(InputReader* input)
 		mKeys[i] = input->isKeyDown((Ogre::KeyCode)i);
 	}
 
+	// check mouse buttons 2-5
+	if (input->getMouseButton(1)) SpellManager::getSingleton().readySpell(CONI("MOUSE_BUTTON_2_SPELL"));
+	if (input->getMouseButton(2)) SpellManager::getSingleton().readySpell(CONI("MOUSE_BUTTON_3_SPELL"));
+	if (input->getMouseButton(3)) SpellManager::getSingleton().readySpell(CONI("MOUSE_BUTTON_4_SPELL"));
+	if (input->getMouseButton(4)) SpellManager::getSingleton().readySpell(CONI("MOUSE_BUTTON_5_SPELL"));
+
 	// mousewheel up
 	if (input->getMouseRelativeZ() > 0)
 		SpellManager::getSingleton().readyPrevSpell();
@@ -110,8 +116,8 @@ bool Input::processKeyInput(InputReader* input)
 	}
 
 	// move forward
-	if (input->getMouseButton(1))
-		Renderer::getSingleton().getCameraThing()->moveForward();
+	//if (input->getMouseButton(1))
+	//	Renderer::getSingleton().getCameraThing()->moveForward();
 
 	return true;
 }

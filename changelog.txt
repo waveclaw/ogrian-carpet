@@ -5,6 +5,7 @@
 -nerfed ticks
 -improved gnomes
 -added a map option to make lava deadly
+-gave towers a healing ball
 
 
 

@@ -41,6 +41,22 @@ red=1
 green=1
 blue=1
 
+#mouse bindings:
+#0: claim
+#1: build
+#2: fireball
+#3: summon sentinel
+#4: summon tick
+#5: summon gnome
+#6: speeed
+#7: akimbo fireball
+#8: summon albatross!
+#9: firestorm
+MOUSE_BUTTON_2_SPELL=6
+MOUSE_BUTTON_3_SPELL=2
+MOUSE_BUTTON_4_SPELL=7
+MOUSE_BUTTON_5_SPELL=9
+
 
 # Performance variables
 # all units are in meters, seconds, or meters per second
