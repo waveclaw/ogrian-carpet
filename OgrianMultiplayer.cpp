@@ -132,7 +132,8 @@ void Multiplayer::serverStart()
 	server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
 	server.teamNum = Physics::getSingleton().addTeam(server.wizardUID);
 	mPlayers.push_back(server);
-	PlayerList::getSingleton().addPlayer(server.name);
+	
+	updateScores();
 }
 
 //----------------------------------------------------------------------------
@@ -425,11 +426,11 @@ void Multiplayer::updateScores()
 	// re-add all the players + scores
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
-		String str = String("") << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore()
+		String player = String("") << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore()
 			<< "   " << mPlayers[i].name;
 			
-		serverSendAllText(str, ID_ADD_SCORE);
-		PlayerList::getSingleton().addPlayer(str);
+		serverSendAllText(player, ID_ADD_SCORE);
+		PlayerList::getSingleton().addPlayer(player);
 	}
 
 }
@@ -531,12 +532,13 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		}
 		case ID_ADD_SCORE: //////////////////////////////////////////////////////
 		{
-			// get the new score
-			String score;
-			packetToString(packet,score);
+			// get the new scoreboard entry
+			String player;
+			packetToString(packet,player);
 
 			// add it
-			PlayerList::getSingleton().addPlayer(score);
+			if (strlen(player) > 2)
+				PlayerList::getSingleton().addPlayer(player);
 		}
 	}
 	return false;
@@ -561,7 +563,6 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.wizardUID = Physics::getSingleton().newWizardThing()->getUID();
 			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
 			mPlayers.push_back(player);
-			PlayerList::getSingleton().addPlayer(playerName);
 
 			// send a message to the client telling it what its wizardUID is
 			BitStream bs;
