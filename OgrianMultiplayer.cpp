@@ -29,6 +29,7 @@ Description: This handles all of the multiplayer networking code.
 
 #include "OgrianMultiplayer.h"
 #include "OgrianMenu.h"
+#include "OgrianHud.h"
 #include "OgrianRenderer.h"
 #include "OgrianPlayerList.h"
 #include "OgrianPhysics.h"
@@ -124,6 +125,8 @@ void Multiplayer::serverStart()
 	PlayerInfo server;
 	server.id.binaryAddress = 0;
 	server.name = mPlayerName + " (Serving)";
+	server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
+	server.teamNum = Physics::getSingleton().addTeam(server.wizardUID);
 	mPlayers.push_back(server);
 	PlayerList::getSingleton().addPlayer(server.name);
 }
@@ -394,42 +397,9 @@ PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 
 //----------------------------------------------------------------------------
 
-PlayerInfo* Multiplayer::getPlayerInfo(int wizardUID)
-{
-	for (int i=0; i<(int)mPlayers.size(); i++)
-	{
-		if (mPlayers[i].wizardUID == wizardUID) return &mPlayers[i];
-	}
-
-	LogManager::getSingleton().logMessage(String("wizard not found: #") << wizardUID);
-	return 0;
-}
-
-//----------------------------------------------------------------------------
-
-int Multiplayer::getPlayerNum(PlayerID pid)
-{
-	for (int i=0; i<(int)mPlayers.size(); i++)
-	{
-		if (mPlayers[i].id == pid) return i;
-	}
-
-	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
-	return -1;
-}
-
-//----------------------------------------------------------------------------
-
-PlayerInfo* Multiplayer::getPlayerByNum(int i)
-{
-	return &mPlayers[i];
-}
-
-//----------------------------------------------------------------------------
-
 void Multiplayer::updateScores()
 {
-
+	//Hud::getSingleton().setScore(getPlayerByNum(0)->score);
 }
 
 //----------------------------------------------------------------------------
@@ -562,6 +532,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.id = packet->playerId;
 			player.name = playerName;
 			player.wizardUID = Physics::getSingleton().newWizardThing()->getUID();
+			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
 			mPlayers.push_back(player);
 			PlayerList::getSingleton().addPlayer(playerName);
 

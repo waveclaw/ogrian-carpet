@@ -91,16 +91,25 @@ public:
 	// get a new WizardThing for a client
 	WizardThing* newWizardThing();
 
+	// add a new team
+	int addTeam(int wizardUID);
+
+	// get a team by number
+	Team* getTeam(int index);
+
+	// clear the teams
+	void clearTeams();
+
     static Physics& getSingleton(void);
 
 private:
 	// a matrix of vectors for collision culling
 	std::vector<Thing*> mThingGrid[PHYSICS_GRID_SIZE][PHYSICS_GRID_SIZE];
 	std::vector<Thing*> mOtherThings; // the things outside the grid
-
 	std::vector<Thing*> mAllThings; // All things in the world
-
 	std::vector<Thing*> mEffects; // a list of effects
+
+	std::vector<Team*> mTeams;
 
 	int mWorldSize;
 

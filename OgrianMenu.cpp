@@ -61,6 +61,9 @@ Menu::Menu()
 	// hide the disconnect button at the start
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 
+	// hide the load button
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
+
 	// build the list
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/AvailableMapsList"));
 

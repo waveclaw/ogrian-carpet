@@ -50,8 +50,8 @@ struct PlayerInfo
 {
 	PlayerID id;
 	String name;
-	int wizardUID; // the UID of the wizardthing
-	int score;
+	int teamNum;
+	int wizardUID;
 };
 
 // The Pysics class handles collision detection and notification among all Thing objects.
@@ -103,15 +103,6 @@ public:
 
 	// turn an player ID into the assiciated PlayerInfo
 	PlayerInfo* getPlayerInfo(PlayerID pid);
-
-	// turn a wizard UID into the assiciated PlayerInfo
-	PlayerInfo* getPlayerInfo(int wizardUID);
-
-	// get the player number for a playerID
-	int getPlayerNum(PlayerID pid);
-
-	// get a PlayerInfo by index
-	PlayerInfo* getPlayerByNum(int num);
 
 	// the number of clients connected
 	int numClients();

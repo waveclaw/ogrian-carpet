@@ -75,10 +75,10 @@ public:
 class FireballThing : public TimedThing
 {
 public:
-	FireballThing(int playerNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	FireballThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
 	{
-		mPlayerNum = playerNum;
+		mTeamNum = teamNum;
 
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
@@ -120,10 +120,10 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// get points for killing wizards
-		if (e->getType() == WIZARDTHING)
+		if (e->getType() == FOLIAGETHING)
 		{
-			Multiplayer::getSingleton().getPlayerByNum(mPlayerNum)->score++;
-			Multiplayer::getSingleton().updateScores();
+			//Multiplayer::getSingleton().getPlayerByNum(mPlayerNum)->score++;
+			//Multiplayer::getSingleton().updateScores();
 		}
 
 		// destroy it
@@ -148,7 +148,7 @@ public:
 	}
 
 private:
-	int mPlayerNum;
+	int mTeamNum;
 	unsigned long mLastSmokeTime;
 	int mLastSmokeIndex;
 	std::vector<FireballSmokeEffect*> mSmokeList;

@@ -39,6 +39,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianRenderer.h"
 #include "OgrianConstants.h"
 #include "OgrianTime.h"
+#include "OgrianTeam.h"
 
 #include "OgrianFireballThing.h"
 #include "OgrianManaThing.h"
@@ -156,7 +157,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		if (thing == 0) // we need to make a new one if we dont have it
 		{
 			// make a new thing
-			thing = newThing((ThingType)type, Multiplayer::getSingleton().getPlayerNum(packet->playerId));
+			thing = newThing((ThingType)type, 0);
 
 			// log it
 			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
@@ -243,7 +244,8 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 		else // otherwise, its a new thing
 		{
 			// make a new thing
-			Thing* thing = newThing((ThingType)type, Multiplayer::getSingleton().getPlayerNum(packet->playerId));
+			Thing* thing = newThing((ThingType)type, 
+				Multiplayer::getSingleton().getPlayerInfo(packet->playerId)->teamNum);
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -264,13 +266,13 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 //----------------------------------------------------------------------------
 
-Thing* Physics::newThing(ThingType type, int playerNum)
+Thing* Physics::newThing(ThingType type, int teamNum)
 {
 	switch(type)
 	{
 		case MANATHING:	return new ManaThing();
 
-		case FIREBALLTHING:	return new FireballThing(playerNum);
+		case FIREBALLTHING:	return new FireballThing(teamNum);
 
 		case CAMERATHING: return new WizardThing();
 
@@ -805,6 +807,32 @@ void Physics::setWorldSize(int size)
 
 //----------------------------------------------------------------------------
 
+int Physics::addTeam(int wizardUID)
+{
+	mTeams.push_back(new Team(wizardUID));
+	return (int)mTeams.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+Team* Physics::getTeam(int index)
+{
+	return mTeams[index];
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::clearTeams()
+{
+	while (mTeams.size() > 0)
+	{
+		delete mTeams[mTeams.size()-1];
+		mTeams.erase(mTeams.end());
+	}
+}
+
+//----------------------------------------------------------------------------
+
 Physics& Physics::getSingleton(void)
 {
 	if (!ms_Singleton) 
@@ -819,6 +847,8 @@ Physics& Physics::getSingleton(void)
 Physics::~Physics()
 {
 	clear();
+
+	clearTeams();
 }
 
 //----------------------------------------------------------------------------

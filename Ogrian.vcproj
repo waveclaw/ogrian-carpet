@@ -227,6 +227,9 @@
 				RelativePath="OgrianSprite.h">
 			</File>
 			<File
+				RelativePath="OgrianTeam.h">
+			</File>
+			<File
 				RelativePath="OgrianThing.h">
 			</File>
 			<File
