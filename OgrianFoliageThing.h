@@ -60,7 +60,11 @@ public:
 	{
 		// dies if it touches mana
 		if (e->getType() == MANATHING)
+		{
 			setMaterial("Ogrian/PalmTreeDead");
+			playSound("OgrianMedia/sounds/treedeath.wav");
+			e->destroy();
+		}
 	}	
 };
 

@@ -66,11 +66,8 @@ public:
 	// remove and delete all things in the world
 	virtual void clear();
 
-	// notify all things of a frame move
-	virtual void moveAll(Real time);
-
-	// run a collision check and notify all affected things
-	virtual void collisionCheck();
+	// call this every frame
+	virtual void frame(Real time);
 
 	// this must be called before adding things
 	virtual void setWorldSize(int size);
@@ -87,6 +84,12 @@ private:
 	int mWorldSize;
 
 	Physics();
+
+	// notify all things of a frame move
+	virtual void moveAll(Real time);
+
+	// run a collision check and notify all affected things
+	virtual void collisionCheck();
 
 	virtual inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
 	virtual inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord

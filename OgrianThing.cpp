@@ -264,4 +264,9 @@ Real Thing::getGroundY(Vector3 pos)
 	return HeightMap::getSingleton().getHeightAt(pos.x,pos.z);
 }
 
+void Thing::playSound(String filename)
+{
+	Audio::getSingleton().playSound(filename, getPosition());
+}
+
 }

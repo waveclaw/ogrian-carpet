@@ -49,6 +49,7 @@ public:
 	CameraThing(Camera* camera)
 		: Thing("Ogrian/Clear", "CameraThing", true, CAMERA_HEIGHT)
 	{
+		mCamera = camera;
 	}
 
 	virtual ThingType getType()
@@ -56,9 +57,16 @@ public:
 		return CAMERATHING;
 	}
 
+	virtual Vector3 getDirection()
+	{
+		return mCamera->getDerivedDirection();	
+	}
+
 	// handle camera movement given directional input 
 	virtual void moveCamera(Camera* camera, Real rotX, Real rotY, Vector3 trans)
 	{
+		mCamera = camera;
+
 		// Make all the changes to the camera
 		// Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW (e.g. airplane)
 		camera->yaw(rotX);
@@ -106,6 +114,10 @@ public:
 	{
 		assert(false);
 	}
+
+private:
+	Camera* mCamera;
+
 };
 }
 #endif

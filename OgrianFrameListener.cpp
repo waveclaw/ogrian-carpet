@@ -33,6 +33,7 @@ See OgrianFrameListener.h for command listings
 #include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
+#include "OgrianAudio.h"
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianRenderer.h"
@@ -302,8 +303,10 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 {
 	// tick the physics
-	Physics::getSingleton().moveAll(evt.timeSinceLastFrame);
-	Physics::getSingleton().collisionCheck();
+	Physics::getSingleton().frame(evt.timeSinceLastFrame);
+
+	// tick the audio
+	Audio::getSingleton().frame(evt.timeSinceLastFrame);
 
 	// handle input //
     if (!mInputTypeSwitchingOn)

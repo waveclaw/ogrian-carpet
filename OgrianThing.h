@@ -34,6 +34,7 @@ It is rendered as a Billboard.
 
 #include <Ogre.h>
 #include "OgrianSprite.h"
+#include "OgrianAudio.h"
 
 using namespace Ogre;
 
@@ -123,6 +124,9 @@ public:
 
 	virtual Real getGroundY();
 	virtual Real getGroundY(Vector3 pos);
+
+	// play a sound
+	virtual void playSound(String filename);
 
 	
 private:

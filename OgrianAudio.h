@@ -19,61 +19,39 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHeightMap.h
+OgrianAudio.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: the HeightMap is used to determine the height of the terrain
-at an arbitrary Real position. 
-It is a Singleton.
-
+Description: The audio handler
 /*------------------------------------*/
 
-#ifndef __OgrianHeightMap_H__
-#define __OgrianHeightMap_H__
+#ifndef __OgrianAudio_H__
+#define __OgrianAudio_H__
 
-
-#include <OgreSingleton.h>
-//#include <OgreTerrainSceneManager.h>
+#include <Ogre.h>
+#include <fmod.h>
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class HeightMap : public Singleton< HeightMap >
+class Audio : public Singleton< Audio >
 {
 public:
-	HeightMap();
-	virtual ~HeightMap();
+	virtual void playSound(String filename, Vector3 pos);
 
-	// load in the heightmap from a file
-	void loadTerrain( const String& filename );
+	virtual void frame(Real time);
 
-	// get the height at a Real point
-	Real getHeightAt(Real x, Real z);
-
-	// get the slope at a Real point
-	Real getXSlopeAt(Real x, Real z);
-	Real getZSlopeAt(Real x, Real z);
-
-	// get the size of the world
-	int getWorldSize();
-
-    static HeightMap& getSingleton(void);
+	static Audio& getSingleton(void);
 
 private:
-	Vector3 mScale;
-	int mSize;
-
-	Real mScalex, mScaley, mScalez;
-	const uchar* mData;
-
-	Image mImage;
-
-	// do an array lookup
-	inline int _worldheight( int x, int z );
+	Audio();
+	virtual ~Audio();
+    float listenerpos[3]; 
 };
 
 }
+
 #endif

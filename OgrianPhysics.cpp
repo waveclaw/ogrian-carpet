@@ -51,6 +51,12 @@ Physics::Physics()
 	mWorldSize = -1;
 }
 
+void Physics::frame(Real time)
+{
+	moveAll(time);
+	collisionCheck();
+}
+
 // checks to see if a thing is in the list mAllThings
 bool Physics::containsThing(Thing* thing)
 {
