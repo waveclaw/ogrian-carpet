@@ -9,28 +9,70 @@ unsigned long Thing::msNextGeneratedNameExt = 1;
 
 Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, Real y, Real z)
 {
-	String name = prefix << "_" << msNextGeneratedNameExt++;
-	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
+	// initialize the mvars
+	mAlive = true;
+	mInRenderer = false;
+	mBbset = 0;
+	mBillboard = 0;
+	mNode = 0;
 
-	mBbset = sceneMgr->createBillboardSet(name,1);
+	// name it
+	mName = prefix << "_" << msNextGeneratedNameExt++;
+
+	// set the settings
+	mFixed_y = fixed_y;
+	setMaterial(material);
+	setVelocity(0,0,0);
+	setPosition(x, y, z);
+	setScale(scale);
+
+	// add it to the renderer
+	_addToRenderer();
+}
+
+Thing::~Thing()
+{
+	_removeFromRenderer();
+}
+
+void Thing::_addToRenderer()
+{
+	// create the billboardset
+	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
+	mBbset = sceneMgr->createBillboardSet(mName,1);
 	mBillboard = mBbset->createBillboard(0, 0, 0);
 
-	if (fixed_y)
+	if (mFixed_y)
 	{
 		// it doesn't really matter if its common or self, since there's only one per set
 		mBbset->setBillboardType(BBT_ORIENTED_SELF);
 		mBillboard->mDirection = Vector3::UNIT_Y;
 	}
 
+	// attach the set
 	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 	mNode->attachObject(mBbset);
 
-	if (material != "") setMaterial(material);
-	setVelocity(0,0,0);
-	Thing::setPosition(x, y, z);
-	setScale(scale);
+	mInRenderer = true;
 
-	mAlive = true;
+	// apply its properties to it
+	setMaterial(mMaterial);
+	Thing::setPosition(mPos);
+	setScale(mRadius*2);
+
+}
+
+void Thing::_removeFromRenderer()
+{
+	// remove it from the scene
+	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
+
+	// null the mvars
+	mBbset = 0;
+	mBillboard = 0;
+	mNode = 0;
+
+	mInRenderer = false;
 }
 
 bool Thing::isAlive()
@@ -53,7 +95,8 @@ void Thing::setPosition(Real x, Real y, Real z)
 	mPos.y = y;
 	mPos.z = z;
 
-	mNode->setPosition(x,y,z);
+	if (mInRenderer)
+		mNode->setPosition(x,y,z);
 }
 
 
@@ -66,14 +109,33 @@ void Thing::setVelocity(Real x, Real y, Real z)
 
 void Thing::setScale(Real scale)
 {
-	mBillboard->setDimensions(scale,scale);
-
 	mRadius = scale/2;
+
+	if (mInRenderer)
+		mBillboard->setDimensions(scale,scale);
+}
+
+Vector3 Thing::getPosition()
+{
+	return mPos;
+}
+
+Vector3 Thing::getVelocity()
+{
+	return mVel;
+}
+
+Real Thing::getScale()
+{
+	return mRadius*2;
 }
 
 void Thing::setMaterial(String material)
 {
-	mBbset->setMaterialName(material);
+	mMaterial = material;
+
+	if (mInRenderer && mMaterial != "")
+		mBbset->setMaterialName(material);
 }
 
 void Thing::move(Real time)
@@ -112,11 +174,6 @@ void Thing::destroy()
 	mAlive = false;
 }
 
-Thing::~Thing()
-{
-	// remove it from the scene
-	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
-}
 
 // they are ordered by x location
 bool Thing::operator<(Thing* other)

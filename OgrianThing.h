@@ -46,6 +46,10 @@ public:
 
 	virtual Real getRadius();
 
+	virtual Vector3 getPosition();
+	virtual Vector3 getVelocity();
+	virtual Real getScale();
+
 	virtual ThingType getType(); 
 
 	virtual void collided(Thing* e);
@@ -63,16 +67,25 @@ protected:
 
 	BillboardSet* mBbset;
 	Billboard* mBillboard;
+	bool mFixed_y;
+	String mMaterial;
 
 	SceneNode* mNode;
+	String mName;
 
 	Real mRadius;
 	Real mHeight;
 
 	bool mAlive;
 
+	bool mInRenderer;
+
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
+
+	virtual void _addToRenderer();
+
+	virtual void _removeFromRenderer();
 };
 
 }
