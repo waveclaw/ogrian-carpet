@@ -214,6 +214,9 @@
 			<File
 				RelativePath="OgrianTime.h">
 			</File>
+			<File
+				RelativePath="OgrianWizardThing.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -34,8 +34,7 @@ This is never rendered.
 #define __OgrianCameraThing_H__
 
 #include <Ogre.h>
-#include "OgrianThing.h"
-#include "OgrianConstants.h"
+#include "OgrianWizardThing.h"
 #include "OgrianHeightMap.h"
 
 using namespace Ogre;
@@ -43,11 +42,11 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class CameraThing : public Thing
+class CameraThing : public WizardThing
 {
 public:
 	CameraThing(Camera* camera)
-		: Thing("Ogrian/Clear", "CameraThing", true, CAMERA_HEIGHT)
+		: WizardThing("Ogrian/Clear")
 	{
 		mCamera = camera;
 	}

@@ -51,6 +51,7 @@ enum ThingType
 	MANATHING,
 	FOLIAGETHING,
 	CAMERATHING,
+	WIZARDTHING,
 };
 
 // this is used for collision detection
