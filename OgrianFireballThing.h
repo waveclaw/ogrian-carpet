@@ -88,6 +88,7 @@ public:
 		// init the smoke
 		mLastSmokeTime = 0;
 		mLastSmokeIndex = 0;
+		mLastPos = getPosition();
 		
 		for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
 		{
@@ -109,12 +110,14 @@ public:
 		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime())
 		{
 			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
-			mSmokeList[mLastSmokeIndex++]->setPosition(getPosition());
+			mSmokeList[mLastSmokeIndex++]->setPosition(mLastPos);
 			mLastSmokeTime = Time::getSingleton().getTime();
 		}
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
+
+		mLastPos = getPosition();
 	}
 
 	virtual void collided(Thing* e)
@@ -143,6 +146,7 @@ public:
 
 private:
 	int mTeamNum;
+	Vector3 mLastPos;
 	unsigned long mLastSmokeTime;
 	int mLastSmokeIndex;
 	std::vector<FireballSmokeEffect*> mSmokeList;

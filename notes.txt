@@ -4,6 +4,7 @@ to add:
 =============
 music button
 Hand Sprites
+periodic/continuous network updateing thing types
 
 To consider:
 ==============
