@@ -58,6 +58,9 @@ public:
 	// add a player to the list
 	void addPlayer(String name);
 
+	// clear the list
+	void clear();
+
 	static PlayerList& getSingleton(void);
 
 private:
@@ -66,7 +69,7 @@ private:
 	bool mActive; // wether or not the PlayerList mode is active
 	Overlay* mOverlay; // the PlayerList overlay
 
-	ListChanger* mList; // the GUI List
+	ListGuiElement* mList; // the GUI List
 	std::vector<String> mPlayers; // a vector of the players names
 };
 

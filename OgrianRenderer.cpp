@@ -276,6 +276,8 @@ void Renderer::loadMap(String configfile)
 {
 	unloadMap();
 
+	mMapName = configfile;
+
 	/* Set up the options */
 	ConfigFile config;
 	config.load( configfile );
@@ -303,6 +305,13 @@ void Renderer::loadMap(String configfile)
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
 
 	mMapLoaded = true;
+}
+
+//----------------------------------------------------------------------------
+
+String Renderer::getMapName()
+{
+	return mMapName;
 }
 
 //----------------------------------------------------------------------------

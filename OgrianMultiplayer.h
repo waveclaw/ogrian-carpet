@@ -87,9 +87,6 @@ public:
 	// the number of clients connected
 	int serverNumPlayers();
 
-	// propagate a map load message
-	void serverLoadMap(String filename);
-
 	// too see if we are connected
 	bool isConnected();
 

@@ -282,9 +282,12 @@ void Multiplayer::clientDisconnect()
 	assert(!mIsServer);
 	assert(mActive);
 
+	// disconnect
 	mClient->Disconnect();
-	
 	RakNetworkFactory::DestroyRakClientInterface(mClient);
+
+	// clear the player list
+	PlayerList::getSingleton().clear();
 	
 	mActive = false;
 }
@@ -298,10 +301,12 @@ void Multiplayer::serverDisconnect()
 
 	// should probably kick all players first
 
+	// disconnect
 	mServer->Disconnect();
-	
 	RakNetworkFactory::DestroyRakServerInterface(mServer);
 
+	// clear the player list
+	PlayerList::getSingleton().clear();
 	mActive = false;
 }
 
@@ -326,24 +331,6 @@ int Multiplayer::serverNumPlayers()
 	assert(mIsServer);
 	assert(mActive);
 	return mServer->GetConnectedPlayers();
-}
-
-//----------------------------------------------------------------------------
-
-void Multiplayer::serverLoadMap(String filename)
-{
-	// get the name
-	char name[MAP_NAME_MAX_LENGTH];
-	strcpy(name, filename);
-	int len = (int)strlen(name) + 1;
-
-	BitStream bs;
-	bs.Write(ID_NEW_MAP);
-	bs.Write(len);
-	bs.Write(name,len);
-
-	// forward the message to all clients
-	serverSendAll(&bs);
 }
 
 //----------------------------------------------------------------------------
@@ -417,7 +404,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
-		case ID_NEW_MAP:
+		case ID_MAP_NAME:
 		{
 			// get the name
 			char name[MAP_NAME_MAX_LENGTH];
@@ -428,14 +415,24 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			bs.Read(len);
 			bs.Read(name,len);	
 
-			// load the map
-			Renderer::getSingleton().loadMap(name);
+			// if the map is different from the one we have loaded
+			if (name != Renderer::getSingleton().getMapName())
+			{
+				// disconnect
+				clientDisconnect();
+
+				// load the new map
+				Renderer::getSingleton().loadMap(name);
+
+				// reconnect
+				clientStart();
+			}
 		}
 
 		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
 			// Couldn't deliver a reliable packet - i.e. the other system was abnormally terminated
-			Except( Exception::ERR_INTERNAL_ERROR, "Error: Connection to Server lost.",
-				"Multiplayer::handleOtherPacket" );
+			//Except( Exception::ERR_INTERNAL_ERROR, "Error: Connection to Server lost.",
+				//"Multiplayer::handleOtherPacket" );
 			return true;
 	}
 	return false;
@@ -488,6 +485,19 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 
 				serverSend(&bs,packet->playerId);
 			}
+				
+			// send the name of the map
+			char mname[MAP_NAME_MAX_LENGTH];
+			strcpy(mname, Renderer::getSingleton().getMapName());
+			int len = (int)strlen(mname) + 1;
+
+			BitStream bs;
+			bs.Write(ID_MAP_NAME);
+			bs.Write(len);
+			bs.Write(mname,len);
+
+			serverSend(&bs,packet->playerId);
+
 			return true;
 		}
 

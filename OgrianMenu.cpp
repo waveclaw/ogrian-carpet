@@ -215,10 +215,6 @@ void Menu::frame(Real time)
 		// load the map
 		Renderer::getSingleton().loadMap(mMapName);
 
-		// if we're the server, tell the clients about the new map
-		if (Multiplayer::getSingleton().isServer())
-			Multiplayer::getSingleton().serverLoadMap(mMapName);
-		
 		// Menu
 		setMessage("Menu");
 		

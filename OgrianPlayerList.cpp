@@ -75,6 +75,19 @@ void PlayerList::addPlayer(String name)
 
 //----------------------------------------------------------------------------
 
+void PlayerList::clear()
+{
+	// remove each name
+	for (int i=0; i < int(mPlayers.size()); i++)
+	{
+		mList->removeListItem(mList->getSelectedItem());
+	}
+
+	mPlayers.clear();
+}
+
+//----------------------------------------------------------------------------
+
 void PlayerList::show()
 {
 	if (mActive == true) return;

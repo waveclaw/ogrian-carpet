@@ -74,6 +74,9 @@ public:
 	// load a map
 	void loadMap(String configfile);
 
+	// get the name of the current map
+	String getMapName();
+
 	// unload the map
 	void unloadMap();
 
@@ -91,6 +94,7 @@ protected:
 	SceneNode* mWaterNode;
 
 	bool mMapLoaded;
+	String mMapName;
 
     /// Standard constructor
     Renderer();
