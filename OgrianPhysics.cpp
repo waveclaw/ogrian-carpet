@@ -61,6 +61,7 @@ Physics::Physics()
 {
 	mWorldSize = -1;
 	mCurrentUID = 0;
+	mLastI = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -874,11 +875,20 @@ and its neighbors' things.
 */
 void Physics::collisionCheck()
 {
-	unsigned int i,j,t,u;
+	unsigned int i,j,t,u, starti, stopi;
 	i = j = t = u = 0;
 
+	if (mLastI >= PHYSICS_GRID_SIZE-1) mLastI = 0;
+	starti = mLastI;
+
+	// divide up the grid and be sure to round up
+	stopi = 1 + mLastI + PHYSICS_GRID_SIZE / CONR("PHYSICS_GRID_SPLIT");
+	if (stopi >= PHYSICS_GRID_SIZE) stopi = PHYSICS_GRID_SIZE-1;
+
+	mLastI = stopi;
+
 	// check the grid for collisions among itself
-	for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	for (i=starti; i<=stopi; i++)
 	{
 		for (j=0; j<PHYSICS_GRID_SIZE; j++)
 		{
@@ -981,6 +991,9 @@ void Physics::collisionCheck()
 
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
+	// dont collide with dead things
+	//if (!a->isAlive() || !b->isAlive()) return;
+
 	Real maxdist = (a->getWidth() + b->getWidth())/2;
 	Real maxHdist = (a->getHeight() + b->getHeight())/2;
 

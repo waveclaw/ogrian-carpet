@@ -125,6 +125,7 @@ private:
 	std::vector<Team*> mTeams;
 
 	int mWorldSize;
+	unsigned int mLastI;
 
 	int mCurrentUID; // each thing is assigned an incrementing UID
 
