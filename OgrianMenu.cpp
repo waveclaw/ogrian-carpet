@@ -49,7 +49,7 @@ Menu::Menu()
 	mActive = false;
 	mLoadMap = false;
 
-	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("SS/Setup/HostScreen/Overlay");
+	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 	
 	// set up the cursor
 	mCursor = OverlayManager::getSingleton().getCursorGui();
@@ -57,7 +57,7 @@ Menu::Menu()
     mCursor->setDimensions(32.0/640.0, 32.0/480.0);
 
 	// build the list
-	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
+	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/AvailableMapsList"));
 
 	mList->addListItem(new StringResource("crescent"));
 	mList->addListItem(new StringResource("islands"));
@@ -79,14 +79,14 @@ void Menu::button_invertMouseToggle()
 
 	if (ofl->getInvertY())  // uninvert the mouse y axis
 	{
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert")
 			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (OFF)");
 
 		ofl->setInvertY(false);
 	}
 	else // invert the mouse y axis
 	{
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert")
 			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (ON)");
 
 		ofl->setInvertY(true);
@@ -115,7 +115,7 @@ void Menu::button_host()
 
 void Menu::setMessage(String message)
 {
-	GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Text")
 		->setParameter("caption", message);
 }
 

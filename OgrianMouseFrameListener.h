@@ -86,11 +86,11 @@ public:
 		std::string action = e->getActionCommand();
 
 		// REMEMBER TO REGISTER THE BUTTON BELOW!
-		if (action == "SS/Setup/HostScreen/Exit") mQuit = true; 
-		else if (action == "SS/Setup/HostScreen/Load") Menu::getSingleton().button_load();
-		else if (action == "SS/Setup/HostScreen/Yinvert") Menu::getSingleton().button_invertMouseToggle();
-		else if (action == "SS/Setup/HostScreen/Host") Menu::getSingleton().button_host();
-		else if (action == "SS/Setup/HostScreen/Join") Menu::getSingleton().button_join();
+		if (action == "Ogrian/Menu/Exit") mQuit = true; 
+		else if (action == "Ogrian/Menu/Load") Menu::getSingleton().button_load();
+		else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
+		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
+		else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
     }
 
 	bool isMulticaster() {}
@@ -106,23 +106,23 @@ protected:
 		// REMEMBER TO CALL THE MENU ABOVE!!
 		ActionTarget* button;
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Load"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Host"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Join"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join"));
 		button->addActionListener(this);
 	}
 

@@ -2,17 +2,17 @@
 #include <BasicOgreGuiTemplates.inc>
 
 
-SS/Setup/HostScreen/Overlay
+Ogrian/Menu/Overlay
 {
 	zorder 490
 	// Stats block
-	container BorderPanel(SS/Setup/HostScreen/BackPanel) : SS/Templates/BasicBorderPanel
+	container BorderPanel(Ogrian/Menu/BackPanel) : SS/Templates/BasicBorderPanel
 	{
 		left 0 
 		top 0
 		width 1
 		height 1
-		container BorderPanel(SS/Setup/HostScreen/AvailableGamesListPanel) : SS/Templates/BasicBorderPanel
+		container BorderPanel(Ogrian/Menu/AvailableMapsListPanel) : SS/Templates/BasicBorderPanel
 		{
 			left 0.05 
 			top 0.1
@@ -20,7 +20,7 @@ SS/Setup/HostScreen/Overlay
 			height 0.8
 			material Core/StatsBlockCenter
 
-			container List(SS/Setup/HostScreen/AvailableGamesList)
+			container List(Ogrian/Menu/AvailableMapsList)
 			{
 				item_template SS/Templates/BasicText
 				v_spacing 0.005
@@ -36,7 +36,7 @@ SS/Setup/HostScreen/Overlay
 
 		}
 		    
-		container BorderButton(SS/Setup/HostScreen/Yinvert) : SS/Templates/BasicButton
+		container BorderButton(Ogrian/Menu/Yinvert) : SS/Templates/BasicButton
 		{
 			left 0.6
 			top 0.05
@@ -45,7 +45,7 @@ SS/Setup/HostScreen/Overlay
 		}
 
 
-		container BorderButton(SS/Setup/HostScreen/Exit) : SS/Templates/BasicButton
+		container BorderButton(Ogrian/Menu/Exit) : SS/Templates/BasicButton
 		{
 			left 0.6
 			top 0.75
@@ -54,7 +54,7 @@ SS/Setup/HostScreen/Overlay
 		}
 				
 
-		container BorderButton(SS/Setup/HostScreen/Load) : SS/Templates/BasicButton
+		container BorderButton(Ogrian/Menu/Load) : SS/Templates/BasicButton
 		{
 			left 0.6
 			top 0.60
@@ -63,7 +63,7 @@ SS/Setup/HostScreen/Overlay
 		}
 				
 
-		container BorderButton(SS/Setup/HostScreen/Host) : SS/Templates/BasicButton
+		container BorderButton(Ogrian/Menu/Host) : SS/Templates/BasicButton
 		{
 			left 0.6
 			top 0.45
@@ -72,7 +72,7 @@ SS/Setup/HostScreen/Overlay
 		}
 				
 
-		container BorderButton(SS/Setup/HostScreen/Join) : SS/Templates/BasicButton
+		container BorderButton(Ogrian/Menu/Join) : SS/Templates/BasicButton
 		{
 			left 0.6
 			top 0.30
@@ -81,7 +81,7 @@ SS/Setup/HostScreen/Overlay
 		}
 				
 
-		container TextBox(SS/Setup/HostScreen/Text) : SS/Templates/BasicTextBox
+		container TextBox(Ogrian/Menu/Text) : SS/Templates/BasicTextBox
 		{
 			left 0.0
 			top 0.0
