@@ -64,6 +64,17 @@ public:
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());
 		if (getGroundY() > CONR("BUILDING_MIN_GROUNDY") && team && !team->hasCastle())
 		{
+			// make sure its not too close to other buildings
+			for (int i=0; i<Physics::getSingleton().numThings(); i++)
+			{
+				Thing* thing = Physics::getSingleton().getThingByIndex(i);
+				if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
+				{
+					destroy();
+					return;
+				}
+			}
+
 			// make a castle
 			Castle* castle = new Castle(getTeamNum(), getPosition());
 			team->setCastle(castle);

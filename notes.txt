@@ -25,6 +25,9 @@ Spells
 -summon spikeflower
 -summon tower
 -unsummon (spider, flower, tower, mana, hut)
+-jump
+-speed
+-meteor
 
 
 need new art for:
@@ -49,7 +52,3 @@ for the tutorial, have TextBoxThing that pops up a textbox when teh camera touch
 performance, tweaks:
 ========
 Sprite LOD
-remove heightmap averageing
-ground scan on/off flag
-make physics grid finer, shrink foliage, and extend teh grid to surrounding 50% or so of ocean
-can only summon castles on land, outside minimum distance from other buildings
