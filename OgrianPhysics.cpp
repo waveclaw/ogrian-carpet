@@ -60,6 +60,7 @@ Physics::Physics()
 
 void Physics::frame(Real time)
 {
+	// move all particles
 	moveAll(time);
 
 	if (!Multiplayer::getSingleton().isClient())
@@ -69,16 +70,24 @@ void Physics::frame(Real time)
 	}
 	if (Multiplayer::getSingleton().isServer())
 	{
-		// servers notify clients of all things
-		for (int i=0; i<(int)mAllThings.size(); i++)
+		// servers need to send updates
+		serverFrame(time);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::serverFrame(Real time)
+{
+	// notify clients of all things
+	for (int i=0; i<(int)mAllThings.size(); i++)
+	{
+		Thing* thing = mAllThings[i];
+		if (thing->getType() == MANATHING)
 		{
-			Thing* thing = mAllThings[i];
-			if (thing->getType() == MANATHING)
-			{
-				BitStream bs;
-				thing->generateBitStream(bs);
-				Multiplayer::getSingleton().serverSendAll(&bs);
-			}
+			BitStream bs;
+			thing->generateBitStream(bs);
+			Multiplayer::getSingleton().serverSendAll(&bs);
 		}
 	}
 }
@@ -114,6 +123,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			}
 
 			// add it to the physics
+			LogManager::getSingleton().logMessage(String("Making New Thing for client: ") << uid);
 			clientAddThing(thing, uid);
 		}
 
@@ -310,6 +320,21 @@ void Physics::addThing(Thing* thing)
 
 //----------------------------------------------------------------------------
 
+// add a Thing to the world as a client
+void Physics::clientAddThing(Thing* thing, int uid)
+{
+	// add to full list
+	mAllThings.push_back(thing);
+
+	// keep allthings sorted by uid
+	_sortAllThings();
+
+	// notify the thing
+	thing->placedInPhysics(uid);
+}
+
+//----------------------------------------------------------------------------
+
 void Physics::_sortAllThings()
 {
 	// use insertion sort because it should already be sorted or nearly sorted
@@ -325,18 +350,6 @@ void Physics::_sortAllThings()
 		}
 		mAllThings[j] = t;
 	}
-}
-
-//----------------------------------------------------------------------------
-
-// add a Thing to the world
-void Physics::clientAddThing(Thing* thing, int uid)
-{
-	// add to full list
-	mAllThings.push_back(thing);
-
-	// notify the thing
-	thing->placedInPhysics(uid);
 }
 
 //----------------------------------------------------------------------------

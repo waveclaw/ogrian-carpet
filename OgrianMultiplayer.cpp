@@ -362,6 +362,18 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
+		case ID_REMOVE_PLAYER: //////////////////////////////////////////////////////
+		{
+			// get the name
+			String name;
+			packetToString(packet,name);
+
+			// update the player list
+			PlayerList::getSingleton().removePlayer(name);
+
+			return true;
+		}
+
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
 			// oddly, nothing is done here
@@ -456,10 +468,11 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			{
 				if (mPlayers[i].id == packet->playerId)
 				{
-                    // remove their name from the list
+                    // remove their name from the server list
 					PlayerList::getSingleton().removePlayer(mPlayers[i].name);
 
-					// remove their name from the other clients lists
+					// remove their name from the clients lists
+					serverSendAllText(mPlayers[i].name,ID_REMOVE_PLAYER);
 
 					// remove their ip from the list
 					mPlayers.erase(mPlayers.begin()+i);

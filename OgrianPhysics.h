@@ -112,6 +112,9 @@ private:
 	// cause a and b to collide
 	inline void collide(Thing* a, Thing* b);
 
+	// call this every frame for servers
+	void serverFrame(Real time);
+
 	// add a thing to the grid
 	void _addThing(Thing* thing, int grid_u, int grid_v);
 	// remove a thing from the grid. 
