@@ -93,6 +93,8 @@ void BuildSpellThing::collidedGround()
 
 void BuildSpellThing::collided(Thing* e)
 {
+	if (!isAlive()) return;
+
 	if (e->getType() == TOWER && e->getTeamNum() == getTeamNum())
 	{
 		// unbuild the tower
@@ -105,6 +107,8 @@ void BuildSpellThing::collided(Thing* e)
 			int mana = team->getCastle()->getMana() + CONI("TOWER_COST");
 			team->getCastle()->setMana(mana);
 		}
+
+		destroy();
 	}
 }
 
