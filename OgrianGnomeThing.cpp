@@ -80,10 +80,10 @@ void GnomeThing::move(Real time)
 			Vector3 vel(0,0,0);
 			vel = (wiz->getPosition() + mFormationOffset) - getPosition();
 
-			if (vel.length() > CONR("GNOME_FORMATION_THRESHOLD"))
+			if (vel.length() > getWidth())
 			{
 				vel.normalise();
-				vel *= CONR("GNOME_FORMATION_SPEED");
+				vel *= CONR("GNOME_SPEED");
 			}
 			else vel = Vector3(0,0,0);
 
@@ -120,8 +120,8 @@ void GnomeThing::think()
 			// attack the enemy //
 
 			// account for target movement
-			Real claimTravelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
-			Vector3 targetOffset = target->getVelocity()*claimTravelTime;
+			Real travelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
+			Vector3 targetOffset = target->getVelocity()*travelTime;
 
 			// shoot at the tips of buildings
 			if (target->isBuilding())

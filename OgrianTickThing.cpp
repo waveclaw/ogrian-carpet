@@ -53,8 +53,25 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	setHealth(CONI("TICK_HEALTH"));
 
 	setPosY(getGroundY()+CONR("TICK_SCALE")/2);
-}
 
+	setGroundScan(true);
+	
+	// set our formation offset
+	Real angle = Math::RangeRandom(0,2*Math::PI);
+	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+	mFormationOffset.x = sin(angle)*distance;
+	mFormationOffset.z = cos(angle)*distance;
+}
+//----------------------------------------------------------------------------
+
+// fall
+void TickThing::move(Real time)
+{
+	DamageableThing::move(time);
+
+	if (getVelocity().length() > 0)
+		setVelY(getVelY() - CONR("TICK_FALL_SPEED")*time);
+}
 //----------------------------------------------------------------------------
 
 void TickThing::think()
@@ -66,7 +83,8 @@ void TickThing::think()
 	if (team)
 	{
 		Thing* target = team->getNearestEnemy(this, CONR("SENTINEL_SIGHT_RANGE"));
-		if (target) 
+
+		if (target)
 		{
 			// face the enemy //
 		
@@ -85,23 +103,65 @@ void TickThing::think()
 			// attack the enemy //
 
 			// account for target movement
-			Real claimTravelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
-			Vector3 targetOffset = target->getVelocity()*claimTravelTime;
-
-			// shoot at the tips of buildings
-			if (target->isBuilding())
-				epos.y = epos.y + target->getHeight()/2;
+			Real travelTime = sphereDistance(target) / CONR("TICK_SPEED");
+			Vector3 targetOffset = target->getVelocity()*travelTime;
 
 			// calculate the trajectory
 			Vector3 vel = (epos + targetOffset) - pos;
 			vel.normalise();
-			vel *= CONR("FIREBALL_SPEED");
+			vel *= CONR("TICK_SPEED");
+			vel.y = CONR("TICK_JUMP_Y");
 
-			// jump at it
+			// jump at them
+			setVelocity(vel);
+			getVisRep()->setPose(1);
+		}
+		else
+		{
+			// stay in formation
+			Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
+			if (wiz)
+			{
+				Vector3 vel(0,0,0);
+				vel = (wiz->getPosition() + mFormationOffset) - getPosition();
+				vel.y = 0;
+
+				if (vel.length() > CONR("TICK_FORMATION_THRESHOLD"))
+				{
+					vel.normalise();
+					vel *= CONR("TICK_SPEED");
+					vel.y = CONR("TICK_JUMP_Y");
+					getVisRep()->setPose(1);
+								
+					// determine the direction
+					Vector3 pos = getPosition();
+					Vector3 epos = wiz->getPosition();
+					float dir = atan2(epos.x - pos.x, epos.z - pos.z);
+					
+					// constrain the offset
+					while (dir > Math::PI) dir -= 2*Math::PI;
+					while (dir < -Math::PI) dir += 2*Math::PI;
+
+					// set orientation
+					setOrientation(dir);
+				}
+				else vel = Vector3(0,0,0);
+
+				setVelocity(vel);
+			}
 		}
 	}
 }
 	
+//----------------------------------------------------------------------------
+	
+void TickThing::collidedGround()
+{
+	setVelocity(Vector3(0,0,0));
+	getVisRep()->setPose(0);
+	setPosY(getGroundY() + getHeight()/2);
+}
+
 //----------------------------------------------------------------------------
 	
 void TickThing::die()

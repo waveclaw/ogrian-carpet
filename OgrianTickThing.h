@@ -49,8 +49,13 @@ public:
 
 	virtual ThingType getType() { return TICKTHING; }
 
+	virtual void collidedGround();
+	virtual void move(Real time);
 	virtual void think();
 	virtual void die();
+
+private:
+	Vector3 mFormationOffset; 
 };
 
 /////////////////////////////////////////////////////////////////////////////

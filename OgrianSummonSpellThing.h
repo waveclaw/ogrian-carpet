@@ -52,6 +52,9 @@ public:
 	{
 		setTeamNum(teamNum);
 
+		if (!Multiplayer::getSingleton().isClient())
+			setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
 		setFlickerPeriod(CONR("SUMMONSPELL_FLICKER_PERIOD"));
