@@ -156,7 +156,7 @@ void Menu::button_musicToggle()
 		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
-		Audio::getSingleton().playSong("Media/music/Verdiales.ogg");
+		Audio::getSingleton().playSong("Media/music/LastGlimpse.ogg");
 		mMusic = true;
 	}
 }

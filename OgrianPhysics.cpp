@@ -703,6 +703,9 @@ void Physics::clear()
 					mThingGrid[i][j].pop_back();
 	}
 
+	// clear mOtherThings
+	mOtherThings.clear();
+
 	// delete each thing from mAllThings
 	while(!mAllThings.empty())
 	{
