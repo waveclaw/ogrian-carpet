@@ -58,6 +58,8 @@ BaloonThing::BaloonThing(int team, Vector3 pos, int amount)
 // change the colour to reflect team ownership
 void BaloonThing::setTeamNum(int teamNum)
 {
+	if (Multiplayer::getSingleton().isClient()) return;
+
 	Team* team = Physics::getSingleton().getTeam(teamNum);
 
 	setColour(team->getColour());
@@ -102,21 +104,6 @@ void BaloonThing::move(Real time)
 		if (getPosY() < getGroundY() + CONR("BALOON_ALTITUDE"))
 			setPosY(getGroundY() + CONR("BALOON_ALTITUDE"));
 	}
-	
-	//if (Math::Abs(lastPos.x - getPosition().x) > 10 || 
-	//	Math::Abs(lastPos.z - getPosition().z) > 10 || 
-	//	Math::Abs(lastPos.y - getPosition().y) > 10)
-	//{
-	//	Real x = getPosition().x;
-	//	Real y = getPosition().y;
-	//	Real z = getPosition().z;
-
-	//	std::ostringstream num("Setting Target: ");
-	//	num << "( " << x << ", " << y << ", " << z << " )";
-	//	LogManager::getSingleton().logMessage(String("") + num.str());
-
-	//	lastPos = getPosition();
-	//}
 }
 
 //----------------------------------------------------------------------------

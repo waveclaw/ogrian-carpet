@@ -348,6 +348,24 @@ void Castle::claimedManaThing(Thing* mana)
 {
 	// add the mana to the list
 	mManaThings.push_back(mana);
+
+	// check to see if an empty baloon is heading back to the castle
+	// find the closest such baloon and set it to pick up this mana
+	BaloonThing* bal = 0;
+	Real bestDist = HeightMap::getSingleton().getWorldSize()*2;
+	for (int i=0; i<mNumBaloons; i++)
+	{
+		BaloonThing* candidate = mBaloons[i];
+		if (candidate->getTarget() == this
+			&& candidate->getAmount() == 0
+			&& bestDist > mana->cylinderDistance(candidate))
+		{
+			bal = candidate;
+			bestDist = mana->cylinderDistance(candidate);
+		}
+	}
+
+	if (bal) bal->setTarget(mana);
 }
 
 //----------------------------------------------------------------------------
@@ -365,9 +383,9 @@ void Castle::unclaimedManaThing(Thing* mana)
 	}
 
 	// retarget the baloon that was getting it
-	for (int i=0; i<NUM_BALOONS; i++)
+	for (int i=0; i<mNumBaloons; i++)
 	{
-		if (mBaloons[i] && mBaloons[i]->getTarget() == mana)
+		if (mBaloons[i]->getTarget() == mana)
 		{
 			mBaloons[i]->setTarget(0);
 		}
