@@ -77,7 +77,7 @@ private:
 	Camera* mTempCam;
 	bool mForeward, mBack, mLeft, mRight;
 	Vector3 mForce;
-
+	Real mSensitivity;
 };
 }
 #endif

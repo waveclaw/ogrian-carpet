@@ -33,6 +33,7 @@ This is never rendered.
 #include "OgrianCameraThing.h"
 #include "OgrianHud.h"
 
+#include "OgreConfigFile.h"
 
 namespace Ogrian
 {
@@ -44,6 +45,12 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	mCamera = camera;
 	mTempCam = new Camera("TempCam", 0);
 	mForeward = mBack = mLeft = mRight = false;
+
+	// set the sensitivity
+	ConfigFile config;
+	config.load( "config.cfg" );
+	mSensitivity = atof(config.getSetting( "sensitivity" ));
+	if (mSensitivity == 0) mSensitivity = 1;
 }
 
 //----------------------------------------------------------------------------
@@ -93,6 +100,10 @@ void CameraThing::moveRight()
 // handle camera movement given directional input 
 void CameraThing::moveCamera(Real rotX, Real rotY)
 {
+	// multiply by the sensitivity
+	rotX *= mSensitivity;
+	rotY *= mSensitivity;
+
 	// set the yaw
 	mCamera->yaw(rotX);
 
