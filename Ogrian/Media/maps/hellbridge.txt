@@ -1,5 +1,5 @@
 Scale.xz=2
-Scale.y=1
+Scale.y=.5
 
 OceanMaterial=Ogrian/Lava
 SkyMaterial=Ogrian/FireySky
@@ -21,16 +21,16 @@ startZ=146
 
 # Multi-player start locations
 p1startX=232
-p1startZ=296
+p1startZ=150
 
 p2startX=840
 p2startZ=830
 
-p3startX=240
-p3startZ=860
+#p3startX=240
+#p3startZ=860
 
-p4startX=830
-p4startZ=150
+#p4startX=830
+#p4startZ=150
 
 # the RGB colour of the native monsters
 MONSTERS_RED=200
@@ -89,7 +89,7 @@ MaxPixelError=2
 PageWorldX=1026
 PageWorldZ=1026
 # Maximum height of the terrain 
-MaxHeight=256
+MaxHeight=128
 
 # Upper LOD limit
 MaxMipMapLevel=5

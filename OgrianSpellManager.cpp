@@ -112,7 +112,7 @@ void SpellManager::setLevel(int level)
 	if (level >= 7) enableSpell(SPELL_ALBATROSS);
 	else			disableSpell(SPELL_ALBATROSS);
 
-	//if (level >= 9) enableSpell(SPELL_FIRESTORM);
+	//if (level >= 8) enableSpell(SPELL_FIRESTORM);
 	//else			disableSpell(SPELL_FIRESTORM);
 
 	readyCurrentSpell();

@@ -38,7 +38,7 @@ Description: This is a fireball spell
 #define AKLEV 3
 
 // firestorm level
-#define STLEV 9
+#define STLEV 8
 
 using namespace Ogre;
 

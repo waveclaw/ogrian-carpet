@@ -1,5 +1,5 @@
 Scale.xz=2
-Scale.y=1
+Scale.y=.5
 
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
@@ -13,7 +13,7 @@ FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
 # Lava on(1) or off(0)
-Lava=1
+Lava=0
 
 # Single-player start locations
 startX=232
@@ -89,7 +89,7 @@ MaxPixelError=10
 PageWorldX=1026
 PageWorldZ=1026
 # Maximum height of the terrain 
-MaxHeight=256
+MaxHeight=128
 
 # Upper LOD limit
 MaxMipMapLevel=5
