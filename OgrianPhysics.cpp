@@ -117,6 +117,8 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		if (thing == 0) // we need to make a new one if we dont have it
 		{
+			listThings();
+
 			// make a new thing
 			switch(type)
 			{
@@ -262,6 +264,16 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 //----------------------------------------------------------------------------
 
+void Physics::listThings()
+{
+	LogManager::getSingleton().logMessage("All Things:");
+
+	for (int i=0; i<(int)mAllThings.size(); i++)
+		LogManager::getSingleton().logMessage(String(" thing: ") << mAllThings[i]->getUID());
+}
+
+//----------------------------------------------------------------------------
+
 Thing* Physics::getThing(int uid)
 {
 	if (mAllThings.size() == 0) return 0;
@@ -325,11 +337,11 @@ void Physics::addThing(Thing* thing)
 		// add to full list
 		mAllThings.push_back(thing);
 
-		// keep allthings sorted by uid
-		_sortAllThings();
-
 		// notify the thing
 		thing->placedInPhysics(mCurrentUID++);
+
+		// keep allthings sorted by uid
+		_sortAllThings();
 	}
 }
 
@@ -341,18 +353,17 @@ void Physics::clientAddThing(Thing* thing, int uid)
 	// add to full list
 	mAllThings.push_back(thing);
 
-	// keep allthings sorted by uid
-	_sortAllThings();
-
 	// notify the thing
 	thing->placedInPhysics(uid);
+
+	// keep allthings sorted by uid
+	_sortAllThings();
 }
 
 //----------------------------------------------------------------------------
 
 void Physics::_sortAllThings()
 {
-	/* 
 	// use insertion sort because it should already be sorted or nearly sorted
 	for (int i=1; i<(int)mAllThings.size(); i++)
 	{
@@ -366,22 +377,26 @@ void Physics::_sortAllThings()
 		}
 		mAllThings[j] = t;
 	}
-	*/
 
+	/* 
 	// bubble sort
 
-	for (int i=0; i<(int)mAllThings.size()-1; i++)
+	bool done = false;
+	while (!done)
 	{
-		for (int j=i; j<(int)mAllThings.size()-1; j++)
+		done = true;
+		for (int i=0; i<(int)mAllThings.size()-1; i++)
 		{
-			if (mAllThings[j]->getUID() > mAllThings[j+1]->getUID())
+			if (mAllThings[i]->getUID() > mAllThings[i+1]->getUID())
 			{
-				Thing* t = mAllThings[j];
-				mAllThings[j] = mAllThings[j+1];
-				mAllThings[j+1] = t;
+				Thing* t = mAllThings[i];
+				mAllThings[i] = mAllThings[i+1];
+				mAllThings[i+1] = t;
+				done = false;
 			}
 		}
 	}
+	*/
 }
 
 //----------------------------------------------------------------------------

@@ -128,6 +128,9 @@ private:
 
 	// sort mAllThings by uid
 	void _sortAllThings();
+
+	// send a list of all things to the log
+	void listThings();
 };
 
 }
