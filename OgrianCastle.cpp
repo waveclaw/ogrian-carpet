@@ -41,6 +41,12 @@ CastleFlagThing::CastleFlagThing()
 {
 	mBeacon = new CastleBeaconThing();
 	Physics::getSingleton().addEffect(mBeacon);
+	
+	Vector3 bpos = getPosition();
+	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
+	mBeacon->setPosition(bpos);
+
+	LogManager::getSingleton().logMessage("Making Beacon");
 }
 
 //----------------------------------------------------------------------------
@@ -54,9 +60,12 @@ Castle::Castle(int teamNum, Vector3 pos)
 	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH") - CONR("CASTLE_OFFSET"), 0));
 	Physics::getSingleton().addThing(this);
 
+	// set up the beacon
 	mBeacon = new CastleBeaconThing();
-	mBeacon->setColour(getColour());
 	Physics::getSingleton().addEffect(mBeacon);
+
+	mBeacon->setColour(getColour());
+
 	Vector3 bpos = getPosition();
 	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
 	mBeacon->setPosition(bpos);

@@ -78,9 +78,10 @@ CameraThing::~CameraThing()
 void CameraThing::makeGhost()
 {
 	WizardThing::makeGhost();
+
 	setScale(0);
 
-	Hud::getSingleton().setHealth("Game Over - You Are Dead!");
+	Hud::getSingleton().setHealth(0);
 }
 
 //----------------------------------------------------------------------------
@@ -193,6 +194,8 @@ void CameraThing::move(Real time)
 
 void CameraThing::setHealth(int health)
 {
+	if (isGhost()) health = 0;
+
 	WizardThing::setHealth(health);
 
 	Hud::getSingleton().setHealth(health);

@@ -63,8 +63,21 @@ public:
 		// set the height
 		setHeight(CONR("TOWER_HEIGHT"));
 
+		// find the ground	
+		Real w = getWidth()/2;
+		Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
+		Real ground01 = getGroundY(pos + Vector3(-w,0, w));
+		Real ground10 = getGroundY(pos + Vector3( w,0,-w));
+		Real ground11 = getGroundY(pos + Vector3( w,0, w));
+
+		Real ground = ground00;
+		if (ground01 < ground) ground = ground01;
+		if (ground10 < ground) ground = ground10;
+		if (ground11 < ground) ground = ground11;
+		mGroundY = ground;
+
 		// start at zero and rise
-		setPosY(getGroundY() - CONR("TOWER_OFFSET"));
+		setPosY(mGroundY - CONR("TOWER_OFFSET"));
 		mTargetY = getPosY();
 
 		// set the health
@@ -108,7 +121,7 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = 0;
-		Real newTargetY = getGroundY() - CONR("TOWER_OFFSET") - getHeight()/2 + getHeight()*per;
+		Real newTargetY = mGroundY - CONR("TOWER_OFFSET") - getHeight()/2 + getHeight()*per;
 
 		if (newTargetY == mTargetY) return;
 
@@ -202,6 +215,7 @@ public:
 	
 private:
 	Real mTargetY;
+	Real mGroundY;
 
 	unsigned long mLastCastTime;
 

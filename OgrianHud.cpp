@@ -86,9 +86,14 @@ void Hud::setScore(String score)
 
 void Hud::setHealth(int health)
 {
-	std::ostringstream num("");
-	num << health;
-	setHealth(String("Health: ") + num.str());
+	if (health <= 0)
+		setHealth("Game Over - You are Dead!");
+	else
+	{
+        std::ostringstream num("");
+		num << health;
+		setHealth(String("Health: ") + num.str());
+	}
 }
 
 //----------------------------------------------------------------------------

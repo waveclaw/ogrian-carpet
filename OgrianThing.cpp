@@ -108,8 +108,8 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 
 Thing::~Thing()
 {
-	if (!mDeleteFlag) // break if this was deleted incorrectly
-		((Thing*)0)->isAlive();
+	//if (!mDeleteFlag) // break if this was deleted incorrectly
+	//	((Thing*)0)->isAlive();
 
 	stopSound();
 

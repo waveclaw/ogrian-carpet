@@ -101,11 +101,27 @@ Thing* WizardThing::getRamp()
 
 //----------------------------------------------------------------------------
 
+void WizardThing::damage(int amount, int sourceTeamNum)
+{
+	if (!mGhost) 
+		DamageableThing::damage(amount, sourceTeamNum);
+
+	if (mGhost)
+		setHealth(0);
+}
+
+//----------------------------------------------------------------------------
+
 void WizardThing::makeGhost()
 {
 	mGhost = true;
 	if (mBar) mBar->destroy();
 	mBar = 0;
+	
+	// remove it from the teams enemy lists
+	if (!Multiplayer::getSingleton().isClient())
+		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+			Physics::getSingleton().getTeam(i)->removeEnemy(this);
 }
 
 //----------------------------------------------------------------------------
@@ -177,9 +193,7 @@ void WizardThing::setHealth(int health)
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
 
 		// update it
-		std::ostringstream num("");
-		num << health;
-		Multiplayer::getSingleton().serverSendText(String("Health: ") + num.str() , ID_SETHEALTH, player);
+		Multiplayer::getSingleton().serverSendInt(health, ID_SETHEALTH, player);
 	}
 }
 //----------------------------------------------------------------------------
@@ -190,19 +204,22 @@ void WizardThing::die()
 
 	if (!Multiplayer::getSingleton().isClient())
 	{
+		setHealth(CONI("WIZARD_HEALTH"));
+
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{
 			// kill it
 			Castle* castle = getTeam()->getCastle();
 
 			if (castle && castle->isRubble())
+			{
 				Multiplayer::getSingleton().ghostWizard(this);
+				return;
+			}
 			else
 				Multiplayer::getSingleton().killWizard(this);
 		}			
 	}
-	
-	setHealth(CONI("WIZARD_HEALTH"));
 }
 
 //----------------------------------------------------------------------------

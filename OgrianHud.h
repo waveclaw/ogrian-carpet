@@ -53,14 +53,14 @@ public:
 
 	// set the score
 	void setScore(int score);
-	void setScore(String score);
 
 	// set the health 
 	void setHealth(int health);
-	void setHealth(String health);
 
 private:
 	Hud();
+	void setScore(String score);
+	void setHealth(String health);
 
 	Overlay* mOverlay;
 	GuiElement* mScore;

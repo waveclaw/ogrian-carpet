@@ -71,12 +71,15 @@ public:
 	// send a message to the server
 	void clientSend(BitStream* bitStream, bool reliable=true);
 	void clientSendText(String message, int type);
+	void clientSendInt(int num, int type);
 
 	// send a message to a client
 	void serverSend(BitStream* bitStream, PlayerID player, bool reliable=true);
 	void serverSendText(String message, int type, PlayerID player);
+	void serverSendInt(int num, int type, PlayerID player);
 	void serverSendAll(BitStream* bitStream, bool reliable=true);
 	void serverSendAllText(String message, int type);
+	void serverSendAllInt(int num, int type);
 
 	// request a kick (to disconnect cleanly)
 	void clientRequestKick();

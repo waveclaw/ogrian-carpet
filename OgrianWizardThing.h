@@ -119,6 +119,7 @@ public:
 
 	virtual void setColour(ColourValue& colour);
 	virtual void setHealth(int health);
+	virtual void damage(int amount, int sourceTeamNum);
 	virtual void die();
 	
 	virtual void destroy();

@@ -236,6 +236,17 @@ void Multiplayer::clientSendText(String message, int type)
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::clientSendInt(int num, int type)
+{
+	BitStream bs;
+	bs.Write(type);
+	bs.Write(num);
+
+	clientSend(&bs);
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::serverSendText(String message, int type, PlayerID player)
 {
 	BitStream bs;
@@ -246,10 +257,32 @@ void Multiplayer::serverSendText(String message, int type, PlayerID player)
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::serverSendInt(int num, int type, PlayerID player)
+{
+	BitStream bs;
+	bs.Write(type);
+	bs.Write(num);
+
+	serverSend(&bs,player);
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::serverSendAllText(String message, int type)
 {
 	BitStream bs;
 	stringToBitStream(message,bs,type);
+
+	serverSendAll(&bs);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::serverSendAllInt(int num, int type)
+{
+	BitStream bs;
+	bs.Write(type);
+	bs.Write(num);
 
 	serverSendAll(&bs);
 }
@@ -454,10 +487,7 @@ void Multiplayer::updateScores()
 	// send each client its score
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
-		std::ostringstream num("");
-		num << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore();
-
-		serverSendText(String("Score: ") + num.str(),
+		serverSendInt(Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
 			ID_SETSCORE, mPlayers[i].id);
 	}
 
@@ -573,8 +603,10 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_SETHEALTH: //////////////////////////////////////////////////////
 		{
 			// get the new health
-			String health;
-			packetToString(packet,health);
+			int pid, health;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(health);
 
 			// set it
 			Hud::getSingleton().setHealth(health);
@@ -604,8 +636,10 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_SETSCORE: //////////////////////////////////////////////////////
 		{
 			// get the new score
-			String score;
-			packetToString(packet,score);
+			int pid, score;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(score);
 
 			// set it
 			Hud::getSingleton().setScore(score);
@@ -800,6 +834,8 @@ void Multiplayer::killWizard(Thing* wizard, Vector3 pos)
 
 void Multiplayer::ghostWizard(Thing* wizard)
 {
+	((WizardThing*)wizard)->makeGhost();
+
 	// find the wizard's player
 	PlayerInfo* player = getPlayerInfo(getPlayerID(wizard->getUID()));
 

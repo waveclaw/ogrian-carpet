@@ -54,8 +54,21 @@ public:
 	{
 		mCastle = castle;
 
+		// find the ground	
+		Real w = getWidth()/2;
+		Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
+		Real ground01 = getGroundY(pos + Vector3(-w,0, w));
+		Real ground10 = getGroundY(pos + Vector3( w,0,-w));
+		Real ground11 = getGroundY(pos + Vector3( w,0, w));
+
+		Real ground = ground00;
+		if (ground01 < ground) ground = ground01;
+		if (ground10 < ground) ground = ground10;
+		if (ground11 < ground) ground = ground11;
+		mGroundY = ground;
+
 		// start at zero
-		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()*2);
+		setPosY(mGroundY - CONR("CASTLE_OFFSET") - getHeight()*2);
 		mTargetY = getPosY();
 		setPercentage(0);
 
@@ -69,7 +82,7 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = -0.1;
-		Real newTargetY = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
+		Real newTargetY = mGroundY - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
 
 		if (newTargetY == mTargetY) return;
 
@@ -108,12 +121,16 @@ public:
 			mCastle->damage(amount, sourceTeamNum);
 	}
 
+	virtual ThingType getType()	{ return CASTLETOWER; }
+	
 	virtual bool isBuilding() { return true; }
 	
 private:
 	DamageableThing* mCastle;
 
 	Real mTargetY;
+
+	Real mGroundY;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -190,10 +207,13 @@ public:
 	virtual void setPosition(Vector3 pos)
 	{
 		Thing::setPosition(pos);
-		pos.y += CONR("CASTLE_BEACON_ALTITUDE");
-		mBeacon->setPosition(pos);
+
+		Vector3 bpos = getPosition();
+		bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
+		mBeacon->setPosition(bpos);
 	}
 
+private:
 	CastleBeaconThing* mBeacon;
 };
 
