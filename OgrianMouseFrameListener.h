@@ -91,6 +91,7 @@ public:
 		else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
 		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
 		else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
+		else if (action == "Ogrian/Menu/Disconnect") Menu::getSingleton().button_disconnect();
     }
 
 	bool isMulticaster() {}
@@ -124,6 +125,11 @@ protected:
 		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join"));
 		button->addActionListener(this);
+		
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect"));
+		button->addActionListener(this);
+
 	}
 
 };

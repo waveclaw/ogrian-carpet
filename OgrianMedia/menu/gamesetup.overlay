@@ -72,6 +72,15 @@ Ogrian/Menu/Overlay
 		}
 				
 
+		container BorderButton(Ogrian/Menu/Disconnect) : SS/Templates/BasicButton
+		{
+			left 0.6
+			top 0.45
+			width 0.4 
+			caption SS/Templates/BasicText DISCONNECT
+		}
+				
+
 		container BorderButton(Ogrian/Menu/Join) : SS/Templates/BasicButton
 		{
 			left 0.6

@@ -57,6 +57,9 @@ Menu::Menu()
     mCursor->setMaterialName("Cursor/default");
     mCursor->setDimensions(32.0/640.0, 32.0/480.0);
 
+	// hide the disconnect button at the start
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
+
 	// build the list
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/AvailableMapsList"));
 
@@ -107,16 +110,32 @@ void Menu::button_join()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
 }
 
 //----------------------------------------------------------------------------
 void Menu::button_host()
 {
-	setMessage("Starting Server");
+	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
+
+	setMessage("Starting Server...");
 	Multiplayer::getSingleton().serverStart();
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
+}
+
+//----------------------------------------------------------------------------
+void Menu::button_disconnect()
+{
+	setMessage("Disconnecting");
+	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientDisconnect();
+	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
 }
 
 //----------------------------------------------------------------------------

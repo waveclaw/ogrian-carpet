@@ -66,6 +66,7 @@ public:
 	void button_load();
 	void button_join();
 	void button_host();
+	void button_disconnect();
 
 	// set the message
 	void setMessage(String message);

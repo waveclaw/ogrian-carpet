@@ -84,7 +84,7 @@ void Multiplayer::clientStart()
 	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
-	// massage the name because RakNet is Stupid. 
+	// massage the name because RakNet is Stupid and wont take a const char*
 	std::string name = mServerName;
 	name = name.substr(0,16);
 	char cn[16];
