@@ -45,6 +45,7 @@ const Real CAMERA_HEIGHT = 3;
 const Real CAMERA_GRAV = 3;
 const Real CAMERA_FALL_MAX = 10;
 
+const Real WIZARD_HEALTH = 100;
 const Real WIZARD_SCALE = 3;
 
 const Real THING_CULL_DIST = 300;
@@ -58,6 +59,7 @@ const Real FOLIAGE_SCALE = 10;
 const Real FOLIAGE_SCALE_VAR = 3;
 const int FOLIAGE_LINE_MIN = 5;
 const int FOLIAGE_LINE_MAX = 50;
+const int FOLIAGE_HEALTH = 40;
 
 const Real HEIGTHMAP_SLOPE_DIFF = 2;
 const Real HEIGTHMAP_MIN_HEIGHT = 3;
@@ -90,6 +92,7 @@ const Real FIREBALL_FLICKER_PERIOD = .2;
 const Real FIREBALL_SMOKE_PERIOD = .05;
 const Real FIREBALL_SMOKE_NUM = 5;
 const Real FIREBALL_LIFETIME = 5;
+const int FIREBALL_DAMAGE = 20;
 
 
 }

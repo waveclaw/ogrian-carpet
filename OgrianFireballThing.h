@@ -119,12 +119,8 @@ public:
 
 	virtual void collided(Thing* e)
 	{
-		// get points for killing wizards
-		if (e->getType() == WIZARDTHING || e->getType() == CAMERATHING) 
-			Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
-
-		// destroy it
-		e->destroy();
+		// damage it
+		if (e->isDamageable())	e->damage(FIREBALL_DAMAGE, mTeamNum);
 
 		// self destruct
 		destroy();

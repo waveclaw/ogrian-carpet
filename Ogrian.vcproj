@@ -173,6 +173,9 @@
 				RelativePath="OgrianConstants.h">
 			</File>
 			<File
+				RelativePath="OgrianDamageableThing.h">
+			</File>
+			<File
 				RelativePath="OgrianFireballThing.h">
 			</File>
 			<File

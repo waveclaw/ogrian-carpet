@@ -33,7 +33,7 @@ Description: The wizard thing is the superclass of the CameraThing
 
 #include <Ogre.h>
 #include "OgrianConstants.h"
-#include "OgrianThing.h"
+#include "OgrianDamageableThing.h"
 
 using namespace Ogre;
 
@@ -41,17 +41,19 @@ namespace Ogrian
 {
 
 // extend floatingThing for floating behavior
-class WizardThing : public Thing
+class WizardThing : public DamageableThing
 {
 public:
 	WizardThing(bool visible=true) 
-		: Thing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, "WizardThing", true, CAMERA_HEIGHT)
+		: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, "WizardThing", true, CAMERA_HEIGHT)
 	{
 		if (visible)
 		{
 			getVisRep()->addPose("Ogrian/Wizard/");
 			getVisRep()->setPose(0);
 		}
+
+		setHealth(WIZARD_HEALTH);
 	}
 
 	virtual ThingType getType()
@@ -62,6 +64,11 @@ public:
 	virtual void destroy()
 	{
 		// DONT
+	}
+
+	virtual void die()
+	{
+		//Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
 	}
 };
 

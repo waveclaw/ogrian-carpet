@@ -342,14 +342,6 @@ ThingType Thing::getType()
 
 //----------------------------------------------------------------------------
 
-void Thing::collided(Thing* e)
-{
-	// override this for interesting behaviors
-	
-}
-
-//----------------------------------------------------------------------------
-
 void Thing::destroy()
 {
 	// mark it to be deleted

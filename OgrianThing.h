@@ -139,11 +139,20 @@ public:
 	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
 
-	// returns true if the velocity is 0,0,0
+	// returns false if the velocity has been 0,0,0 for a while
 	virtual bool isMoving();
 
 	// override this for interesting behaviors
-	virtual void collided(Thing* e);
+	virtual void collided(Thing* e) { }
+
+	// returns true if this thing can be damaged
+	virtual bool isDamageable() { return false; }
+
+	// damage this thing
+	virtual void damage(int amount, int sourceTeamNum) { } 
+
+	// called when this thing has taken too much damage, override this for interesting behaviors
+	virtual void die() { } 
 
 	// get rid of this thing - sets alive to false and will cause this thing to be deleted
 	virtual void destroy();

@@ -19,64 +19,68 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianFoliageThing.h
+OgrianDamageableThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: FoliageThing has the Foliage material. It is for scenery. 
+Description: DamageableThing is a thing that can take damage, and will die
 
 /*------------------------------------*/
 
-#ifndef __OgrianFoliageThing_H__
-#define __OgrianFoliageThing_H__
+#ifndef __OgrianDamageableThing_H__
+#define __OgrianDamageableThing_H__
 
 #include <Ogre.h>
-#include "OgrianDamageableThing.h"
+#include "OgrianThing.h"
+#include "OgrianTime.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-/////////////////////////////////////////////////////////////////////////////
-
-class FoliageCorpse : public Thing
+class DamageableThing : public Thing
 {
 public:
-	FoliageCorpse(Vector3 pos, Real scale) 
-		: Thing("Ogrian/PalmTreeDead", SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
-	{
 
+	DamageableThing(String material, ThingVisRep visrep=SPRITE, String prefix="Thing", bool fixed_y=false, 
+		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE)
+		: Thing(material, visrep, prefix, fixed_y, scale, pos, shape)
+	{
+		mHealth = 0;
 	}
 
-	virtual ThingType getType()	{ return EFFECT; }
-};
-
-/////////////////////////////////////////////////////////////////////////////
-
-class FoliageThing : public DamageableThing
-{
-public:
-	FoliageThing(Real scale=1, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/PalmTree", SPRITE, "Foliage", true, scale, pos, CYLINDER)
+	virtual void setHealth(int health)
 	{
-		// place it slightly underground
-		setHeight(scale*1.5);
-		setPosY(getGroundY() + scale*.45);
-		setHealth(FOLIAGE_HEALTH);
+		mHealth = health;
 	}
 
-	virtual ThingType getType()
+	virtual int getHealth()
 	{
-		return FOLIAGETHING;
-	}	
-
-	virtual void die()
-	{
-		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth()));
-
-		DamageableThing::destroy();
+		return mHealth;
 	}
+
+	virtual void damage(int amount, int sourceTeamNum)
+	{
+		mLastDamageSource = sourceTeamNum;
+
+		setHealth(mHealth - amount);
+		if (mHealth <= 0) die();
+	}
+
+	virtual int getLastDamageSourceTeamNum()
+	{
+		return mLastDamageSource;
+	}
+
+	virtual bool isDamageable()
+	{
+		return true;
+	}
+
+private:
+	int mHealth;
+	int mLastDamageSource;
 };
 
 }
