@@ -69,6 +69,10 @@ public:
 	// calculate the x/z distance between two Things
 	virtual Real distance(Thing* e);
 
+	// calculate the rectangular distance between two things using only the x and z axis
+	// this is like using a square instead of a circle for distance
+	virtual Real axisDistance(Thing* e);
+
 	// the radius is half the scale
 	virtual Real getRadius();
 

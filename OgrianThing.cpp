@@ -175,7 +175,7 @@ void Thing::_updateVisibility()
 {
 	// check the distance from the camera
 	Thing* cam = Renderer::getSingleton().getCameraThing();
-	if (distance(cam) < CAMERA_THING_CULL_DIST)
+	if (distance(cam) < THING_CULL_DIST)
 	{
 		// add it if its close enough
 		if (!mInRenderer)
@@ -194,6 +194,17 @@ Real Thing::distance(Thing* e)
 {
 	return sqrt((mPos.x - e->mPos.x)*(mPos.x - e->mPos.x) 
 			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
+}
+
+// calculate axis distance
+Real Thing::axisDistance(Thing* e)
+{
+	// find the distance along each 
+	Real xdist = Math::Abs(mPos.x - e->mPos.x);
+	Real zdist = Math::Abs(mPos.z - e->mPos.z);
+
+	// return the greater of the two
+	return (xdist > zdist) ? xdist : zdist;
 }
 
 Real Thing::getRadius()

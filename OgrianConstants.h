@@ -42,7 +42,7 @@ const Real CAMERA_HEIGHT = 3;
 const Real CAMERA_GRAV = 3;
 const Real CAMERA_FALL_MAX = 10;
 
-const Real CAMERA_THING_CULL_DIST = 200;
+const Real THING_CULL_DIST = 300;
 const Real FOG_DENSITY = 0.008;
 
 const Real SKYPLANE_DISTANCE = 75;

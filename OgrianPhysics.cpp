@@ -113,7 +113,7 @@ Each of the entities is check against a few of the following entities for
 collisions. 
 */
 void Physics::collisionCheck()
-{
+{/*
 	// sort the vector (by x location)
 	std::sort(things.begin(), things.end());
 
@@ -157,7 +157,7 @@ void Physics::collisionCheck()
 				}
 			}
 		}
-	}
+	}*/
 }
 
 

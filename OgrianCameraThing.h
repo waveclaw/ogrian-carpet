@@ -59,10 +59,6 @@ public:
 	// handle camera movement given directional input 
 	virtual void moveCamera(Camera* camera, Real rotX, Real rotY, Vector3 trans)
 	{
-		// constrain the pitch
-		if (rotY > 80) rotY = 80;
-		if (rotY < -80) rotY = -80;
-
 		// Make all the changes to the camera
 		// Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW (e.g. airplane)
 		camera->yaw(rotX);
@@ -83,9 +79,9 @@ public:
 		}
 		else 
 		{
+			pos.y = mPos.y;
 			Thing::setPosition(pos);
 		}
-		
 
 		camera->setPosition(mPos);
 	}
@@ -94,7 +90,7 @@ public:
 	virtual void setVelocity(Vector3 vel)
 	{
 		vel.y = mVel.y;
-		Thing::setVelocity(mVel);
+		Thing::setVelocity(vel);
 	}
 
 	// fall
