@@ -71,10 +71,19 @@ public:
 
 	virtual void collided(Thing* e)
 	{
+		// grow a castle (for testing)
 		if (e->getType() == CASTLEFLAG)
 		{
 			Castle* castle = static_cast<Castle*>(e);
 			castle->setMana(castle->getMana()+1);
+			destroy();
+		}
+
+		// claim mana
+		if (e->getType() == MANATHING)
+		{
+			e->setTeamNum(getTeamNum());
+			destroy();
 		}
 	}
 };

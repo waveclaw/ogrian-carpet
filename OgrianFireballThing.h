@@ -123,10 +123,13 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// damage it
-		if (e->isDamageable())	e->damage(CONR("FIREBALL_DAMAGE"), getTeamNum());
+		if (e->isDamageable())
+		{
+			e->damage(CONR("FIREBALL_DAMAGE"), getTeamNum());
 
-		// self destruct
-		destroy();
+			// self destruct
+			destroy();
+		}
 	}
 
 	virtual void collidedGround()

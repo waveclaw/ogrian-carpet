@@ -44,8 +44,9 @@ namespace Ogrian
 class Team
 {
 public:
-	Team(int wizardUID)
+	Team(int wizardUID, ColourValue colour)
 	{
+		mColour = colour;
 		mWizardUID = wizardUID;
 		mScore = 0;
 		mCastle = 0;
@@ -97,9 +98,15 @@ public:
 		return (mCastle != 0);
 	}
 
+	ColourValue getColour()
+	{
+		return mColour;
+	}
+
 private:
 	int mScore;
 	int mWizardUID;
+	ColourValue mColour;
 
 	Castle* mCastle;
 };

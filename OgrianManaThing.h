@@ -51,7 +51,17 @@ public:
 		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
-		setColour(ColourValue(0,1,1));
+		setColour(ColourValue(1,1,1));
+	}
+
+	// change the colour to reflect team ownership
+	virtual void setTeamNum(int teamNum)
+	{
+		Team* team = Physics::getSingleton().getTeam(teamNum);
+
+		setColour(team->getColour());
+
+		FloatingThing::setTeamNum(teamNum);
 	}
 
 	// setting the amount automatically sets the scale

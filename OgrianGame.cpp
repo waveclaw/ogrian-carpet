@@ -127,7 +127,8 @@ void Game::startSkirmishGame()
 	Physics::getSingleton().clearTeams();
 
 	// make a team for the player
-	Physics::getSingleton().newTeam(Renderer::getSingleton().getCameraThing()->getUID()); 
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+	Physics::getSingleton().newTeam(cam->getUID(), cam->getColour()); 
 
 	// load AI Wizards
 	for (int i=0; i<CONI("NUM_BOTS"); i++)
@@ -137,7 +138,7 @@ void Game::startSkirmishGame()
 
 		Physics::getSingleton().addThing(ai);
 
-		Physics::getSingleton().newTeam(ai->getUID());
+		Physics::getSingleton().newTeam(ai->getUID(), ai->getColour());
 	}
 }
 
