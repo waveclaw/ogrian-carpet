@@ -23,12 +23,13 @@ OgrianFoliageThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: FoliageThing has the Foliage material. It is for scenery. 
+Description: Fireballs fly in an arc and destroy() whatever they touch.
+They self destruct when they hit the ground or another thing. 
 
 /*------------------------------------*/
 
-#ifndef __OgrianFoliageThing_H__
-#define __OgrianFoliageThing_H__
+#ifndef __OgrianFireballThing_H__
+#define __OgrianFireballThing_H__
 
 #include <Ogre.h>
 #include "OgrianThing.h"
@@ -38,25 +39,46 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class FoliageThing : public Thing
+class FireballThing : public Thing
 {
 public:
-	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
-		: Thing("Ogrian/PalmTree", SPRITE, "Foliage", true, scale, pos, CYLINDER)
+	FireballThing(Vector3 pos, Vector3 vel) 
+		: Thing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
 	{
-		// place it slightly underground
-		setHeight(scale*1.5);
-		setPosY(getGroundY() + scale*.45);
+		setVelocity(vel);
+		playSound("OgrianMedia/sounds/whoosh1.wav");
 	}
 
 	virtual ThingType getType()
 	{
-		return FOLIAGETHING;
+		return FIREBALLTHING;
 	}	
 
+	virtual void move(Real time)
+	{
+		// fall
+		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
+		Thing::move(time);
+
+		// die when it hits the ground
+		if (getGroundY() > getPosition().y) destroy();
+	}
+
+	virtual void collided(Thing* e)
+	{
+		// destroy it
+		e->destroy();
+
+		// self destruct
+		destroy();
+	}
+
+	// go boom when destroyed
 	virtual void destroy()
 	{
-		setMaterial("Ogrian/PalmTreeDead");
+		playSound("OgrianMedia/sounds/boom1.wav");
+
+		Thing::destroy();
 	}
 };
 

@@ -42,6 +42,8 @@ const Real CAMERA_HEIGHT = 3;
 const Real CAMERA_GRAV = 3;
 const Real CAMERA_FALL_MAX = 10;
 
+const Real WIZARD_SCALE = 3;
+
 const Real THING_CULL_DIST = 300;
 const Real FOG_DENSITY = 0.008;
 
@@ -76,6 +78,10 @@ const int STRING_MAX_LENGTH = 24;
 
 const unsigned long THING_UPDATE_PERIOD = 100;
 const unsigned long THING_STOP_DELAY = 300;
+
+const Real FIREBALL_FALL_RATE = 3;
+const Real FIREBALL_SPEED = 40;
+const Real FIREBALL_SCALE = 2;
 
 }
 #endif

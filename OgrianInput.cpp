@@ -32,6 +32,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianMenu.h"
 #include "OgrianPlayerList.h"
 #include "OgrianManaThing.h"
+#include "OgrianFireballThing.h"
 #include "OgrianRenderer.h"
 
 template<> Ogrian::Input * Singleton< Ogrian::Input >::ms_Singleton = 0;
@@ -79,6 +80,20 @@ bool Input::processKeyInput(InputReader* input)
 			Renderer::getSingleton().getCameraThing()->getPosition()));
         mTimeUntilNextToggle = KEY_DELAY;
     }
+
+	// fire a fireball
+	if (input->getMouseButton(0) && mTimeUntilNextToggle <= 0)
+	{
+		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
+		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
+		vel.normalise();
+
+		pos += vel*(WIZARD_SCALE + FIREBALL_SCALE)*1.1;
+		vel *= FIREBALL_SPEED;
+	
+		Physics::getSingleton().addThing(new FireballThing(pos,vel));
+        mTimeUntilNextToggle = KEY_DELAY;
+	}
 
 	// play song 1
     if (input->isKeyDown(KC_N) && mTimeUntilNextToggle <= 0)
