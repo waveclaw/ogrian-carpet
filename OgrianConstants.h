@@ -69,5 +69,7 @@ const int THING_EARSHOT = 300;
 
 const Real KEY_DELAY = .4;
 
+const int PORT = 6006;
+
 }
 #endif

@@ -36,6 +36,8 @@ It is rendered as a Billboard.
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
 
+#include "BitStream.h"
+
 using namespace Ogre;
 
 namespace Ogrian
@@ -128,6 +130,12 @@ public:
 	// play a sound
 	virtual void playSound(String filename, bool loop=false);
 	virtual void stopSound();
+
+	// generate a bitstream from this thing
+	virtual void generateBitStream(BitStream& bitstream);
+
+	// interpret a bitstream for this thing
+	virtual void interpretBitStream(BitStream& bitstream);
 
 	
 private:

@@ -41,44 +41,86 @@ namespace Ogrian
 
 Multiplayer::Multiplayer()
 {
-
+	mActive = false;
 }
 
 //----------------------------------------------------------------------------
 
 Multiplayer::~Multiplayer()
 {
-
+	// We're done with the network
+	if (mActive && mIsServer) serverDisconnect();
+	if (mActive && !mIsServer) clientDisconnect();
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::startClient()
+void Multiplayer::clientStart(char* server)
 {
+	assert(!mActive);
+
 	mIsServer = false;
+	
+	mClient = RakNetworkFactory::GetRakClientInterface();
+
+	// Connecting the client is very simple.  0 means we don't care about
+	// a connectionValidationInteger, and false for low priority threads
+	bool b = mClient->Connect(server, PORT, PORT-1, 0, false);
+
+	// error
+	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
+				"Multiplayer::startClient" );
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::startServer()
+void Multiplayer::serverStart()
 {
+	assert(!mActive);
+
 	mIsServer = true; 
+
+	mServer = RakNetworkFactory::GetRakServerInterface();
+
+	// Starting the server is very simple.  8 players allowed.
+	// 0 means we don't care about a connectionValidationInteger, and false
+	// for low priority threads
+	bool b = mServer->Start(7, 0, false, PORT);
+	
+	// error
+	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
+				"Multiplayer::startServer" );
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::clientSendMessage(char* message)
+void Multiplayer::clientSend(BitStream* bitStream)
 {
 	assert(!mIsServer);
+	assert(mActive);
 
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	mClient->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0);
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::serverSendMessage(char* message, int player)
+void Multiplayer::serverSend(BitStream* bitStream, PlayerID player)
 {
 	assert(mIsServer);
+	assert(mActive);
 
+	// bitstream is the data to send
+	// strlen(message)+1 is to send the null terminator
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	// We arbitrarily pick 0 for the ordering stream
+	// false to send to only one player
+	// true for security
+	mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false, true);
 }
 
 //----------------------------------------------------------------------------
@@ -86,7 +128,13 @@ void Multiplayer::serverSendMessage(char* message, int player)
 void Multiplayer::clientRecieve()
 {
 	assert(!mIsServer);
+	assert(mActive);
 
+	Packet* p = mClient->Receive();
+
+	// do stuff here
+
+	mClient->DeallocatePacket(p);
 }
 
 //----------------------------------------------------------------------------
@@ -94,7 +142,13 @@ void Multiplayer::clientRecieve()
 void Multiplayer::serverRecieve()
 {
 	assert(mIsServer);
+	assert(mActive);
 
+	Packet* p = mServer->Receive();
+
+	// do stuff here
+
+	mServer->DeallocatePacket(p);
 }
 
 //----------------------------------------------------------------------------
@@ -102,7 +156,11 @@ void Multiplayer::serverRecieve()
 void Multiplayer::clientDisconnect()
 {
 	assert(!mIsServer);
+	assert(mActive);
 
+	mClient->Disconnect();
+	
+	RakNetworkFactory::DestroyRakClientInterface(mClient);
 }
 
 //----------------------------------------------------------------------------
@@ -110,7 +168,40 @@ void Multiplayer::clientDisconnect()
 void Multiplayer::serverDisconnect()
 {
 	assert(mIsServer);
+	assert(mActive);
 
+	// should probably kick all players first
+
+	mServer->Disconnect();
+	
+	RakNetworkFactory::DestroyRakServerInterface(mServer);
+}
+
+//----------------------------------------------------------------------------
+
+bool Multiplayer::isServer()
+{
+	return mIsServer;
+}
+//----------------------------------------------------------------------------
+
+int Multiplayer::serverNumPlayers()
+{
+	assert(mIsServer);
+	assert(mActive);
+	return mServer->GetConnectedPlayers();
+}
+
+//----------------------------------------------------------------------------
+
+bool Multiplayer::isConnected()
+{
+	if (!mActive) return false;
+
+	if (mIsServer) 
+		return mServer->IsActive();
+	else 
+		return mClient->IsConnected();
 }
 
 //----------------------------------------------------------------------------

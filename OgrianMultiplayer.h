@@ -54,16 +54,16 @@ public:
     static Multiplayer& getSingleton(void);
 
 	// start a server
-	void startServer();
+	void serverStart();
 
 	// start a client
-	void startClient();
+	void clientStart(char* server);
 
 	// send a message to the server
-	void clientSendMessage(char* message);
+	void clientSend(BitStream* bitStream);
 
 	// send a message to a client
-	void serverSendMessage(char* message, int player);
+	void serverSend(BitStream* bitStream, PlayerID player);
 
 	// recieve packets on the client
 	void clientRecieve();
@@ -77,9 +77,23 @@ public:
 	// disconnect all clients from this server
 	void serverDisconnect();
 
+	// to determine which mode we're in
+	bool isServer();
+
+	// the number of clients connected
+	int serverNumPlayers();
+
+	// too see if we are connected
+	bool isConnected();
+
 private:
 	Multiplayer();
 	bool mIsServer;
+	bool mActive;
+
+	// Pointers to the interfaces of our server and client.
+	RakClientInterface* mClient;
+	RakServerInterface* mServer;
 
 };
 

@@ -64,6 +64,8 @@ public:
 	// the button functions
 	void button_invertMouseToggle();
 	void button_load();
+	void button_join();
+	void button_host();
 
 	static Menu& getSingleton(void);
 
@@ -71,7 +73,10 @@ private:
 	Menu();
 
 	// load a map
-	virtual void loadMap(String mapname);
+	void loadMap(String mapname);
+
+	// set the message
+	void setMessage(String message);
 
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling

@@ -12,14 +12,14 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="Ogrian"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Code\ogrenew\PlugIns\OctreeSceneManager\include;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
+				AdditionalIncludeDirectories="C:\Code\RakNet\Source;C:\Code\fmodapi372win\api\inc;C:\Code\ogrenew\PlugIns\GuiElements\include;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -32,10 +32,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib"
+				AdditionalDependencies="OgreMainD.lib fmodvc.lib RakNetLibStatic.lib"
 				OutputFile="$(OutDir)/Ogrian.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)"
+				AdditionalLibraryDirectories="C:\Code\RakNet\lib;C:\Code\fmodapi372win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Ogrian.pdb"
 				SubSystem="2"
@@ -79,10 +79,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib fmodvc.lib"
+				AdditionalDependencies="OgreMain.lib fmodvc.lib RakNetLibStatic.lib"
 				OutputFile="$(OutDir)/Ogrian.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Code\fmodapi372win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="C:\Code\RakNet\lib;C:\Code\fmodapi372win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

@@ -387,4 +387,32 @@ void Thing::_updateAudibility()
 
 //----------------------------------------------------------------------------
 
+void Thing::generateBitStream(BitStream& bitstream)
+{
+	bitstream.Write(mPos.x);
+	bitstream.Write(mPos.y);
+	bitstream.Write(mPos.z);
+	bitstream.Write(mVel.x);
+	bitstream.Write(mVel.y);
+	bitstream.Write(mVel.z);
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::interpretBitStream(BitStream& bitstream)
+{
+	Vector3 pos,vel;
+
+	bitstream.Read(pos.x);
+	bitstream.Read(pos.y);
+	bitstream.Read(pos.z);
+	bitstream.Read(vel.x);
+	bitstream.Read(vel.y);
+	bitstream.Read(vel.z);
+
+	setPosition(pos);
+	setVelocity(vel);
+}
+//----------------------------------------------------------------------------
+
 }

@@ -28,6 +28,7 @@ Description: The Menu
 
 #include "OgrianMenu.h"
 #include "OgrianRenderer.h"
+#include "OgrianMultiplayer.h"
 
 #include "OgreOverlayManager.h"
 
@@ -72,6 +73,8 @@ Menu::~Menu()
 //----------------------------------------------------------------------------
 void Menu::button_invertMouseToggle()
 {
+	setMessage("toggled");
+
 	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
 
 	if (ofl->getInvertY())  // uninvert the mouse y axis
@@ -93,6 +96,27 @@ void Menu::button_invertMouseToggle()
 void Menu::button_load()
 {
 	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
+}
+//----------------------------------------------------------------------------
+void Menu::button_join()
+{
+	setMessage("Joining Server");
+	Multiplayer::getSingleton().clientStart("localhost");
+}
+
+//----------------------------------------------------------------------------
+void Menu::button_host()
+{
+	setMessage("Starting Server");
+	Multiplayer::getSingleton().serverStart();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::setMessage(String message)
+{
+	GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+		->setParameter("caption", message);
 }
 
 //----------------------------------------------------------------------------
@@ -126,8 +150,7 @@ bool Menu::processKeyInput(InputReader* input)
 void Menu::loadMap(String mapname)
 {
 	// Loading...
-	GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-		->setParameter("caption", "LOADING...");
+	setMessage("Loading...");
 
 	// move the camera so the terrain will reload properly
 	Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
@@ -156,13 +179,21 @@ void Menu::frame(Real time)
 		Renderer::getSingleton().loadMap(mMapName);
 		
 		// Menu
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-			->setParameter("caption", "MENU");
+		setMessage("Menu");
 		
 		// hide the menu
 		hideMenu();
 
 		mLoadMap = false;
+	}
+
+	if (Multiplayer::getSingleton().isConnected())
+	{
+		setMessage("Connected");
+	}
+	else
+	{
+		setMessage("not connected");
 	}
 }
 

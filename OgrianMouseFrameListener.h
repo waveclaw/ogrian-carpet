@@ -86,6 +86,8 @@ public:
 		if (action == "SS/Setup/HostScreen/Exit") mQuit = true; 
 		else if (action == "SS/Setup/HostScreen/Load") Menu::getSingleton().button_load();
 		else if (action == "SS/Setup/HostScreen/Yinvert") Menu::getSingleton().button_invertMouseToggle();
+		else if (action == "SS/Setup/HostScreen/Host") Menu::getSingleton().button_host();
+		else if (action == "SS/Setup/HostScreen/Join") Menu::getSingleton().button_join();
     }
 
 	bool isMulticaster() {}
