@@ -1,7 +1,7 @@
 /*****************************************************************************
 
 	File: NatureTerrainPatch.h
-	Desc: A block ot terrain generated from a heightmap
+	Desc: A block of terrain generated from a heightmap
 	Date: 2003/02/22
 
 	Author: Martin Persson
@@ -185,18 +185,22 @@ private:
 #endif
 
 #if USE_TEXTURES
-		// mike's modifications next 5 lines - makes it right for the one quadrant
+		// mike's modifications next 7 lines - makes it right
         // calculate texture coordinates
-        /* *pBuffer++ = 0.5* (1.0 - (static_cast<Real>(x) / EDGE_LENGTH));
-        *pBuffer++ = 0.5* (1.0 - (static_cast<Real>(z) / EDGE_LENGTH));
-        *pBuffer++ = 0.5* (x + mZone.x) / mManager->mZoneSize;
-        *pBuffer   = 0.5* (z + mZone.z) / mManager->mZoneSize; */
+		// detail texture
+        *pBuffer++ = 1.0 - (static_cast<Real>(x) / EDGE_LENGTH);
+        *pBuffer++ = 1.0 - (static_cast<Real>(z) / EDGE_LENGTH);
+		// terrain texture
+        *pBuffer++ = 0.5*(x + mWorld.x) / mManager->mZoneSize;
+        *pBuffer++ = 0.5*(z + mWorld.z) / mManager->mZoneSize;
 
+
+		/* Original Copy
         // calculate texture coordinates
         *pBuffer++ = 1.0 - (static_cast<Real>(x) / EDGE_LENGTH);
         *pBuffer++ = 1.0 - (static_cast<Real>(z) / EDGE_LENGTH);
         *pBuffer++ = (x + mZone.x) / mManager->mZoneSize;
-        *pBuffer   = (z + mZone.z) / mManager->mZoneSize;
+        *pBuffer   = (z + mZone.z) / mManager->mZoneSize;*/
 #endif
         // add vertex to lookup table
         mManager->mVertexLookup[idx] = v;

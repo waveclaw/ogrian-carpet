@@ -267,7 +267,7 @@ void NatureTerrainPatch::generateMesh()
 }
 
 //----------------------------------------------------------------------------
-#if 0
+#if 0/*
 // simple, non-seaming version
 void NatureTerrainPatch::renderQuad(int cx, int cz, int node, int width)
 {
@@ -406,14 +406,15 @@ void NatureTerrainPatch::renderQuad(int cx, int cz, int node, int width)
 
     // update index counter
     mIndexCount += (indexBuffer - (&mManager->mIndexBuffer[mIndexCount]));
-}
+}*/
 #endif
 
 //----------------------------------------------------------------------------
 
 void NatureTerrainPatch::renderQuad(int cx, int cz, int node, int width)
 {
-    int w2 = (width >> 1), v[6];
+    int w2 = (width >> 1); // halved width
+	int v[6]; // verteces
     
     int cIdx = cz * mData->terrain.heightMapWidth + cx;
     int xAdd = w2;
