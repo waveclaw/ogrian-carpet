@@ -48,44 +48,125 @@ namespace Ogrian
 
 Physics::Physics()
 {
-
+	mWorldSize == -1;
 }
 
-// add a Thing to the things list
-void Physics::addThing(Thing* ent)
+// add a Thing to the world
+void Physics::addThing(Thing* thing)
 {
-	assert(ent != NULL);
+	Vector3 pos = thing->getPosition();
+	_addThing(thing, getGridU(pos.x), getGridV(pos.z));
 
-	things.push_back(ent);
+	mAllThings.push_back(thing);
 }
 
-// remove a thing from the things list and delete it
-void Physics::removeThing(Thing* ent)
+// add a Thing to the grid
+void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 {
-	assert(ent != NULL);
+	assert(thing != NULL);
+	assert(mWorldSize > 0);
 
-	// find the entity
-	for (unsigned int i=0; i<things.size(); i++)
+	if (grid_u < -1 && grid_v < -1 && 
+		grid_u > PHYSICS_GRID_SIZE && grid_v > PHYSICS_GRID_SIZE-1)
 	{
-		if (things[i] == ent)
+		// put it in the grid
+		mThingGrid[grid_u][grid_v].push_back(thing);
+	}
+	else
+	{
+		// put it among the others
+		mOtherThings.push_back(thing);
+	}
+}
+
+// remove a thing from the grid
+void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
+{
+	assert(thing != NULL);
+	assert(mWorldSize > 0);
+
+	std::vector<Thing*> vec
+
+	if (grid_u < -1 && grid_v < -1 && 
+		grid_u > PHYSICS_GRID_SIZE && grid_v > PHYSICS_GRID_SIZE-1)
+	{
+		// it is in the grid
+		vec = mThingGrid[grid_u][grid_v];
+	}
+	else
+	{
+		// it is in the others
+		vec = mOtherThings;
+	}
+
+	// find the thing from the selected vector
+	for (unsigned int i=0; i<vec.size(); i++)
+	{
+		if (vec[i] == thing)
 		{
 			// erase it
-			Thing* thing = things[i];
-			things.erase(things.begin()+i);
-			delete thing;
+			vec.erase(vec.begin()+i);
 			break;
 		}
 	}
 }
 
-// remove and delete all things
-void Physics::removeAll()
+// remove a thing from the world
+void Physics::deleteThing(Thing* thing, int grid_u, int grid_v)
 {
-	// delete each entity
-	while(!things.empty())
+	// remove it from the grid
+	_removeThing(thing, grid_u, grid_v);
+
+	// find the thing
+	for (unsigned int i=0; i<mAllThings.size(); i++)
 	{
-		delete things[things.size()-1];
-		things.pop_back();
+		if (mAllThings[i] == thing)
+		{
+			// erase it
+			mAllThings.erase(mAllThings.begin()+i);
+			break;
+		}
+	}
+
+	// delete it
+	delete thing;
+}
+
+// move the thing from one grid to another
+void Physics::moveThing(Thing* thing, Real time)
+{
+	Vector3 pos1 = thing->getPosition();
+	thing->move(time);
+	Vector3 pos2 = thing->getPosition();
+
+	_removeThing(thing, getGridU(pos1.x), getGridV(pos1.z));
+	_addThing(thing, getGridU(pos2.x), getGridV(pos1.z));
+}
+
+int Physics::getGridU(Real x)
+{
+	return (x/mWorldSize) * PHYSICS_GRID_SIZE
+}
+
+int Physics::getGridV(Real z)
+{
+	return (z/mWorldSize) * PHYSICS_GRID_SIZE
+}
+
+// remove and delete all things
+void Physics::clear()
+{
+	// clear the grid
+	for (int i=0; i<PHYSICS_GRID_SIZE; i++)
+		for (int j=0; j<PHYSICS_GRID_SIZE; j++)
+			while (!mThingGrid[i][j].empty())
+				mThingGrid[i][j].pop_back();
+
+	// delete each entity from mAllThings
+	while(!mAllThings.empty())
+	{
+		delete mAllThings[mAllThings.size()-1];
+		mAllThings.pop_back();
 	}
 }
 
@@ -97,8 +178,11 @@ void Physics::moveAll(Real time)
 		Thing* thing = things[i];
 
 		// delete anything thats not alive
-		if (!thing->isAlive()) removeThing(thing);			
-		else thing->move(time);
+		if (!thing->isAlive())
+		{
+			deleteThing(thing);
+		}
+		else moveThing(thing, time);
 	}
 }
 
@@ -108,56 +192,36 @@ int Physics::numThings()
 	return int(things.size());
 }
 
-/* this method works by keeping all of the entities in an ordered vector.
-Each of the entities is check against a few of the following entities for
-collisions. 
+/* this method works by keeping all of the things in a grid. 
+Every frame, each grid cell checks its things against each other
+and its neighbors' things.
 */
 void Physics::collisionCheck()
-{/*
-	// sort the vector (by x location)
-	std::sort(things.begin(), things.end());
+{
 
-	Thing* a;
-	Thing* b;
+}
 
-	// for each thing
-	for (unsigned int i=0; i<things.size(); i++)
+void Physics::pairCollisionCheck(Thing* t1, Thing* t2)
+{
+	Real maxdist = a->getRadius() + b->getRadius();
+
+	// if their AABB don't interset, return
+	if (Math::Abs(a->getPosition().x - b->getPosition().x) > maxdist) return;
+	if (Math::Abs(a->getPosition().z - b->getPosition().z) > maxdist) return;
+
+	// if they are too far apart in the x/z plane, return
+	if (a->distance(b) > maxdist) return;
+
+	Real ay = a->getPosition().y;
+	Real by = b->getPosition().y;
+
+	// if they are close enough in altitude
+	if (ay-by < maxdist && by-ay < maxdist)
 	{
-		a = things[i];
-
-		// look at the following things
-		for (unsigned int j=i+1; j<things.size(); j++)
-		{
-			b = things[j];
-
-			// they should be sorted by x coord
-			assert(a->getPosition().x <= b->getPosition().x);
-
-			if (b->getPosition().x - a->getPosition().x > MAX_THING_RADIUS*2)
-			{
-				// if they are very far apart, dont look at the following things - WHY DOESN'T THIS WORK?
-				//j=(unsigned int)things.size();
-			}
-			else
-			{
-				Real maxdist = a->getRadius() + b->getRadius();
-				// if they are close enough, they collide
-				if (a->distance(b) < maxdist)
-				{
-					Real ay = a->getPosition().y;
-					Real by = b->getPosition().y;
-
-					// if they are close enough in altitude
-					if (ay-by < maxdist && by-ay < maxdist)
-					{
-						// they collide
-						a->collided(b);
-						b->collided(a);
-					}
-				}
-			}
-		}
-	}*/
+		// they collide
+		a->collided(b);
+		b->collided(a);
+	}
 }
 
 

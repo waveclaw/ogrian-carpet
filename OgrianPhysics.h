@@ -49,30 +49,55 @@ class Physics : public Singleton< Physics >
 public:
 	virtual ~Physics();
 
-	// add a physical entity to the world.
-	virtual void addThing(Thing* ent);
+	// add a thing to the world in the specified grid location
+	// -1 for grid_u or grid_v puts it outside the grid
+	virtual void addThing(Thing* thing);
 
 	// return the number of entities in the world
 	virtual int numThings();
 
-	// remove all physical entities from the world.
-	virtual void removeAll();
+	// remove and delete all things in the world
+	virtual void clear();
 
-	// notify all physical objects of a frame move
+	// notify all things of a frame move
 	virtual void moveAll(Real time);
 
-	// run a collision check and notify all affected physical objects
+	// run a collision check and notify all affected things
 	virtual void collisionCheck();
+
+	// this must be called before adding things
+	virtual void setWorldSize(int size);
 
     static Physics& getSingleton(void);
 
 private:
+	// a matrix of vectors for collision culling
+	std::vector<Thing*>[PHYSICS_GRID_SIZE][PHYSICS_GRID_SIZE] mThingGrid;
+	std::vector<Thing*> mOtherThings; // the things outside the grid
+
+	std::vector<Thing*> mAllThings; // All things in the world
+
+	int mWorldSize;
+
 	Physics();
 
-	// remove a physical entity from the world. 
-	virtual void removeThing(Thing* ent);
+	virtual inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
+	virtual inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord
 
-	std::vector<Thing*> things;
+	// do a comprehensive collision check between two things,
+	// and notify them if they collide
+	virtual inline void pairCollisionCheck(Thing* t1, Thing* t2);
+
+	// move a thing from one grid cell to another
+	virtual inline void moveThing(Thing* thing, Real time);
+
+	// add a thing to the grid
+	virtual void _addThing(Thing* thing, int grid_u, int grid_v);
+	// remove a thing from the grid. 
+	virtual void _removeThing(Thing* thing, int grid_u, int grid_v);
+
+	// remove a thing from the world
+	virtual void deleteThing(Thing* thing, int grid_u, int grid_v);
 };
 
 }

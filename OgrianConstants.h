@@ -62,5 +62,7 @@ const Real MANA_DRIFT_SPEED = 1;
 const Real FLOAT_GRAV = .3;
 const Real FLOAT_FALL_MAX = 2;
 
+const Real PHYSICS_GRID_SIZE = 10;
+
 }
 #endif
