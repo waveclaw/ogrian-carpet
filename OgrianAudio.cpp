@@ -119,6 +119,7 @@ void Audio::stopSong()
 		mSongChannel = -1;
 	}
 }
+
 void Audio::frame(Real time)
 {
 	Vector3 campos = Renderer::getSingleton().getCameraThing()->getPosition();
@@ -133,11 +134,8 @@ void Audio::frame(Real time)
 	if (mSongStream != 0)
 		FSOUND_3D_SetAttributes(mSongChannel, &listenerpos[0], 0); // keep the music between the ears
 	
-	FSOUND_Update(); // needed to update 3d engine, once per frame
+	FSOUND_Update(); // update 3d engine
 }
-
-
-
 
 Audio& Audio::getSingleton(void)
 {
