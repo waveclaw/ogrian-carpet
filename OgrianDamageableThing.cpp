@@ -71,8 +71,6 @@ void DamageableThing::setTeamNum(int teamNum)
 
 	Thing::setTeamNum(teamNum);
 
-	// dont attack castle blocks, only the flag
-	if (getType() == CASTLETOWER || getType() == CASTLEWALLNS || getType() == CASTLEWALLEW || getType() == CASTLEKEEP) return;
 	if (Multiplayer::getSingleton().isClient()) return;
 
 	// remove it from the teams enemy lists

@@ -39,6 +39,7 @@ Description: This is a castle
 #include "OgrianCraneThing.h"
 
 #define NUM_BALOONS 5
+#define NUM_BLOCKS 13
 
 using namespace Ogre;
 
@@ -50,7 +51,7 @@ class CastleBlockThing : public DamageableThing
 {
 public:
 	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width=CONR("CASTLE_WIDTH")) 
-		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, width, pos, CUBE)
+		: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE)
 	{
 		mCastle = castle;
 
@@ -121,7 +122,12 @@ public:
 			mCastle->damage(amount, sourceTeamNum);
 	}
 
-	virtual ThingType getType()	{ return CASTLETOWER; }
+	virtual Real getCurrentLevel()
+	{
+		return getPosY() - mGroundY;
+	}
+
+	virtual ThingType getType()	{ return CASTLETURRET; }
 	
 	virtual bool isBuilding() { return true; }
 	
@@ -134,19 +140,19 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleTowerThing : public CastleBlockThing
+class CastleTurretThing : public CastleBlockThing
 {
 public:
-	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos, CONR("CASTLETOWER_WIDTH"))
+	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
+		: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"))
 	{
 		mCrane = 0;
 
-		setMaterial("Ogrian/Tower");
+		//setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
-			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
+			CONR("CASTLETURRET_MESH_SCALE"), CONR("CASTLETURRET_MESH_RATIO"));
 
-		setHeight(CONR("CASTLETOWER_HEIGHT"));
+		setHeight(CONR("CASTLETURRET_HEIGHT"));
 	}
 
 	virtual void destroy() 
@@ -157,7 +163,7 @@ public:
 		mCrane = 0;
 	}
 
-	virtual ThingType getType()	{ return CASTLETOWER; }
+	virtual ThingType getType()	{ return CASTLETURRET; }
 	
 	virtual void setPercentage(Real per);
 
@@ -175,7 +181,7 @@ public:
 	{
 		mCrane = 0;
 
-		setMaterial("Ogrian/Tower");
+		//setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("keep.mesh",
 			CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
 
@@ -288,24 +294,8 @@ private:
 	// an array of the baloons
 	BaloonThing* mBaloons[NUM_BALOONS];
 
-	// an array of all the towers and walls for convenient looping
-	CastleBlockThing* mBlocks[13];
-
-	CastleKeepThing* mCenterTower; // 0
-	//
-	//CastleTowerThing* mCornerTowerNE;
-	//CastleTowerThing* mCornerTowerSE;
-	//CastleTowerThing* mCornerTowerSW;
-	//CastleTowerThing* mCornerTowerNW;
-
-	//CastleTowerThing* mFarCornerTowerN; // 5
-	//CastleTowerThing* mFarCornerTowerS;
-	//CastleTowerThing* mFarCornerTowerE;
-	//CastleTowerThing* mFarCornerTowerW;
-	//CastleTowerThing* mFarCornerTowerNE;
-	//CastleTowerThing* mFarCornerTowerSE;
-	//CastleTowerThing* mFarCornerTowerSW;
-	//CastleTowerThing* mFarCornerTowerNW; // 12
+	// an array of all the turrets and the keep
+	CastleBlockThing* mBlocks[NUM_BLOCKS];
 
 	// the current number of baloons
 	int mNumBaloons;
@@ -313,8 +303,8 @@ private:
 	// set the castle level
 	void setLevel(Real level);
 
-	// make a tower
-	CastleTowerThing* newCastleTower(int level);
+	// make a turret
+	CastleTurretThing* newCastleTurret(int level);
 
 	// set the number of baloons
 	void setNumBaloons(int num);

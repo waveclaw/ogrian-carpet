@@ -33,8 +33,6 @@ Description: This is a castle
 #include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 
-#define NUM_BLOCKS 13
-
 namespace Ogrian
 {
 
@@ -86,7 +84,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mLevel = -1;
 
 	// build the castle
-	mBlocks[0] = mCenterTower = new CastleKeepThing(this, pos);
+	mBlocks[0] = new CastleKeepThing(this, pos);
 
 	for (int i=1; i<NUM_BLOCKS; i++)
 		mBlocks[i]=0;
@@ -125,6 +123,16 @@ void Castle::move(Real time)
 			// set the target unless its got no mana to get and is already at the castle
 			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth() + baloon->getWidth())
 				baloon->setTarget(target);
+		}
+	}
+
+	// check the blocks
+	for (int i=1; i<NUM_BLOCKS; i++)
+	{
+		if (mBlocks[i] && mBlocks[i]->getCurrentLevel() <= 0)
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
 		}
 	}
 }
@@ -391,22 +399,22 @@ void Castle::setLevel(Real level)
 {
 	mBlocks[0]->setPercentage(1);
 
-	// make and set the level of each tower
+	// set the level of each turret
 	for (int i=1; i<NUM_BLOCKS; i++)
 	{
-		if (level > i-1 && mBlocks[i] == 0)
+		if (level+1 >= i)
 		{
-			mBlocks[i] = newCastleTower(i);
-			Physics::getSingleton().addThing(mBlocks[i]);
-		}
-		else if (level <= i-1 && mBlocks[i] != 0)
-		{
-			mBlocks[i]->destroy();
-			mBlocks[i] = 0;
-		}
+			// make the turret if needed
+			if (mBlocks[i] == 0)
+			{
+				mBlocks[i] = newCastleTurret(i);
+				Physics::getSingleton().addThing(mBlocks[i]);
+			}
 
-		if (level >= i)
-			mBlocks[i]->setPercentage(level-i+1);
+			mBlocks[i]->setPercentage(level+1-i);
+		}
+		else if (mBlocks[i])
+			mBlocks[i]->setPercentage(0);
 	}
 
 	mLevel = level;
@@ -420,26 +428,26 @@ void Castle::setLevel(Real level)
 
 //----------------------------------------------------------------------------
 
-CastleTowerThing* Castle::newCastleTower(int level)
+CastleTurretThing* Castle::newCastleTurret(int level)
 {
 	Vector3 pos = getPosition();
 	Real W = CONR("CASTLE_WIDTH");
 
 	switch (level)
 	{
-		case 1: return new CastleTowerThing(this, pos + Vector3( 2*W, 0, 2*W));
-	 	case 2: return new CastleTowerThing(this, pos + Vector3( 2*W, 0,-2*W));
-	 	case 3: return new CastleTowerThing(this, pos + Vector3(-2*W, 0,-2*W));
-	 	case 4: return new CastleTowerThing(this, pos + Vector3(-2*W, 0, 2*W));
+		case 1: return new CastleTurretThing(this, pos + Vector3( 2*W, 0, 2*W));
+	 	case 2: return new CastleTurretThing(this, pos + Vector3( 2*W, 0,-2*W));
+	 	case 3: return new CastleTurretThing(this, pos + Vector3(-2*W, 0,-2*W));
+	 	case 4: return new CastleTurretThing(this, pos + Vector3(-2*W, 0, 2*W));
 
-	  	case 5: return new CastleTowerThing(this, pos + Vector3(   0, 0, 4*W));
-	  	case 6: return new CastleTowerThing(this, pos + Vector3(   0, 0,-4*W));
-	  	case 7: return new CastleTowerThing(this, pos + Vector3( 4*W, 0,   0));
-	  	case 8: return new CastleTowerThing(this, pos + Vector3(-4*W, 0,   0));
-		case 9: return new CastleTowerThing(this, pos + Vector3( 4*W, 0, 4*W));
-		case 10: return new CastleTowerThing(this, pos + Vector3( 4*W, 0,-4*W));
-		case 11: return new CastleTowerThing(this, pos + Vector3(-4*W, 0,-4*W));
-		case 12: return new CastleTowerThing(this, pos + Vector3(-4*W, 0, 4*W));
+	  	case 5: return new CastleTurretThing(this, pos + Vector3(   0, 0, 4*W));
+	  	case 6: return new CastleTurretThing(this, pos + Vector3(   0, 0,-4*W));
+	  	case 7: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,   0));
+	  	case 8: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,   0));
+		case 9: return new CastleTurretThing(this, pos + Vector3( 4*W, 0, 4*W));
+		case 10: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,-4*W));
+		case 11: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,-4*W));
+		case 12: return new CastleTurretThing(this, pos + Vector3(-4*W, 0, 4*W));
 	}
 	return 0;
 }
@@ -532,7 +540,7 @@ void Castle::setNumBaloons(int num)
 
 //----------------------------------------------------------------------------
 
-void CastleTowerThing::setPercentage(Real per)
+void CastleTurretThing::setPercentage(Real per)
 {
 	CastleBlockThing::setPercentage(per);
 	
