@@ -202,8 +202,6 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		// destroy it
 		if (thing != 0)
 		{
-			// send the bitstream to the thing
-			thing->interpretBitStream(bitstream);
 			thing->destroy();
 		}
 		else 
