@@ -153,7 +153,7 @@ void CraneThing::handleMessage(int msg, Vector3 vec)
 
 void CraneThing::collided(Thing* e)
 {
-	if (e->isDamageable() && e->isAlive() && e->getTeamNum() != getTeamNum())
+	if (e->isDamageable() && e->isAlive() && e->getColour() != getColour())
 	{
 		e->damage(CONI("CRANE_DAMAGE"), getTeamNum());
 		Physics::getSingleton().addEffect(new CraneBlastEffect(getPosition()));

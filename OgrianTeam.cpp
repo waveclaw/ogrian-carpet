@@ -185,11 +185,12 @@ DamageableThing* Team::getNearestEnemy(Thing* thing, Real range)
 
 	DamageableThing* target = 0;
 	Real bestDist = range;
+	ColourValue colour = thing->getColour();
 
 	for (int i=0; i<(int)mEnemies.size(); i++)
 	{
 		DamageableThing* candidate = mEnemies[i];
-		if (candidate && candidate->isAlive())
+		if (candidate && candidate->isAlive() && candidate->getColour() != colour)
 		{
 			Real dist = candidate->sphereDistance(thing);
 			if (dist < bestDist)

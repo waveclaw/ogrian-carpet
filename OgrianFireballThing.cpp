@@ -128,7 +128,7 @@ void FireballThing::collided(Thing* e)
 {
 	// damage it
 	if (e->isDamageable() 
-		&& (!mSimple || getTeamNum() != e->getTeamNum()) // dont let simple fireballs hurt allies
+		&& (!mSimple || getColour() != e->getColour()) // dont let simple fireballs hurt allies
 		&& !((e->getType() == CAMERATHING || e->getType() == WIZARDTHING) && getTeamNum() == e->getTeamNum())) // dont let any fireballs hurt allied wizards
 	{
 		e->damage(mDamage, getTeamNum());
