@@ -91,7 +91,9 @@ public:
 				enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(wuid));
 				if (enemy == 0)
 				{
-					LogManager::getSingleton().logMessage(String("ERROR, wuid not found for AI:") << wuid);
+					std::ostringstream num("");
+					num << wuid;
+					LogManager::getSingleton().logMessage(String("ERROR, wuid not found for AI:") + num.str());
 				}
 				else
 				{

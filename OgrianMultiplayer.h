@@ -41,6 +41,7 @@ Description: This handles all of the multiplayer networking code.
 #include "BitStream.h"
 
 using namespace Ogre;
+using namespace RakNet;
 
 namespace Ogrian
 {

@@ -78,7 +78,9 @@ void WizardThing::setHealth(int health)
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
 
 		// update it
-		Multiplayer::getSingleton().serverSendText(String("Health: ") << health , ID_SETHEALTH, player);
+		std::ostringstream num("");
+		num << health;
+		Multiplayer::getSingleton().serverSendText(String("Health: ") + num.str() , ID_SETHEALTH, player);
 	}
 }
 //----------------------------------------------------------------------------
@@ -91,8 +93,8 @@ void WizardThing::die()
 	{
 		Team* team = Physics::getSingleton().getTeam(getLastDamageSourceTeamNum());
 		if (team > 0) team->incrementScore();
-		else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: ") 
-			<< getLastDamageSourceTeamNum());
+		else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: "));
+			//+ getLastDamageSourceTeamNum());
 
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{

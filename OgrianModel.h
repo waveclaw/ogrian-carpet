@@ -71,8 +71,8 @@ public:
 	virtual int addPose(String basename) { return 0; }
 	virtual void setPose(int index) {}
 	virtual void frame() {}
-	virtual void setOrientation(Real orientation) {}
-	virtual void setRotation(Real rotation) {}
+	virtual void setOrientation(Radian orientation) {}
+	virtual void setRotation(Radian rotation) {}
 	virtual void setColour(ColourValue& colour) {}
 
 	// add this model to the renderer

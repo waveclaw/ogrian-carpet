@@ -41,6 +41,7 @@ It is rendered as a Billboard.
 #include "BitStream.h"
 
 using namespace Ogre;
+using namespace RakNet;
 
 namespace Ogrian
 {

@@ -95,7 +95,7 @@ void PlayerList::updateList()
 	{
 		// update the caption
 		String player = "Ogrian/PlayerList/Player";
-		GuiManager::getSingleton().getGuiElement(player << i)
+		GuiManager::getSingleton().getGuiElement(player += i)
 			->setCaption(mPlayers[i]);
 	}
 
@@ -104,7 +104,7 @@ void PlayerList::updateList()
 	{
 		// update the caption
 		String player = "Ogrian/PlayerList/Player";
-		GuiManager::getSingleton().getGuiElement(player << i)
+		GuiManager::getSingleton().getGuiElement(player += i)
 			->setCaption("");
 	}
 }

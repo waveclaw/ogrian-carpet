@@ -36,6 +36,9 @@ It is rendered as a Billboard.
 #include "OgrianOrientedSprite.h"
 #include "OgrianModel.h"
 
+#include <iostream>
+#include <sstream>
+
 namespace Ogrian
 {
 
@@ -61,7 +64,10 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mTeamNum = -1;
 	
 	// name it
-	mName = prefix << "_" << msNextGeneratedNameExt++;
+	std::ostringstream num("");
+	num << msNextGeneratedNameExt++;
+	mName = prefix + "_" + num.str();
+	//LogManager::getSingleton().logMessage(String("Making Thing: ") + mName);
 
 	if (visrep == SPRITE)
 	{
@@ -284,7 +290,7 @@ void Thing::move(Real time)
 		// periodically rotate 180 degrees
 		if (mLastRotTime + mFlickerPeriod < Time::getSingleton().getTime())
 		{
-			getVisRep()->setRotation(mLastRotDir?0:180);
+			getVisRep()->setRotation(Degree(mLastRotDir?0:180));
 			mLastRotTime = Time::getSingleton().getTime();
 			mLastRotDir = !mLastRotDir;
 		}
@@ -300,7 +306,9 @@ void Thing::move(Real time)
 
 String Thing::getString()
 {
-	return String(mName) << "(" << getType() << ") #" << mUID;
+	std::ostringstream num("");
+	num << mUID;
+	return String(mName) + "(" + /*getType() +*/ ") #" + num.str();
 }
 
 //----------------------------------------------------------------------------
@@ -464,7 +472,7 @@ void Thing::_updateAudibility()
 void Thing::setOrientation(Real direction)
 {
 	mOrientation = direction;
-	mVisRep->setOrientation(direction);
+	mVisRep->setOrientation(Radian(direction));
 }
 
 //----------------------------------------------------------------------------

@@ -140,9 +140,9 @@ void Multiplayer::serverStart()
 	ConfigFile config;
 	config.load("config.cfg");
 	ColourValue colour;
-	colour.r = atoi(config.getSetting("red"));
-	colour.g = atoi(config.getSetting("green"));
-	colour.b = atoi(config.getSetting("blue"));
+	colour.r = atoi(config.getSetting("red").c_str());
+	colour.g = atoi(config.getSetting("green").c_str());
+	colour.b = atoi(config.getSetting("blue").c_str());
 
 	PlayerInfo server;
 	server.id.binaryAddress = 0;
@@ -189,11 +189,11 @@ void Multiplayer::serverSend(BitStream* bitStream, PlayerID player, bool reliabl
 		// We arbitrarily pick 0 for the ordering stream
 		// false to send to only one player
 		// true for security
-		mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false, true);
+		mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false);
 	}
 	else
 	{
-		mServer->Send(bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, player, false, true);
+		mServer->Send(bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, player, false);
 	}
 
 }
@@ -213,11 +213,11 @@ void Multiplayer::serverSendAll(BitStream* bitStream, bool reliable)
 		// We arbitrarily pick 0 for the ordering stream
 		// true to send to all palyers
 		// true for security
-		mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);	
+		mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true);	
 	}
 	else
 	{
-		mServer->Send(bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, UNASSIGNED_PLAYER_ID, true, true);	
+		mServer->Send(bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, UNASSIGNED_PLAYER_ID, true);	
 	}
 }
 
@@ -313,7 +313,7 @@ void Multiplayer::clientDisconnect()
 	assert(mActive);
 
 	// disconnect
-	mClient->Disconnect();
+	mClient->Disconnect(10);
 	RakNetworkFactory::DestroyRakClientInterface(mClient);
 
 	// clear the player list
@@ -336,7 +336,7 @@ void Multiplayer::serverDisconnect()
 	serverSendAllText("kicked", ID_KICK);
 
 	// disconnect
-	mServer->Disconnect();
+	mServer->Disconnect(10);
 	RakNetworkFactory::DestroyRakServerInterface(mServer);
 
 	// clear the player list
@@ -406,7 +406,9 @@ int Multiplayer::getWizardUID(PlayerID pid)
 		if (mPlayers[i].id == pid) return mPlayers[i].wizardUID;
 	}
 
-	LogManager::getSingleton().logMessage(String("Multiplayer::getWizardUID() failed, PlayerID not found: #") << pid.binaryAddress);
+	std::ostringstream num("");
+	num << pid.binaryAddress;
+	LogManager::getSingleton().logMessage(String("Multiplayer::getWizardUID() failed, PlayerID not found: #") + num.str());
 	return -1;
 }
 
@@ -419,7 +421,9 @@ PlayerID Multiplayer::getPlayerID(int wizardUID)
 		if (mPlayers[i].wizardUID == wizardUID) return mPlayers[i].id;
 	}
 
-	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerID() failed, WizardUID not found: #") << wizardUID);
+	std::ostringstream num("");
+	num << wizardUID;
+	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerID() failed, WizardUID not found: #") + num.str() );
 	return mPlayers[0].id;
 }
 
@@ -432,7 +436,9 @@ PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 		if (mPlayers[i].id == pid) return &mPlayers[i];
 	}
 
-	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerInfo() failed, PlayerID not found: #") << pid.binaryAddress);
+	std::ostringstream num("");
+	num << pid.binaryAddress;
+	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerInfo() failed, PlayerID not found: #") + num.str());
 	return 0;
 }
 
@@ -445,8 +451,10 @@ void Multiplayer::updateScores()
 	// send each client its score
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
-		serverSendText(String("Score: ") << 
-			Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
+		std::ostringstream num("");
+		num << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore();
+
+		serverSendText(String("Score: ") + num.str(),
 			ID_SETSCORE, mPlayers[i].id);
 	}
 
@@ -457,13 +465,14 @@ void Multiplayer::updateScores()
 	// re-add all the players + scores
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
-		String player = String("") << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore()
-			<< "   " << mPlayers[i].name;
+		std::ostringstream num("");
+		num << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore();
+
+		String player = String("") + num.str() + "   " + mPlayers[i].name;
 			
 		serverSendAllText(player, ID_ADD_SCORE);
 		PlayerList::getSingleton().addPlayer(player);
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -491,14 +500,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		{
 			int pid, uid;
 
-			BitStream bs(packet->data, packet->length, false);
+			BitStream bs((const char*)packet->data, packet->length, false);
 			bs.Read(pid);
 			bs.Read(uid);
 
 			// set the camera UID
 			Renderer::getSingleton().getCameraThing()->_setUID(uid);
 
-			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") << uid);
+			std::ostringstream num("");
+			num << uid;
+			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") + num.str());
 
 			return true;
 		}
@@ -591,7 +602,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			packetToString(packet,player);
 
 			// add it
-			if (strlen(player) > 2)
+			if (player.length() > 2)
 				PlayerList::getSingleton().addPlayer(player);
 			return true;
 		}
@@ -739,7 +750,7 @@ void Multiplayer::clientRequestKick()
 void Multiplayer::stringToBitStream(String& string, BitStream& bs, int type)
 {
 	char cstr[STRING_MAX_LENGTH];
-	strcpy(cstr, string);
+	strcpy(cstr, string.c_str());
 	int len = (int)strlen(cstr) + 1;
 
 	bs.Write(type);
@@ -754,12 +765,12 @@ void Multiplayer::packetToString(Packet* packet, String& string)
 	char cstr[STRING_MAX_LENGTH];
 	int len, UID;
 
-	BitStream bs(packet->data,packet->length,false);
+	BitStream bs((const char*)packet->data,packet->length,false);
 	bs.Read(UID);
 	bs.Read(len);
 	bs.Read(cstr,len);
 
-	string << cstr;
+	string += cstr;
 }
 
 //----------------------------------------------------------------------------

@@ -155,9 +155,9 @@ void HeightMap::loadTerrain( const String& filename )
 	ConfigFile config;
 	config.load( filename );
 
-	mScalex = atof( config.getSetting( "Scale.x" ) );
-	mScaley = atof( config.getSetting( "Scale.y" ) );
-	mScalez = atof( config.getSetting( "Scale.z" ) );
+	mScalex = atof( config.getSetting( "Scale.x" ).c_str() );
+	mScaley = atof( config.getSetting( "Scale.y" ).c_str() );
+	mScalez = atof( config.getSetting( "Scale.z" ).c_str() );
 
 	String terrain_filename = config.getSetting( "HeightMap" );
 

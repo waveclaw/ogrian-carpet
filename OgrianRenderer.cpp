@@ -192,7 +192,7 @@ void Renderer::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     mCamera->setNearClipDistance(CONR("CAMERA_NEAR_CLIP"));
-	mCamera->setFOVy(CONR("CAMERA_FOV"));
+	mCamera->setFOVy(Degree(CONR("CAMERA_FOV")));
 }
 
 //----------------------------------------------------------------------------
@@ -226,7 +226,7 @@ CameraThing* Renderer::getCameraThing(void)
 
 void Renderer::createSky(const String& material)
 {
-	LogManager::getSingleton().logMessage("Making Sky...");
+	LogManager::getSingleton().logMessage(String("Making Sky... ") += material);
 
 	// Define the required skyplane
     Plane plane;
@@ -235,7 +235,7 @@ void Renderer::createSky(const String& material)
     // Above the camera, facing down
     plane.normal = -Vector3::UNIT_Y;
     // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"));
+    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"),10,10);
 }
 
 //----------------------------------------------------------------------------
@@ -312,8 +312,8 @@ void Renderer::loadMap(String configfile, bool server)
 	config.load( configfile );
 	String skyMaterial = config.getSetting( "SkyMaterial" );
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
-	mFoliageMaterial = config.getSetting( "FoliageMaterial" );
-	int foliageNum = atoi(config.getSetting( "FoliageAmount" ));
+	mFoliageMaterial = config.getSetting( "FoliageMaterial" ).c_str();
+	int foliageNum = atoi(config.getSetting( "FoliageAmount" ).c_str());
 	String fogColour = config.getSetting( "FogColour" );
 
 	// set the fog

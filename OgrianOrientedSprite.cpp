@@ -167,7 +167,7 @@ void OrientedSprite::setPose(int index)
 
 //----------------------------------------------------------------------------
 
-void OrientedSprite::setOrientation(Real orientation)
+void OrientedSprite::setOrientation(Radian orientation)
 {
 	mOrientation = orientation;
 }

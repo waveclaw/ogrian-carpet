@@ -46,14 +46,14 @@ class Pose
 public:
 	Pose(String basename)
 	{
-		f  = new Sprite("auto", true); f ->setMaterial(String(basename) << "f");
-		fl = new Sprite("auto", true); fl->setMaterial(String(basename) << "fl");
-		l  = new Sprite("auto", true); l ->setMaterial(String(basename) << "l");
-		bl = new Sprite("auto", true); bl->setMaterial(String(basename) << "bl");
-		b  = new Sprite("auto", true); b ->setMaterial(String(basename) << "b");
-		br = new Sprite("auto", true); br->setMaterial(String(basename) << "br");
-		r  = new Sprite("auto", true); r ->setMaterial(String(basename) << "r");
-		fr = new Sprite("auto", true); fr->setMaterial(String(basename) << "fr");
+		f  = new Sprite("auto", true); f ->setMaterial(String(basename) + "f");
+		fl = new Sprite("auto", true); fl->setMaterial(String(basename) + "fl");
+		l  = new Sprite("auto", true); l ->setMaterial(String(basename) + "l");
+		bl = new Sprite("auto", true); bl->setMaterial(String(basename) + "bl");
+		b  = new Sprite("auto", true); b ->setMaterial(String(basename) + "b");
+		br = new Sprite("auto", true); br->setMaterial(String(basename) + "br");
+		r  = new Sprite("auto", true); r ->setMaterial(String(basename) + "r");
+		fr = new Sprite("auto", true); fr->setMaterial(String(basename) + "fr");
 	}
 	virtual ~Pose()
 	{
@@ -67,10 +67,10 @@ public:
 		delete fr;
 	}
 
-	Sprite* getSprite(Vector3 campos, Vector3 pos, float offset)
+	Sprite* getSprite(Vector3 campos, Vector3 pos, Radian offset)
 	{
 		// determine the direction
-		float dir = -atan2(campos.x - pos.x, campos.z - pos.z) + offset;
+		float dir = -atan2(campos.x - pos.x, campos.z - pos.z) + offset.valueRadians();
 
 		// constrain the offset
 		while (dir > Math::PI) dir -= 2*Math::PI;
@@ -88,7 +88,7 @@ public:
 		if (dir >= (7/8.0)*Math::PI) return b;
 
 		// error
-		LogManager::getSingleton().logMessage(String("ERROR! dir: ") << dir*8/Math::PI << "/8*Math::PI");
+		LogManager::getSingleton().logMessage((String("ERROR! dir: ") += dir*8/Math::PI) += "/8*Math::PI");
 
 		return 0;
 	}
@@ -128,7 +128,7 @@ public:
 
 	// set the orientation from -Math::PI to Math::PI 
 	// note, call this through Thing::setOrientation for best behavior
-	virtual void setOrientation(Real orientation);
+	virtual void setOrientation(Radian orientation);
 	
 	// set the color
 	virtual void setColour(ColourValue& colour);
@@ -138,7 +138,7 @@ public:
 
 	// unused
 	virtual void setMaterial(String material) {}
-	virtual void setRotation(Real rotation) {};
+	virtual void setRotation(Radian rotation) {};
 
 	// add this visrep to the renderer
 	virtual void addToRenderer();
@@ -162,7 +162,7 @@ private:
 	Vector3 mPos;
 	ColourValue mColour;
 	bool mInRenderer;
-	Real mOrientation;
+	Radian mOrientation;
 };
 }
 #endif

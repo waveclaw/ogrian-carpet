@@ -41,7 +41,9 @@ unsigned long Model::msNextGeneratedNameExt = 1;
 
 Model::Model()
 {
-	mName = String("OgrianModel") << msNextGeneratedNameExt++;
+	std::ostringstream num("");
+	num << msNextGeneratedNameExt++;
+	mName = String("OgrianModel") + num.str();
 
 	mWidth = 1;
 	mHeight = 1;

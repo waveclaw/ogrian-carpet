@@ -161,7 +161,7 @@ void Castle::dropMana(int amount)
 	mana->setTeamNum(getTeamNum());
 	mana->setPosY(mana->getGroundY());
 
-	LogManager::getSingleton().logMessage(String("dropped mana: ") << mana->getPosition() << " offset: " << offset);
+	//LogManager::getSingleton().logMessage(String("dropped mana: ") += mana->getPosition(). += " offset: " += offset);
 }
 
 //----------------------------------------------------------------------------

@@ -60,12 +60,12 @@ void Audio::playSong(String filename)
 	stopSong();
 
 	// load teh new song
-	mSongStream = FSOUND_Stream_Open(filename, FSOUND_LOOP_NORMAL, 0, 0);
+	mSongStream = FSOUND_Stream_Open(filename.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
 	
 	// error if not found
 	if (mSongStream == 0) 
 	{
-		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") << filename,
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") + filename,
 				"Audio::playSong" );	
 	}
 
@@ -81,14 +81,14 @@ void Audio::playSong(String filename)
 int Audio::loadSound(String filename, bool loop)
 {
 	// load the sound
-	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename, 
+	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename.c_str(), 
 		loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF,
 		0, 0);
 
 	// error if not found
 	if (sound == 0) 
 	{
-		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") << filename,
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") + filename,
 				"Audio::playSound" );	
 	}
 

@@ -203,7 +203,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 	// if its a thing update
 	if (pid == ID_UPDATE_THING)
 	{
-		BitStream bitstream(packet->data, packet->length, true);
+		BitStream bitstream((const char*)packet->data, packet->length, true);
 		int id, uid, type;
 
 		bitstream.Read(id);
@@ -230,7 +230,9 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 			if (getThing(uid) == 0) 
 			{
-				LogManager::getSingleton().logMessage(String("Add Failure on thing #") << uid);
+				std::ostringstream num("");
+				num << uid;
+				LogManager::getSingleton().logMessage(String("Add Failure on thing #") + num.str());
 				listThings();
 			}
 		}
@@ -247,7 +249,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 	else if (pid == ID_REMOVE_THING)
 	{
 		// find the thing
-		BitStream bitstream(packet->data, packet->length, true);
+		BitStream bitstream((const char*)packet->data, packet->length, true);
 		int id, uid;
 
 		bitstream.Read(id);
@@ -266,7 +268,9 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		}
 		else 
 		{
-			LogManager::getSingleton().logMessage(String("Remove Failure on thing #") << uid);
+			std::ostringstream num("");
+			num << uid;
+			LogManager::getSingleton().logMessage(String("Remove Failure on thing #") + num.str());
 			listThings();
 		}
 
@@ -285,7 +289,7 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 	// if its a thing creation or update
 	if (pid == ID_UPDATE_THING)
 	{
-		BitStream bitstream(packet->data, packet->length, true);
+		BitStream bitstream((const char*)packet->data, packet->length, true);
 		int id, uid, type;
 
 		bitstream.Read(id);
@@ -302,7 +306,9 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 			if (wthing == 0)
 			{
-				LogManager::getSingleton().logMessage(String("wizardthing not found: #") << uid);
+				std::ostringstream num("");
+				num << uid;
+				LogManager::getSingleton().logMessage(String("wizardthing not found: #") + num.str());
 			}
 			else
 			{
@@ -359,7 +365,9 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
 		default:
-			LogManager::getSingleton().logMessage(String("ERROR: Thing Unknown: ") << type);
+			std::ostringstream num("");
+			num << type;
+			LogManager::getSingleton().logMessage(String("ERROR: Thing Unknown: ") + num.str());
 			return 0;
 	}
 }
@@ -371,7 +379,9 @@ void Physics::listThings()
 	LogManager::getSingleton().logMessage("All Things:");
 
 	for (int i=0; i<(int)mAllThings.size(); i++)
-		LogManager::getSingleton().logMessage(String(" thing: ") << mAllThings[i]->getString());
+	{
+		LogManager::getSingleton().logMessage(String(" thing: ") + mAllThings[i]->getString());
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -547,7 +557,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 		// assert that one was removed
 		assert(mThingGrid[grid_u][grid_v].size() == s-1);
 		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: (") 
-			<< grid_u << "," << grid_v << ") " << thing->getString());
+			+ /*grid_u + "," + grid_v +*/ ") " + thing->getString());
 		return false;
 	}
 	else
@@ -565,7 +575,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 		}
 		// assert that one was removed
 		assert(mOtherThings.size() == s-1);
-		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") << thing->getString()); 
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") + thing->getString()); 
 		return false;
 	}
 }
@@ -645,7 +655,7 @@ void Physics::deleteThing(Thing* thing)
 	// delete it
 	if (removed)
 		delete thing;
-	else LogManager::getSingleton().logMessage(String("ERROR: THING NOT DELETED: ") << thing->getString());
+	else LogManager::getSingleton().logMessage(String("ERROR: THING NOT DELETED: ") + thing->getString());
 }
 
 //----------------------------------------------------------------------------
@@ -945,7 +955,9 @@ Team* Physics::getTeam(int index)
 {
 	if (index < 0 || index >= (int)mTeams.size())
 	{
-		LogManager::getSingleton().logMessage(String("Team not found: ") << index);
+		std::ostringstream num("");
+		num << index;
+		LogManager::getSingleton().logMessage(String("Team not found: ") + num.str());
 		return 0;
 	}
 

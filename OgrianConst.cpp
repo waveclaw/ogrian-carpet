@@ -54,8 +54,8 @@ Const::~Const()
 
 int Const::getConstantInt(const String &key)
 {
-	int c = atoi(mFile.getSetting(key));
-	if (c == 0) LogManager::getSingleton().logMessage(String("Warning, key ") << key << " read as 0");
+	int c = atoi(mFile.getSetting(key).c_str());
+	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
 
@@ -63,8 +63,8 @@ int Const::getConstantInt(const String &key)
 
 Real Const::getConstantReal(const String &key)
 {
-	Real c = atof(mFile.getSetting(key));
-	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") << key << " read as 0.0");
+	Real c = atof(mFile.getSetting(key).c_str());
+	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
 

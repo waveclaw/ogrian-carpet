@@ -70,7 +70,9 @@ void Hud::hide()
 
 void Hud::setScore(int score)
 {
-	setScore(String("Score: ") << score);
+	std::ostringstream num("");
+	num << score;
+	setScore(String("Score: ") + num.str());
 }
 
 //----------------------------------------------------------------------------
@@ -84,7 +86,9 @@ void Hud::setScore(String score)
 
 void Hud::setHealth(int health)
 {
-	setHealth(String("Health: ") << health);
+	std::ostringstream num("");
+	num << health;
+	setHealth(String("Health: ") + num.str());
 }
 
 //----------------------------------------------------------------------------

@@ -53,7 +53,7 @@ public:
 	virtual void setHeight(Real height) = 0;
 
 	// set the rotation
-	virtual void setRotation(Real rotation) = 0;
+	virtual void setRotation(Radian rotation) = 0;
 
 	// add a pose (only used by Oriented Sprites)
 	virtual int addPose(String basename) = 0;
@@ -62,7 +62,7 @@ public:
 	virtual void setPose(int index) = 0;
 
 	// set the orientation from -pi to pi (only used by Oriented Sprites)
-	virtual void setOrientation(Real orientation) = 0;
+	virtual void setOrientation(Radian orientation) = 0;
 
 	// set the material
 	virtual void setMaterial(String material) = 0;

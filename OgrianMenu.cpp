@@ -91,7 +91,7 @@ void Menu::loadMapList()
 	String optName, optVal;
 
 	// Open and parse entire file
-	fp = fopen(filename, "r");
+	fp = fopen(filename.c_str(), "r");
 	if( !fp )
 		Except(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "ConfigFile::load" );
@@ -100,7 +100,7 @@ void Menu::loadMapList()
 	while (ret != NULL)
 	{
 		String tst = rec;
-		tst.trim();
+		StringUtil::trim(tst);
 		// Ignore comments & blanks
 		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
 		{
@@ -109,7 +109,7 @@ void Menu::loadMapList()
 			if (pName)
 			{
 				String optName = pName;
-				optName.trim();
+				StringUtil::trim(optName);
 
 				mList->addListItem(new StringResource(optName));
 			}
@@ -256,7 +256,7 @@ void Menu::loadMap(String mapname)
 	Renderer::getSingleton().getFrameListener()->setGameRunning(false);
 
 	// load the map
-	mMapName = String("Media/maps/") << mapname << ".txt";
+	mMapName = String("Media/maps/") + mapname + ".txt";
 	mLoadMap = true;
 	mLoadDelay = CONI("LOAD_DELAY");
 }

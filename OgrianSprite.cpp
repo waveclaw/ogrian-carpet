@@ -48,7 +48,12 @@ Sprite::Sprite(String name, bool fixed_y)
 	mName = name;
 	mFixed_y = fixed_y;
 
-	if (mName.startsWith("auto")) mName << msNextGeneratedNameExt++;
+	if (StringUtil::startsWith(mName,"auto"))
+	{
+			std::ostringstream num("");
+			num << msNextGeneratedNameExt++;
+			mName += num.str();
+	}
 
 	mWidth = 1;
 	mHeight = 1;
@@ -125,7 +130,7 @@ void Sprite::setHeight(Real height)
 
 //----------------------------------------------------------------------------
 
-void Sprite::setRotation(Real rotation)
+void Sprite::setRotation(Radian rotation)
 {
 	if (mInRenderer)
 		mBillboard->setRotation(rotation);
@@ -157,8 +162,16 @@ void Sprite::addToRenderer()
 
 	// create the billboardset
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
+
+	std::ostringstream num("");
+	num << msNextGeneratedNameExt++;
+	mName += "_" + num.str();
+
 	mBbset = sceneMgr->createBillboardSet(mName,1);
 	mBillboard = mBbset->createBillboard(0, 0, 0);
+	
+
+	mBbset->setRenderQueueGroup(RENDER_QUEUE_6);
 
 	if (mFixed_y)
 	{

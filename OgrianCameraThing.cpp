@@ -50,14 +50,14 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	// set the sensitivity
 	ConfigFile config;
 	config.load( "config.cfg" );
-	mSensitivity = atof(config.getSetting( "sensitivity" ));
+	mSensitivity = atof(config.getSetting( "sensitivity" ).c_str());
 	if (mSensitivity == 0) mSensitivity = 1;
 
 	// set the color
 	ColourValue colour;
-	colour.r = atof(config.getSetting( "red" ));
-	colour.b = atof(config.getSetting( "blue" ));
-	colour.g = atof(config.getSetting( "green" ));
+	colour.r = atof(config.getSetting( "red" ).c_str());
+	colour.b = atof(config.getSetting( "blue" ).c_str());
+	colour.g = atof(config.getSetting( "green" ).c_str());
 	setColour(colour);
 
 }
@@ -114,14 +114,14 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 	rotY *= mSensitivity;
 
 	// set the yaw
-	mCamera->yaw(rotX);
+	mCamera->yaw(Degree(rotX));
 
 	// constrain the pitch
 	Vector3 dir = mCamera->getDirection();
 
 	mTempCam->setDirection(Vector3(0,0,1));
 	mTempCam->setDirection(dir);
-	mTempCam->pitch(rotY);
+	mTempCam->pitch(Degree(rotY));
 	dir = mTempCam->getDirection();
 
 	if (dir.y < CONR("CAMERA_PITCH_MAX") && dir.y > -CONR("CAMERA_PITCH_MAX"))

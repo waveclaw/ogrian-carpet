@@ -30,7 +30,7 @@ Description: The audio handler
 #define __OgrianAudio_H__
 
 #include <Ogre.h>
-#include <fmod.h>
+#include "fmod.h"
 
 using namespace Ogre;
 
