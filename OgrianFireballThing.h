@@ -77,9 +77,14 @@ public:
 class FireballThing : public TimedThing
 {
 public:
-	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0),
+		int damage=CONR("FIREBALL_DAMAGE"), bool smoke=true, bool fall=true) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
 	{
+		mSmoke = smoke;
+		mFall = fall;
+		mDamage = damage;
+
 		setTeamNum(teamNum);
 		mColour = colour;
 		setColour(mColour);
@@ -101,11 +106,13 @@ public:
 	virtual void move(Real time)
 	{
 		// fall
-		setVelocity(getVelocity() + Vector3(0, -CONR("FIREBALL_FALL_RATE") * time, 0));
+		if (mFall)
+			setVelocity(getVelocity() + Vector3(0, -CONR("FIREBALL_FALL_RATE") * time, 0));
+	
 		TimedThing::move(time);
 
 		// emit smoke
-		if (isAlive() && mSmokeList.size() == 0)
+		if (isAlive() && mSmoke && mSmokeList.size() == 0)
 		{
 			for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
 			{
@@ -130,7 +137,7 @@ public:
 		// damage it
 		if (e->isDamageable() && (getTeamNum() != e->getTeamNum()))
 		{
-			e->damage(CONR("FIREBALL_DAMAGE"), getTeamNum());
+			e->damage(mDamage, getTeamNum());
 
 			// self destruct
 			destroy();
@@ -158,6 +165,8 @@ public:
 	}
 
 private:
+	bool mSmoke, mFall;
+	int mDamage;
 	ColourValue mColour;
 	Vector3 mLastPos;
 	Time mLastSmokeTime;

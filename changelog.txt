@@ -2,6 +2,7 @@
 -new castle model and behavior
 -spell selection system
 -spells:
+ Summon Spells
  Firestorm
  Speed
  Akimbo Fireball
@@ -9,3 +10,5 @@
 -gave towers new models and beacons
 
 -added huts
+
+-added sentinels

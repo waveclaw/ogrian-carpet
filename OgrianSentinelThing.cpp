@@ -67,18 +67,38 @@ void SentinelThing::think()
 		Thing* target = team->getNearestEnemy(this, CONR("SENTINEL_SIGHT_RANGE"));
 		if (target) 
 		{
-			Vector3 startPos = getPosition();
+			// face the enemy //
+		
+			// determine the direction
+			Vector3 pos = getPosition();
+			Vector3 epos = target->getPosition();
+			float dir = atan2(epos.x - pos.x, epos.z - pos.z);
+			
+			// constrain the offset
+			while (dir > Math::PI) dir -= 2*Math::PI;
+			while (dir < -Math::PI) dir += 2*Math::PI;
+
+			// set orientation
+			setOrientation(dir);
+
+			// attack the enemy //
 
 			// account for target movement
 			Real claimTravelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
 			Vector3 targetOffset = target->getVelocity()*claimTravelTime;
 
-			Vector3 vel = (target->getPosition() + targetOffset) - startPos;
+			// shoot at the tips of buildings
+			if (target->isBuilding())
+				epos.y = epos.y + target->getHeight()/2;
+
+			// calculate the trajectory
+			Vector3 vel = (epos + targetOffset) - pos;
 			vel.normalise();
 			vel *= CONR("FIREBALL_SPEED");
 
 			// shoot it
-			Physics::getSingleton().addThing(new FireballThing(getTeamNum(), team->getColour() , startPos, vel));
+			Physics::getSingleton().addThing(new FireballThing(getTeamNum(), team->getColour(),
+				pos, vel, CONI("SENTINEL_DAMAGE"), false, false));
 		}
 	}
 }
