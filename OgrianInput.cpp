@@ -115,7 +115,7 @@ bool Input::processKeyInput(InputReader* input)
 	}
 
 	// cast build
-	if ((input->getMouseButton(2) || input->getMouseButton(3) || input->getMouseButton(4))
+	if ((input->getMouseButton(2) || input->getMouseButton(3) || input->getMouseButton(4) || input->isKeyDown(KC_LCONTROL))
 		&& mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
 		&& !Game::getSingleton().isPreGame())
 	{

@@ -174,12 +174,17 @@ public:
 
 	virtual void setHealth(int health)
 	{
-		if (health < 0) health = 0;
-
 		DamageableThing::setHealth(health);
+
+		if (health < 0) health = 0;
 
 		setPercentage((health + CONR("TOWER_RUBBLE"))
 			/ (CONR("TOWER_HEALTH") + CONR("TOWER_RUBBLE")));
+	}
+
+	virtual void die()
+	{
+		destroy();
 	}
 
 

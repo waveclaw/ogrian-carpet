@@ -68,7 +68,7 @@ public:
 	virtual void setPercentage(Real per)
 	{
 		if (per >= 1) per = 1;
-		if (per <= 0) per = 0;
+		if (per <= 0) per = -0.1;
 		Real newTargetY = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
 
 		if (newTargetY == mTargetY) return;

@@ -19,6 +19,7 @@ sensitivity=1
 
 # ingame music
 music=false
+MUSIC_VOLUME=128
 
 # set the RGB values of the colour you want your team to be
 red=0
@@ -28,3 +29,5 @@ green=0
 
 # Performance variables
 THING_CULL_DIST=200
+SOUND_SCALE=.1
+THING_EARSHOT=300
