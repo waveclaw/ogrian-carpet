@@ -52,7 +52,7 @@ public:
 	{
 		setAmount(amount);
 		setColour(ColourValue(.9,.9,.9));
-		setUpdateType(CONTINUOUS);
+		setUpdateType(PERIODIC);
 	}
 
 	// change the colour to reflect team ownership
@@ -130,6 +130,8 @@ public:
 		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
+
+		setUpdateFlag();
 	}
 
 	virtual ThingType getType()

@@ -59,7 +59,8 @@ public:
 		setPercentage(0);
 
 		// set the team
-		setTeamNum(castle->getTeamNum());
+		if (castle)
+			setTeamNum(castle->getTeamNum());
 	}
 
 	// set how far up this block should go to
