@@ -194,20 +194,23 @@ void CameraThing::die()
 {
 	WizardThing::die();
 	
-	Castle* castle = Physics::getSingleton().getTeam(getTeamNum())->getCastle();
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		Castle* castle = getTeam()->getCastle();
 
-	if (castle)
-	{
-		setPosition(castle->getPosition());
-	}
-	else
-	{
-        Vector3 offset;
-		Real wdo = CONR("WIZARD_DEATH_OFFSET");
-		offset.x = Math::RangeRandom(-wdo, wdo);
-		offset.y = 0;
-		offset.z = Math::RangeRandom(-wdo, wdo);
-		setPosition(getPosition() + offset);
+		if (castle)
+		{
+			setPosition(castle->getPosition());
+		}
+		else
+		{
+			Vector3 offset;
+			Real wdo = CONR("WIZARD_DEATH_OFFSET");
+			offset.x = Math::RangeRandom(-wdo, wdo);
+			offset.y = 0;
+			offset.z = Math::RangeRandom(-wdo, wdo);
+			setPosition(getPosition() + offset);
+		}
 	}
 }
 

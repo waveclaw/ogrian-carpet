@@ -58,9 +58,25 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 
 	// make a team for this wizard'
-	if (!Multiplayer::getSingleton().isClient())
+	if (Multiplayer::getSingleton().isServer())
+	{		
+		int teamNum;
+
+		if (!visible) 
+			teamNum = 0;
+		else 
+			teamNum = Physics::getSingleton().newTeam(getUID(), getColour());
+
+		setTeamNum(teamNum);
+		mTeam = Physics::getSingleton().getTeam(teamNum);
+		
+		std::ostringstream num("");
+		num << teamNum;
+		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
+	}
+	else if (!Multiplayer::getSingleton().isClient()) // skirmish mode
 	{
-		int teamNum = Physics::getSingleton().newTeam(-1, getColour());
+		int teamNum = Physics::getSingleton().newTeam(0, getColour());
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
 
@@ -70,6 +86,13 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+Team* WizardThing::getTeam()
+{
+	return mTeam;
 }
 
 //----------------------------------------------------------------------------
@@ -147,11 +170,8 @@ void WizardThing::die()
 
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{
-			// find the wizard's player
-			PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
-
 			// kill it
-			Multiplayer::getSingleton().serverSendText(" " , ID_DIE, player);
+			Multiplayer::getSingleton().killWizard(this);
 		}			
 	}
 	

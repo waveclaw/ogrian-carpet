@@ -582,7 +582,18 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		}
 		case ID_DIE: //////////////////////////////////////////////////////
 		{
+			int pid;
+
+			Vector3 pos;
+
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(pos.x);
+			bs.Read(pos.y);
+			bs.Read(pos.z);
+
 			Renderer::getSingleton().getCameraThing()->die();
+			Renderer::getSingleton().getCameraThing()->setPosition(pos);
 			return true;
 		}
 		case ID_SETSCORE: //////////////////////////////////////////////////////
@@ -746,6 +757,41 @@ void Multiplayer::clientRequestKick()
 	if (cam!=0) cam->_setUID(0);
 
 	clientSendText(" ", ID_KICKME);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::killWizard(Thing* wizard)
+{
+	// find the wizard's player
+	PlayerInfo* player = getPlayerInfo(getPlayerID(wizard->getUID()));
+
+	// find the wizard's castle
+	Thing* castle = Physics::getSingleton().getTeam(wizard->getTeamNum())->getCastle();
+
+	//serverSendText(" " , ID_DIE, player);
+	Vector3 pos;
+	
+	if (castle)
+	{
+		pos = castle->getPosition();
+	}
+	else
+	{
+        Vector3 offset;
+		Real wdo = CONR("WIZARD_DEATH_OFFSET");
+		offset.x = Math::RangeRandom(-wdo, wdo);
+		offset.y = 0;
+		offset.z = Math::RangeRandom(-wdo, wdo);
+		pos = wizard->getPosition() + offset;
+	}
+
+	BitStream bs;
+	bs.Write(ID_DIE);
+	bs.Write(pos.x);
+	bs.Write(pos.y);
+	bs.Write(pos.z);
+	serverSend(&bs, player->id);
 }
 
 //----------------------------------------------------------------------------

@@ -62,6 +62,8 @@ public:
 	virtual void collidedGround()
 	{
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+
 		if (getGroundY() > CONR("BUILDING_MIN_GROUNDY") && team && !team->hasCastle())
 		{
 			// make sure its not too close to other buildings

@@ -33,6 +33,7 @@ Description: This handles all of the multiplayer networking code.
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianPacketEnum.h"
+#include "OgrianThing.h"
 
 #include "RakNetworkFactory.h"
 #include "RakClientInterface.h"
@@ -117,6 +118,9 @@ public:
 	void updateScores();
 
 	PlayerInfo getClient(int i);
+
+	// kill a player
+	void killWizard(Thing* wizard);
 
 private:
 	Multiplayer();
