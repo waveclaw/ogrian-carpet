@@ -25,13 +25,13 @@ p1startX=100
 p1startZ=100
 
 p2startX=928
-p2startY=928
+p2startZ=928
 
 p3startX=84
-p3startY=582
+p3startZ=582
 
 p4startX=800
-p4startY=168
+p4startZ=168
 
 # the number of starting stuff in skirmish mode
 NUM_TOWERS=6
