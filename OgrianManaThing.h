@@ -89,8 +89,6 @@ public:
 	{
 		if (amount < 0) amount = 0;
 
-		if (mAmount == amount) return;
-
 		mAmount=amount;
 
 		if (sqrt(amount) > CONR("MANA_MAX_SCALE"))

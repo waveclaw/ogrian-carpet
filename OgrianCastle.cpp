@@ -551,13 +551,6 @@ void Castle::setNumBaloons(int num)
 void CastleTurretThing::setPercentage(Real per)
 {
 	CastleBlockThing::setPercentage(per);
-
-	if (per <= 0)
-	{
-		LogManager::getSingleton().logMessage("turret per <= 0");
-		//destroy();
-	}
-
 	
 	if (per >= 0 && !mCrane) 
 	{
