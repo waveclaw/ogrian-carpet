@@ -56,6 +56,8 @@ WizardThing::WizardThing(bool visible)
 
 void WizardThing::setHealth(int health)
 {
+	DamageableThing::setHealth(health);
+
 	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 	{
 		// find the wizard's player
@@ -69,6 +71,8 @@ void WizardThing::setHealth(int health)
 
 void WizardThing::die()
 {
+	DamageableThing::die();
+
 	if (!Multiplayer::getSingleton().isClient())
 	{
 		Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();

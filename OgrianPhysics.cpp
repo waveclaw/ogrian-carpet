@@ -159,7 +159,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			thing = newThing((ThingType)type, 0);
 
 			// log it
-			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
+			//LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
