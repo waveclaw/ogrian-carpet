@@ -1,3 +1,16 @@
+material Default
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{	
+				texture default.png
+			}
+		}
+	}
+}
 material Ogrian/Clear
 {
 	technique

@@ -34,6 +34,7 @@ It is rendered as a Billboard.
 #include "OgrianRenderer.h"
 #include "OgrianTime.h"
 #include "OgrianOrientedSprite.h"
+#include "OgrianModel.h"
 
 namespace Ogrian
 {
@@ -71,6 +72,11 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	{
 		OrientedSprite* osprite = new OrientedSprite();
 		mVisRep = osprite;
+	}
+	else if (visrep == MODEL)
+	{
+		Model* model = new Model();
+		mVisRep = model;
 	}
 
 	// set the settings

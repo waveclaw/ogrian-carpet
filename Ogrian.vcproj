@@ -136,6 +136,9 @@
 				RelativePath="OgrianMenu.cpp">
 			</File>
 			<File
+				RelativePath="OgrianModel.cpp">
+			</File>
+			<File
 				RelativePath="OgrianMultiplayer.cpp">
 			</File>
 			<File
@@ -216,6 +219,9 @@
 			</File>
 			<File
 				RelativePath="OgrianMenu.h">
+			</File>
+			<File
+				RelativePath="OgrianModel.h">
 			</File>
 			<File
 				RelativePath="OgrianMouseFrameListener.h">

@@ -62,7 +62,7 @@ enum ThingVisRep
 {
 	SPRITE,
 	ORIENTEDSPRITE,
-	MESH,
+	MODEL,
 };
 
 enum ThingUpdateType

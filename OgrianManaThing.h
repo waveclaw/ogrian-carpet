@@ -47,7 +47,7 @@ class ManaThing : public FloatingThing
 {
 public:
 	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
-		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
+		: FloatingThing("Ogrian/Mana", MODEL, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
 		setColour(ColourValue(0,1,1));
@@ -111,9 +111,6 @@ public:
 		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
-
-		getVisRep()->removeFromRenderer();
-		getVisRep()->addToRenderer();
 
 		FloatingThing::move(time);
 	}

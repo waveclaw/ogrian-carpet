@@ -40,6 +40,9 @@ namespace Ogrian
 class VisRep
 {
 public:
+	VisRep() {}
+	virtual ~VisRep() {}
+
 	// set the position
 	virtual void setPosition(Vector3 pos) = 0;
 
