@@ -57,6 +57,9 @@ public:
 	// set the health 
 	void setHealth(int health);
 
+	// set the message
+	void setMessage(String msg);
+
 private:
 	Hud();
 	void setScore(String score);
@@ -65,6 +68,7 @@ private:
 	Overlay* mOverlay;
 	GuiElement* mScore;
 	GuiElement* mHealth;
+	GuiElement* mMessage;
 };
 
 }

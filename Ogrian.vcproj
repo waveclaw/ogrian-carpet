@@ -295,37 +295,16 @@
 				RelativePath="OgrianFrameListener.h">
 			</File>
 			<File
-				RelativePath="OgrianModel.cpp">
-			</File>
-			<File
-				RelativePath="OgrianModel.h">
-			</File>
-			<File
 				RelativePath="OgrianMouseFrameListener.h">
 			</File>
 			<File
-				RelativePath="OgrianOrientedSprite.cpp">
-			</File>
-			<File
-				RelativePath="OgrianOrientedSprite.h">
-			</File>
-			<File
 				RelativePath="OgrianPacketEnum.h">
-			</File>
-			<File
-				RelativePath="OgrianSprite.cpp">
-			</File>
-			<File
-				RelativePath="OgrianSprite.h">
 			</File>
 			<File
 				RelativePath="OgrianTeam.cpp">
 			</File>
 			<File
 				RelativePath="OgrianTeam.h">
-			</File>
-			<File
-				RelativePath="OgrianVisRep.h">
 			</File>
 			<File
 				RelativePath="fmod.h">
@@ -335,6 +314,31 @@
 			</File>
 			<File
 				RelativePath="resource.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="VisReps"
+			Filter="">
+			<File
+				RelativePath="OgrianModel.cpp">
+			</File>
+			<File
+				RelativePath="OgrianModel.h">
+			</File>
+			<File
+				RelativePath="OgrianOrientedSprite.cpp">
+			</File>
+			<File
+				RelativePath="OgrianOrientedSprite.h">
+			</File>
+			<File
+				RelativePath="OgrianSprite.cpp">
+			</File>
+			<File
+				RelativePath="OgrianSprite.h">
+			</File>
+			<File
+				RelativePath="OgrianVisRep.h">
 			</File>
 		</Filter>
 	</Files>

@@ -71,6 +71,47 @@ void Game::frame(Real time)
 	// tick the input
 	Menu::getSingleton().frame(time);
 	Input::getSingleton().frame(time);
+
+	// victory check
+	if (Multiplayer::getSingleton().isServer())
+		serverVictoryCheck();
+}
+
+//----------------------------------------------------------------------------
+
+void Game::serverVictoryCheck()
+{
+	if (isPreGame()) return;
+
+	int numLivingWizards = 0;
+	Thing* winner = 0;
+	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+	{
+		Team* team = Physics::getSingleton().getTeam(i);
+		Thing* wizard =  Physics::getSingleton().getThing(team->getWizardUID());
+		if (wizard && !((WizardThing*)wizard)->isGhost())
+		{
+			numLivingWizards++;
+			winner = wizard;
+		}
+	}
+
+	if (numLivingWizards == 1)
+	{
+		// game over
+		if (winner == Renderer::getSingleton().getCameraThing())
+		{
+			// we are the winner
+			Hud::getSingleton().setMessage("!!! a winner is you !!!");
+		}
+		else
+		{
+			// send the victory message to the right player
+			PlayerID pid = Multiplayer::getSingleton().getPlayerID(winner->getUID());
+			Multiplayer::getSingleton().serverSendText("!!! a winner is you !!!", ID_MESSAGE, pid);
+		}
+	}
+
 }
 
 //----------------------------------------------------------------------------

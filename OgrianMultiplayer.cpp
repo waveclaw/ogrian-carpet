@@ -599,6 +599,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
+		case ID_MESSAGE: //////////////////////////////////////////////////////
+		{
+			// get the message
+			String msg;
+			packetToString(packet,msg);
+
+			// set it
+			Hud::getSingleton().setMessage(msg);
+			return true;
+		}
 		case ID_SETHEALTH: //////////////////////////////////////////////////////
 		{
 			// get the new health

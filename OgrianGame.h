@@ -70,6 +70,8 @@ private:
 	void startServerGame();
 	void startClientGame();
 
+	void serverVictoryCheck();
+
 	void loadSounds();
 
 	bool mPreGame;

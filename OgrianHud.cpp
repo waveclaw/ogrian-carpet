@@ -43,6 +43,9 @@ Hud::Hud()
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
 	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
+	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
+
+	setMessage("test message");
 }
 
 //----------------------------------------------------------------------------
@@ -80,6 +83,13 @@ void Hud::setScore(int score)
 void Hud::setScore(String score)
 {
 	mScore->setCaption(score);
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setMessage(String msg)
+{
+	mMessage->setCaption(msg);
 }
 
 //----------------------------------------------------------------------------
