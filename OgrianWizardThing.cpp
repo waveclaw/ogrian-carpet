@@ -434,7 +434,7 @@ void WizardThing::setPosition(Vector3 pos)
 
 	// check for lava
 	if (!Multiplayer::getSingleton().isClient())
-		if (Game::getSingleton().getLava() && getPosY() <= CONR("HEIGTHMAP_MIN_HEIGHT") + CONR("CAMERA_HEIGHT") + .01)
+		if (Game::getSingleton().getLava() && getPosY() <= CONR("HEIGTHMAP_MIN_HEIGHT") + CONR("WIZARD_MIN_ALTITUDE") + .01)
 			die();
 }
 

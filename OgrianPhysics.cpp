@@ -784,10 +784,7 @@ void Physics::reset()
 		mEffects.pop_back();
 	}
 
-	// clear mOtherThings
-	//mOtherThings.clear();
-
-	// clear mTeams
+	// clear the teams
 	mTeams.clear();
 
 }
@@ -979,7 +976,11 @@ Team* Physics::getTeam(int index)
 		return 0;
 	}
 
-	return mTeams[index];
+	Team* team = mTeams[index];
+	if (team->getTeamNum() == index)
+		return mTeams[index];
+
+	return 0;
 }
 
 //----------------------------------------------------------------------------

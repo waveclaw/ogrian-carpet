@@ -346,7 +346,7 @@ material Ogrian/SpellIcon/AkimboFireball/Ready
 
 			texture_unit
 			{
-				texture icons/icon_fireball2.png
+				texture icons/icon_akfireball2.png
 			}
 		}
 	}
@@ -362,7 +362,7 @@ material Ogrian/SpellIcon/AkimboFireball/Enabled
 
 			texture_unit
 			{
-				texture icons/icon_fireball2.png
+				texture icons/icon_akfireball2.png
 			}
 		}
 	}
@@ -402,7 +402,7 @@ material Ogrian/SpellIcon/Fireball/Ready
 
 			texture_unit
 			{
-				texture icons/icon_fireball.png
+				texture icons/icon_fireball2.png
 			}
 		}
 	}
@@ -418,7 +418,7 @@ material Ogrian/SpellIcon/Fireball/Enabled
 
 			texture_unit
 			{
-				texture icons/icon_fireball.png
+				texture icons/icon_fireball2.png
 			}
 		}
 	}

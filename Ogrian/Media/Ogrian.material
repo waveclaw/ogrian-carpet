@@ -71,6 +71,25 @@ material Ogrian/HutBall
 		}
 	}
 }
+material Ogrian/Heart
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{	
+
+				texture heart.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/CastleBeacon
 {
 	technique

@@ -46,6 +46,9 @@ class Team
 public:
 	Team(int teamNum, ColourValue colour);
 
+	// the team's number
+	int getTeamNum();
+
 	// the team's wizard
 	int getWizardUID();
 	void setWizardUID(int uid);

@@ -158,6 +158,13 @@ void Team::addEnemy(DamageableThing* enemy)
 
 //----------------------------------------------------------------------------
 
+int Team::getTeamNum()
+{
+	return mTeamNum;
+}
+
+//----------------------------------------------------------------------------
+
 void Team::removeEnemy(DamageableThing* enemy)
 {
 	for (int i=0; i<(int)mEnemies.size(); i++)

@@ -11,7 +11,6 @@ teleport sound
 teams by colour w/mana sharing
 teleport home w/posse
 meteor that claims nearby mana
-castle heart (banishment when destroyed - does not regen)
 castle under attack message
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 

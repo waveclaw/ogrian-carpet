@@ -39,7 +39,7 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 
 CastleHeartThing::CastleHeartThing(DamageableThing* castle, Vector3 pos)
-	: DamageableThing("Ogrian/Flag", SPRITE, "CastleHeart", true, CONR("CASTLE_HEART_SCALE"), pos, SPHERE)
+	: DamageableThing("Ogrian/Heart", SPRITE, "CastleHeart", true, CONR("CASTLE_HEART_SCALE"), pos, SPHERE)
 {
 	mCastle = castle;
 
@@ -258,6 +258,11 @@ Castle::Castle(int teamNum, Vector3 pos)
 	setHealth(CONI("CASTLE_HEALTH"));
 	setPosition(mBlocks[0]->getPosition() + Vector3(0, CONR("CASTLEKEEP_HEIGHT")*1.5 + CONR("CASTLE_WIDTH")/4, 0));
 	
+	// set the flag position
+	Vector3 fpos = pos;
+	fpos.y = HeightMap::getSingleton().getHeightAt(fpos.x, fpos.z) + CONR("CASTLE_FLAG_ALTITUDE");
+	setPosition(fpos);
+
 	// set up the portal
 	Vector3 ppos = pos;
 	ppos.x += CONR("PORTAL_CASTLE_DIST");
