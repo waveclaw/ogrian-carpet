@@ -3,8 +3,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ogrian", "Ogrian.vcproj", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_NatureSceneManager", "..\NatureSceneManager\NatureSceneManager\scripts\Plugin_NatureSceneManager.vcproj", "{9D5F0157-CC6C-465B-89E8-48A699A6299A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chat Example", "..\RakNet\Samples\Code Samples\Chat Example\Chat Example.vcproj", "{8B8F6464-F84E-4D65-ABC5-18BA05CEDC50}"
-EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -21,10 +19,6 @@ Global
 		{9D5F0157-CC6C-465B-89E8-48A699A6299A}.Debug.Build.0 = Debug|Win32
 		{9D5F0157-CC6C-465B-89E8-48A699A6299A}.Release.ActiveCfg = Release|Win32
 		{9D5F0157-CC6C-465B-89E8-48A699A6299A}.Release.Build.0 = Release|Win32
-		{8B8F6464-F84E-4D65-ABC5-18BA05CEDC50}.Debug.ActiveCfg = Debug|Win32
-		{8B8F6464-F84E-4D65-ABC5-18BA05CEDC50}.Debug.Build.0 = Debug|Win32
-		{8B8F6464-F84E-4D65-ABC5-18BA05CEDC50}.Release.ActiveCfg = Release|Win32
-		{8B8F6464-F84E-4D65-ABC5-18BA05CEDC50}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
