@@ -89,6 +89,21 @@ Thing* BaloonThing::getTarget()
 
 //----------------------------------------------------------------------------
 
+void BaloonThing::move(Real time)
+{
+	Thing::move(time);
+
+	// if its travelling
+	if (mState == BAL_STATE_TRAVEL)
+	{
+		// stay above the minimum altitude
+		if (getPosY() < getGroundY() + CONR("BALOON_ALTITUDE"))
+			setPosY(getGroundY() + CONR("BALOON_ALTITUDE"));
+	}
+}
+
+//----------------------------------------------------------------------------
+
 void BaloonThing::think()
 {
 	if (mTarget && mTarget->getTeamNum() == getTeamNum())
