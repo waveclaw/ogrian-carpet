@@ -1,4 +1,100 @@
 
+material Ogrian/SpellIcon/Gnome/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture gnome/gnome_s_f.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Gnome/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Gnome/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Tick/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture tick/tick_s_f.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Tick/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Tick/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
 material Ogrian/SpellIcon/Sentinel/Ready
 {
 	technique

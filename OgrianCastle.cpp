@@ -447,14 +447,23 @@ void Castle::setSpells(int level)
 		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_SENTINEL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_SENTINEL);
 
-		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
+		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_TICK);
+		else			SpellManager::getSingleton().disableSpell(SPELL_TICK);
+
+		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_GNOME);
+		else			SpellManager::getSingleton().disableSpell(SPELL_GNOME);
+
+		if (level >= 4) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
 		else			SpellManager::getSingleton().disableSpell(SPELL_SPEED);
 
-		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
+		if (level >= 5) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
 
-		if (level >= 4) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
+		if (level >= 6) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
 		else			SpellManager::getSingleton().disableSpell(SPELL_FIRESTORM);
+		
+		if (level >= 7) SpellManager::getSingleton().enableSpell(SPELL_METEOR);
+		else			SpellManager::getSingleton().disableSpell(SPELL_METEOR);
 	}
 	else if (Multiplayer::getSingleton().isServer())
 	{
@@ -473,14 +482,23 @@ void Castle::setSpells(int level)
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_DISABLESPELL,player.id);
 
-				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_ENABLESPELL,player.id);
+				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_DISABLESPELL,player.id);
+
+				if (level >= 3) Multiplayer::getSingleton().serverSendInt(SPELL_GNOME,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_GNOME,ID_DISABLESPELL,player.id);
+
+				if (level >= 4) Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_DISABLESPELL,player.id);
 
-				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
+				if (level >= 5) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
 
-				if (level >= 3) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
+				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_DISABLESPELL,player.id);
+				
+				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_METEOR,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_METEOR,ID_DISABLESPELL,player.id);
 			}
 		}
 	}

@@ -119,6 +119,14 @@ Ogrian/HUD/Overlay
 		height .1
 		material Ogrian/Clear
 	}
+	container Panel(Ogrian/HUD/SpellIcon/9)
+	{
+		left .9
+		top 0
+		width .1
+		height .1
+		material Ogrian/Clear
+	}
 
 }
 

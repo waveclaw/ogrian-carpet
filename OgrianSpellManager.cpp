@@ -29,6 +29,8 @@ Description: This manages the spells for the HUD, etc
 
 #include "OgrianSpellManager.h"
 #include "OgrianHud.h"
+#include "OgrianGnomeSpell.h"
+#include "OgrianTickSpell.h"
 #include "OgrianSentinelSpell.h"
 #include "OgrianSpeedSpell.h"
 #include "OgrianFirestormSpell.h"
@@ -57,6 +59,8 @@ SpellManager::SpellManager()
 	mSpells[SPELL_FIRESTORM] = new FirestormSpell();
 	mSpells[SPELL_SPEED] = new SpeedSpell();
 	mSpells[SPELL_SENTINEL] = new SentinelSpell();
+	mSpells[SPELL_TICK] = new TickSpell();
+	mSpells[SPELL_GNOME] = new GnomeSpell();
 
 	disableAllSpells();
 	enableSpell(SPELL_CLAIM);

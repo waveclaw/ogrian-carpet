@@ -264,6 +264,12 @@
 				RelativePath="OgrianFoliageThing.h">
 			</File>
 			<File
+				RelativePath="OgrianGnomeThing.cpp">
+			</File>
+			<File
+				RelativePath="OgrianGnomeThing.h">
+			</File>
+			<File
 				RelativePath="OgrianHutThing.h">
 			</File>
 			<File
@@ -286,6 +292,12 @@
 			</File>
 			<File
 				RelativePath="OgrianThing.h">
+			</File>
+			<File
+				RelativePath="OgrianTickThing.cpp">
+			</File>
+			<File
+				RelativePath="OgrianTickThing.h">
 			</File>
 			<File
 				RelativePath="OgrianTimedThing.h">
@@ -378,6 +390,9 @@
 				RelativePath="OgrianFirestormSpell.h">
 			</File>
 			<File
+				RelativePath="OgrianGnomeSpell.h">
+			</File>
+			<File
 				RelativePath="OgrianSentinelSpell.h">
 			</File>
 			<File
@@ -385,6 +400,9 @@
 			</File>
 			<File
 				RelativePath="OgrianSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianTickSpell.h">
 			</File>
 		</Filter>
 	</Files>

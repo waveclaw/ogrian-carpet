@@ -19,67 +19,50 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSpellManager.h
+OgrianGnomeSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This manages the spells for the HUD, etc
+Description: This summons a gnome
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianSpellManager_H__
-#define __OgrianSpellManager_H__
+#ifndef __OgrianGnomeSpell_H__
+#define __OgrianGnomeSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
 #include "OgrianSpell.h"
+#include "OgrianGnomeThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-
-#define SPELL_CLAIM				0
-#define SPELL_BUILD				1
-#define SPELL_FIREBALL			2
-#define SPELL_SENTINEL			3
-#define SPELL_TICK				4
-#define SPELL_GNOME				5
-#define SPELL_SPEED				6
-#define SPELL_AKIMBO_FIREBALL	7
-#define SPELL_FIRESTORM			8
-#define SPELL_METEOR			9
-#define NUM_SPELLS				9
-
-class SpellManager : public Singleton< SpellManager >
+class GnomeSpell : public Spell
 {
 public:
-	virtual ~SpellManager();
-    static SpellManager& getSingleton(void);
+	// make an instance of this spell
+	virtual void cast(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("SUMMONSPELL_SPEED");
+	
+		GnomeSummonSpellThing* thing = new GnomeSummonSpellThing(0, pos,dir);
+		Physics::getSingleton().addThing(thing);
+	}
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Gnome/Ready"); }; 
 
-	virtual void disableAllSpells();
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Gnome/Enabled"); }; 
 
-	virtual void readySpell(int num);
-	virtual void readyNextSpell();
-	virtual void readyPrevSpell();
-	virtual void readyDefaultSpell();
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Gnome/Disabled"); }; 
+	
+	virtual Real getCastPeriod() { return CONR("SUMMONSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost();
+	virtual int getManaCost() { return 0; }
 
-	virtual Real castSpell();
-
-private:
-	SpellManager();
-	virtual void readyCurrentSpell();
-
-	int mCurrentSpell;
-	Spell* mSpells[NUM_SPELLS];
-
+	virtual String getString() { return String("Summon Gnome"); }
 };
 
 }
