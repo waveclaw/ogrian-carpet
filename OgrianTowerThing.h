@@ -63,7 +63,7 @@ public:
 		// set the mesh
 		setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
-			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
+			CONR("TOWER_MESH_SCALE"), CONR("TOWER_MESH_RATIO"));
 
 		// set the height
 		setHeight(CONR("TOWER_HEIGHT"));

@@ -1,0 +1,57 @@
+material Material/SOLID/wall.png
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture wall.png
+      }
+    }
+  }
+}
+
+material Material/SOLID/floor.png
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture floor.png
+      }
+    }
+  }
+}
+
+material Material/ALPHA/turret.png
+{
+  technique
+  {
+    pass
+    {
+      #scene_blend alpha_blend 
+      texture_unit
+      {
+        texture turret.png
+      }
+    }
+  }
+}
+
+material Material/SOLID/cupola.tga
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture cupola.tga
+      }
+    }
+  }
+}
+

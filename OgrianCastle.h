@@ -49,8 +49,8 @@ namespace Ogrian
 class CastleBlockThing : public DamageableThing
 {
 public:
-	CastleBlockThing(DamageableThing* castle, Vector3 pos) 
-		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
+	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width=CONR("CASTLE_WIDTH")) 
+		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, width, pos, CUBE)
 	{
 		mCastle = castle;
 
@@ -138,12 +138,12 @@ class CastleTowerThing : public CastleBlockThing
 {
 public:
 	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos)
+		: CastleBlockThing(castle, pos, CONR("CASTLETOWER_WIDTH"))
 	{
 		mCrane = 0;
 
 		setMaterial("Ogrian/Tower");
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
+		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
 			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
 
 		setHeight(CONR("CASTLETOWER_HEIGHT"));
@@ -159,20 +159,62 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleWallThing : public CastleBlockThing
+class CastleKeepThing : public CastleBlockThing
 {
 public:
-	CastleWallThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
+	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
+		: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"))
+	{
+		mCrane = 0;
+
+		setMaterial("Ogrian/Tower");
+		static_cast<Model*>(getVisRep())->setMesh("keep.mesh",
+			CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
+
+		setHeight(CONR("CASTLEKEEP_HEIGHT"));
+	}
+
+	virtual ThingType getType()	{ return CASTLEKEEP; }
+	
+	virtual void setPercentage(Real per);
+
+private:
+	CraneThing* mCrane;
+
+};
+
+/////////////////////////////////////////////////////////////////////////////
+class CastleWallNSThing : public CastleBlockThing
+{
+public:
+	CastleWallNSThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: CastleBlockThing(castle, pos)
 	{
 		setMaterial("Ogrian/Wall");
-		static_cast<Model*>(getVisRep())->setMesh("wall.mesh",
+		static_cast<Model*>(getVisRep())->setMesh("wall2.mesh",
 			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
 
 		setHeight(CONR("CASTLEWALL_HEIGHT"));
 	}
 
-	virtual ThingType getType()	{ return CASTLEWALL; }
+	virtual ThingType getType()	{ return CASTLEWALLNS; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
+class CastleWallEWThing : public CastleBlockThing
+{
+public:
+	CastleWallEWThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
+		: CastleBlockThing(castle, pos)
+	{
+		setMaterial("Ogrian/Wall");
+		static_cast<Model*>(getVisRep())->setMesh("wall1.mesh",
+			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
+
+		setHeight(CONR("CASTLEWALL_HEIGHT"));
+	}
+
+	virtual ThingType getType()	{ return CASTLEWALLEW; }
 };
 
 
@@ -276,25 +318,25 @@ private:
 	// an array of all the towers and walls for convenient looping
 	CastleBlockThing* mBlocks[49];
 
-	CastleTowerThing* mCenterTower; // 0
+	CastleKeepThing* mCenterTower; // 0
 	
 	CastleTowerThing* mCornerTowerNE; // 1
 	CastleTowerThing* mCornerTowerSE;
 	CastleTowerThing* mCornerTowerSW;
 	CastleTowerThing* mCornerTowerNW;
 
-	CastleWallThing* mInnerWallN1; // 5
-	CastleWallThing* mInnerWallN2;
-	CastleWallThing* mInnerWallN3;
-	CastleWallThing* mInnerWallE1;
-	CastleWallThing* mInnerWallE2;
-	CastleWallThing* mInnerWallE3;
-	CastleWallThing* mInnerWallS1;
-	CastleWallThing* mInnerWallS2;
-	CastleWallThing* mInnerWallS3;
-	CastleWallThing* mInnerWallW1;
-	CastleWallThing* mInnerWallW2;
-	CastleWallThing* mInnerWallW3;
+	CastleWallEWThing* mInnerWallN1; // 5
+	CastleWallEWThing* mInnerWallN2;
+	CastleWallEWThing* mInnerWallN3;
+	CastleWallNSThing* mInnerWallE1;
+	CastleWallNSThing* mInnerWallE2;
+	CastleWallNSThing* mInnerWallE3;
+	CastleWallEWThing* mInnerWallS1;
+	CastleWallEWThing* mInnerWallS2;
+	CastleWallEWThing* mInnerWallS3;
+	CastleWallNSThing* mInnerWallW1;
+	CastleWallNSThing* mInnerWallW2;
+	CastleWallNSThing* mInnerWallW3;
 
 	CastleTowerThing* mFarCornerTowerN; // 17
 	CastleTowerThing* mFarCornerTowerS;
@@ -305,30 +347,30 @@ private:
 	CastleTowerThing* mFarCornerTowerSW;
 	CastleTowerThing* mFarCornerTowerNW;
 
-	CastleWallThing* mOuterWallN1; // 25
-	CastleWallThing* mOuterWallN2;
-	CastleWallThing* mOuterWallN3;
-	CastleWallThing* mOuterWallN5;
-	CastleWallThing* mOuterWallN6;
-	CastleWallThing* mOuterWallN7;
-	CastleWallThing* mOuterWallE1;
-	CastleWallThing* mOuterWallE2;
-	CastleWallThing* mOuterWallE3;
-	CastleWallThing* mOuterWallE5;
-	CastleWallThing* mOuterWallE6;
-	CastleWallThing* mOuterWallE7;
-	CastleWallThing* mOuterWallS1;
-	CastleWallThing* mOuterWallS2;
-	CastleWallThing* mOuterWallS3;
-	CastleWallThing* mOuterWallS5;
-	CastleWallThing* mOuterWallS6;
-	CastleWallThing* mOuterWallS7;
-	CastleWallThing* mOuterWallW1;
-	CastleWallThing* mOuterWallW2;
-	CastleWallThing* mOuterWallW3;
-	CastleWallThing* mOuterWallW5;
-	CastleWallThing* mOuterWallW6;
-	CastleWallThing* mOuterWallW7;
+	CastleWallEWThing* mOuterWallN1; // 25
+	CastleWallEWThing* mOuterWallN2;
+	CastleWallEWThing* mOuterWallN3;
+	CastleWallEWThing* mOuterWallN5;
+	CastleWallEWThing* mOuterWallN6;
+	CastleWallEWThing* mOuterWallN7;
+	CastleWallNSThing* mOuterWallE1;
+	CastleWallNSThing* mOuterWallE2;
+	CastleWallNSThing* mOuterWallE3;
+	CastleWallNSThing* mOuterWallE5;
+	CastleWallNSThing* mOuterWallE6;
+	CastleWallNSThing* mOuterWallE7;
+	CastleWallEWThing* mOuterWallS1;
+	CastleWallEWThing* mOuterWallS2;
+	CastleWallEWThing* mOuterWallS3;
+	CastleWallEWThing* mOuterWallS5;
+	CastleWallEWThing* mOuterWallS6;
+	CastleWallEWThing* mOuterWallS7;
+	CastleWallNSThing* mOuterWallW1;
+	CastleWallNSThing* mOuterWallW2;
+	CastleWallNSThing* mOuterWallW3;
+	CastleWallNSThing* mOuterWallW5;
+	CastleWallNSThing* mOuterWallW6;
+	CastleWallNSThing* mOuterWallW7;
 
 	// the current number of baloons
 	int mNumBaloons;

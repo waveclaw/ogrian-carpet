@@ -97,7 +97,7 @@ void Model::setPosition(Vector3 pos)
 	mPos = pos;
 
 	if (mInRenderer)
-		mNode->setPosition(pos);
+		mNode->setPosition(mPos);
 }
 
 //----------------------------------------------------------------------------
@@ -136,8 +136,8 @@ void Model::setMaterial(String material)
 {
 	mMaterial = material;
 
-	if (mInRenderer)
-		mEntity->setMaterialName(mMaterial);
+//	if (mInRenderer)
+//		mEntity->setMaterialName(mMaterial);
 }
 
 //----------------------------------------------------------------------------

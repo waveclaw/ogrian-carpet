@@ -33,7 +33,7 @@ Description: This manages the spells for the HUD, etc
 #include "OgrianClaimSpell.h"
 #include "OgrianBuildSpell.h"
 
-using namespace Ogre;
+using namespace Ogre; 
 
 template<> Ogrian::SpellManager * Singleton< Ogrian::SpellManager >::ms_Singleton = 0;
 namespace Ogrian
