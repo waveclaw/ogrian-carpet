@@ -61,6 +61,8 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
 	mFormationOffset.x = sin(angle)*distance;
 	mFormationOffset.z = cos(angle)*distance;
+
+	mVenom = false;
 }
 //----------------------------------------------------------------------------
 
@@ -102,17 +104,14 @@ void TickThing::think()
 
 			// attack the enemy //
 
-			// account for target movement
-			Real travelTime = sphereDistance(target) / CONR("TICK_SPEED");
-			Vector3 targetOffset = target->getVelocity()*travelTime;
-
 			// calculate the trajectory
-			Vector3 vel = (epos + targetOffset) - pos;
+			Vector3 vel = epos - pos;
 			vel.normalise();
 			vel *= CONR("TICK_SPEED");
 			vel.y = CONR("TICK_JUMP_Y");
 
 			// jump at them
+			mVenom = true;
 			setVelocity(vel);
 			getVisRep()->setPose(1);
 		}
@@ -154,6 +153,28 @@ void TickThing::think()
 	setUpdateFlag();
 }
 	
+//----------------------------------------------------------------------------
+	
+void TickThing::collided(Thing* e)
+{
+	// bite stuff
+	if (mVenom && e->isDamageable() && e->getTeamNum() != getTeamNum())
+	{
+		e->damage(CONI("TICK_DAMAGE"), getTeamNum());
+
+		if (e->isBuilding())
+		{
+			// stop moving
+			Vector3 vel = getVelocity();
+			vel.x = 0;
+			vel.z = 0;
+			setVelocity(vel);
+		}
+
+		mVenom = false;
+	}
+}
+
 //----------------------------------------------------------------------------
 	
 void TickThing::collidedGround()
