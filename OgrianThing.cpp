@@ -411,13 +411,13 @@ void Thing::generateBitStream(BitStream& bitstream)
 
 //----------------------------------------------------------------------------
 
-void Thing::interpretBitStream(BitStream& bitstream)
+void Thing::interpretBitStream(BitStream& bitstream, bool overwriteUID)
 {
 	Vector3 pos,vel;
-	int pid,type;
+	int pid,uid,type;
 
 	bitstream.Read(pid);
-	bitstream.Read(mUID);
+	bitstream.Read(uid);
 	bitstream.Read(type);
 
 	bitstream.Read(pos.x);
@@ -431,6 +431,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 
 	setPosition(pos);
 	setVelocity(vel);
+	if (overwriteUID) mUID = uid;
 }
 //----------------------------------------------------------------------------
 

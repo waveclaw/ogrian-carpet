@@ -399,7 +399,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_KICK: //////////////////////////////////////////////////////
 		{
 			// disconnect
-			//clientDisconnect();
+			clientDisconnect();
 
 			// get the message
 			String msg;
@@ -424,19 +424,19 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			String playerName;
 			packetToString(packet,playerName);
 
-			// update the player list
-			PlayerInfo player;
-			player.id = packet->playerId;
-			player.name = playerName;
-			mPlayers.push_back(player);
-			PlayerList::getSingleton().addPlayer(playerName);
-
 			// forward the new player name to all clients
 			serverSendAllText(playerName,ID_ADD_PLAYER);
 
 			// send the names of the existing players to the one that connected
 			for (int i=0; i<(int)mPlayers.size(); i++)
 				serverSendText( mPlayers[i].name,ID_ADD_PLAYER,packet->playerId);
+
+			// update the player list
+			PlayerInfo player;
+			player.id = packet->playerId;
+			player.name = playerName;
+			mPlayers.push_back(player);
+			PlayerList::getSingleton().addPlayer(playerName);
 
 			return true;
 		}

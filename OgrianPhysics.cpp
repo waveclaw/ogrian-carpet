@@ -151,8 +151,37 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 {
 	if (packet == 0) return false;
 
-	// if its a thing update
+	// if its a thing creation
 	if (pid == ID_UPDATE_THING)
+	{
+		BitStream bitstream(packet->data, packet->length, true);
+		int id, uid, type;
+
+		bitstream.Read(id);
+		bitstream.Read(uid);
+		bitstream.Read(type);
+		bitstream.ResetReadPointer();
+
+		Thing* thing;
+
+		// make a new thing
+		switch(type)
+		{
+			case MANATHING:
+				thing = new ManaThing();
+				break;
+		}
+
+		// add it to the physics
+		addThing(thing);
+
+		// send the bitstream to the thing
+		thing->interpretBitStream(bitstream, true);
+
+		return true;
+	}
+	// if its a thing update
+	/*if (pid == ID_UPDATE_THING)
 	{
 		// find the thing
 		BitStream bitstream(packet->data, packet->length, true);
@@ -170,13 +199,13 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 			// make a new thing
 			switch(type)
 			{
-				case MANATHING:
-					thing = new ManaThing();
+				case CAMERATHING:
+					//thing = new PlayerThing();
 					break;
 			}
 
 			// add it to the physics
-			clientAddThing(thing, uid);
+			addThing(thing);
 		}
 
 		// send the bitstream to the thing
@@ -202,7 +231,7 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 		if (thing != 0) thing->destroy();
 
 		return true;
-	}
+	}*/
 	return false;
 }
 
@@ -248,8 +277,12 @@ void Physics::addThing(Thing* thing)
 	if (Multiplayer::getSingleton().isClient())
 	{
 		// send a message to the server telling it about the new thing
+		BitStream bs;
+		thing->generateBitStream(bs);
+		Multiplayer::getSingleton().clientSend(&bs);
 
 		// discard the thing
+		delete thing;
 	}
 	else // if its a server or singleplayer
 	{

@@ -136,7 +136,7 @@ public:
 	virtual void generateBitStream(BitStream& bitstream);
 
 	// interpret a bitstream for this thing
-	virtual void interpretBitStream(BitStream& bitstream);
+	virtual void interpretBitStream(BitStream& bitstream, bool overwriteUID=false);
 
 	// get the unique identifier
 	virtual int getUID();

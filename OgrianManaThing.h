@@ -56,6 +56,8 @@ public:
 	// setting the amount automatically sets the scale
 	virtual void setAmount(unsigned int amount)
 	{
+		if (mAmount == amount) return;
+
 		mAmount=amount;
 		if (amount > 1)
 			setScale(sqrt(amount));
@@ -108,6 +110,21 @@ public:
 	virtual ThingType getType()
 	{
 		return MANATHING;
+	}
+
+	virtual void generateBitStream(BitStream& bitstream)
+	{
+		Thing::generateBitStream(bitstream);
+		bitstream.Write(getAmount());
+	}
+	virtual void interpretBitStream(BitStream& bitstream, bool overwriteUID=false)
+	{
+		int amount;
+
+		Thing::interpretBitStream(bitstream, overwriteUID);
+		bitstream.Read(amount);
+
+		setAmount(amount);
 	}
 
 private:
