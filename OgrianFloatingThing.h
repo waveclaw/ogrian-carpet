@@ -71,20 +71,20 @@ public:
 		}
 	}
 
-	// ignore external changes in up/down velocity
-	virtual void setVelocity(Vector3 vel)
-	{
-		//vel.y = getVelY();
-		Thing::setVelocity(vel);
-	}
+	//// ignore external changes in up/down velocity
+	//virtual void setVelocity(Vector3 vel)
+	//{
+	//	//vel.y = getVelY();
+	//	Thing::setVelocity(vel);
+	//}
 
 
 	// fall
 	virtual void move(Real time)
 	{
-		if (getVelY() > -CONR("FLOAT_FALL_MAX"))
+		if (getVelY() > -CONR("MANA_FALL_MAX"))
 		{
-			Thing::setVelY(getVelY() - CONR("FLOAT_GRAV")*time);
+			setVelY(getVelY() - CONR("MANA_GRAV")*time);
 		}
 
 		Thing::move(time);

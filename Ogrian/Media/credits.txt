@@ -1,27 +1,34 @@
 sprites:
 =============
-palmtree.png - from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/pine_01_mature_thc.png)
-palmtree_dead.png - from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/pine_01_mature_barren_thc.png)
+from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/
+ pine.png
+ pine_dead.png
+
+Jeremiah Powell:
+ icon_build.png 
+ icon_fireball.png
+ icon_fireball2.png
+ icon_firestorm.png
+ palmtree.png
+ palmtreedead.png
+ fireballblast.png
+
 
 sounds:
 =============
-boom2.mp3 - from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/items/explosion/old_generic_128kbs_48khz_mono_golgotha.mp3)
-whoosh2.mp3 - from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/items/machinery/missle_in_flight_128kbs_48khz_mono_golgotha.mp3)
+from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/
+ boom2.mp3
+ whoosh2.mp3
 
 music:
 =============
-Riding the Dragon - by Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/RidingTheDragon_medquality_stereo_44Khz_128Kbps.ogg)
-Last Glimpse - by Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/LastGlimpse_medquality_stereo_44Khz_128Kbps.ogg)
+Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/
+ Riding the Dragon 
+ Last Glimpse
 
 
-
-
-photography:
-Jeff Knous
-Mike Prosser
-Rick Prosser
-
-Models:
+Skins:
+=============
 Jeff Knous
 Mike Prosser
 Rick Prosser

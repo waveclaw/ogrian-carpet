@@ -145,7 +145,7 @@ public:
 			Vector3 vel = team->getCastle()->getPosition() - getPosition();
 
 			if (cylinderDistance(team->getCastle()) > CONR("MANA_RISE_RANGE"))
-				vel.y = 0;
+				vel.y = getVelY();
 
 			vel.normalise();
 			vel *= CONR("MANA_MOVE_SPEED");
@@ -156,7 +156,7 @@ public:
 			Vector3 vel;
 			Vector3 pos = getPosition();
 			vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
-			vel.y = 0;
+			vel.y = getVelY();
 			vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
 			vel.normalise();
 			vel *= CONR("MANA_DRIFT_SPEED");
