@@ -81,6 +81,9 @@ private:
 	// load a map
 	void loadMap(String mapname);
 
+	// load the map list
+	void loadMapList();
+
 	bool mMusic; // wether or not to play music
 
 	bool mActive; // wether or not the menu mode is active

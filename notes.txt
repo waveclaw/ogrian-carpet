@@ -2,13 +2,10 @@ Ogrian Carpet Notes
 
 to add:
 =============
-music button
 Hand Sprites
-maplist.txt
 
 To consider:
 ==============
-skirmish button
 use a real flower for firestalk sprites (fireblossom?)
 
 Spells:

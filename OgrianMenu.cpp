@@ -65,10 +65,9 @@ Menu::Menu()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 
 	// build the list
-	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/AvailableMapsList"));
-
-	mList->addListItem(new StringResource("crescent"));
-	mList->addListItem(new StringResource("islands"));
+	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
+		getGuiElement("Ogrian/Menu/AvailableMapsList"));
+	loadMapList();
 }
 
 //----------------------------------------------------------------------------
@@ -76,6 +75,46 @@ Menu::Menu()
 Menu::~Menu()
 {
 	if (mActive) hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::loadMapList()
+{
+	String filename = "maps.txt";
+
+	FILE *fp;
+	char rec[100], *ret;
+	String optName, optVal;
+
+	// Open and parse entire file
+	fp = fopen(filename, "r");
+	if( !fp )
+		Except(
+			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "ConfigFile::load" );
+
+	ret = fgets(rec, 100, fp);
+	while (ret != NULL)
+	{
+		String tst = rec;
+		tst.trim();
+		// Ignore comments & blanks
+		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
+		{
+			// Tokenise on tab
+			char* pName = strtok(rec, "\n");
+			if (pName)
+			{
+				String optName = pName;
+				optName.trim();
+
+				mList->addListItem(new StringResource(optName));
+			}
+		}
+		ret = fgets(rec, 100, fp);
+	}
+
+	fclose(fp);
 }
 
 //----------------------------------------------------------------------------
