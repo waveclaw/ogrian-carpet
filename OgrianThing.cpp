@@ -43,6 +43,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	// initialize the mvars
 	mAlive = true;
 	mInRenderer = false;
+	mInPhysics = false;
 	mBbset = 0;
 	mBillboard = 0;
 	mNode = 0;
@@ -54,7 +55,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mFixed_y = fixed_y;
 	setMaterial(material);
 	setVelocity(Vector3(0,0,0));
-	mPos = pos; // DO NOT call setPosition(), since it's not in they physics engine yet. 
+	setPosition(pos);
 	setScale(scale);
 
 	// add it to the renderer
@@ -64,6 +65,11 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 Thing::~Thing()
 {
 	_removeFromRenderer();
+}
+
+void Thing::placedInPhysics()
+{
+	mInPhysics = true;
 }
 
 // start rendering this thing
@@ -130,7 +136,7 @@ void Thing::setPosition(Vector3 pos)
 		mNode->setPosition(pos);
 
 	// update physics
-	if (pos != mPos)
+	if (mInPhysics && pos != mPos)
 		Physics::getSingleton().updateThing(this, mPos, pos);
 
 	// update mPos

@@ -69,6 +69,9 @@ void Physics::addThing(Thing* thing)
 
 	// add to full list
 	mAllThings.push_back(thing);
+
+	// notify the thing
+	thing->placedInPhysics();
 }
 
 // add a Thing to the grid

@@ -27,8 +27,6 @@ Description: the Thing class is the basic moveable object.
 It interacts with the renderer and the physics engine. 
 It is rendered as a Billboard.
 
-NB: you must place the Thing into the physics engine before calling setPosition()
-
 /*------------------------------------*/
 
 #ifndef __OgrianThing_H__
@@ -99,6 +97,9 @@ public:
 	// returns fale if this thing has been destroy()ed and is awaiting deletion.
 	virtual bool isAlive();
 
+	// the physics engine calls this when this thing is added to the physics engine
+	virtual void placedInPhysics();
+
 	// things are ordered by x location
 	bool operator<(Thing* other);
 
@@ -127,6 +128,7 @@ private:
 	bool mAlive;
 
 	bool mInRenderer; // wether or not its being rendered at the moment
+	bool mInPhysics; // wether or not its in the physics engine yet
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
