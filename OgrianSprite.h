@@ -19,50 +19,62 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianFoliageThing.h
+OgrianSprite.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: FoliageThing has the Foliage material, and dies when it touches mana. 
-This is a very simple Thing, mainly used to demonstrate that collision detection works. 
+Description: This is a special Thing that is tied to the camera. 
+
+Description: A Sprite is a billboard that is properly depth
+sorted and has a unique material. 
 
 /*------------------------------------*/
 
-#ifndef __OgrianFoliageThing_H__
-#define __OgrianFoliageThing_H__
+#ifndef __OgrianSprite_H__
+#define __OgrianSprite_H__
 
 #include <Ogre.h>
-#include "OgrianRollingThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-// extend RollingThing to automatically be placed on the ground
-class FoliageThing : public RollingThing
+class Sprite
 {
 public:
-	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
-		: RollingThing("Ogrian/PalmTree", "Foliage", true, scale, pos)
-	{
-		setShape(CYLINDER);
-		setHeight(scale*1.5);
-	}
+	Sprite(String name, bool fixed_y=false);
+	virtual ~Sprite();
 
-	virtual ThingType getType()
-	{
-		return FOLIAGETHING;
-	}
+	// set the position
+	virtual void setPosition(Vector3 pos);
 
-	virtual void collided(Thing* e)
-	{
-		// dies if it touches mana
-		if (e->getType() == MANATHING)
-			setMaterial("Ogrian/PalmTreeDead");
-	}	
+	virtual void setWidth(Real width);
+
+	virtual void setHeight(Real height);
+
+	virtual void setMaterial(String material);
+	
+	virtual void addToRenderer();
+
+	virtual void removeFromRenderer();
+
+	virtual inline bool inRenderer();
+
+private:
+	// graphical rendering stuff
+	BillboardSet* mBbset;
+	Billboard* mBillboard;
+	bool mFixed_y;
+	String mMaterial;
+	SceneNode* mNode;
+	String mName;
+
+	bool mInRenderer;
+	Real mWidth;
+	Real mHeight; 
+	Vector3 mPos;
+
 };
-
 }
-
 #endif

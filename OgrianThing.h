@@ -33,6 +33,7 @@ It is rendered as a Billboard.
 #define __OgrianThing_H__
 
 #include <Ogre.h>
+#include "OgrianSprite.h"
 
 using namespace Ogre;
 
@@ -114,9 +115,6 @@ public:
 	// the physics engine calls this when this thing is added to the physics engine
 	virtual void placedInPhysics();
 
-	// things are ordered by x location
-	bool operator<(Thing* other);
-
 	// conveniance methods for accessing the y axis
 	virtual void setPosY(Real y);
 	virtual void setVelY(Real y);
@@ -129,11 +127,7 @@ private:
 	Vector3 mVel;
 
 	// graphical rendering stuff
-	BillboardSet* mBbset;
-	Billboard* mBillboard;
-	bool mFixed_y;
-	String mMaterial;
-	SceneNode* mNode;
+	Sprite* mSprite;
 	String mName;
 
 	Real mWidth;
@@ -143,7 +137,6 @@ private:
 
 	bool mAlive;
 
-	bool mInRenderer; // wether or not its being rendered at the moment
 	bool mInPhysics; // wether or not its in the physics engine yet
 
 	// Incremented count for next name extension

@@ -121,6 +121,9 @@
 				RelativePath="OgrianRenderer.cpp">
 			</File>
 			<File
+				RelativePath="OgrianSprite.cpp">
+			</File>
+			<File
 				RelativePath="OgrianThing.cpp">
 			</File>
 			<File
@@ -162,6 +165,9 @@
 			</File>
 			<File
 				RelativePath="OgrianRollingThing.h">
+			</File>
+			<File
+				RelativePath="OgrianSprite.h">
 			</File>
 			<File
 				RelativePath="OgrianThing.h">

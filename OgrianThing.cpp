@@ -42,17 +42,15 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 {
 	// initialize the mvars
 	mAlive = true;
-	mInRenderer = false;
 	mInPhysics = false;
-	mBbset = 0;
-	mBillboard = 0;
-	mNode = 0;
 
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
 
+	// make the sprite
+	mSprite = new Sprite(mName, fixed_y);
+
 	// set the settings
-	mFixed_y = fixed_y;
 	setMaterial(material);
 	setVelocity(Vector3(0,0,0));
 	setPosition(pos);
@@ -66,6 +64,9 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 Thing::~Thing()
 {
 	_removeFromRenderer();
+
+	if (mSprite)
+		delete mSprite;
 }
 
 void Thing::placedInPhysics()
@@ -76,50 +77,13 @@ void Thing::placedInPhysics()
 // start rendering this thing
 void Thing::_addToRenderer()
 {
-	// dont do this twice!
-	if (mInRenderer) return;
-
-	// create the billboardset
-	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
-	mBbset = sceneMgr->createBillboardSet(mName,1);
-	mBillboard = mBbset->createBillboard(0, 0, 0);
-
-	if (mFixed_y)
-	{
-		// it doesn't really matter if its common or self, since there's only one per set
-		mBbset->setBillboardType(BBT_ORIENTED_SELF);
-		mBillboard->mDirection = Vector3::UNIT_Y;
-	}
-
-	// attach the set
-	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
-	mNode->attachObject(mBbset);
-
-	mInRenderer = true;
-
-	// apply its properties to it
-	setMaterial(mMaterial);
-	Thing::setPosition(mPos);
-	setHeight(mHeight);
-	setWidth(mWidth);
-
+	mSprite->addToRenderer();
 }
 
 // stop rendering this thing
 void Thing::_removeFromRenderer()
 {
-	// dont do this twice!
-	if (!mInRenderer) return;
-
-	// remove it from the scene
-	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
-
-	// null the mvars
-	mBbset = 0;
-	mBillboard = 0;
-	mNode = 0;
-
-	mInRenderer = false;
+	mSprite->removeFromRenderer();
 }
 
 bool Thing::isAlive()
@@ -143,9 +107,8 @@ void Thing::setVelocity(Vector3 vel)
 }
 void Thing::setPosition(Vector3 pos)
 {
-	// update renderer
-	if (mInRenderer)
-		mNode->setPosition(pos);
+	// update the sprite
+	mSprite->setPosition(pos);
 
 	// update physics
 	if (mInPhysics && pos != mPos)
@@ -165,16 +128,14 @@ void Thing::setHeight(Real height)
 {
 	mHeight = height;
 	
-	if (mInRenderer)
-		mBillboard->setDimensions(mWidth,mHeight);
+	mSprite->setHeight(height);
 }
 
 void Thing::setWidth(Real width)
 {
 	mWidth = width;
 
-	if (mInRenderer)
-		mBillboard->setDimensions(mWidth,mHeight);
+	mSprite->setWidth(width);
 }
 
 Vector3 Thing::getPosition()
@@ -199,10 +160,7 @@ Real Thing::getHeight()
 
 void Thing::setMaterial(String material)
 {
-	mMaterial = material;
-
-	if (mInRenderer && mMaterial != "")
-		mBbset->setMaterialName(material);
+	mSprite->setMaterial(material);
 }
 
 // increment the position by the velocity times time
@@ -221,13 +179,13 @@ void Thing::_updateVisibility()
 	if (cylinderDistance(cam) < THING_CULL_DIST)
 	{
 		// add it if its close enough
-		if (!mInRenderer)
+		if (!mSprite->inRenderer())
 			_addToRenderer();
 	}
 	else
 	{
 		// remove it otherwise
-        if (mInRenderer)
+        if (mSprite->inRenderer())
 			_removeFromRenderer();
 	}
 }
