@@ -446,7 +446,7 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 //----------------------------------------------------------------------------
 
 // remove a thing from the grid
-void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
+bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 {
 	assert(thing != NULL);
 	assert(mWorldSize > 0);
@@ -464,11 +464,13 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			{
 				// erase it
 				mThingGrid[grid_u][grid_v].erase(mThingGrid[grid_u][grid_v].begin()+i);
-				break;
+				return true;
 			}
 		}
 		// assert that one was removed
 		assert(mThingGrid[grid_u][grid_v].size() == s-1);
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: ") << thing);
+		return false;
 	}
 	else
 	{
@@ -480,11 +482,13 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			{
 				// erase it
 				mOtherThings.erase(mOtherThings.begin()+i);
-				break;
+				return true;;
 			}
 		}
 		// assert that one was removed
 		assert(mOtherThings.size() == s-1);
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") << thing); 
+		return false;
 	}
 }
 
@@ -540,7 +544,7 @@ void Physics::deleteThing(Thing* thing)
 
 	// remove it from the grid
 	Vector3 pos = thing->getPosition();
-	_removeThing(thing, getGridU(pos.x), getGridV(pos.z));
+	bool removed = _removeThing(thing, getGridU(pos.x), getGridV(pos.z));
 
 	// remove it from allThings
 	size_t s = mAllThings.size();
@@ -558,7 +562,8 @@ void Physics::deleteThing(Thing* thing)
 	assert(mAllThings.size() == s-1);
 
 	// delete it
-	delete thing;
+	if (removed)
+		delete thing;
 }
 
 //----------------------------------------------------------------------------

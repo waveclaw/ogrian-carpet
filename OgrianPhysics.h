@@ -141,8 +141,8 @@ private:
 
 	// add a thing to the grid
 	void _addThing(Thing* thing, int grid_u, int grid_v);
-	// remove a thing from the grid. 
-	void _removeThing(Thing* thing, int grid_u, int grid_v);
+	// remove a thing from the grid. returns true if it was sucessfully removed
+	bool _removeThing(Thing* thing, int grid_u, int grid_v);
 
 	// remove a thing from the world
 	void deleteThing(Thing* thing);
