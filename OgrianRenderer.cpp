@@ -9,16 +9,19 @@
 
 using namespace Ogre;
 
-template<> OgrianRenderer * Singleton< OgrianRenderer >::ms_Singleton = 0;
+template<> Ogrian::Renderer * Singleton< Ogrian::Renderer >::ms_Singleton = 0;
+namespace Ogrian
+{
+
 
 /// Standard constructor
-OgrianRenderer::OgrianRenderer()
+Renderer::Renderer()
 {
     mFrameListener = 0;
     mRoot = 0;
 }
 /// Standard destructor
-OgrianRenderer::~OgrianRenderer()
+Renderer::~Renderer()
 {
     if (mFrameListener)
         delete mFrameListener;
@@ -27,7 +30,7 @@ OgrianRenderer::~OgrianRenderer()
 }
 
 /// Start the example
-void OgrianRenderer::go(void)
+void Renderer::go(void)
 {
     if (!setup())
         return;
@@ -35,16 +38,16 @@ void OgrianRenderer::go(void)
     mRoot->startRendering();
 }
 
-OgrianRenderer& OgrianRenderer::getSingleton(void)
+Renderer& Renderer::getSingleton(void)
 {
 	if (!ms_Singleton) 
 	{
-		ms_Singleton = new OgrianRenderer();
+		ms_Singleton = new Renderer();
 	}
-	return Singleton<OgrianRenderer>::getSingleton();
+	return Singleton<Renderer>::getSingleton();
 }
 
-SceneManager* OgrianRenderer::getSceneManager(void)
+SceneManager* Renderer::getSceneManager(void)
 {
 	return mSceneMgr;
 }
@@ -52,7 +55,7 @@ SceneManager* OgrianRenderer::getSceneManager(void)
 
 // These internal methods package up the stages in the startup process
 /** Sets up the application - returns false if the user chooses to abandon configuration. */
-bool OgrianRenderer::setup(void)
+bool Renderer::setup(void)
 {
     mRoot = new Root();
 
@@ -77,7 +80,7 @@ bool OgrianRenderer::setup(void)
 
 }
 /** Configures the application - returns false if the user chooses to abandon configuration. */
-bool OgrianRenderer::configure(void)
+bool Renderer::configure(void)
 {
     // Show the configuration dialog and initialise the system
     // You can skip this and use root.restoreConfig() to load configuration
@@ -95,25 +98,25 @@ bool OgrianRenderer::configure(void)
     }
 }
 
-void OgrianRenderer::chooseSceneManager(void)
+void Renderer::chooseSceneManager(void)
 {
     // Get the SceneManager, in this case a generic one
     mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_CLOSE);
 }
-void OgrianRenderer::createCamera(void)
+void Renderer::createCamera(void)
 {
     // Create the camera
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     // Position it 
-    mCamera->setPosition(Vector3(0,10,0));
+    mCamera->setPosition(Vector3(0,0,10));
     // Look back along -Z
     mCamera->lookAt(Vector3(0,0,-300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
 	mCamera->setFOVy(CAMERA_FOV);
 
 }
-void OgrianRenderer::createFrameListener(void)
+void Renderer::createFrameListener(void)
 {
     mFrameListener= new OgrianFrameListener(mWindow, mCamera);
     mFrameListener->showDebugOverlay(true);
@@ -121,9 +124,9 @@ void OgrianRenderer::createFrameListener(void)
 }
 
 // Just override the mandatory create scene method
-void OgrianRenderer::createScene(void)
+void Renderer::createScene(void)
 {
-	OgrianPhysics::getSingleton().test();
+	Physics::getSingleton().test();
 
     Entity *waterEntity;
     Plane waterPlane;
@@ -182,7 +185,7 @@ void OgrianRenderer::createScene(void)
 
 	// set up the terrain
     mSceneMgr -> setWorldGeometry( "terrain.cfg" );
-	OgrianHeightMap::getSingleton().loadTerrain("terrain.cfg");
+	HeightMap::getSingleton().loadTerrain("terrain.cfg");
 
 	// Define the required skyplane
     Plane plane;
@@ -196,7 +199,7 @@ void OgrianRenderer::createScene(void)
     mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
 }
 
-void OgrianRenderer::createViewports(void)
+void Renderer::createViewports(void)
 {
     // Create one viewport, entire window
     Viewport* vp = mWindow->addViewport(mCamera);
@@ -204,7 +207,7 @@ void OgrianRenderer::createViewports(void)
 }
 
 /// Method which will define the source of resources (other than current folder)
-void OgrianRenderer::setupResources(void)
+void Renderer::setupResources(void)
 {
     // Load resource paths from config file
     ConfigFile cf;
@@ -220,4 +223,6 @@ void OgrianRenderer::setupResources(void)
         archName = i.getNext();
         ResourceManager::addCommonArchiveEx( archName, typeName );
     }
+}
+
 }

@@ -1,25 +1,29 @@
 
 
 #include "OgrianPhysics.h"
+#include "OgrianRollingEntity.h"
 #include "OgrianConstants.h"
 
 using namespace Ogre;
 
-template<> OgrianPhysics * Singleton< OgrianPhysics >::ms_Singleton = 0;
+template<> Ogrian::Physics * Singleton< Ogrian::Physics >::ms_Singleton = 0;
+namespace Ogrian
+{
 
-OgrianPhysics::OgrianPhysics()
+
+Physics::Physics()
 {
 
 }
 
-void OgrianPhysics::addPhysicalEntity(OgrianPhysicalEntity* ent)
+void Physics::addPhysicalEntity(PhysicalEntity* ent)
 {
 	assert(ent != NULL);
 
 	entities.push_back(ent);
 }
 
-void OgrianPhysics::removePhysicalEntity(OgrianPhysicalEntity* ent)
+void Physics::removePhysicalEntity(PhysicalEntity* ent)
 {
 	assert(ent != NULL);
 
@@ -36,7 +40,7 @@ void OgrianPhysics::removePhysicalEntity(OgrianPhysicalEntity* ent)
 	}
 }
 
-void OgrianPhysics::removeAll()
+void Physics::removeAll()
 {
 	// delete each entity
 	while(!entities.empty())
@@ -46,7 +50,7 @@ void OgrianPhysics::removeAll()
 	}
 }
 
-void OgrianPhysics::moveAll(Real time)
+void Physics::moveAll(Real time)
 {
 	for (unsigned int i=0; i<entities.size(); i++)
 	{
@@ -54,7 +58,7 @@ void OgrianPhysics::moveAll(Real time)
 	}
 }
 
-int OgrianPhysics::numPhysicalEntities()
+int Physics::numPhysicalEntities()
 {
 	return int(entities.size());
 }
@@ -63,13 +67,13 @@ int OgrianPhysics::numPhysicalEntities()
 Each of the entities is check against a few of the following entities for
 collisions. 
 */
-void OgrianPhysics::collisionCheck()
+void Physics::collisionCheck()
 {
 	// sort the vector (by x location)
 	std::sort(entities.begin(), entities.end());
 
-	OgrianPhysicalEntity* a;
-	OgrianPhysicalEntity* b;
+	PhysicalEntity* a;
+	PhysicalEntity* b;
 
 	// for each entity
 	for (unsigned int i=0; i<entities.size(); i++)
@@ -98,45 +102,45 @@ void OgrianPhysics::collisionCheck()
 }
 
 
-OgrianPhysics& OgrianPhysics::getSingleton(void)
+Physics& Physics::getSingleton(void)
 {
 	if (!ms_Singleton) 
 	{
-		ms_Singleton = new OgrianPhysics();
+		ms_Singleton = new Physics();
 	}
-    return Singleton<OgrianPhysics>::getSingleton();
+    return Singleton<Physics>::getSingleton();
 }
 
 
-OgrianPhysics::~OgrianPhysics()
+Physics::~Physics()
 {
 	removeAll();
 }
 
-void OgrianPhysics::test()
+void Physics::test()
 {
 	// test the physucks engine
 	LogManager::getSingleton().logMessage("physics testing - start");
 
-	OgrianPhysicalEntity* a = new OgrianPhysicalEntity("ogrehead.mesh", 1, 1, 1);
-	OgrianPhysicalEntity* b = new OgrianPhysicalEntity("ogrehead.mesh", 2, 1, 1);
-	OgrianPhysicalEntity* c = new OgrianPhysicalEntity("ogrehead.mesh", 3, 1, 1);
-	OgrianPhysicalEntity* d = new OgrianPhysicalEntity("ogrehead.mesh", 4, 1, 1);
+	RollingEntity* a = new RollingEntity("ogrehead.mesh", 2, 1, 1);
+	RollingEntity* b = new RollingEntity("ogrehead.mesh", 4, 1, 1);
+	RollingEntity* c = new RollingEntity("ogrehead.mesh", 6, 1, 1);
+	RollingEntity* d = new RollingEntity("ogrehead.mesh", 8, 1, 1);
 
-	OgrianPhysicalEntity* aa = new OgrianPhysicalEntity("ogrehead.mesh", 1, 1, 10);
-	OgrianPhysicalEntity* ab = new OgrianPhysicalEntity("ogrehead.mesh", 2, 1, 10);
-	OgrianPhysicalEntity* ac = new OgrianPhysicalEntity("ogrehead.mesh", 3, 1, 10);
-	OgrianPhysicalEntity* ad = new OgrianPhysicalEntity("ogrehead.mesh", 4, 1, 10);
+	RollingEntity* aa = new RollingEntity("ogrehead.mesh", 1, 1, 20);
+	RollingEntity* ab = new RollingEntity("ogrehead.mesh", 2, 1, 20);
+	RollingEntity* ac = new RollingEntity("ogrehead.mesh", 3, 1, 20);
+	RollingEntity* ad = new RollingEntity("ogrehead.mesh", 4, 1, 10);
 
 	a->setScale(1);
 	b->setScale(1);
 	c->setScale(1);
 	d->setScale(1);
 
-	a->setVelocity(.1,0,0);
-	b->setVelocity(.2,0,0);
-	c->setVelocity(.3,0,0);
-	d->setVelocity(.4,0,0);
+	a->setVelocity(1,0,1);
+	b->setVelocity(1,0,2);
+	c->setVelocity(2,0,1);
+	d->setVelocity(1.5,0,1.5);
 
 	aa->setScale(2);
 	ab->setScale(2);
@@ -144,40 +148,42 @@ void OgrianPhysics::test()
 	ad->setScale(2);
 
 	LogManager::getSingleton().logMessage("physics testing - add");
-	OgrianPhysics::getSingleton().addPhysicalEntity(a);
-	OgrianPhysics::getSingleton().addPhysicalEntity(b);
-	OgrianPhysics::getSingleton().addPhysicalEntity(c);
-	OgrianPhysics::getSingleton().addPhysicalEntity(d);
-	OgrianPhysics::getSingleton().addPhysicalEntity(aa);
-	OgrianPhysics::getSingleton().addPhysicalEntity(ab);
-	OgrianPhysics::getSingleton().addPhysicalEntity(ac);
-	OgrianPhysics::getSingleton().addPhysicalEntity(ad);
+	Physics::getSingleton().addPhysicalEntity(a);
+	Physics::getSingleton().addPhysicalEntity(b);
+	Physics::getSingleton().addPhysicalEntity(c);
+	Physics::getSingleton().addPhysicalEntity(d);
+	Physics::getSingleton().addPhysicalEntity(aa);
+	Physics::getSingleton().addPhysicalEntity(ab);
+	Physics::getSingleton().addPhysicalEntity(ac);
+	Physics::getSingleton().addPhysicalEntity(ad);
 
-	if (4 == OgrianPhysics::getSingleton().numPhysicalEntities()) 
+	if (4 == Physics::getSingleton().numPhysicalEntities()) 
 		LogManager::getSingleton().logMessage("physics testing - correct number");
 	else 
 		LogManager::getSingleton().logMessage("physics testing - ERRRO! incorrect number");
 	
 	LogManager::getSingleton().logMessage("physics testing - move");
-	OgrianPhysics::getSingleton().moveAll(10);
+	Physics::getSingleton().moveAll(10);
 	
 	LogManager::getSingleton().logMessage("physics testing - collision test");
-	OgrianPhysics::getSingleton().collisionCheck();
+	Physics::getSingleton().collisionCheck();
 
 	//LogManager::getSingleton().logMessage("physics testing - remove");
-	//OgrianPhysics::getSingleton().removePhysicalEntity(b);
-	//OgrianPhysics::getSingleton().removePhysicalEntity(c);
+	//Physics::getSingleton().removePhysicalEntity(b);
+	//Physics::getSingleton().removePhysicalEntity(c);
 	//
-	//if (2 == OgrianPhysics::getSingleton().numPhysicalEntities()) 
+	//if (2 == Physics::getSingleton().numPhysicalEntities()) 
 	//	LogManager::getSingleton().logMessage("physics testing - correct number");
 	//else 
 	//	LogManager::getSingleton().logMessage("physics testing - ERRRO! incorrect number");
 
 	LogManager::getSingleton().logMessage("physics testing - move again");
-	OgrianPhysics::getSingleton().moveAll(10);
+	Physics::getSingleton().moveAll(10);
 
 	LogManager::getSingleton().logMessage("physics testing - collision test again");
-	OgrianPhysics::getSingleton().collisionCheck();
+	Physics::getSingleton().collisionCheck();
 
 	LogManager::getSingleton().logMessage("physics testing - done");
+}
+
 }

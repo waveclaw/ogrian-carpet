@@ -7,17 +7,20 @@
 
 using namespace Ogre;
 
+namespace Ogrian
+{
+
 // The OgrianPysics class handles collision detection and notification among all OgrianPhysicalEntity objects.
-class OgrianPhysics : public Singleton< OgrianPhysics >
+class Physics : public Singleton< Physics >
 {
 public:
-	virtual ~OgrianPhysics();
+	virtual ~Physics();
 
 	// add a physical entity to the world.
-	virtual void addPhysicalEntity(OgrianPhysicalEntity* ent);
+	virtual void addPhysicalEntity(PhysicalEntity* ent);
 
 	// remove a physical entity from the world. 
-	virtual void removePhysicalEntity(OgrianPhysicalEntity* ent);
+	virtual void removePhysicalEntity(PhysicalEntity* ent);
 
 	// return the number of entities in the world
 	virtual int numPhysicalEntities();
@@ -34,12 +37,13 @@ public:
 	// run a simple test
 	virtual void test();
 
-    static OgrianPhysics& getSingleton(void);
+    static Physics& getSingleton(void);
 
 private:
-	OgrianPhysics();
+	Physics();
 
-	std::vector<OgrianPhysicalEntity*> entities;
+	std::vector<PhysicalEntity*> entities;
 };
 
+}
 #endif

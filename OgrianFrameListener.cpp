@@ -4,6 +4,9 @@
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 
+namespace Ogrian
+{
+
 void OgrianFrameListener::updateStats(void)
 {
     static String currFps = "Current FPS: ";
@@ -250,7 +253,7 @@ void OgrianFrameListener::moveCamera()
     mCamera->moveRelative(mTranslateVector);
 
 	Vector3 pos = mCamera->getPosition();
-	float altitude = OgrianHeightMap::getSingleton().getHeightAt(pos.x, pos.z);
+	float altitude = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
 	pos.y = altitude + CAMERA_HEIGHT;
 	mCamera->setPosition(pos);
 }
@@ -275,8 +278,8 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 {
 	// tick the physics
-	OgrianPhysics::getSingleton().moveAll(evt.timeSinceLastFrame);
-	OgrianPhysics::getSingleton().collisionCheck();
+	Physics::getSingleton().moveAll(evt.timeSinceLastFrame);
+	Physics::getSingleton().collisionCheck();
 
 	// handle input //
     if (!mInputTypeSwitchingOn)
@@ -374,5 +377,7 @@ void OgrianFrameListener::keyClicked(KeyEvent* e)
 
 		switchKeyMode();
 	}
+
+}
 
 }

@@ -4,29 +4,29 @@
 #define __OgrianRenderer_H__
 
 #include "Ogre.h"
-//#include "OgreConfigFile.h"
-//#include "OgrianConstants.h"
 #include "OgrianFrameListener.h"
-//#include "OgrianHeightMap.h"
 
 using namespace Ogre;
+
+namespace Ogrian
+{
 
 /** Base class which manages the standard startup of an Ogre application.
     Designed to be subclassed for specific examples if required.
 */
-class OgrianRenderer : public Singleton< OgrianRenderer >
+class Renderer : public Singleton< Renderer >
 {
 public:
 
     /// Standard destructor
-    virtual ~OgrianRenderer();
+    virtual ~Renderer();
 
     /// Start the renderer
     void go(void);
 
 	SceneManager* getSceneManager(void);
 
-	static OgrianRenderer& getSingleton(void);
+	static Renderer& getSingleton(void);
 
 protected:
     Root *mRoot;
@@ -36,7 +36,7 @@ protected:
     RenderWindow* mWindow;
 
     /// Standard constructor
-    OgrianRenderer();
+    Renderer();
 
     // These internal methods package up the stages in the startup process
     /** Sets up the application - returns false if the user chooses to abandon configuration. */
@@ -57,4 +57,5 @@ protected:
     virtual void setupResources(void);
 };
 
+}
 #endif

@@ -148,6 +148,9 @@
 			<File
 				RelativePath="OgrianRenderer.h">
 			</File>
+			<File
+				RelativePath="OgrianRollingEntity.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

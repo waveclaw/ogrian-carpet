@@ -32,6 +32,9 @@ Description: Defines an example frame listener which responds to frame events.
 
 using namespace Ogre;
 
+namespace Ogrian
+{
+
 class OgrianFrameListener: public FrameListener, public KeyListener
 {
 private:
@@ -86,4 +89,5 @@ protected:
 
 };
 
+}
 #endif

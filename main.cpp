@@ -2,6 +2,7 @@
 #include "OgrianApplication.h"
 #include <windows.h>
 
+using namespace Ogrian;
 
 INT WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,INT) 
 {

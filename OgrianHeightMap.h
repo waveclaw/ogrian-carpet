@@ -7,17 +7,20 @@
 
 using namespace Ogre;
 
-class OgrianHeightMap : public Singleton< OgrianHeightMap >
+namespace Ogrian
+{
+
+class HeightMap : public Singleton< HeightMap >
 {
 public:
-	OgrianHeightMap();
-	virtual ~OgrianHeightMap();
+	HeightMap();
+	virtual ~HeightMap();
 
 	void loadTerrain( const String& filename );
 
 	float getHeightAt(float x, float z);
 
-    static OgrianHeightMap& getSingleton(void);
+    static HeightMap& getSingleton(void);
 
 private:
 	Vector3 mScale;
@@ -31,4 +34,5 @@ private:
 	int _worldheight( int x, int z );
 };
 
+}
 #endif

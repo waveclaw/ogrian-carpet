@@ -12,6 +12,8 @@
 
 using namespace Ogre;
 
+namespace Ogrian
+{
 
 class OgrianApplication
 {
@@ -19,9 +21,10 @@ public:
     /// Start the application
     virtual void go(void)
     {
-		OgrianRenderer::getSingleton().go();
+		Renderer::getSingleton().go();
     }
 
 };
 
+}
 #endif

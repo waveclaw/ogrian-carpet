@@ -1,6 +1,4 @@
 
-
-
 #include "Ogre.h"
 #include "OgrianHeightMap.h"
 #include <OgreTerrainSceneManager.h>
@@ -17,14 +15,17 @@
 
 using namespace Ogre;
 
-template<> OgrianHeightMap * Singleton< OgrianHeightMap >::ms_Singleton = 0;
+template<> Ogrian::HeightMap * Singleton< Ogrian::HeightMap >::ms_Singleton = 0;
+namespace Ogrian
+{
 
-OgrianHeightMap::OgrianHeightMap()
+
+HeightMap::HeightMap()
 {
 	mData = 0;
 }
 
-int OgrianHeightMap::_worldheight( int x, int z )
+int HeightMap::_worldheight( int x, int z )
 {
 	if (x < 0) return 0;
 	if (z < 0) return 0;
@@ -36,7 +37,7 @@ int OgrianHeightMap::_worldheight( int x, int z )
     return mData[ ( ( z * mSize ) + x ) ];
 };
 
-float OgrianHeightMap::getHeightAt(float x, float z)
+float HeightMap::getHeightAt(float x, float z)
 {
 	x /= mScalex;
 	z /= mScalez;
@@ -57,7 +58,7 @@ float OgrianHeightMap::getHeightAt(float x, float z)
 	return height;
 }
 
-void OgrianHeightMap::loadTerrain( const String& filename )
+void HeightMap::loadTerrain( const String& filename )
 {
 	/* Set up the options */
 	ConfigFile config;
@@ -89,16 +90,18 @@ void OgrianHeightMap::loadTerrain( const String& filename )
 	mSize = image.getWidth();
 }
 
-OgrianHeightMap& OgrianHeightMap::getSingleton(void)
+HeightMap& HeightMap::getSingleton(void)
 {
 	if (!ms_Singleton) 
 	{
-		ms_Singleton = new OgrianHeightMap();
+		ms_Singleton = new HeightMap();
 	}
-    return Singleton<OgrianHeightMap>::getSingleton();
+    return Singleton<HeightMap>::getSingleton();
 }
 
-OgrianHeightMap::~OgrianHeightMap()
+HeightMap::~HeightMap()
 {
 	
+}
+
 }

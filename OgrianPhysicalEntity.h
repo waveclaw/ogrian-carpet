@@ -3,18 +3,22 @@
 
 #include <Ogre.h>
 #include "OgrianRenderer.h"
+#include "OgrianHeightMap.h"
 
 using namespace Ogre;
 
+namespace Ogrian
+{
+
 // The OgrianPhysicalEntity class is the root of all objects that participate in physics. 
-class OgrianPhysicalEntity
+class PhysicalEntity
 {
 public:
 	Vector3 pos;
 
-	OgrianPhysicalEntity(String mesh, Real x=0, Real y=0, Real z=0)
+	PhysicalEntity(String mesh, Real x=0, Real y=0, Real z=0)
 	{
-		SceneManager* sceneMgr = OgrianRenderer::getSingleton().getSceneManager();
+		SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 		node = sceneMgr->getRootSceneNode()->createChildSceneNode();
         ent = sceneMgr->createEntity(node->getName(), mesh);
         node->attachObject(ent);
@@ -54,7 +58,7 @@ public:
 			pos.z + vel.z * time);
 	}
 
-	virtual Real distance(OgrianPhysicalEntity* e)
+	virtual Real distance(PhysicalEntity* e)
 	{
 		return sqrt((pos.x - e->pos.x)*(pos.x - e->pos.x) 
 			      + (pos.y - e->pos.y)*(pos.y - e->pos.y));
@@ -65,13 +69,14 @@ public:
 		return radius;
 	}
 
-	virtual void collided(OgrianPhysicalEntity* e)
+	virtual void collided(PhysicalEntity* e)
 	{
 		// override this for interesting behaviors
+		
 	}
 
 	// they are ordered by x location
-	bool operator<(OgrianPhysicalEntity* other)
+	bool operator<(PhysicalEntity* other)
 	{
 		return (pos.x < other->pos.x);
 	}
@@ -86,5 +91,5 @@ private:
 	Real height;
 };
 
-
+}
 #endif
