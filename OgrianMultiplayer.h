@@ -89,6 +89,9 @@ public:
 	// true if this is an active client
 	bool isClient();
 
+	// true if this ever was an active client
+	bool wasClient();
+
 	// call this every frame
 	void frame();
 
@@ -119,6 +122,7 @@ private:
 	Multiplayer();
 	bool mIsServer;
 	bool mActive;
+	bool mWasClient;
 	bool mClientReady;
 	bool mClientReadyToDisconnect;
 	String mPlayerName;

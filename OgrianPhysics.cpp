@@ -70,7 +70,7 @@ void Physics::frame(Real time)
 	// move all particles
 	moveAll(time);
 
-	if (!Multiplayer::getSingleton().isClient())
+	if (!Multiplayer::getSingleton().wasClient())
 	{
 		// clients dont do collision checking
 		collisionCheck();

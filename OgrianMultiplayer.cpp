@@ -53,6 +53,7 @@ Multiplayer::Multiplayer()
 	mClientReadyToDisconnect = false;
 	mClient = 0;
 	mServer = 0;
+	mWasClient = false;
 
 	loadConfig();
 }
@@ -82,12 +83,20 @@ void Multiplayer::loadConfig()
 
 //----------------------------------------------------------------------------
 
+bool Multiplayer::wasClient()
+{
+	return mWasClient;
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::clientStart()
 {
 	assert(!mActive);
 
 	mIsServer = false;
 	mActive = true;
+	mWasClient = true;
 	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
