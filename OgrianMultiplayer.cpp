@@ -847,7 +847,7 @@ void Multiplayer::ghostWizard(Thing* wizard)
 
 void Multiplayer::stringToBitStream(String& string, BitStream& bs, int type)
 {
-	LogManager::getSingleton().logMessage(String("Server encoding string: ") + string);
+	//LogManager::getSingleton().logMessage(String("Server encoding string: ") + string);
 
 	char cstr[STRING_MAX_LENGTH];
 	strcpy(cstr, string.c_str());
@@ -872,7 +872,7 @@ void Multiplayer::packetToString(Packet* packet, String& string)
 
 	string += String(cstr);
 
-	LogManager::getSingleton().logMessage(String("Client decoded string: ") + string);
+	//LogManager::getSingleton().logMessage(String("Client decoded string: ") + string);
 }
 
 //----------------------------------------------------------------------------
