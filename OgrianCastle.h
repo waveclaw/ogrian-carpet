@@ -127,11 +127,17 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////
-// only used by clients
+// only used by clients to show something for the flag and beacon
 class CastleFlagThing : public Thing
 {
 public:
 	CastleFlagThing();
+
+	virtual void destroy()
+	{
+		Thing::destroy();
+		mBeacon->destroy();
+	}
 
 	virtual void setColour(ColourValue& colour)
 	{
