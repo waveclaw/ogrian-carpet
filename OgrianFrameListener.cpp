@@ -91,7 +91,7 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 		mEventProcessor->addKeyListener(this);
 		mInputDevice = mEventProcessor->getInputReader();
 
-		Menu::getSingleton().showMenu();
+		Menu::getSingleton().show();
 	}
     else
     {

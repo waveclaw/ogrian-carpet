@@ -68,7 +68,7 @@ Menu::Menu()
 
 Menu::~Menu()
 {
-	if (mActive) hideMenu();
+	if (mActive) hide();
 }
 
 //----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ bool Menu::processKeyInput(InputReader* input)
 	// ESC goes back to the game //////////////////////////////
     if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
-        hideMenu();
+        hide();
     }
 
 	// Y toggles the inversion of the mouse Y axis //////////////////////////////
@@ -190,7 +190,7 @@ void Menu::frame(Real time)
 		setMessage("Menu");
 		
 		// hide the menu
-		hideMenu();
+		hide();
 
 		mLoadMap = false;
 	}
@@ -198,7 +198,7 @@ void Menu::frame(Real time)
 
 //----------------------------------------------------------------------------
 
-void Menu::showMenu()
+void Menu::show()
 {
 	if (mActive == true) return;
 
@@ -219,7 +219,7 @@ void Menu::showMenu()
 
 //----------------------------------------------------------------------------
 
-void Menu::hideMenu()
+void Menu::hide()
 {
 	if (mOverlay == false) return;
 

@@ -47,10 +47,10 @@ public:
 	virtual ~Menu();
 
 	// go into menu mode and display the menu
-	void showMenu();
+	void show();
 
 	// go into game mode and hide the menu
-	void hideMenu();
+	void hide();
 
 	// this is called by the OgrianFrameListener when in Menu mode
 	bool processKeyInput(InputReader* input);

@@ -61,7 +61,7 @@ bool Input::processKeyInput(InputReader* input)
 	// show the menu
     if( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
-		Menu::getSingleton().showMenu();
+		Menu::getSingleton().show();
         mTimeUntilNextToggle = KEY_DELAY;
     }
 

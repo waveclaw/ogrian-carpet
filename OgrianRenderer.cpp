@@ -330,7 +330,7 @@ void Renderer::createScene(void)
     mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
 
 	// show the menu
-	Menu::getSingleton().showMenu();
+	Menu::getSingleton().show();
 }
 
 //----------------------------------------------------------------------------
