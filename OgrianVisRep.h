@@ -49,6 +49,9 @@ public:
 	// set the height
 	virtual void setHeight(Real height) = 0;
 
+	// set the rotation
+	virtual void setRotation(Real rotation) = 0;
+
 	// add a pose (only used by Oriented Sprites)
 	virtual int addPose(String basename) = 0;
 	

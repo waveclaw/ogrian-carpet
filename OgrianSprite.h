@@ -51,6 +51,9 @@ public:
 
 	// set the width
 	virtual void setWidth(Real width);
+	
+	// set the rotation
+	virtual void setRotation(Real rotation);
 
 	// set the height
 	virtual void setHeight(Real height);

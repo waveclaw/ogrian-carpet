@@ -132,6 +132,7 @@ public:
 	
 	// unused
 	virtual void setMaterial(String material) {}
+	virtual void setRotation(Real rotation) {};
 
 	// add this visrep to the renderer
 	virtual void addToRenderer();

@@ -33,6 +33,7 @@ They self destruct when they hit the ground or another thing.
 
 #include <Ogre.h>
 #include "OgrianThing.h"
+#include "OgrianTime.h"
 
 using namespace Ogre;
 
@@ -47,6 +48,9 @@ public:
 	{
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
+		
+		mLastRotTime = 0;
+		mLastRotDir = false;
 	}
 
 	virtual ThingType getType()
@@ -59,6 +63,14 @@ public:
 		// fall
 		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
 		Thing::move(time);
+
+		// periodically rotate 180 degrees
+		if (mLastRotTime + FIREBALL_ROT_PERIOD < Time::getSingleton().getTime())
+		{
+			getVisRep()->setRotation(mLastRotDir?0:180);
+			mLastRotTime = Time::getSingleton().getTime();
+			mLastRotDir = !mLastRotDir;
+		}
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
@@ -80,6 +92,10 @@ public:
 
 		Thing::destroy();
 	}
+
+private:
+	unsigned long mLastRotTime;
+	bool mLastRotDir;
 };
 
 }

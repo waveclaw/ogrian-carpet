@@ -102,6 +102,14 @@ void Sprite::setHeight(Real height)
 
 //----------------------------------------------------------------------------
 
+void Sprite::setRotation(Real rotation)
+{
+	if (mInRenderer)
+		mBillboard->setRotation(rotation);
+}
+
+//----------------------------------------------------------------------------
+
 void Sprite::setMaterial(String material)
 {
 	mMaterial = material;
