@@ -149,6 +149,10 @@ void Renderer::readConfig()
 	config.load( "config.cfg" );
 	if (config.getSetting( "mouse_y_inv" ) == "true");
 	else Menu::getSingleton().button_invertMouseToggle();
+
+	// set the music preference
+	if (config.getSetting( "music" ) == "false")
+		Menu::getSingleton().button_musicToggle();
 }
 
 //----------------------------------------------------------------------------

@@ -132,8 +132,6 @@ void Audio::stopSound(int channel)
 
 void Audio::stopSong()
 {
-	if (!mRunning) return;
-
 	// stop the current song
 	if (mSongStream != 0) 
 	{

@@ -52,6 +52,7 @@ Menu::Menu()
 {
 	mActive = false;
 	mLoadMap = false;
+	mMusic = true;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 	
@@ -95,6 +96,26 @@ void Menu::button_invertMouseToggle()
 			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (ON)");
 
 		ofl->setInvertY(true);
+	}
+}
+//----------------------------------------------------------------------------
+void Menu::button_musicToggle()
+{
+	if (mMusic)  // deactivate the music
+	{
+		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
+			->setParameter("caption", "SS/Templates/BasicText MUSIC (OFF)");
+
+		Audio::getSingleton().stopSong();
+		mMusic = false;
+	}
+	else // activate the music
+	{
+		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
+			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
+
+		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+		mMusic = true;
 	}
 }
 //----------------------------------------------------------------------------
@@ -240,7 +261,8 @@ void Menu::show()
 	if (ofl != 0) ofl->setCameraFrozen(true);
 
 	// play menu music
-	Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+	if (mMusic)
+		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
 
 	mActive = true;
 }
@@ -263,7 +285,8 @@ void Menu::hide()
 	Renderer::getSingleton().getFrameListener()->setCameraFrozen(false);
 	
 	// play game music
-	Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
+	if (mMusic)
+		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
 
 	mActive = false;
 }

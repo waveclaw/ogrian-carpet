@@ -93,6 +93,7 @@ public:
 		}
 		else if (action == "Ogrian/Menu/Load") Menu::getSingleton().button_load();
 		else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
+		else if (action == "Ogrian/Menu/Music") Menu::getSingleton().button_musicToggle();
 		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
 		else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
 		else if (action == "Ogrian/Menu/Disconnect") Menu::getSingleton().button_disconnect();
@@ -120,6 +121,10 @@ protected:
 
 		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>

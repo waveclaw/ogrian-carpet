@@ -63,6 +63,7 @@ public:
 
 	// the button functions
 	void button_invertMouseToggle();
+	void button_musicToggle();
 	void button_load();
 	void button_join();
 	void button_host();
@@ -80,6 +81,7 @@ private:
 	// load a map
 	void loadMap(String mapname);
 
+	bool mMusic; // wether or not to play music
 
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling
