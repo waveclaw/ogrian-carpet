@@ -47,7 +47,7 @@ public:
 		: Thing(material, SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
 	{
 		setHeight(scale*1.5);
-		setColour(ColourValue(70/255.0, 170/255.0, 70/255.0));
+		setColour(ColourValue(1,1,1));
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
@@ -66,7 +66,7 @@ public:
 		setHeight(scale*CONR("FOLIAGE_SKEW"));
 		setPosY(getGroundY() + scale*CONR("FOLIAGE_HEIGHT_OFF"));
 		setHealth(CONI("FOLIAGE_HEALTH"));
-		setColour(ColourValue(70/255.0, 170/255.0, 70/255.0));
+		setColour(ColourValue(1,1,1));
 	}
 
 	virtual ThingType getType()

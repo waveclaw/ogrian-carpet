@@ -235,8 +235,8 @@ void Sprite::removeFromRenderer(bool makeDot)
 	mBillboard = 0;
 	mNode = 0;
 
-	// make a dot
-	if (!mDot && makeDot)
+	// make a dot (unless it's pure white)
+	if (!mDot && makeDot && mColour != ColourValue::White)
 	{
 		mDot = DotManager::getSingleton().newDot(mPos, mColour);
 		mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));

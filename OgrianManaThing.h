@@ -51,7 +51,7 @@ public:
 		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
-		setColour(ColourValue(1,1,1));
+		setColour(ColourValue(.9,.9,.9));
 		setUpdateType(CONTINUOUS);
 	}
 

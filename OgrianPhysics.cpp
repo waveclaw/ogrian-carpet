@@ -97,10 +97,10 @@ void Physics::frame(Real time)
 
 void Physics::clientCollisionCheck()
 {
-	Thing* cam = Renderer::getSingleton().getCameraThing();
+	CameraThing* cam = Renderer::getSingleton().getCameraThing();
 
 	for (int i=0; i<(int)mBuildings.size(); i++)
-		pairCollisionCheck(cam, mBuildings[i]);
+		pairCollisionCheck(cam->getRamp(), mBuildings[i]);
 }
 
 //----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ void Physics::serverFrame(Real time)
 					Multiplayer::getSingleton().serverSend(&bs, player.id, false); // send unreliably
 				}
 			}
-			else
+			else if (thing->getUpdateType() == PERIODIC)
 			{
 				if (thing->getUpdateFlag())
 				{
@@ -226,6 +226,8 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		{
 			// make a new thing
 			thing = newThing((ThingType)type, 0);
+
+			if (thing == 0) return true;
 
 			// log it
 			//LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
@@ -329,6 +331,8 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 			// make a new thing
 			Thing* thing = newThing((ThingType)type, 
 				Multiplayer::getSingleton().getPlayerInfo(packet->playerId)->teamNum);
+
+			if (thing == 0) return true;
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -456,7 +460,7 @@ void Physics::addEffect(Thing* thing)
 void Physics::addThing(Thing* thing)
 {
 	// if its a client
-	if (Multiplayer::getSingleton().isClient())
+	if (Multiplayer::getSingleton().isClient() && thing->getUpdateType() != NEVER)
 	{
 		// send a message to the server telling it about the new thing
 		BitStream bs;

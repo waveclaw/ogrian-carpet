@@ -48,6 +48,8 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
+	mRamp = new RampThing(this);
+	Physics::getSingleton().addThing(mRamp);
 
 	setSkin(skin);
 
@@ -86,6 +88,13 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+Thing* WizardThing::getRamp()
+{
+	return mRamp;
 }
 
 //----------------------------------------------------------------------------
@@ -212,22 +221,22 @@ void WizardThing::setVelocity(Vector3 vel)
 	
 void WizardThing::collided(Thing* e)
 {
-	// climb buildings
-	if (e->isBuilding())
-	{
-		Real topPosY = e->getPosY() + e->getHeight()/2.0 + getHeight()*.45;
+	// sit on top of buildings
+	//if (e->isBuilding())
+	//{
+	//	Real topPosY = e->getPosY() + e->getHeight()/2.0 + getHeight()*.45;
 
-		if (getPosY() < topPosY)
-		{
-			setVelY(CONR("CAMERA_CLIMB_RATE"));
-		}
-		else
-		{
-			setPosY(topPosY);
-			setVelY(0);
-		}
-		mOnBuilding = true;
-	}
+	//	//if (getPosY() < topPosY)
+	//	//{
+	//	//	setVelY(CONR("CAMERA_CLIMB_RATE"));
+	//	//}
+	//	//else
+	//	//{
+	//		setPosY(topPosY);
+	//		setVelY(0);
+	//	//}
+	//	mOnBuilding = true;
+	//}
 }
 
 //----------------------------------------------------------------------------
@@ -235,13 +244,18 @@ void WizardThing::collided(Thing* e)
 void WizardThing::move(Real time)
 {
 	// float
-	if (!mOnBuilding && getVelY() > -CONR("CAMERA_FALL_MAX"))
+	if (!mOnBuilding && getVelY() > -CONR("CAMERA_FALL_MAX")
+		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING))
 	{
 		if (getVelY() > CONR("CAMERA_RISE_MAX")) 
 			setVelY(CONR("CAMERA_RISE_MAX"));
 
 		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
+	
+	if (mOnBuilding) setVelY(0);
+
+	if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING) setVelY(0);
 
 	mOnBuilding = false;
 
@@ -263,6 +277,26 @@ void WizardThing::move(Real time)
 	// update health bar
 	if (mBar)
 		mBar->update(getPosition(), getHealth()/100.0*getWidth());
+
+	// update the ramp
+	if (mRamp)
+		mRamp->setPosition(pos);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setPosition(Vector3 pos)
+{
+	DamageableThing::setPosition(pos);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setVelY(Real vel)
+{
+	DamageableThing::setVelY(vel);
+
+	if (vel == 0) mOnBuilding = true;
 }
 
 //----------------------------------------------------------------------------
@@ -274,6 +308,9 @@ void WizardThing::destroy()
 
 	if (mTeam) Physics::getSingleton().removeTeam(getTeamNum());
 	mTeam = 0;
+
+	if (mRamp) mRamp->destroy();
+	mRamp = 0;
 
 	DamageableThing::destroy();
 }

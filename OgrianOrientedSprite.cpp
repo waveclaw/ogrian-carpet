@@ -67,6 +67,8 @@ OrientedSprite::~OrientedSprite()
 		delete mPoses[mPoses.size()-1];
 		mPoses.pop_back();
 	}
+	mCurrentPose = 0;
+	mCurrentSprite = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -209,6 +211,9 @@ void OrientedSprite::clearPoses()
 		delete mPoses[i];
 
 	mPoses.clear();
+
+	mCurrentPose = 0;
+	mCurrentSprite = 0;
 }
 
 //----------------------------------------------------------------------------

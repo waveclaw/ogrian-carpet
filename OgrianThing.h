@@ -75,6 +75,7 @@ enum ThingUpdateType
 {
 	PERIODIC,
 	CONTINUOUS,
+	NEVER,
 };
 
 // this is used for collision detection

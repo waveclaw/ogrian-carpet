@@ -63,6 +63,41 @@ private:
 	Vector3 mOffset;
 };
 
+class RampThing : public Thing
+{
+public:
+	RampThing(Thing* wizard) 
+		: Thing("Ogrian/Clear", SPRITE, "Ramp", true, CONR("WIZARD_RAMP_SCALE")*2)
+	{
+		mWizard = wizard;
+		setUpdateType(NEVER);
+	}
+
+	virtual void collided(Thing* e)
+	{
+		if (e->isBuilding())
+		{
+			Real topPosY = e->getPosY() + e->getHeight()/2.0;// + mWizard->getHeight()*.45;
+
+			Real dist = axisDistance(e) - e->getWidth();
+			if (dist < 0) dist = 0;
+
+			Real ratio = dist / CONR("WIZARD_RAMP_SCALE");
+
+			Real minY = topPosY - ratio * e->getHeight() + mWizard->getHeight();
+
+			if (mWizard->getPosY() < minY)
+			{
+				mWizard->setPosY(minY);
+				mWizard->setVelY(0);
+			}
+		}
+	}
+
+private:
+	Thing* mWizard;
+};
+
 class WizardThing : public DamageableThing
 {
 public:
@@ -78,6 +113,9 @@ public:
 
 	// go over castle walls
 	virtual void collided(Thing* e);
+
+	virtual void setPosition(Vector3 pos);
+	virtual void setVelY(Real vel);
 
 	virtual void setColour(ColourValue& colour);
 	virtual void setHealth(int health);
@@ -97,7 +135,10 @@ public:
 
 	virtual void setSkin(int skin);
 
+	virtual Thing* getRamp();
+
 private:
+	RampThing* mRamp;
 	HealthBarEffect* mBar;
 	bool mOnBuilding;
 	Team* mTeam;
