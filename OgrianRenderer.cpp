@@ -55,6 +55,7 @@ Renderer::Renderer()
     mFrameListener = 0;
     mRoot = 0;
 	mWaterNode = 0;
+	mCameraThing = 0;
 
 	mMapLoaded = false;
 }

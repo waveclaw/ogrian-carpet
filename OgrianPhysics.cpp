@@ -92,6 +92,8 @@ void Physics::clientFrame(Real time)
 	// notify the server of our camerathing
 	CameraThing* cthing = static_cast<CameraThing*>(Renderer::getSingleton().getCameraThing());
 
+	if (cthing == 0) return;
+
 	if (cthing->lastUpdateTime() + THING_UPDATE_PERIOD/2 < Time::getSingleton().getTime())
 	{
 		BitStream bs;
@@ -210,15 +212,19 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 		bitstream.Read(type);
 		bitstream.ResetReadPointer();
 
-		// if its a client updating its wizardThing
-		if (type == WIZARDTHING)
+		// if its a client updating its cameraThing
+		if (type == CAMERATHING)
 		{
 			// get the wizardThing
 			int uid = Multiplayer::getSingleton().getWizardUID(packet->playerId);
 			WizardThing* wthing = static_cast<WizardThing*>(getThing(uid));
 
-			// send the update to it
-			wthing->interpretBitStream(bitstream);
+			if (wthing == 0) LogManager::getSingleton().logMessage(String("wizardthing not found: #") << uid);
+			else
+			{
+				// send the update to it
+				wthing->interpretBitStream(bitstream);
+			}
 		}
 		else // otherwise, its a new thing
 		{

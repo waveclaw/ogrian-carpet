@@ -44,7 +44,7 @@ namespace Ogrian
 class WizardThing : public Thing
 {
 public:
-	WizardThing(String material="Ogrian/Clear") 
+	WizardThing(String material="Ogrian/Mana") 
 		: Thing(material, "WizardThing", true, CAMERA_HEIGHT)
 	{
 	}

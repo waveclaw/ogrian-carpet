@@ -370,7 +370,7 @@ PacketID Multiplayer::getPacketIdentifier(Packet* p)
 
 int Multiplayer::getWizardUID(PlayerID pid)
 {
-	for (int i=0; (int)mPlayers.size(); i++)
+	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
 		if (mPlayers[i].id == pid) return mPlayers[i].wizardUID;
 	}
