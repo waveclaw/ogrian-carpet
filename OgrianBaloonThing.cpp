@@ -44,10 +44,10 @@ namespace Ogrian
 BaloonThing::BaloonThing(int team, Vector3 pos, unsigned int amount) 
 	: Thing("Ogrian/Baloon", SPRITE, "ManaThing", false, CONR("BALOON_SCALE"), pos, SPHERE)
 {
+	mState = -1;
 	setTeamNum(team);
 	setTarget(0);
 	setUpdateType(CONTINUOUS);
-	setStateWait();
 }
 
 //----------------------------------------------------------------------------
@@ -150,7 +150,7 @@ void BaloonThing::collided(Thing* thing)
 		mTarget->destroy();
 
 		// wait for new orders
-		setTarget(0);
+		//setTarget(0);
 	}
 
 	if (thing->getType() ==	CASTLEFLAG && thing == mTarget)
@@ -159,7 +159,7 @@ void BaloonThing::collided(Thing* thing)
 		((Castle*)mTarget)->addMana(unload());
 
 		// wait for new orders
-		setStateWait();
+		setTarget(0);
 	}
 }
 
@@ -167,6 +167,12 @@ void BaloonThing::collided(Thing* thing)
 
 void BaloonThing::setStateWait()
 {
+	if (mState == BAL_STATE_WAIT)
+	{
+		int i;
+		i++;
+	}
+
 	mState = BAL_STATE_WAIT;
 	mNeedOrders = true;
 	setVelocity(Vector3(0,0,0));
