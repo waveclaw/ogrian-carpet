@@ -33,6 +33,7 @@ Description: TeleportSpellThing is a thing that helps the teleport spell work pr
 #include <Ogre.h>
 #include "OgrianClock.h"
 #include "OgrianThing.h"
+#include "OgrianMultiplayer.h"
 
 using namespace Ogre;
 
@@ -51,14 +52,17 @@ public:
 		Thing* castle = team->getCastle();
 		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
 
-		// teleport the wizard back to his castle
-		wiz->die();
+		// teleport the wizard back to his castle=
+		if (wiz->getType() == CAMERATHING)
+			wiz->setPosition(castle->getPosition());
+		else
+			Multiplayer::getSingleton().teleportWizard(wiz, castle->getPosition());
 
 		// teleport his posse back to his castle
 		for (int i=0; i<Physics::getSingleton().numThings(); i++)
 		{
 			Thing* thing = Physics::getSingleton().getThingByIndex(i);
-			if (thing->getTeamNum() == getTeamNum() 
+			if (thing->getTeamNum() == wiz->getTeamNum() 
 				&& (thing->getType() == GNOMETHING || thing->getType() == TICKTHING))
 			{
 				thing->setPosition(castle->getPosition());
