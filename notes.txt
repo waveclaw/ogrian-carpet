@@ -19,7 +19,7 @@ Spells
 =========
 -claim (mana, hut)
 -build (castle, tower, also unbuilds)
--unsummon (monster, mana, hut, etc)
+-unsummon? (monster, mana, hut, etc)
 -fireball (done)
 -speed (done)
 
@@ -51,3 +51,9 @@ for the tutorial, have TextBoxThing that pops up a textbox when teh camera touch
 
 performance, tweaks:
 ========
+
+known bugs:
+========
+camera doesn't interact with castles in the same way that it does with the ground
+two baloons get sent to one mana
+memory leak in making billboards

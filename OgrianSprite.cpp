@@ -238,7 +238,8 @@ void Sprite::removeFromRenderer(bool makeDot)
 	if (!mDot && makeDot && mColour != ColourValue::White)
 	{
 		mDot = DotManager::getSingleton().newDot(mPos, mColour);
-		mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+		if (mDot)
+			mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
 	}
 
 	mInRenderer = false;
