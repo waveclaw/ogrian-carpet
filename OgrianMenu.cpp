@@ -112,7 +112,7 @@ void Menu::button_load()
 //----------------------------------------------------------------------------
 void Menu::button_join()
 {
-	setMessage("Loading (Client) .  .  .");
+	setMessage("Connecting .  .  . ");
 	Multiplayer::getSingleton().clientStart();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
