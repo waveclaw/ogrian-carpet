@@ -371,9 +371,9 @@ void Castle::dropMana(int amount)
 	// cant drop more then we have
 	if (amount > mMana) amount = mMana;
 
-		std::ostringstream num("");
-		num << amount;
-		LogManager::getSingleton().logMessage("Castle dropping mana: " + num.str());
+		//std::ostringstream num("");
+		//num << amount;
+		//LogManager::getSingleton().logMessage("Castle dropping mana: " + num.str());
 
 	// can't drop less then one mana
 	if (amount < 1) return;
