@@ -231,12 +231,6 @@
 				RelativePath="OgrianAlbatrossThing.h">
 			</File>
 			<File
-				RelativePath="OgrianBaloonThing.cpp">
-			</File>
-			<File
-				RelativePath="OgrianBaloonThing.h">
-			</File>
-			<File
 				RelativePath="OgrianBuildSpellThing.cpp">
 			</File>
 			<File
@@ -276,9 +270,6 @@
 				RelativePath="OgrianFireballThing.h">
 			</File>
 			<File
-				RelativePath="OgrianFloatingThing.h">
-			</File>
-			<File
 				RelativePath="OgrianFoliageThing.h">
 			</File>
 			<File
@@ -301,9 +292,6 @@
 			</File>
 			<File
 				RelativePath="OgrianPortalThing.h">
-			</File>
-			<File
-				RelativePath="OgrianRollingThing.h">
 			</File>
 			<File
 				RelativePath="OgrianSentinelThing.cpp">

@@ -386,8 +386,6 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case TICKSUMMONTHING: return new TickSummonSpellThing(teamNum);
 		case GNOMESUMMONTHING: return new GnomeSummonSpellThing(teamNum);
 
-		case BALOONTHING: return new BaloonThing(teamNum);
-
 		case CRANETHING: return new CraneThing(teamNum);
 		case ALBATROSSTHING: return new AlbatrossThing(teamNum);
 		case SENTINELTHING: return new SentinelThing(teamNum);

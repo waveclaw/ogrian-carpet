@@ -36,11 +36,9 @@ Description: This is a castle
 #include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianBuildingHeightMap.h"
-#include "OgrianBaloonThing.h"
 #include "OgrianCraneThing.h"
 #include "OgrianPortalThing.h"
 
-//#define NUM_BALOONS 0
 #define NUM_BLOCKS 9
 
 using namespace Ogre;
@@ -173,12 +171,6 @@ public:
 	// drop this amount of mana
 	virtual void dropMana(int amount);
 
-	// notify the castle of a newly claimed manathing
-	virtual void claimedManaThing(Thing* mana);
-
-	// notify the castle of a newly unclaimed or destroyed manathing
-	virtual void unclaimedManaThing(Thing* mana);
-
 	// take damage
 	virtual void damage(int amount, int sourceTeamNum);
 
@@ -204,18 +196,11 @@ private:
 	// an array of all the turrets and the keep
 	CastleBlockThing* mBlocks[NUM_BLOCKS];
 
+	// our beacon
 	CastleBeaconThing* mBeacon;
+
+	// our portal
 	PortalThing* mPortal;
-
-	// a vector holding all the claimed manathings
-	// std::vector<Thing*> mManaThings;
-
-	// an array of the baloons
-	// BaloonThing* mBaloons[NUM_BALOONS];
-
-	// the current number of baloons
-	// int mNumBaloons;
-
 
 	// set the castle level
 	void setLevel(Real level);
@@ -223,14 +208,8 @@ private:
 	// make a turret
 	CastleTurretThing* newCastleTurret(int level);
 
-	// set the number of baloons
-	void setNumBaloons(int num);
-
 	// set the spells for this castle's wizard
 	void setSpells(int level);
-
-	// genearate a target for a baloon
-	Thing* generateTarget(BaloonThing* baloon);
 };
 
 }
