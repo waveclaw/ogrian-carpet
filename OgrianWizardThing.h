@@ -143,6 +143,9 @@ public:
 
 	virtual Thing* getRamp();
 
+	virtual void speed(Real duration);
+	virtual bool isSpeeding();
+
 private:
 	RampThing* mRamp;
 	HealthBarEffect* mBar;
@@ -150,6 +153,8 @@ private:
 	Team* mTeam;
 	int mSkin;
 	bool mGhost;
+	bool mSpeeding;
+	Time mStopSpeedTime;
 
 	int mActiveMana;
 	int mBaseMana;

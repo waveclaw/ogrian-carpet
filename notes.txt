@@ -1,15 +1,10 @@
 Ogrian Carpet Notes
 
-spell selection system:
-the Spell object will encapsulate the spellThing and the hud graphics.
-the hud will have a series of spell slots, each of which holds a Spell object.
-
 
 to add:
 =========
 Hand Sprites - two frames, idle and casting, for each spell
 
-towers - summoned, tall to stand on and claim nearby mana
 Huts - claim them to increase your mana regen
 
 Monsters
@@ -17,31 +12,35 @@ Monsters
 -Crane - orbits castle towers for defense
 -Albatross! - cruise missile
 -Spider - follows the wizard around by jumping to a random spot near him, summoned with egg
--spikeflower - shoots spikes, summoned with seed
+-Sentinel - stationary gargoyle that shoots fireballs and sends up flares when enemies nearby
 -Imp - mobile archers that follow the wizard around
 
 Spells 
 =========
--fireball (done)
 -claim (mana, hut)
 -build (castle, tower, also unbuilds)
--firestorm - very rapid fire with random trajectories
--inferno - several fireballs held in place relative to the camera
--firewave - pattern of fireballs the travel along the ground
--summon monster
 -unsummon (monster, mana, hut, etc)
--jump
--speed
+-fireball (done)
+-speed (done)
+
+-summon spider
+-akimbo fireball (done)
+-summon imp
+-summon sentinel
+-summon albatross!
+
+-firestorm - very rapid fire with randomish trajectories (done)
+-firewave - pattern of fireballs the travel along the ground
 -meteor - launched from own castle to wizard location, large area of effect
 
 
 need new art for:
 =========
-spider - make new model from pipe cleaners?
-spikeflower - make model from real flower
-imp - hand drawn with pencil
+spider - playdoh
+sentinel - playdoh
+imp - playdoh
 hand sprites - photos of my hands
-tower/hut textures - ask banana?
+hud spell sprites
 
 
 Ideas:

@@ -92,7 +92,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	Physics::getSingleton().addThing(mBlocks[0]);
 
 	// start at level 0
-	setMana(0);
+	setMana(600);
 
 	setHealth(CONI("CASTLE_HEALTH"));
 
@@ -478,7 +478,10 @@ void Castle::setSpells(int level)
 		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
 
-		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
+		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
+		else			SpellManager::getSingleton().disableSpell(SPELL_SPEED);
+
+		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
 		else			SpellManager::getSingleton().disableSpell(SPELL_FIRESTORM);
 	}
 	else if (Multiplayer::getSingleton().isServer())
@@ -498,7 +501,10 @@ void Castle::setSpells(int level)
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
 
-				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
+				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_DISABLESPELL,player.id);
+
+				if (level >= 3) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_DISABLESPELL,player.id);
 			}
 		}

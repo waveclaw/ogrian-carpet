@@ -47,6 +47,8 @@ WizardThing::WizardThing(bool visible, int skin)
 {
 	mNextRegenTime = 0;
 	mLastSetPosTime = 0;
+	mSpeeding = false;
+	mStopSpeedTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
 	mBar = 0;
@@ -95,6 +97,22 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::speed(Real duration)
+{
+	mStopSpeedTime = Clock::getSingleton().getTime() + duration*1000;
+
+	mSpeeding = true;
+}
+
+//----------------------------------------------------------------------------
+
+bool WizardThing::isSpeeding()
+{
+	return mSpeeding;
 }
 
 //----------------------------------------------------------------------------
@@ -301,7 +319,9 @@ void WizardThing::die()
 // ignore external up/down velocity changes
 void WizardThing::setVelocity(Vector3 vel)
 {
-	vel.y = getVelY();
+	if (!mSpeeding)
+		vel.y = getVelY();
+	
 	Thing::setVelocity(vel);
 }
 
@@ -318,6 +338,10 @@ void WizardThing::collided(Thing* e)
 	
 void WizardThing::move(Real time)
 {
+	// check to see if its time to stop speeding yet
+	if (mStopSpeedTime < Clock::getSingleton().getTime())
+		mSpeeding = false;
+
 	// regenerate mana
 	if (!Multiplayer::getSingleton().isClient())
 	{
@@ -333,7 +357,9 @@ void WizardThing::move(Real time)
 	}
 
 	// float
-	if (!mOnBuilding && getVelY() > -CONR("CAMERA_FALL_MAX")
+	if (!mSpeeding 
+		&& !mOnBuilding 
+		&& getVelY() > -CONR("CAMERA_FALL_MAX")
 		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING))
 	{
 		if (getVelY() > CONR("CAMERA_RISE_MAX")) 
@@ -387,20 +413,23 @@ void WizardThing::setPosition(Vector3 pos)
 
 	Vector3 lastPos = getPosition();
 
-	// if this is not a teleport
-	Vector3 diff = pos - lastPos;
-	Vector3 diffb = diff;
-	diffb.y = 0;
-	Time time = Clock::getSingleton().getTime();
-	Real dt = (time - mLastSetPosTime)/1000.0;
-	mLastSetPosTime = Clock::getSingleton().getTime();
-	Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
-	if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
+	if (!mSpeeding)
 	{
-		// constrain the speed
-		diff.normalise();
-		diff *= CONR("CAMERA_MOVE_SPEED")*dt;
-		pos = lastPos + diff;
+		// if this is not a teleport
+		Vector3 diff = pos - lastPos;
+		Vector3 diffb = diff;
+		diffb.y = 0;
+		Time time = Clock::getSingleton().getTime();
+		Real dt = (time - mLastSetPosTime)/1000.0;
+		mLastSetPosTime = Clock::getSingleton().getTime();
+		Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
+		if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
+		{
+			// constrain the speed
+			diff.normalise();
+			diff *= CONR("CAMERA_MOVE_SPEED")*dt;
+			pos = lastPos + diff;
+		}
 	}
 
 

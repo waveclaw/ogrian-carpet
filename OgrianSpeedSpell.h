@@ -32,6 +32,7 @@ Description: This is a fireball spell
 #define __OgrianSpeedSpell_H__
 
 #include "OgrianSpell.h"
+#include "OgrianRenderer.h"
 
 using namespace Ogre;
 
@@ -45,20 +46,20 @@ public:
 	// make an instance of this spell
 	virtual void cast(Vector3 pos, Vector3 dir)
 	{
-
+		Renderer::getSingleton().getCameraThing()->speed(CONR("SPEEDSPELL_DURATION"));
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Speed/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Speed/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Speed/Disabled"); }; 
 
-	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD"); }
+	virtual Real getCastPeriod() { return CONR("SPEEDSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
+	virtual int getManaCost() { return CONI("SPEEDSPELL_MANA_COST"); }
 
-	virtual String getString() { return String("Fireball"); }
+	virtual String getString() { return String("Speeed"); }
 };
 
 }

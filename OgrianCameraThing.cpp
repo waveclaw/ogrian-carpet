@@ -137,18 +137,18 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 	mCamera->yaw(Degree(rotX));
 
 	// constrain the pitch
-	Vector3 dir = mCamera->getDirection();
+	mDir = mCamera->getDirection();
 
 	mTempCam->setDirection(Vector3(0,0,1));
-	mTempCam->setDirection(dir);
+	mTempCam->setDirection(mDir);
 	mTempCam->pitch(Degree(rotY));
-	dir = mTempCam->getDirection();
+	mDir = mTempCam->getDirection();
 
-	if (dir.y < CONR("CAMERA_PITCH_MAX") && dir.y > -CONR("CAMERA_PITCH_MAX"))
-		mCamera->setDirection(dir);
+	if (mDir.y < CONR("CAMERA_PITCH_MAX") && mDir.y > -CONR("CAMERA_PITCH_MAX"))
+		mCamera->setDirection(mDir);
 
 	// set the orientation of the thing to match the camera
-	setOrientation(atan2(dir.x, dir.z));
+	setOrientation(atan2(mDir.x, mDir.z));
 }
 
 //----------------------------------------------------------------------------
@@ -180,14 +180,26 @@ void CameraThing::move(Real time)
 	}
 
 	mForce.normalise();
-	mForce *= CONR("CAMERA_MOVE_SPEED");
+	if (isSpeeding())
+		mForce *= CONR("SPEEDSPELL_SPEED");
+	else
+		mForce *= CONR("CAMERA_MOVE_SPEED");
 
 	Vector3 vel = getVelocity();
 
 	if (mForce.length() == 0) vel -= vel*time*CONR("CAMERA_DECEL"); // slowing down
 	else vel = mForce*time*CONR("CAMERA_ACCEL") + vel*(1-time*CONR("CAMERA_ACCEL")); // speeding up
 
+	if (isSpeeding())
+	{
+		vel = mDir;
+		vel.normalise();
+		vel *=CONR("SPEEDSPELL_SPEED");
+	}
+
 	setVelocity(vel);
+
+
 	mForeward = mBack = mLeft = mRight = false;
 
 	WizardThing::move(time);

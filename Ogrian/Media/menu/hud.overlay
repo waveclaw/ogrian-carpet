@@ -53,7 +53,7 @@ Ogrian/HUD/Overlay
 		top 0
 		width .1
 		height .1
-		material Ogrian/Crosshair
+		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/1)
 	{
@@ -61,7 +61,7 @@ Ogrian/HUD/Overlay
 		top 0.0
 		width .1
 		height .1
-		material Ogrian/Crosshair
+		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/2)
 	{
@@ -69,7 +69,7 @@ Ogrian/HUD/Overlay
 		top 0
 		width .1
 		height .1
-		material Ogrian/Crosshair
+		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/3)
 	{
@@ -77,7 +77,7 @@ Ogrian/HUD/Overlay
 		top 0
 		width .1
 		height .1
-		material Ogrian/Crosshair
+		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/4)
 	{
@@ -85,7 +85,39 @@ Ogrian/HUD/Overlay
 		top 0
 		width .1
 		height .1
-		material Ogrian/Crosshair
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/5)
+	{
+		left .5
+		top 0
+		width .1
+		height .1
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/6)
+	{
+		left .6
+		top 0
+		width .1
+		height .1
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/7)
+	{
+		left .7
+		top 0
+		width .1
+		height .1
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/8)
+	{
+		left .8
+		top 0
+		width .1
+		height .1
+		material Ogrian/Clear
 	}
 
 }
