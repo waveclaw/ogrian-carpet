@@ -78,7 +78,9 @@ public:
 		if (mAmount == amount) return;
 
 		mAmount=amount;
-		if (amount > 1)
+		if (sqrt(amount) > CONR("MANA_MAX_SCALE"))
+			setScale(CONR("MANA_MAX_SCALE"));
+		else if (amount > 1)
 			setScale(sqrt(amount));
 		else 
 			setScale(1);
@@ -96,9 +98,10 @@ public:
 	{
 		if (e->getType() == MANATHING && e->isAlive() && isAlive())
 		{
-			if(getAmount() > 0)
+			ManaThing* m = static_cast<ManaThing*>(e);
+
+			if(getAmount() > 0 && m->getAmount() > 0)
 			{
-				ManaThing* m = static_cast<ManaThing*>(e);
 
 				// set the position as a weighted average of the two
 				setPosition(
@@ -110,11 +113,6 @@ public:
 				m->setAmount(0);
 		
 				setUpdateFlag();
-			}
-			else
-			{
-				// be absorbed
-				destroy();
 			}
 		}
 	}
@@ -131,6 +129,12 @@ public:
 		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
+
+		if (getAmount() == 0)
+		{
+			// be absorbed
+			destroy();
+		}
 	}
 
 	virtual ThingType getType()
