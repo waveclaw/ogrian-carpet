@@ -57,7 +57,7 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Load) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.60
+			top 0.30
 			width 0.2 
 			caption SS/Templates/BasicText LOAD
 		}
@@ -84,7 +84,7 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Join) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.30
+			top 0.60
 			width 0.2 
 			caption SS/Templates/BasicText Join
 		}
