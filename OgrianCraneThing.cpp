@@ -224,7 +224,7 @@ void CraneThing::setStateAttack()
 		dir.normalise();
 		setVelocity(dir * CONR("CRANE_SPEED"));
 	
-		playSound(Game::getSingleton().SOUND_CHIRP);
+		playSound(Game::getSingleton().SOUND_CHIRP, true);
 
 		setUpdateFlag();
 	}

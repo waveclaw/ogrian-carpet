@@ -495,13 +495,24 @@ Real Thing::getGroundY(Vector3 pos)
 
 //----------------------------------------------------------------------------
 
-void Thing::playSound(int id)
+void Thing::playSound(int id, bool sendUpdate)
 {
 	mSoundId = id;
 	mPlayingSound = true;
 
 	if (mInEarshot)
 		mCurrentSound = Audio::getSingleton().playSound(mSoundId, getPosition());
+
+	// send this sound to clients if necessary
+	if (sendUpdate && Multiplayer::getSingleton().isServer())
+	{
+		BitStream bs;
+		bs.Write(ID_PLAYSOUND);
+		bs.Write(getUID());
+		bs.Write(id);
+
+		Multiplayer::getSingleton().serverSendAll(&bs);
+	}
 }
 
 //----------------------------------------------------------------------------

@@ -217,7 +217,7 @@ public:
 	virtual Real getGroundY(Vector3 pos);
 
 	// play a sound
-	virtual void playSound(int id);
+	virtual void playSound(int id, bool sendUpdate=false); //set sendUpdate=true if this sound needs to be explicitly propogated in multiplayer
 	virtual void stopSound();
 
 	// generate a bitstream from this thing

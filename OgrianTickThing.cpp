@@ -114,7 +114,7 @@ void TickThing::think()
 			mVenom = true;
 			setVelocity(vel);
 			getVisRep()->setPose(1);
-			playSound(Game::getSingleton().SOUND_HISS);
+			playSound(Game::getSingleton().SOUND_HISS, true);
 		}
 		else
 		{

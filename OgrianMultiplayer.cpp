@@ -700,6 +700,21 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			SpellManager::getSingleton().disableSpell(spell);
 			return true;
 		}
+		
+		case ID_PLAYSOUND: //////////////////////////////////////////////////////
+		{
+			// get the thing uid and sound index
+			int pid, uid, sound;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(uid);
+			bs.Read(sound);
+
+			// play the sound
+			Thing* thing = Physics::getSingleton().getThing(uid);
+			thing->playSound(sound);
+			return true;
+		}
 	}
 	return false;
 }
