@@ -29,6 +29,7 @@ Description: This handles all of the multiplayer networking code.
 
 #include "OgrianMultiplayer.h"
 #include "OgrianMenu.h"
+#include "OgrianRenderer.h"
 #include "OgrianPlayerList.h"
 #include "OgrianPhysics.h"
 #include "OgreConfigFile.h"
@@ -66,6 +67,7 @@ void Multiplayer::loadConfig()
 	ConfigFile config;
 	config.load( "ogrian.cfg" );
 	mPlayerName = config.getSetting( "name" );
+	mServerName = config.getSetting( "server" );
 
 	// trim the name
 	std::string name = mPlayerName;
@@ -73,7 +75,7 @@ void Multiplayer::loadConfig()
 }
 
 //----------------------------------------------------------------------------
-void Multiplayer::clientStart(char* server)
+void Multiplayer::clientStart()
 {
 	assert(!mActive);
 
@@ -82,9 +84,15 @@ void Multiplayer::clientStart(char* server)
 	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
+	// massage the name because RakNet is Stupid. 
+	std::string name = mServerName;
+	name = name.substr(0,16);
+	char cn[16];
+	strcpy(cn, name.c_str());
+
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger, and false for low priority threads
-	bool b = mClient->Connect(server, PORT, PORT-1, 0, false);
+	bool b = mClient->Connect(cn, PORT, PORT-1, 0, true);
 
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
@@ -107,7 +115,7 @@ void Multiplayer::serverStart()
 	// Starting the server is very simple.  8 players allowed.
 	// 0 means we don't care about a connectionValidationInteger, and false
 	// for low priority threads
-	bool b = mServer->Start(7, 0, false, PORT);
+	bool b = mServer->Start(7, 0, true, PORT);
 	
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
@@ -322,6 +330,24 @@ int Multiplayer::serverNumPlayers()
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::serverLoadMap(String filename)
+{
+	// get the name
+	char name[MAP_NAME_MAX_LENGTH];
+	strcpy(name, filename);
+	int len = (int)strlen(name) + 1;
+
+	BitStream bs;
+	bs.Write(ID_NEW_MAP);
+	bs.Write(len);
+	bs.Write(name,len);
+
+	// forward the message to all clients
+	serverSendAll(&bs);
+}
+
+//----------------------------------------------------------------------------
+
 bool Multiplayer::isConnected()
 {
 	if (!mActive) return false;
@@ -390,6 +416,22 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			clientSend(&bs);
 			return true;
 		}
+
+		case ID_NEW_MAP:
+		{
+			// get the name
+			char name[MAP_NAME_MAX_LENGTH];
+			int len, UID;
+
+			BitStream bs(packet->data,packet->length,false);
+			bs.Read(UID);
+			bs.Read(len);
+			bs.Read(name,len);	
+
+			// load the map
+			Renderer::getSingleton().loadMap(name);
+		}
+
 		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
 			// Couldn't deliver a reliable packet - i.e. the other system was abnormally terminated
 			Except( Exception::ERR_INTERNAL_ERROR, "Error: Connection to Server lost.",

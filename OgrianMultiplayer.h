@@ -57,7 +57,7 @@ public:
 	void serverStart();
 
 	// start a client
-	void clientStart(char* server);
+	void clientStart();
 
 	// send a message to the server
 	void clientSend(BitStream* bitStream);
@@ -87,6 +87,9 @@ public:
 	// the number of clients connected
 	int serverNumPlayers();
 
+	// propagate a map load message
+	void serverLoadMap(String filename);
+
 	// too see if we are connected
 	bool isConnected();
 
@@ -95,6 +98,7 @@ private:
 	bool mIsServer;
 	bool mActive;
 	String mPlayerName;
+	String mServerName;
 
 	// Pointers to the interfaces of our server and client.
 	RakClientInterface* mClient;

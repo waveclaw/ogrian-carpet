@@ -102,10 +102,11 @@ void Menu::button_load()
 void Menu::button_join()
 {
 	setMessage("Joining Server");
-	Multiplayer::getSingleton().clientStart("localhost");
+	Multiplayer::getSingleton().clientStart();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
 }
 
 //----------------------------------------------------------------------------
@@ -191,6 +192,10 @@ void Menu::frame(Real time)
 	{
 		// load the map
 		Renderer::getSingleton().loadMap(mMapName);
+
+		// if we're the server, tell the clients about the new map
+		if (Multiplayer::getSingleton().isServer())
+			Multiplayer::getSingleton().serverLoadMap(mMapName);
 		
 		// Menu
 		setMessage("Menu");
