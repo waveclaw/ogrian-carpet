@@ -33,9 +33,12 @@ a flock of cranes
 
 #include <Ogre.h>
 #include "OgrianDamageableThing.h"
+#include "OgrianClaimSpellThing.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianConst.h"
 #include "OgrianModel.h"
+#include "OgrianCraneThing.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 
@@ -49,26 +52,47 @@ public:
 	TowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
+		mLastCastTime = 0;
+
 		// set the mesh
 		setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
 			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
 
-		setPosition(pos);
-
 		// set the height
-		setHeight(CONR("CASTLETOWER_HEIGHT"));
+		setHeight(CONR("TOWER_HEIGHT"));
 
-		// start at zero
-		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2);
+		// start at zero and rise
+		setPosY(getGroundY() - CONR("TOWER_OFFSET"));
 		mTargetY = getPosY();
-		setPercentage(0);
-
-		// rise up
 		setPercentage(1);
 
 		// set the team
 		setTeamNum(teamNum);
+
+		// make the crane flock
+		if (!Multiplayer::getSingleton().isClient())
+		{
+			Vector3 pos = getPosition();
+			pos.y += getHeight() - CONR("TOWER_OFFSET");
+			for (int i=0; i<CONI("TOWER_NUM_CRANES"); i++)
+			{
+				CraneThing* crane = new CraneThing(teamNum,pos);
+				mCranes.push_back(crane);
+				Physics::getSingleton().addThing(crane);
+			}
+		}
+	}
+
+	virtual void destroy()
+	{
+		DamageableThing::destroy();
+
+		// remove the cranes
+		for (int i=0; i<(int)mCranes.size(); i++)
+			mCranes[i]->destroy();
+
+		mCranes.clear();
 	}
 
 	// set how far up this block should go to
@@ -76,7 +100,7 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = 0;
-		Real newTargetY = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
+		Real newTargetY = getGroundY() - CONR("TOWER_OFFSET") - getHeight()/2 + getHeight()*per;
 
 		if (newTargetY == mTargetY) return;
 
@@ -84,11 +108,11 @@ public:
 
 		if (mTargetY > getPosY())
 		{
-			setVelY(CONR("CASTLE_RISE_SPEED"));
+			setVelY(CONR("TOWER_RISE_SPEED"));
 		}
 		else
 		{
-			setVelY(0-CONR("CASTLE_RISE_SPEED"));
+			setVelY(0-CONR("TOWER_RISE_SPEED"));
 		}
 
 		setUpdateFlag();
@@ -109,16 +133,66 @@ public:
 		DamageableThing::move(time);
 	}
 
-	virtual void damage(int amount, int sourceTeamNum)
+	virtual void think()
 	{
-		DamageableThing::damage(amount, sourceTeamNum);
+		// if its time, claim a nearby mana
+		if (Time::getSingleton().getTime() > mLastCastTime + CONR("TOWER_CAST_PERIOD")*1000)
+		{
+			mLastCastTime = Time::getSingleton().getTime();
 
+			// cast a mana at the nearest manathing in range
+			Thing* target = 0;
+			Real bestDist = CONR("TOWER_RANGE");;
+			for (int i=0; i<Physics::getSingleton().numThings(); i++)
+			{
+				Thing* candidate = Physics::getSingleton().getThingByIndex(i);
+				if (candidate 
+					&& candidate->getType() == MANATHING 
+					&& cylinderDistance(candidate) < bestDist
+					&& candidate->getTeamNum() != getTeamNum()
+					&& candidate->isAlive() )
+				{
+					target = candidate;
+					bestDist = cylinderDistance(candidate);
+				}
+			}
+
+			if (target) 
+			{
+				Vector3 startPos = getPosition();
+				startPos.y += getHeight()/2 - CONR("TOWER_OFFSET");
+
+				Vector3 vel = target->getPosition() - startPos;
+				vel.normalise();
+				vel *= CONR("CLAIMSPELL_SPEED");
+
+				Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), startPos, 
+					vel, CONR("TOWER_CLAIM_LIFETIME")));
+			}
+		}
 	}
+
+	virtual void setHealth(int health)
+	{
+		if (health < 0) health = 0;
+
+		DamageableThing::setHealth(health);
+
+		setPercentage((health + CONR("TOWER_RUBBLE"))
+			/ (CONR("TOWER_HEALTH") + CONR("TOWER_RUBBLE")));
+	}
+
 
 	virtual bool isBuilding() { return true; }
 	
+	virtual ThingType getType()	{ return TOWER; }
+	
 private:
 	Real mTargetY;
+
+	unsigned long mLastCastTime;
+
+	std::vector<CraneThing*> mCranes;
 };
 
 }

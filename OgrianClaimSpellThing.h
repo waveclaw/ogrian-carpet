@@ -44,7 +44,7 @@ namespace Ogrian
 class ClaimSpellThing : public TimedThing
 {
 public:
-	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0), Real lifetime=CONR("CLAIMSPELL_LIFETIME")) 
 		: TimedThing("Ogrian/Rock", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
@@ -52,7 +52,7 @@ public:
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
 		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
-		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
+		setRelativeExpirationTime(lifetime);
 	}
 
 	virtual ThingType getType() { return CLAIMTHING; }

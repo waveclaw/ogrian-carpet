@@ -33,8 +33,6 @@ This will be changed to a quadtree or something for performance.
 
 /*------------------------------------*/
 
-
-
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
 #include "OgrianTime.h"
@@ -46,6 +44,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianFoliageThing.h"
+#include "OgrianTowerThing.h"
 
 #include "OgreLogManager.h"
 
@@ -371,6 +370,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case WIZARDTHING: 
 		case CAMERATHING: return new WizardThing();
+
+		case TOWER: return new TowerThing(teamNum);
 
 		case CASTLETOWER: return new CastleTowerThing(0);
 
@@ -753,15 +754,15 @@ int Physics::getGridV(Vector3 pos)
 void Physics::_delete(Thing* thing)
 {
 	// confirm that it is not in physics
-	if (getThing(thing->getUID()))
-		((Thing*)0)->isAlive(); // stop!
+	//if (getThing(thing->getUID()))
+	//	((Thing*)0)->isAlive(); // stop!
 
-	Vector3 pos = thing->getPosition();
-	int x = getGridU(pos);
-	int y = getGridV(pos);
-	for (int i=0; i<(int)mThingGrid[x][y].size(); i++)
-		if (thing == mThingGrid[x][y][i])
-			((Thing*)0)->isAlive(); // stop!
+	//Vector3 pos = thing->getPosition();
+	//int x = getGridU(pos);
+	//int y = getGridV(pos);
+	//for (int i=0; i<(int)mThingGrid[x][y].size(); i++)
+	//	if (thing == mThingGrid[x][y][i])
+	//		((Thing*)0)->isAlive(); // stop!
 
 	thing->setDeleteFlag();
 	delete thing;

@@ -212,6 +212,8 @@ void CraneThing::setStateAttack()
 void CraneThing::setStateIdle()
 {
 	mState = CRANE_STATE_IDLE;
+
+	setVelocity(Vector3(0,0,0));
 	
 	mUnIdleTime = Time::getSingleton().getTime() + CONR("CRANE_IDLE_TIME") * 1000;
 }
