@@ -54,6 +54,7 @@ Renderer::Renderer()
 {
     mFrameListener = 0;
     mRoot = 0;
+	mWaterNode = 0;
 
 	mMapLoaded = false;
 }
@@ -215,6 +216,8 @@ void Renderer::createSky(const String& material)
 
 void Renderer::createOcean(const String& material)
 {
+	if (mWaterNode != 0) return;
+
     Entity *waterEntity;
     Plane waterPlane;
     
@@ -231,18 +234,12 @@ void Renderer::createOcean(const String& material)
         Vector3::UNIT_Z
     );
 
-	waterEntity = mSceneMgr->getEntity("water");
-    if (waterEntity == 0)
-	{
-		waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
+	mWaterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(); 
+	waterEntity = mSceneMgr->createEntity(mWaterNode->getName(), "WaterPlane"); 
+	waterEntity->setMaterialName(material); 
 
-		waterEntity->setMaterialName(material); 
-	}
-
-
-	SceneNode *waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
-	waterNode->attachObject(waterEntity); 
-	waterNode->translate(0, 0, 0);
+	mWaterNode->attachObject(waterEntity); 
+	mWaterNode->translate(0, 0, 0);
 }
 
 //----------------------------------------------------------------------------
@@ -284,15 +281,13 @@ void Renderer::loadMap(String configfile)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	String foliageMaterial = config.getSetting( "FoliageMaterial" );
 
-	mCamera->setPosition(-10000,0,-10000);
-
 	// set up the terrain
     mSceneMgr->setWorldGeometry( configfile );
 	HeightMap::getSingleton().loadTerrain(configfile);
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 
 	createSky(skyMaterial);
-	//createOcean(oceanMaterial);
+	createOcean(oceanMaterial);
 
 	createFoliage(foliageMaterial, FOLIAGE_NUM);
 
@@ -313,16 +308,7 @@ void Renderer::loadMap(String configfile)
 void Renderer::unloadMap()
 {
 	if (!mMapLoaded) return;
-	
-	// stop the game
-	Audio::getSingleton().stop();
-	Renderer::getSingleton().getFrameListener()->setGameRunning(false);
 
-	// remove the parts of the scene // 
-
-	// remove the ocean
-	//mSceneMgr->getRootSceneNode()->removeChild("WaterNode");
-	//mSceneMgr->removeEntity("WaterEntity");
 
 	// remove all Things
 	Physics::getSingleton().clear();
@@ -347,6 +333,13 @@ void Renderer::createScene(void)
 
 //----------------------------------------------------------------------------
 
+// return the camera
+Camera* Renderer::getCamera()
+{
+	return mCamera;
+}
+
+//----------------------------------------------------------------------------
 void Renderer::createViewports(void)
 {
     // Create one viewport, entire window

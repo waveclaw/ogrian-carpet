@@ -103,6 +103,11 @@ bool Menu::processKeyInput(InputReader* input)
 		// Loading...
 		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
 			->setParameter("caption", "LOADING...");
+		
+		Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
+		// stop the game
+		Audio::getSingleton().stop();
+		Renderer::getSingleton().getFrameListener()->setGameRunning(false);
 
 		// load the map
 		mMapName = "crescent.cfg";
@@ -115,6 +120,11 @@ bool Menu::processKeyInput(InputReader* input)
 		// Loading...
 		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
 			->setParameter("caption", "LOADING...");
+
+		Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
+		// stop the game
+		Audio::getSingleton().stop();
+		Renderer::getSingleton().getFrameListener()->setGameRunning(false);
 
 		// load the map
 		mMapName = "islands.cfg";

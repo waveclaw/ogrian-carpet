@@ -58,10 +58,16 @@ public:
 	// create random foilage using the specified material
 	virtual void createFoliage(const String& material, int num);
 
+	// get the SceneManager
 	SceneManager* getSceneManager(void);
 
+	// get the Camera Thing
 	CameraThing* getCameraThing();
 
+	// get the Camera (use this when the camerathing has not been made yet)
+	Camera* getCamera();
+
+	// get the frame listener
 	OgrianFrameListener* getFrameListener();
 
 	// load a map
@@ -80,6 +86,7 @@ protected:
     OgrianFrameListener* mFrameListener;
     RenderWindow* mWindow;
     SceneNode* mFountainNode;
+	SceneNode* mWaterNode;
 
 	bool mMapLoaded;
 
