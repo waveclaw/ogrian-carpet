@@ -32,6 +32,7 @@ starting games and detecting victory.
 #include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianSkinManager.h"
+#include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 #include "OgrianTowerThing.h"
 
@@ -249,6 +250,9 @@ void Game::startSkirmishGame()
 
 	// reset the score
 	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
+
+	// enable the build spell
+	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
 }
 
 //----------------------------------------------------------------------------

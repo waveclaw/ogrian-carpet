@@ -51,7 +51,7 @@ SpellManager::SpellManager()
 	mSpells[SPELL_FIREBALL] = new FireballSpell();
 
 	disableAllSpells();
-	enableSpell(SPELL_BUILD);
+	//enableSpell(SPELL_BUILD);
 	enableSpell(SPELL_CLAIM);
 	//enableSpell(SPELL_FIREBALL);
 
@@ -119,7 +119,7 @@ void SpellManager::enableSpell(int spell)
 
 void SpellManager::readyDefaultSpell()
 {
-	mCurrentSpell = 0;
+	mCurrentSpell = SPELL_CLAIM;
 	readyCurrentSpell();
 }
 
@@ -140,7 +140,7 @@ void SpellManager::readyNextSpell()
 		if (mCurrentSpell == NUM_SPELLS)
 		{
 			mCurrentSpell = 0;
-			break;
+			//break;
 		}
 	}
 	
@@ -163,8 +163,8 @@ void SpellManager::readyPrevSpell()
 		mCurrentSpell--;
 		if (mCurrentSpell == -1)
 		{
-			mCurrentSpell = NUM_SPELLS;
-			break;
+			mCurrentSpell = NUM_SPELLS-1;
+			//break;
 		}
 	}
 

@@ -33,6 +33,7 @@ NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
 #include "OgrianMultiplayer.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianSpellManager.h"
 
 #include "OgreOverlayManager.h"
 
@@ -256,7 +257,10 @@ void Menu::button_startGame()
 		Renderer::getSingleton().getCameraThing()->die();
 		Renderer::getSingleton().getCameraThing()->setPosition(sloc);
 
-		// kill all wizards
+		// enable the build spell
+		SpellManager::getSingleton().enableSpell(SPELL_BUILD);
+
+		// kill all wizards and enable the build spell
 		for (int i=0; i<Physics::getSingleton().numThings(); i++)
 		{
 			Thing* thing = Physics::getSingleton().getThingByIndex(i);
@@ -273,7 +277,14 @@ void Menu::button_startGame()
 				else sloc = Vector3(500,0,500);
 
 				Multiplayer::getSingleton().killWizard(thing, sloc);
+
 			}
+		}
+
+		for (i=0; i<Multiplayer::getSingleton().numClients(); i++)
+		{
+			PlayerInfo player = Multiplayer::getSingleton().getClient(i);
+            Multiplayer::getSingleton().serverSendInt(SPELL_BUILD,ID_ENABLESPELL,player.id);
 		}
 	}
 }
