@@ -5,10 +5,8 @@ to add:
 =========
 amry counters
 health/mana hud bars
-monster health bars
 death scream
 teleport sound
-teams by colour w/mana sharing
 teleport home w/posse
 meteor that claims nearby mana
 castle under attack message

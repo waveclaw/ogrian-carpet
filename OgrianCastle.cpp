@@ -248,6 +248,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 
 	// build the castle
 	mBlocks[0] = new CastleKeepThing(this, pos);
+	mBlocks[0]->setColour(getColour());
 
 	for (int i=1; i<NUM_BLOCKS; i++)
 		mBlocks[i]=0;
@@ -407,6 +408,15 @@ void Castle::addMana(int amount)
 
 //----------------------------------------------------------------------------
 
+int Castle::removeMana(int amount)
+{
+	if (amount > mMana) amount = mMana;
+	setMana(mMana - amount);
+	return amount;
+}
+
+//----------------------------------------------------------------------------
+
 void Castle::damage(int amount, int sourceTeamNum)
 {
 	if (mMana > 0)
@@ -428,10 +438,6 @@ void Castle::dropMana(int amount)
 {
 	// cant drop more then we have
 	if (amount > mMana) amount = mMana;
-
-		//std::ostringstream num("");
-		//num << amount;
-		//LogManager::getSingleton().logMessage("Castle dropping mana: " + num.str());
 
 	// can't drop less then one mana
 	if (amount < 1) return;
@@ -467,6 +473,7 @@ void Castle::setLevel(Real level)
 			if (mBlocks[i] == 0)
 			{
 				mBlocks[i] = newCastleTurret(i);
+				mBlocks[i]->setColour(getColour());
 				Physics::getSingleton().addThing(mBlocks[i]);
 			}
 

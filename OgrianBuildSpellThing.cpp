@@ -144,31 +144,66 @@ void BuildSpellThing::collided(Thing* e)
 {
 	if (!isAlive()) return;
 
-	if (e->getType() == TOWERTHING && e->getTeamNum() == getTeamNum())
+	switch(e->getType())
 	{
-		// unbuild the tower
-		((TowerThing*)e)->unbuild();
-
-		destroy();
-	}
-	else if (e->getType() == WIZARDTHING || e->getType() == CAMERATHING || e->getType() == FOLIAGETHING);
-	else // dont build inside stuff
-	{
-		Team* team = Physics::getSingleton().getTeam(getTeamNum());
-
-		// report the problem
-		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+		case CASTLETURRETTHING:
+		case CASTLEKEEPTHING:
+		case CASTLEFLAGTHING:
 		{
-			// send it to the HUD
-			Hud::getSingleton().setMessage(CONS("BUILD_FAIL_OCCUPIED"), true);
+			// give mana to your allies
+			Team* ourteam = Physics::getSingleton().getTeam(getTeamNum());
+			Team* theirteam = Physics::getSingleton().getTeam(e->getTeamNum());
+			if (ourteam && theirteam && ourteam->getColour() == theirteam->getColour())
+			{
+				Castle* ourcastle = ourteam->getCastle();
+				Castle* theircastle = theirteam->getCastle();
+				if (ourcastle && theircastle)
+				{
+					int mana = ourcastle->removeMana(CONI("GIVE_ALLY_MANA_AMOUNT"));
+					theircastle->addMana(mana);
+				}
+			}
+
+			destroy();
+			return;
 		}
-		else
+
+		case TOWERTHING:
 		{
-			// send a message to the right player
-			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
-			Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_OCCUPIED"), player);
+			// unbuild the tower
+			if (e->getTeamNum() == getTeamNum())
+				((TowerThing*)e)->unbuild();
+
+			destroy();
+			return;
 		}
-		destroy();
+
+		// except for these ...
+		case WIZARDTHING:
+		case CAMERATHING:
+		case FOLIAGETHING:
+			return;
+
+		// ... dont build inside other stuff
+		default: 
+		{
+			Team* team = Physics::getSingleton().getTeam(getTeamNum());
+
+			// report the problem
+			if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+			{
+				// send it to the HUD
+				Hud::getSingleton().setMessage(CONS("BUILD_FAIL_OCCUPIED"), true);
+			}
+			else
+			{
+				// send a message to the right player
+				PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+				Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_OCCUPIED"), player);
+			}
+			destroy();
+			return;
+		}
 	}
 }
 

@@ -3,12 +3,18 @@
 -some new sprites
 -removed baloons, mana go to castles on their own
 -nerfed ticks and put them higher on the "tech tree"
--improved gnomes
+-improved gnomes by speeding them up
+-made sentinels cheaper
 -added a map option to make lava deadly
 -gave towers a healing ball and a teleport portal
 -lots more settings for maps including start location(s)
+-monsters dont spawn right next to you in skirmish
 -towers now dont drop all of their mana when they die, some is sent back to the castle, like monsters
 -monsters now have health bars
+-players can now be allies by choosing the same colour
+-allies share portals
+-you can give your ally mana by casting build on his castle
+-made error messages when building or summoning fails
 
 
 

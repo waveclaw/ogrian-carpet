@@ -189,6 +189,9 @@ public:
 	// add to the amount of mana this castle contains
 	virtual void addMana(int amount);
 
+	// remove some mana from the castle. it returns the actuall amount removed
+	virtual int removeMana(int amount);
+
 	// drop this amount of mana
 	virtual void dropMana(int amount);
 

@@ -311,7 +311,7 @@ void TowerThing::think()
 		if (candidate 
 			&& (candidate->getType() == MANATHING || candidate->getType() == HUTTHING)
 			&& cylinderDistance(candidate) < bestDist
-			&& candidate->getTeamNum() != getTeamNum()
+			&& candidate->getColour() != getColour()
 			&& candidate->isAlive() )
 		{
 			target = candidate;

@@ -59,7 +59,7 @@ PortalThing::PortalThing(Thing* tower, Vector3 pos)
 void PortalThing::collided(Thing* e)
 {
 	if (e->getType() == WIZARDTHING || e->getType() == CAMERATHING)
-		if (e->getTeamNum() == getTeamNum())
+		if (e->getColour() == getColour())
 		{
 			// find the next tower
 			Thing* nextTower = 0;
@@ -71,7 +71,7 @@ void PortalThing::collided(Thing* e)
 			{
 				Thing* thing = physics->getThingByIndex(i);
 				if ((thing->getType() == TOWERTHING || thing->getType() == CASTLEFLAGTHING)
-					&& thing->getTeamNum() == getTeamNum())
+					&& thing->getColour() == getColour())
 				{
 					towers.push_back(thing);
 				}

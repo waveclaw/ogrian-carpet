@@ -57,6 +57,8 @@ void DamageableThing::reset()
 	// make the health bar
 	if (mHasBar)
 	{
+		if (mBar) mBar->destroy();
+
 		mBar = new HealthBarEffect(getPosition(), getHeight(), getWidth());
 		Physics::getSingleton().addEffect(mBar);
 	}
