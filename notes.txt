@@ -7,6 +7,10 @@ Hand Sprites - two frames, idle and casting, for each spell
 amry counters
 health/mana hud bars
 monster health bars
+bind mouse buttons to spell selections
+teleport to/from towers
+towers provide some regen
+
 
 
 Sounds needed:
@@ -17,13 +21,6 @@ crane chirp
 
 
 
-Monsters
-=========
--Crane - orbits castle towers for defense
--Albatross! - cruise missile
--Tick - follows the wizard around by jumping to a random spot near him
--Sentinel - stationary gargoyle that shoots fireballs at enemies
--Gnome - mobile sentinels
 
 Spells 
 =========

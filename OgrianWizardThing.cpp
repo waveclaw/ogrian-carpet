@@ -414,26 +414,26 @@ void WizardThing::setPosition(Vector3 pos)
 		pos.y = ground;
 	}
 
-	Vector3 lastPos = getPosition();
+	//Vector3 lastPos = getPosition();
 
-	if (!mSpeeding) // if we are not under the infuence of the speed spell
-	{
-		// if this is not a teleport
-		Vector3 diff = pos - lastPos;
-		Vector3 diffb = diff;
-		diffb.y = 0;
-		Time time = Clock::getSingleton().getTime();
-		Real dt = (time - mLastSetPosTime)/1000.0;
-		mLastSetPosTime = Clock::getSingleton().getTime();
-		Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
-		if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
-		{
-			// constrain the speed
-			diff.normalise();
-			diff *= CONR("CAMERA_MOVE_SPEED")*dt;
-			pos = lastPos + diff;
-		}
-	}
+	//if (!mSpeeding) // if we are not under the infuence of the speed spell
+	//{
+	//	// if this is not a teleport
+	//	Vector3 diff = pos - lastPos;
+	//	Vector3 diffb = diff;
+	//	diffb.y = 0;
+	//	Time time = Clock::getSingleton().getTime();
+	//	Real dt = (time - mLastSetPosTime)/1000.0;
+	//	mLastSetPosTime = Clock::getSingleton().getTime();
+	//	Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
+	//	if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
+	//	{
+	//		// constrain the speed
+	//		diff.normalise();
+	//		diff *= CONR("CAMERA_MOVE_SPEED")*dt;
+	//		pos = lastPos + diff;
+	//	}
+	//}
 
 	// dont ever go below ground
 	if (ground > pos.y) 

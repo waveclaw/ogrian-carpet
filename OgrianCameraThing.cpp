@@ -237,11 +237,15 @@ void CameraThing::die()
 		else
 		{
 			// respawn at a random location
-			Vector3 pos;
+			Vector3 pos = Vector3(0,0,0);
 			Real size = HeightMap::getSingleton().getWorldSize();
-			pos.x = Math::RangeRandom(0, size);
-			pos.z = Math::RangeRandom(0, size);
-			pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + getHeight();
+			while (pos.y <= CONR("BUILDING_MIN_GROUNDY"))
+			{
+				pos.x = Math::RangeRandom(0, size);
+				pos.z = Math::RangeRandom(0, size);
+				pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + getHeight();
+			}
+			pos.y = 0;
 			setPosition(pos);
 		}
 	}
