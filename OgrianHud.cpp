@@ -42,6 +42,7 @@ Hud::Hud()
 {
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
 	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
+	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 }
 
 //----------------------------------------------------------------------------
@@ -69,7 +70,7 @@ void Hud::hide()
 
 void Hud::setScore(int score)
 {
-	mScore->setCaption(String("Score: ") << score);
+	setScore(String("Score: ") << score);
 }
 
 //----------------------------------------------------------------------------
@@ -77,6 +78,20 @@ void Hud::setScore(int score)
 void Hud::setScore(String score)
 {
 	mScore->setCaption(score);
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setHealth(int health)
+{
+	setHealth(String("Health: ") << health);
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setHealth(String health)
+{
+	mHealth->setCaption(health);
 }
 
 //----------------------------------------------------------------------------

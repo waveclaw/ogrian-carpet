@@ -6,6 +6,14 @@ Ogrian/HUD/Overlay
 {
 	zorder 450
 
+	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
+	{
+		left .01
+		top .9
+		width .25
+   		caption Health: 999
+	}
+
 	container TextArea(Ogrian/HUD/Score) : SS/Templates/BasicText
 	{
 		left .75

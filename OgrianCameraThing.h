@@ -67,6 +67,8 @@ public:
 
 	virtual void die();
 
+	virtual void setHealth(int health);
+
 	// this must not be destroyed
 	virtual void destroy() {}
 

@@ -45,19 +45,26 @@ public:
 	virtual ~Hud();
     static Hud& getSingleton(void);
 
+	// show the HUD
 	void show();
 
+	// hide the HUD
 	void hide();
 
+	// set the score
 	void setScore(int score);
-
 	void setScore(String score);
+
+	// set the health 
+	void setHealth(int health);
+	void setHealth(String health);
 
 private:
 	Hud();
 
 	Overlay* mOverlay;
 	GuiElement* mScore;
+	GuiElement* mHealth;
 };
 
 }

@@ -31,6 +31,7 @@ This is never rendered.
 /*------------------------------------*/
 
 #include "OgrianCameraThing.h"
+#include "OgrianHud.h"
 
 
 namespace Ogrian
@@ -189,6 +190,13 @@ void CameraThing::move(Real time)
 	Thing::move(time);
 
 	mCamera->setPosition(getPosition());
+}
+
+//----------------------------------------------------------------------------
+
+void CameraThing::setHealth(int health)
+{
+	Hud::getSingleton().setHealth(health);
 }
 
 //----------------------------------------------------------------------------
