@@ -47,6 +47,7 @@ namespace Ogrian
 enum ThingType
 {
 	THING,
+	EFFECT,
 	ROLLINGTHING,
 	FLOATINGTHING,
 	MANATHING,
@@ -101,6 +102,9 @@ public:
 
 	// set the material
 	virtual void setMaterial(String material);
+
+	// set the period for flickering (rotating 180 and back)
+	virtual void setFlickerPeriod(Real time);
 
 	// get the visual representation (sprite, orientedsprite, or mesh)
 	virtual VisRep* getVisRep();
@@ -197,6 +201,11 @@ private:
 
 	unsigned long mStopTime;
 	bool mStopped;
+
+	// for flickering
+	unsigned long mFlickerPeriod;
+	unsigned long mLastRotTime;
+	bool mLastRotDir;
 
 	ThingShape mShape;
 

@@ -82,7 +82,7 @@ const unsigned long THING_STOP_DELAY = 300;
 const Real FIREBALL_FALL_RATE = 3;
 const Real FIREBALL_SPEED = 40;
 const Real FIREBALL_SCALE = 2;
-const unsigned long FIREBALL_ROT_PERIOD = 200;
+const Real FIREBALL_FLICKER_PERIOD = .2;
 
 }
 #endif

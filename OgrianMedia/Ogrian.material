@@ -92,7 +92,25 @@ material Ogrian/Fireball
 
 			texture_unit
 			{
-				texture sprites/firebolt.png
+				texture sprites/fireball.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/FireballBlast
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture sprites/fireballblast.png
 				tex_address_mode clamp
 			}
 		}

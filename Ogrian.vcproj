@@ -224,6 +224,9 @@
 				RelativePath="OgrianTime.h">
 			</File>
 			<File
+				RelativePath="OgrianTimedThing.h">
+			</File>
+			<File
 				RelativePath="OgrianVisRep.h">
 			</File>
 			<File

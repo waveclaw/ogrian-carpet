@@ -32,13 +32,26 @@ They self destruct when they hit the ground or another thing.
 #define __OgrianFireballThing_H__
 
 #include <Ogre.h>
-#include "OgrianThing.h"
-#include "OgrianTime.h"
+#include "OgrianTimedThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
+
+class FireballBlastEffect : public TimedThing
+{
+public:
+	FireballBlastEffect(Vector3 pos) 
+		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, FIREBALL_SCALE*2, pos, SPHERE)
+	{
+		playSound("OgrianMedia/sounds/boom1.wav");
+		setRelativeExpirationTime(1000);
+		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
 
 class FireballThing : public Thing
 {
@@ -48,29 +61,16 @@ public:
 	{
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
-		
-		mLastRotTime = 0;
-		mLastRotDir = false;
+		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
 	}
 
-	virtual ThingType getType()
-	{
-		return FIREBALLTHING;
-	}	
+	virtual ThingType getType()	{ return FIREBALLTHING; }	
 
 	virtual void move(Real time)
 	{
 		// fall
 		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
 		Thing::move(time);
-
-		// periodically rotate 180 degrees
-		if (mLastRotTime + FIREBALL_ROT_PERIOD < Time::getSingleton().getTime())
-		{
-			getVisRep()->setRotation(mLastRotDir?0:180);
-			mLastRotTime = Time::getSingleton().getTime();
-			mLastRotDir = !mLastRotDir;
-		}
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
@@ -88,14 +88,11 @@ public:
 	// go boom when destroyed
 	virtual void destroy()
 	{
-		playSound("OgrianMedia/sounds/boom1.wav");
+		if (isAlive())
+			Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
 
 		Thing::destroy();
 	}
-
-private:
-	unsigned long mLastRotTime;
-	bool mLastRotDir;
 };
 
 }

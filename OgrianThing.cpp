@@ -52,6 +52,8 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mCurrentSound = 0;
 	mUID = -1;
 	mLastUpdateTime = 0;
+	mLastRotTime = 0;
+	mLastRotDir = false;
 
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
@@ -143,6 +145,13 @@ void Thing::setShape(ThingShape shape)
 ThingShape Thing::getShape()
 {
 	return mShape;
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::setFlickerPeriod(Real time)
+{
+	mFlickerPeriod = time*1000;
 }
 
 //----------------------------------------------------------------------------
@@ -250,6 +259,17 @@ void Thing::move(Real time)
 
 	_updateVisibility();
 	_updateAudibility();
+	
+	if (mFlickerPeriod > 0)
+	{
+		// periodically rotate 180 degrees
+		if (mLastRotTime + mFlickerPeriod < Time::getSingleton().getTime())
+		{
+			getVisRep()->setRotation(mLastRotDir?0:180);
+			mLastRotTime = Time::getSingleton().getTime();
+			mLastRotDir = !mLastRotDir;
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
