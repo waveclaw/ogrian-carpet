@@ -128,6 +128,10 @@ void GnomeThing::think()
 			Real travelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
 			Vector3 targetOffset = target->getVelocity()*travelTime;
 
+			// ignore the falling of wizards
+			if (target->getType() == CAMERATHING || target->getType() == WIZARDTHING)
+				targetOffset.y = 0;
+
 			// shoot at the tips of buildings
 			if (target->isBuilding())
 				epos.y = epos.y + target->getHeight()/2;

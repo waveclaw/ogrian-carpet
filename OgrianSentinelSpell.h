@@ -60,7 +60,7 @@ public:
 	
 	virtual Real getCastPeriod() { return CONR("SUMMONSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost() { return 0; }
+	virtual int getManaCost() { return CONI("SENTINEL_COST"); }
 
 	virtual String getString() { return String("Summon Sentinel"); }
 };
