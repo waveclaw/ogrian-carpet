@@ -72,6 +72,15 @@ public:
 		// self destruct
 		destroy();
 	}
+
+	virtual void collided(Thing* e)
+	{
+		if (e->getType() == CASTLEFLAG)
+		{
+			Castle* castle = static_cast<Castle*>(e);
+			castle->setMana(castle->getMana()+1);
+		}
+	}
 };
 
 }

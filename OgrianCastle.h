@@ -51,36 +51,38 @@ public:
 
 		// start at zero
 		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2);
+		mTargetY = getPosY();
 		setPercentage(1);
 	}
 
+	// set how far up this block should go to
 	virtual void setPercentage(Real per)
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = 0;
-		Real newTargetHeight = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
+		Real newTargetY = getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
 
-		if (newTargetHeight == mTargetHeight) return;
+		if (newTargetY == mTargetY) return;
 
-		mTargetHeight = newTargetHeight;
+		mTargetY = newTargetY;
 
-		if (mTargetHeight > getHeight())
+		if (mTargetY > getPosY())
 		{
 			setVelY(CONR("CASTLE_RISE_SPEED"));
 		}
 		else
 		{
-			setVelY(-CONR("CASTLE_RISE_SPEED"));
+			setVelY(0-CONR("CASTLE_RISE_SPEED"));
 		}
 	}
 
 	virtual void move(Real time)
 	{
-		// if it has reached its target height, stop
-		if (getVelY() > 0 && mTargetHeight < getPosY()
-			|| getVelY() < 0 && mTargetHeight > getPosY())
+		// if it has reached its target pos.y, stop
+		if ((getVelY() < 0 && mTargetY > getPosY()) ||
+			(getVelY() > 0 && mTargetY < getPosY()))
 		{
-			setPosY(mTargetHeight);
+			setPosY(mTargetY);
 			setVelY(0);
 		}
 
@@ -97,7 +99,7 @@ public:
 private:
 	DamageableThing* mCastle;
 
-	Real mTargetHeight;
+	Real mTargetY;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -154,6 +156,9 @@ public:
 
 	// add to the amount of mana this castle contains
 	virtual void addMana(int amount);
+
+	// drop this amount of mana
+	virtual void dropMana(int amount);
 
 	// take damage
 	virtual void damage(int amount, int sourceTeamNum);

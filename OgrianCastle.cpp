@@ -29,6 +29,7 @@ Description: This is a castle
 
 #include "OgrianCastle.h"
 #include "OgrianPhysics.h"
+#include "OgrianManaThing.h"
 
 namespace Ogrian
 {
@@ -104,13 +105,15 @@ Castle::Castle(int teamNum, Vector3 pos)
 		Physics::getSingleton().addThing(mBlocks[i]);
 
 	// start at level 0
-	setLevel(0);
+	setMana(400);
 }
 //----------------------------------------------------------------------------
 
 void Castle::setMana(int amount)
 {
 	mMana = amount;
+
+	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
 }
 
 //----------------------------------------------------------------------------
@@ -131,7 +134,34 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	setLevel(mLevel+.1);
+	dropMana(amount);
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::dropMana(int amount)
+{
+	// cant drop more then we have
+	if (amount > mMana) amount = mMana;
+
+	// can't drop less then one mana
+	if (amount < 1) return;
+
+	setMana(mMana-amount);
+
+	// drop some mana
+	Real dir = Math::RangeRandom(0, 2*Math::PI);
+	Vector3 offset;
+	offset.x = sin(dir);
+	offset.z = cos(dir);
+	offset.normalise();
+	offset *= CONR("CASTLE_MANA_RADIUS");
+	ManaThing* mana = new ManaThing(amount, getPosition()+offset);
+	Physics::getSingleton().addThing(mana);
+	mana->setTeamNum(getTeamNum());
+	mana->setPosY(mana->getGroundY());
+
+	LogManager::getSingleton().logMessage(String("dropped mana: ") << mana->getPosition() << " offset: " << offset);
 }
 
 //----------------------------------------------------------------------------
