@@ -19,54 +19,46 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianAudio.h
+OgrianMenu.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The audio handler
+Description: The Menu
 /*------------------------------------*/
 
-#ifndef __OgrianAudio_H__
-#define __OgrianAudio_H__
+#ifndef __OgrianMenu_H__
+#define __OgrianMenu_H__
 
 #include <Ogre.h>
-#include <fmod.h>
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Audio : public Singleton< Audio >
+class Menu : public Singleton< Menu >, public ActionListener, public MouseListener
 {
 public:
-	virtual ~Audio();
+	virtual ~Menu();
 
-	// start playing a sound. Returns the channel of the sound.
-	virtual int playSound(String filename, Vector3 pos, bool loop=false);
+	virtual void showMenu();
+
+	void actionPerformed(ActionEvent* e);
+	void mouseClicked(MouseEvent* e) {}
+	void mouseEntered(MouseEvent* e) 
+	{
+		int i =5;
+
 	
-	// set the position of a sound
-	virtual void setSoundPosition(int channel, Vector3 pos);
+	}
+	void mouseExited(MouseEvent* e) {}
+	void mousePressed(MouseEvent* e) {}
+	void mouseReleased(MouseEvent* e) {}
 
-	// stop a sound
-	virtual void stopSound(int channel);
-
-	// start playing a song. 
-	virtual void playSong(String filename);
-
-	// stop playing the song
-	virtual void stopSong();
-
-	// update the 3d audio engine
-	virtual void frame(Real time);
-
-	static Audio& getSingleton(void);
+	static Menu& getSingleton(void);
 
 private:
-	Audio();
-    float listenerpos[3]; 
-	FSOUND_STREAM* mSongStream;
-	int mSongChannel;
+	Menu();
 };
 
 }

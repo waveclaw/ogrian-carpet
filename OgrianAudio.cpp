@@ -19,7 +19,7 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianAudio.h
+OgrianAudio.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 

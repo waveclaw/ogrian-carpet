@@ -37,6 +37,7 @@ See OgrianFrameListener.h for command listings
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianRenderer.h"
+#include "OgrianMenu.h"
 
 namespace Ogrian
 {
@@ -106,7 +107,7 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
     mAniso = 1;
     mFiltering = TFO_BILINEAR;
 
-    showDebugOverlay(true);
+    //showDebugOverlay(true);
 }
 OgrianFrameListener::~OgrianFrameListener()
 {
@@ -192,6 +193,14 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
     if (mInputDevice->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
     {
 		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+
+        mTimeUntilNextToggle = .5;
+    }
+
+	// show the menu
+    if (mInputDevice->isKeyDown(KC_O) && mTimeUntilNextToggle <= 0)
+    {
+		Menu::getSingleton().showMenu();
 
         mTimeUntilNextToggle = .5;
     }

@@ -66,7 +66,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="C:\Code\fmodapi372win\api\inc;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
+				AdditionalIncludeDirectories="C:\Code\fmodapi372win\api\inc;C:\Code\ogrenew\PlugIns\GuiElements\include;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -118,6 +118,9 @@
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File
+				RelativePath="OgrianMenu.cpp">
+			</File>
+			<File
 				RelativePath="OgrianPhysics.cpp">
 			</File>
 			<File
@@ -162,6 +165,9 @@
 			</File>
 			<File
 				RelativePath="OgrianManaThing.h">
+			</File>
+			<File
+				RelativePath="OgrianMenu.h">
 			</File>
 			<File
 				RelativePath="OgrianPhysics.h">
