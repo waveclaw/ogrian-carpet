@@ -122,8 +122,17 @@ void WizardThing::collided(Thing* e)
 {
 	if (e->getType() == CASTLETOWER || e->getType() == CASTLEWALL)
 	{
-		setPosY(e->getPosY() + e->getHeight()/2.0 + getHeight()*.45);
-		setVelY(0);
+		Real topPosY = e->getPosY() + e->getHeight()/2.0 + getHeight()*.45;
+
+		if (getPosY() < topPosY)
+		{
+			setVelY(CONR("CAMERA_CLIMB_RATE"));
+		}
+		else
+		{
+			setPosY(topPosY);
+			setVelY(0);
+		}
 		mOnBuilding = true;
 	}
 }
@@ -132,11 +141,15 @@ void WizardThing::collided(Thing* e)
 	
 void WizardThing::move(Real time)
 {
-	// fall
+	// float
 	if (!mOnBuilding && getVelY() > -CONR("CAMERA_FALL_MAX"))
 	{
+		if (getVelY() > CONR("CAMERA_RISE_MAX")) 
+			setVelY(CONR("CAMERA_RISE_MAX"));
+
 		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
+
 	
 	mOnBuilding = false;
 
