@@ -34,6 +34,7 @@ Description: The heads up display
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianSpellManager.h"
+#include "OgrianClock.h"
 
 using namespace Ogre;
 
@@ -45,6 +46,9 @@ class Hud : public Singleton< Hud >
 public:
 	virtual ~Hud();
     static Hud& getSingleton(void);
+
+	// call this every frame
+	void frame();
 
 	// show the HUD
 	void show();
@@ -70,8 +74,8 @@ public:
 	// set the health 
 	void setHealth(int health);
 
-	// set the message
-	void setMessage(String msg);
+	// set the message, and if temp, clear it after a time
+	void setMessage(String msg, bool temp=false);
 
 	// set the spell name
 	void setSpellName(String name);
@@ -86,6 +90,8 @@ private:
 
 	int mBaseMana;
 	int mActiveMana;
+
+	Time mMessageClearTime;
 
 	Overlay* mOverlay;
 	GuiElement* mMana;

@@ -157,9 +157,26 @@ void Hud::setMana()
 
 //----------------------------------------------------------------------------
 
-void Hud::setMessage(String msg)
+void Hud::frame()
+{
+	if (mMessageClearTime && mMessageClearTime < Clock::getSingleton().getTime())
+		setMessage("");
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setMessage(String msg, bool temp)
 {
 	mMessage->setCaption(msg);
+
+	if (temp)
+	{
+		mMessageClearTime = CONT("HUD_MESSAGE_TIME") + Clock::getSingleton().getTime();
+	}
+	else
+	{
+		mMessageClearTime = 0;
+	}
 }
 
 //----------------------------------------------------------------------------

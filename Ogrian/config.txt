@@ -57,6 +57,9 @@ MOUSE_BUTTON_3_SPELL=2
 MOUSE_BUTTON_4_SPELL=7
 MOUSE_BUTTON_5_SPELL=9
 
+# how long, in seconds, messages should remain on your HUD
+HUD_MESSAGE_TIME=5
+
 
 # Performance variables
 # all units are in meters, seconds, or meters per second

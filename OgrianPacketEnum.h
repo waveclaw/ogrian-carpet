@@ -114,6 +114,8 @@ enum PacketID
 	
 	ID_PLAYSOUND,
 	ID_THINGMESSAGE,
+
+	ID_HUDMESSAGE,
 };
 
 #endif

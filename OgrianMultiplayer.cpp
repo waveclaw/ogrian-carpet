@@ -247,6 +247,13 @@ void Multiplayer::clientSendInt(int num, int type)
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::serverSendHudText(String message, PlayerID player)
+{
+	serverSendText(message, ID_HUDMESSAGE, player);
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::serverSendText(String message, int type, PlayerID player)
 {
 	BitStream bs;
@@ -696,6 +703,15 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// set it
 			SpellManager::getSingleton().disableSpell(spell);
+			return true;
+		}
+
+		case ID_HUDMESSAGE: //////////////////////////////////////////////////////
+		{
+			String msg;
+			packetToString(packet,msg);
+
+			Hud::getSingleton().setMessage(msg, true);
 			return true;
 		}
 		

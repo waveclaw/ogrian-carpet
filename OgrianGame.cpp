@@ -65,6 +65,9 @@ Game::~Game()
 
 void Game::frame(Real time)
 {
+	// tick the Hud
+	Hud::getSingleton().frame();
+
 	// tick the multiplayer
 	Multiplayer::getSingleton().frame(time);
 

@@ -81,6 +81,9 @@ public:
 	void serverSendAllText(String message, int type);
 	void serverSendAllInt(int num, int type);
 
+	// send a message to the client's Hud
+	void serverSendHudText(String message, PlayerID player);
+
 	// request a kick (to disconnect cleanly)
 	void clientRequestKick();
 

@@ -30,6 +30,7 @@ Description: This makes a castle or a tower
 #include "OgrianBuildSpellThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianHud.h"
 #include "OgrianBuildingHeightMap.h"
 
 using namespace Ogre;
@@ -44,6 +45,19 @@ void BuildSpellThing::collidedGround()
 	// make sure its not in water
 	if (getGroundY() < CONR("BUILDING_MIN_GROUNDY"))
 	{
+		// report the problem
+		if (team->getWizardUID() == 0)
+		{
+			// send it to the HUD
+			Hud::getSingleton().setMessage(CONS("BUILD_FAIL_WATER"), true);
+		}
+		else
+		{
+			// send a message to the right player
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+			Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_WATER"), player);
+		}
+
 		destroy();
 		return;
 	}
@@ -57,6 +71,19 @@ void BuildSpellThing::collidedGround()
 			Thing* thing = Physics::getSingleton().getThingByIndex(i);
 			if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
 			{
+				// report the problem
+				if (team->getWizardUID() == 0)
+				{
+					// send it to the HUD
+					Hud::getSingleton().setMessage(CONS("BUILD_FAIL_PROXIMITY"), true);
+				}
+				else
+				{
+					// send a message to the right player
+					PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+					Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_PROXIMITY"), player);
+				}
+
 				destroy();
 				return;
 			}
