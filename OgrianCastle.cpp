@@ -162,6 +162,8 @@ void Castle::setHealth(int health)
 
 	if (health == 0)
 		mRubble = true;
+	else
+		mRubble = false;
 }
 
 //----------------------------------------------------------------------------

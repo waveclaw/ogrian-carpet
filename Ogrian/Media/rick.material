@@ -7,6 +7,18 @@ material Ogrian/Rick/f
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
 
 			texture_unit
 			{
@@ -20,6 +32,18 @@ material Ogrian/Rick/fl
 {
 	technique
 	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
 		pass
 		{
 			scene_blend alpha_blend
@@ -41,6 +65,18 @@ material Ogrian/Rick/l
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
 
 			texture_unit
 			{
@@ -54,6 +90,18 @@ material Ogrian/Rick/bl
 {
 	technique
 	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
 		pass
 		{
 			scene_blend alpha_blend
@@ -75,6 +123,18 @@ material Ogrian/Rick/b
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
 
 			texture_unit
 			{
@@ -88,6 +148,18 @@ material Ogrian/Rick/br
 {
 	technique
 	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
 		pass
 		{
 			scene_blend alpha_blend
@@ -109,6 +181,18 @@ material Ogrian/Rick/r
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
 
 			texture_unit
 			{
@@ -122,6 +206,18 @@ material Ogrian/Rick/fr
 {
 	technique
 	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
 		pass
 		{
 			scene_blend alpha_blend

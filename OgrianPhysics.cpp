@@ -334,12 +334,13 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 			thing->interpretBitStream(bitstream);
 
 			// add it to the physics
-			addThing(thing);
-
-			// send it to the clients immediately
-			BitStream bs;
-			thing->generateBitStream(bs);
-			Multiplayer::getSingleton().serverSendAll(&bs, false);
+			if (addThing(thing))
+			{
+				// send it to the clients immediately
+				BitStream bs;
+				thing->generateBitStream(bs);
+				Multiplayer::getSingleton().serverSendAll(&bs, false);
+			}
 		}
 		return true;
 	}
@@ -450,7 +451,7 @@ void Physics::addEffect(Thing* thing)
 //----------------------------------------------------------------------------
 
 // add a Thing to the world
-void Physics::addThing(Thing* thing)
+bool Physics::addThing(Thing* thing)
 {
 	// if its a client
 	if (Multiplayer::getSingleton().isClient())
@@ -471,7 +472,7 @@ void Physics::addThing(Thing* thing)
 			// discard the thing
 			delete thing;
 
-			return;
+			return false;
 		}
 
 		// make sure it's not too big
@@ -494,6 +495,8 @@ void Physics::addThing(Thing* thing)
 		// keep allthings sorted by uid
 		_sortAllThings();
 	}
+
+	return true;
 }
 
 //----------------------------------------------------------------------------
