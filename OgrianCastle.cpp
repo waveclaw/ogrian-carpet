@@ -19,49 +19,33 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianCastleSpellThing.h
+OgrianCastle.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a simple ball that creates a castle when it hits the ground 
+Description: This is a castle
 
 /*------------------------------------*/
 
-#ifndef __OgrianCastleTowerThing_H__
-#define __OgrianCastleTowerThing_H__
-
-#include <Ogre.h>
-#include "OgrianTimedThing.h"
-#include "OgrianRenderer.h"
+#include "OgrianCastle.h"
 #include "OgrianPhysics.h"
-
-using namespace Ogre;
 
 namespace Ogrian
 {
 
-/////////////////////////////////////////////////////////////////////////////
-class CastleTowerThing : public DamageableThing
+//----------------------------------------------------------------------------
+Castle::Castle(int teamNum, Vector3 pos) 
 {
-public:
-	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLETOWER_SCALE"), pos, CUBE)
-	{
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh", 3);
+	mPos = pos;
+	mTeamNum = teamNum;
 
-		setHeight(getWidth()*3);
-		setPosY(getGroundY()+getHeight()/6);
-	}
+	LogManager::getSingleton().logMessage("Making Tower");
 
-	virtual ThingType getType()
-	{
-		return CASTLETOWER;
-	}
+	mCenterTower = new CastleTowerThing(mTeamNum, mPos);
+	Physics::getSingleton().addThing(mCenterTower);
+}
+//----------------------------------------------------------------------------
 
-private:
-	int mTeamNum;
-};
+//----------------------------------------------------------------------------
 
 }
-
-#endif

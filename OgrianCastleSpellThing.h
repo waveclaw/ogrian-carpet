@@ -32,7 +32,7 @@ Description: This is a simple ball that creates a castle when it hits the ground
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
-#include "OgrianCastleTowerThing.h"
+#include "OgrianCastle.h"
 #include "OgrianPhysics.h"
 
 using namespace Ogre;
@@ -57,8 +57,17 @@ public:
 
 	virtual void collidedGround()
 	{
-		// make a castle
-		Physics::getSingleton().addThing(new CastleTowerThing(mTeamNum, getPosition()));
+		Team* team = Physics::getSingleton().getTeam(mTeamNum);
+		if (team && !team->hasCastle())
+		{
+			// make a castle
+			Castle* castle = new Castle(mTeamNum, getPosition());
+			team->setCastle(castle);
+		}
+		else
+		{
+			LogManager::getSingleton().logMessage(String("Team already has castle: ") << mTeamNum);
+		}
 
 		// self destruct
 		destroy();

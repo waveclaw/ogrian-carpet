@@ -115,6 +115,9 @@
 				RelativePath="OgrianCameraThing.cpp">
 			</File>
 			<File
+				RelativePath="OgrianCastle.cpp">
+			</File>
+			<File
 				RelativePath="OgrianConst.cpp">
 			</File>
 			<File
@@ -185,10 +188,10 @@
 				RelativePath="OgrianCameraThing.h">
 			</File>
 			<File
-				RelativePath="OgrianCastleSpellThing.h">
+				RelativePath="OgrianCastle.h">
 			</File>
 			<File
-				RelativePath="OgrianCastleTowerThing.h">
+				RelativePath="OgrianCastleSpellThing.h">
 			</File>
 			<File
 				RelativePath="OgrianConst.h">

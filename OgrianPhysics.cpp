@@ -912,8 +912,12 @@ int Physics::numTeams()
 
 Team* Physics::getTeam(int index)
 {
-	if (index < 0) return 0;
-	if (index >= (int)mTeams.size()) return 0;
+	if (index < 0 || index >= (int)mTeams.size())
+	{
+		LogManager::getSingleton().logMessage(String("Team not found: ") << index);
+		return 0;
+	}
+
 	return mTeams[index];
 }
 

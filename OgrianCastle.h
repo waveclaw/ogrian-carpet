@@ -19,89 +19,61 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianTeam.h
+OgrianCastle.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a team, it has a wizard and a score
+Description: This is a castle
 
 /*------------------------------------*/
 
-
-#ifndef __OgrianTeam_H__
-#define __OgrianTeam_H__
+#ifndef __OgrianCastle_H__
+#define __OgrianCastle_H__
 
 #include <Ogre.h>
-#include "OgrianGame.h"
-#include "OgrianCastle.h"
+#include "OgrianDamageableThing.h"
+#include "OgrianModel.h"
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-// extend floatingThing for floating behavior
-class Team
+/////////////////////////////////////////////////////////////////////////////
+class CastleTowerThing : public DamageableThing
 {
 public:
-	Team(int wizardUID)
+	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
+		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLETOWER_SCALE"), pos, CUBE)
 	{
-		mWizardUID = wizardUID;
-		mScore = 0;
-		mCastle = 0;
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh", 3);
+
+		setHeight(getWidth()*3);
+		setPosY(getGroundY()+getHeight()/6);
 	}
 
-	virtual ~Team()
+	virtual ThingType getType()
 	{
-		if (mCastle) delete mCastle;
-	}
-
-	int getWizardUID()
-	{
-		return mWizardUID;
-	}
-
-	void setScore(int score)
-	{
-		if (mScore == score) return;
-
-		mScore = score;
-			
-		Game::getSingleton().updateScores();
-	}
-
-	int getScore()
-	{
-		return mScore;
-	}
-
-	void incrementScore()
-	{
-		mScore++;
-
-		Game::getSingleton().updateScores();
-	}
-
-	void setCastle(Castle* castle)
-	{
-		mCastle = castle;
-	}
-
-	Castle* getCastle()
-	{
-		return mCastle;
-	}
-
-	bool hasCastle()
-	{
-		return (mCastle != 0);
+		return CASTLETOWER;
 	}
 
 private:
-	int mScore;
-	int mWizardUID;
+	int mTeamNum;
+};
 
-	Castle* mCastle;
+/////////////////////////////////////////////////////////////////////////////
+class Castle
+{
+public:
+	Castle(int teamNum, Vector3 pos);
+
+
+private:
+	int mTeamNum;
+	Vector3 mPos;
+
+	CastleTowerThing* mCenterTower;
 };
 
 }
