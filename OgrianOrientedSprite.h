@@ -130,6 +130,12 @@ public:
 	// note, call this through Thing::setOrientation for best behavior
 	virtual void setOrientation(Real orientation);
 	
+	// set the color
+	virtual void setColour(ColourValue& colour);
+
+	// get the colour
+	virtual ColourValue getColour();
+
 	// unused
 	virtual void setMaterial(String material) {}
 	virtual void setRotation(Real rotation) {};
@@ -154,6 +160,7 @@ private:
 	Real mWidth;
 	Real mHeight; 
 	Vector3 mPos;
+	ColourValue mColour;
 	bool mInRenderer;
 	Real mOrientation;
 };

@@ -78,6 +78,7 @@ private:
 	bool mForeward, mBack, mLeft, mRight;
 	Vector3 mForce;
 	Real mSensitivity;
+	ColourValue mColor;
 };
 }
 #endif

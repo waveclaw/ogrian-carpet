@@ -103,6 +103,12 @@ public:
 	// set the material
 	virtual void setMaterial(String material);
 
+	// set the colour
+	virtual void setColour(ColourValue& colour);
+	
+	// get the colour
+	virtual ColourValue getColour();
+
 	// set the period for flickering (rotating 180 and back)
 	virtual void setFlickerPeriod(Real time);
 

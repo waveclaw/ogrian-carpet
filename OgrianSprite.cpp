@@ -54,6 +54,7 @@ Sprite::Sprite(String name, bool fixed_y)
 	mHeight = 1;
 
 	mInRenderer = false;
+
 }
 
 //----------------------------------------------------------------------------
@@ -62,6 +63,25 @@ Sprite::~Sprite()
 {
 	removeFromRenderer();
 }
+
+//----------------------------------------------------------------------------
+
+void Sprite::setColour(ColourValue& colour)
+{
+	mColour = colour;
+
+	if (mInRenderer)
+		mBillboard->setColour(colour);
+}
+
+//----------------------------------------------------------------------------
+
+ColourValue Sprite::getColour()
+{
+	return mColour;
+}
+
+//----------------------------------------------------------------------------
 
 // returns true if it's in the renderer
 bool Sprite::inRenderer()
@@ -154,6 +174,7 @@ void Sprite::addToRenderer()
 	setMaterial(mMaterial);
 	setPosition(mPos);
 	setWidth(mWidth);
+	setColour(mColour);
 }
 
 //----------------------------------------------------------------------------

@@ -61,6 +61,12 @@ public:
 	// set the material used by this sprite
 	virtual void setMaterial(String material);
 
+	// set the color
+	virtual void setColour(ColourValue& colour);
+
+	// get the colour
+	virtual ColourValue getColour();
+
 	// get the material used by this sprite
 	virtual String getMaterial();
 	
@@ -92,6 +98,7 @@ private:
 	Real mWidth;
 	Real mHeight; 
 	Vector3 mPos;
+	ColourValue mColour;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;

@@ -100,6 +100,20 @@ Thing::~Thing()
 
 //----------------------------------------------------------------------------
 
+void Thing::setColour(ColourValue& colour)
+{
+	mVisRep->setColour(colour);
+}
+
+//----------------------------------------------------------------------------
+
+ColourValue Thing::getColour()
+{
+	return mVisRep->getColour();
+}
+
+//----------------------------------------------------------------------------
+
 VisRep* Thing::getVisRep()
 {
 	return mVisRep;
@@ -483,6 +497,11 @@ void Thing::generateBitStream(BitStream& bitstream)
 	bitstream.Write(mOrientation);
 	bitstream.Write(mHeight);
 	bitstream.Write(mWidth);
+
+	ColourValue colour = getColour();
+	bitstream.Write(colour.r);
+	bitstream.Write(colour.b);
+	bitstream.Write(colour.g);
 }
 
 //----------------------------------------------------------------------------
@@ -508,6 +527,11 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(height);
 	bitstream.Read(width);
 
+	ColourValue colour;
+	bitstream.Read(colour.r);
+	bitstream.Read(colour.b);
+	bitstream.Read(colour.g);
+
 	assert(type == getType());
 
 	setPosition(pos);
@@ -515,6 +539,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	setOrientation(orientation);
 	setHeight(height);
 	setWidth(width);
+	setColour(colour);
 }
 //----------------------------------------------------------------------------
 

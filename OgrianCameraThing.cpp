@@ -51,6 +51,13 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	config.load( "config.cfg" );
 	mSensitivity = atof(config.getSetting( "sensitivity" ));
 	if (mSensitivity == 0) mSensitivity = 1;
+
+	// set the color
+	ColourValue colour;
+	colour.r = atof(config.getSetting( "red" ));
+	colour.b = atof(config.getSetting( "blue" ));
+	colour.g = atof(config.getSetting( "green" ));
+	setColour(colour);
 }
 
 //----------------------------------------------------------------------------

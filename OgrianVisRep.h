@@ -64,6 +64,12 @@ public:
 	// set the material
 	virtual void setMaterial(String material) = 0;
 
+	// set the color
+	virtual void setColour(ColourValue& colour) = 0;
+
+	// get the colour
+	virtual ColourValue getColour() = 0;
+
 	// add this visrep to the renderer
 	virtual void addToRenderer() = 0;
 

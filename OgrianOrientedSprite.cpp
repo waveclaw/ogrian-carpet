@@ -60,6 +60,25 @@ OrientedSprite::~OrientedSprite()
 	}
 }
 
+//----------------------------------------------------------------------------
+
+void OrientedSprite::setColour(ColourValue& colour)
+{
+	mColour = colour;
+
+	if (mInRenderer && mCurrentSprite != 0)
+		mCurrentSprite->setColour(mColour);
+}
+
+//----------------------------------------------------------------------------
+
+ColourValue OrientedSprite::getColour()
+{
+	return mColour;
+}
+
+//----------------------------------------------------------------------------
+
 // returns true if it's in the renderer
 bool OrientedSprite::inRenderer()
 {
@@ -109,6 +128,7 @@ void OrientedSprite::addToRenderer()
 		mCurrentSprite->setPosition(mPos);
 		mCurrentSprite->setWidth(mWidth);
 		mCurrentSprite->setHeight(mHeight);
+		mCurrentSprite->setColour(mColour);
 		mCurrentSprite->addToRenderer();
 	}
 	mInRenderer = true;
