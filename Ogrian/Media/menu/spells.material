@@ -1,4 +1,52 @@
 
+material Ogrian/SpellIcon/AkimboFireball/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture fireball.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/AkimboFireball/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/AkimboFireball/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
 material Ogrian/SpellIcon/Fireball/Ready
 {
 	technique

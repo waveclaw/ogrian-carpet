@@ -49,6 +49,7 @@ Hud::Hud()
 	mSpellIcons[0] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/0");
 	mSpellIcons[1] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/1");
 	mSpellIcons[2] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/2");
+	mSpellIcons[3] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/3");
 	setMessage("");
 
 	mBaseMana = 0;

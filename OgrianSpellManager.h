@@ -41,10 +41,11 @@ namespace Ogrian
 {
 
 
-#define SPELL_CLAIM		0
-#define SPELL_BUILD		1
-#define SPELL_FIREBALL	2
-#define NUM_SPELLS		3
+#define SPELL_CLAIM				0
+#define SPELL_BUILD				1
+#define SPELL_FIREBALL			2
+#define SPELL_AKIMBO_FIREBALL	3
+#define NUM_SPELLS				4
 
 class SpellManager : public Singleton< SpellManager >
 {

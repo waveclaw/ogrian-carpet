@@ -351,6 +351,9 @@
 			Name="Spells"
 			Filter="">
 			<File
+				RelativePath="OgrianAkimboFireballSpell.h">
+			</File>
+			<File
 				RelativePath="OgrianBuildSpell.h">
 			</File>
 			<File
