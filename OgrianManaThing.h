@@ -48,11 +48,11 @@ class ManaThing : public FloatingThing
 {
 public:
 	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
-		: FloatingThing("Ogrian/Mana", MODEL, "ManaThing", false, 1, pos, SPHERE)
+		: FloatingThing("Ogrian/Tower", MODEL, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
 		setColour(ColourValue(0,1,1));
-		static_cast<Model*>(getVisRep())->setMesh("cube.mesh");
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh");
 	}
 
 	// setting the amount automatically sets the scale

@@ -1,4 +1,4 @@
-material Default
+material 1 - Default
 {
 	technique
 	{
@@ -6,7 +6,20 @@ material Default
 		{
 			texture_unit
 			{	
-				texture default.png
+				texture lava.jpg
+			}
+		}
+	}
+}
+material Ogrian/Tower
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{	
+				texture castletower.png
 			}
 		}
 	}
