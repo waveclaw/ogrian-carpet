@@ -80,7 +80,7 @@ void CraneThing::move(Real time)
 	DamageableThing::move(time);
 
 	// stay above a minimum altitude
-	if (mState != CRANE_STATE_ATTACK && !Multiplayer::getSingleton().isClient())
+	if (mState != CRANE_STATE_ATTACK)
 	if (getPosY() < getGroundY() + CONR("CRANE_ALTITUDE_MIN")) 
 		setPosY(getGroundY() + CONR("CRANE_ALTITUDE_MIN"));
 }

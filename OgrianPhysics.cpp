@@ -484,7 +484,7 @@ void Physics::addThing(Thing* thing)
 
 		// add to grid
 		Vector3 pos = thing->getPosition();
-		_addThing(thing, getGridU(pos.x), getGridV(pos.z));
+		_addThing(thing, getGridU(pos), getGridV(pos));
 
 		// add to full list
 		mAllThings.push_back(thing);
@@ -607,24 +607,26 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			+ /*grid_u + "," + grid_v +*/ ") " + thing->getString());
 		return false;
 	}
-	else
-	{
-		// find the thing from the other things
-		size_t s = mOtherThings.size();
-		for (int i=0; i<(int)mOtherThings.size(); i++)
-		{
-			if (mOtherThings[i] == thing)
-			{
-				// erase it
-				mOtherThings.erase(mOtherThings.begin()+i);
-				return true;
-			}
-		}
-		// assert that one was removed
-		assert(mOtherThings.size() == s-1);
-		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") + thing->getString()); 
-		return false;
-	}
+	//else
+	//{
+	//	// find the thing from the other things
+	//	size_t s = mOtherThings.size();
+	//	for (int i=0; i<(int)mOtherThings.size(); i++)
+	//	{
+	//		if (mOtherThings[i] == thing)
+	//		{
+	//			// erase it
+	//			mOtherThings.erase(mOtherThings.begin()+i);
+	//			return true;
+	//		}
+	//	}
+	//	// assert that one was removed
+	//	assert(mOtherThings.size() == s-1);
+	//	LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") + thing->getString()); 
+	//	return false;
+	//}
+
+	return false;
 }
 
 //----------------------------------------------------------------------------
@@ -682,7 +684,7 @@ void Physics::deleteThing(Thing* thing)
 
 	// it's not in the grid if its a client
 	if (!Multiplayer::getSingleton().isClient())
-		removed = _removeThing(thing, getGridU(pos.x), getGridV(pos.z));
+		removed = _removeThing(thing, getGridU(pos), getGridV(pos));
 
 	// remove it from allThings
 	size_t s = mAllThings.size();
@@ -709,10 +711,10 @@ void Physics::deleteThing(Thing* thing)
 
 void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 {
-	int from_u = getGridU(oldPos.x);
-	int from_v = getGridV(oldPos.z);
-	int to_u = getGridU(newPos.x);
-	int to_v = getGridV(newPos.z);
+	int from_u = getGridU(oldPos);
+	int from_v = getGridV(oldPos);
+	int to_u = getGridU(newPos);
+	int to_v = getGridV(newPos);
 
 	// if it crossed a boundary, move it to the new cell
 	if (from_u != to_u || from_v != to_v)
@@ -724,24 +726,35 @@ void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 
 //----------------------------------------------------------------------------
 
-int Physics::getGridU(Real x)
+int Physics::getGridU(Vector3 pos)
 {
 	Real c = CONR("COASTLINE");
-	return ((x+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
+	return ((pos.x+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }
 
 //----------------------------------------------------------------------------
 
-int Physics::getGridV(Real z)
+int Physics::getGridV(Vector3 pos)
 {
 	Real c = CONR("COASTLINE");
-	return ((z+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
+	return ((pos.z+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }
 
 //----------------------------------------------------------------------------
 
 void Physics::_delete(Thing* thing)
 {
+	// confirm that it is not in physics
+	if (getThing(thing->getUID()))
+		((Thing*)0)->isAlive(); // stop!
+
+	Vector3 pos = thing->getPosition();
+	int x = getGridU(pos);
+	int y = getGridV(pos);
+	for (int i=0; i<(int)mThingGrid[x][y].size(); i++)
+		if (thing == mThingGrid[x][y][i])
+			((Thing*)0)->isAlive(); // stop!
+
 	thing->setDeleteFlag();
 	delete thing;
 }
@@ -764,8 +777,12 @@ void Physics::clear()
 	while(!mAllThings.empty())
 	{
 		Thing* thing = mAllThings[mAllThings.size()-1];
-		if (thing->getType() != CAMERATHING) _delete(thing);
-		mAllThings.pop_back();
+		if (thing->getType() != CAMERATHING)
+		{
+			mAllThings.pop_back();
+			_delete(thing);
+		}
+		else mAllThings.pop_back();
 	}
 
 	// delete each effect from mEffects
@@ -776,7 +793,7 @@ void Physics::clear()
 	}
 
 	// clear mOtherThings
-	mOtherThings.clear();
+	//mOtherThings.clear();
 
 	// clear mTeams
 	mTeams.clear();

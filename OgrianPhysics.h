@@ -116,7 +116,7 @@ public:
 private:
 	// a matrix of vectors for collision culling
 	std::vector<Thing*> mThingGrid[PHYSICS_GRID_SIZE][PHYSICS_GRID_SIZE];
-	std::vector<Thing*> mOtherThings; // the things outside the grid
+	//std::vector<Thing*> mOtherThings; // the things outside the grid
 	std::vector<Thing*> mAllThings; // All things in the world
 	std::vector<Thing*> mEffects; // a list of effects
 
@@ -142,8 +142,8 @@ private:
 	// run a collision check for a client
 	void clientCollisionCheck();
 
-	inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
-	inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord
+	inline int getGridU(Vector3 pos); // get the grid u index that corresponds to the real x coord
+	inline int getGridV(Vector3 pos); // get the grid v index that corresponds to the real z coord
 
 	// do a comprehensive collision check between two things,
 	// and notify them if they collide
