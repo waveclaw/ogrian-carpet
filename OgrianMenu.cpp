@@ -24,6 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: The Menu
+NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
 /*------------------------------------*/
 
 #include "OgrianMenu.h"
@@ -123,6 +124,7 @@ void Menu::button_host()
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
 }
 
@@ -133,9 +135,10 @@ void Menu::button_disconnect()
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientDisconnect();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 }
 
 //----------------------------------------------------------------------------
