@@ -79,8 +79,14 @@ public:
 		{
 			if(getAmount() > 0)
 			{
-				// absorb the other
 				ManaThing* m = static_cast<ManaThing*>(e);
+
+				// set the position as a weighted average of the two
+				setPosition(
+					(getPosition()*getAmount() + m->getPosition()*m->getAmount())
+						/ (getAmount() + m->getAmount()));
+						
+				// absorb the other
 				setAmount(getAmount() + m->getAmount());
 				m->setAmount(0);
 			}
