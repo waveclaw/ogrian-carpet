@@ -23,7 +23,9 @@ public:
     virtual ~OgrianRenderer();
 
     /// Start the renderer
-    virtual void go(void);
+    void go(void);
+
+	SceneManager* getSceneManager(void);
 
 	static OgrianRenderer& getSingleton(void);
 

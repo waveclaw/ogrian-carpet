@@ -2,6 +2,7 @@
 #define __OgrianPhysicalEntity_H__
 
 #include <Ogre.h>
+#include "OgrianRenderer.h"
 
 using namespace Ogre;
 
@@ -9,21 +10,30 @@ using namespace Ogre;
 class OgrianPhysicalEntity
 {
 public:
-	Vector3 pos;
-	Vector3 vel;
-
-	OgrianPhysicalEntity()
+	OgrianPhysicalEntity(String mesh, Real x=0, Real y=0, Real z=0)
 	{
-		pos.x = 0;
-		pos.y = 0;
-		pos.z = 0;
+		SceneManager* sceneMgr = OgrianRenderer::getSingleton().getSceneManager();
+		node = sceneMgr->getRootSceneNode()->createChildSceneNode();
+        Entity *ent = sceneMgr->createEntity(node->getName(), mesh);
+        node->attachObject(ent);
+
+		setPosition(x, y, z);
 	}
 
-	OgrianPhysicalEntity(float x, float y, float z)
+	virtual void setPosition(Real x, Real y, Real z)
 	{
 		pos.x = x;
 		pos.y = y;
 		pos.z = z;
+
+		node->setPosition(x, y, z);
+	}
+
+	virtual void setVelocity(Real x, Real y, Real z)
+	{
+		vel.x = x;
+		vel.y = y;
+		vel.z = z;
 	}
 
 	virtual void move(long time)
@@ -42,6 +52,11 @@ public:
 
 	
 private:
+	Vector3 pos;
+	Vector3 vel;
+
+	SceneNode* node;
 };
+
 
 #endif

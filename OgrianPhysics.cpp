@@ -86,10 +86,10 @@ void OgrianPhysics::test()
 	// test the physucks engine
 	LogManager::getSingleton().logMessage("physics testing - start");
 
-	OgrianPhysicalEntity* a = new OgrianPhysicalEntity(1, 1, 1);
-	OgrianPhysicalEntity* b = new OgrianPhysicalEntity(2, 2, 2);
-	OgrianPhysicalEntity* c = new OgrianPhysicalEntity(4, 4, 4);
-	OgrianPhysicalEntity* d = new OgrianPhysicalEntity(3, 3, 3);
+	OgrianPhysicalEntity* a = new OgrianPhysicalEntity("ogrehead.mesh", 1, 1, 1);
+	OgrianPhysicalEntity* b = new OgrianPhysicalEntity("ogrehead.mesh", 2, 2, 2);
+	OgrianPhysicalEntity* c = new OgrianPhysicalEntity("ogrehead.mesh", 4, 4, 4);
+	OgrianPhysicalEntity* d = new OgrianPhysicalEntity("ogrehead.mesh", 3, 3, 3);
 
 	LogManager::getSingleton().logMessage("physics testing - add");
 	OgrianPhysics::getSingleton().addPhysicalEntity(a);
@@ -122,14 +122,6 @@ void OgrianPhysics::test()
 
 	LogManager::getSingleton().logMessage("physics testing - collision test again");
 	OgrianPhysics::getSingleton().collisionCheck();
-
-	LogManager::getSingleton().logMessage("physics testing - remove all");
-	OgrianPhysics::getSingleton().removeAll();
-
-	if (0 == OgrianPhysics::getSingleton().numPhysicalEntities()) 
-		LogManager::getSingleton().logMessage("physics testing - correct number");
-	else 
-		LogManager::getSingleton().logMessage("physics testing - ERRRO! incorrect number");
 
 	LogManager::getSingleton().logMessage("physics testing - done");
 }

@@ -44,6 +44,12 @@ OgrianRenderer& OgrianRenderer::getSingleton(void)
 	return Singleton<OgrianRenderer>::getSingleton();
 }
 
+SceneManager* OgrianRenderer::getSceneManager(void)
+{
+	return mSceneMgr;
+}
+
+
 // These internal methods package up the stages in the startup process
 /** Sets up the application - returns false if the user chooses to abandon configuration. */
 bool OgrianRenderer::setup(void)
@@ -118,6 +124,11 @@ void OgrianRenderer::createFrameListener(void)
 void OgrianRenderer::createScene(void)
 {
 	OgrianPhysics::getSingleton().test();
+
+        // Add a head, give it it's own node
+	    SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+        Entity *ent = mSceneMgr->createEntity("head", "ogrehead.mesh");
+        headNode->attachObject(ent);
 
     Entity *waterEntity;
     Plane waterPlane;
