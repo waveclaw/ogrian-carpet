@@ -318,6 +318,7 @@ void Renderer::loadMap(String configfile, bool server)
 	// start the game
 	Audio::getSingleton().start();
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
+	mCameraThing->setHealth(WIZARD_HEALTH);
 
 	mMapLoaded = true;
 }

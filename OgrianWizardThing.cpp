@@ -53,15 +53,6 @@ WizardThing::WizardThing(bool visible)
 
 //----------------------------------------------------------------------------
 
-void WizardThing::placedInPhysics(int uid)
-{
-	DamageableThing::placedInPhysics(uid);
-
-	setHealth(WIZARD_HEALTH);
-}
-
-//----------------------------------------------------------------------------
-
 void WizardThing::setHealth(int health)
 {
 	DamageableThing::setHealth(health);

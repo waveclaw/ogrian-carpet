@@ -617,6 +617,9 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			bs.Write(player.wizardUID);
 			serverSend(&bs, player.id);
 
+			// set the health of the new wizard
+			wt->setHealth(WIZARD_HEALTH);
+
 			// update everyone's scoreboard
 			updateScores();
 

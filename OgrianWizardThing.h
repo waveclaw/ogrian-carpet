@@ -49,8 +49,6 @@ public:
 
 	virtual void setHealth(int health);
 	virtual void die();
-
-	virtual void placedInPhysics(int uid);
 };
 
 }
