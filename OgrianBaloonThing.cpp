@@ -103,20 +103,20 @@ void BaloonThing::move(Real time)
 			setPosY(getGroundY() + CONR("BALOON_ALTITUDE"));
 	}
 	
-	if (Math::Abs(lastPos.x - getPosition().x) > 10 || 
-		Math::Abs(lastPos.z - getPosition().z) > 10 || 
-		Math::Abs(lastPos.y - getPosition().y) > 10)
-	{
-		Real x = getPosition().x;
-		Real y = getPosition().y;
-		Real z = getPosition().z;
+	//if (Math::Abs(lastPos.x - getPosition().x) > 10 || 
+	//	Math::Abs(lastPos.z - getPosition().z) > 10 || 
+	//	Math::Abs(lastPos.y - getPosition().y) > 10)
+	//{
+	//	Real x = getPosition().x;
+	//	Real y = getPosition().y;
+	//	Real z = getPosition().z;
 
-		std::ostringstream num("Setting Target: ");
-		num << "( " << x << ", " << y << ", " << z << " )";
-		LogManager::getSingleton().logMessage(String("") + num.str());
+	//	std::ostringstream num("Setting Target: ");
+	//	num << "( " << x << ", " << y << ", " << z << " )";
+	//	LogManager::getSingleton().logMessage(String("") + num.str());
 
-		lastPos = getPosition();
-	}
+	//	lastPos = getPosition();
+	//}
 }
 
 //----------------------------------------------------------------------------

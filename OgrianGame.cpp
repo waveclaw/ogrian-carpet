@@ -171,6 +171,9 @@ void Game::startSkirmishGame()
 
 		Physics::getSingleton().addThing(ai);
 	}
+
+	// reset the score
+	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
 }
 
 //----------------------------------------------------------------------------

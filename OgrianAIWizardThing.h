@@ -34,6 +34,7 @@ Description: A computer controlled Wizard
 #include <Ogre.h>
 #include "OgrianWizardThing.h"
 #include "OgrianFireballThing.h"
+#include "OgrianManaThing.h"
 #include "OgrianPhysics.h"
 
 using namespace Ogre;
@@ -156,11 +157,16 @@ public:
 	{
 		WizardThing::die();
 
-		Vector3 offset;
+		// drop a manathing
+		Physics::getSingleton().addThing(new ManaThing(CONI("BOT_MANA_DROP"), getPosition()));
+
+		// respawn at a random location
+		Vector3 pos;
 		Real wdo = CONR("WIZARD_DEATH_OFFSET");
-		offset.x = Math::RangeRandom(-wdo, wdo);
-		offset.z = Math::RangeRandom(-wdo, wdo);
-		setPosition(getPosition() + offset);
+		pos.x = CONR("START_X") + Math::RangeRandom(-wdo, wdo);
+		pos.y = 0;
+		pos.z = CONR("START_Z") + Math::RangeRandom(-wdo, wdo);
+		setPosition(pos);
 	}
 
 private:

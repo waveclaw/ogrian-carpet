@@ -71,6 +71,7 @@ WizardThing::WizardThing(bool visible, int skin)
 
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
+		mTeam->setScore(0);
 		
 		std::ostringstream num("");
 		num << teamNum;
@@ -81,6 +82,7 @@ WizardThing::WizardThing(bool visible, int skin)
 		int teamNum = Physics::getSingleton().newTeam(0, getColour());
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
+		mTeam->setScore(0);
 
 		std::ostringstream num("");
 		num << teamNum;
@@ -188,11 +190,6 @@ void WizardThing::die()
 
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		Team* team = Physics::getSingleton().getTeam(getLastDamageSourceTeamNum());
-		if (team > 0) team->incrementScore();
-		//else LogManager::getSingleton().logMessage(String("ERROR: damage source not found: "));
-			//+ getLastDamageSourceTeamNum());
-
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{
 			// kill it

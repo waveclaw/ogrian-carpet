@@ -214,12 +214,13 @@ void CameraThing::die()
 		}
 		else
 		{
-			Vector3 offset;
+			// respawn at a random location
+			Vector3 pos;
 			Real wdo = CONR("WIZARD_DEATH_OFFSET");
-			offset.x = Math::RangeRandom(-wdo, wdo);
-			offset.y = 0;
-			offset.z = Math::RangeRandom(-wdo, wdo);
-			setPosition(getPosition() + offset);
+			pos.x = CONR("START_X") + Math::RangeRandom(-wdo, wdo);
+			pos.y = 0;
+			pos.z = CONR("START_Z") + Math::RangeRandom(-wdo, wdo);
+			setPosition(pos);
 		}
 	}
 }

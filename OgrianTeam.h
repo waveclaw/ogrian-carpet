@@ -47,8 +47,8 @@ public:
 	{
 		mColour = colour;
 		mWizardUID = wizardUID;
-		mScore = 0;
 		mCastle = 0;
+		mScore = 0;
 	}
 
 	virtual ~Team()
