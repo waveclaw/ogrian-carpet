@@ -17,7 +17,7 @@ Ogrian/HUD/Overlay
 	container TextArea(Ogrian/HUD/Score) : SS/Templates/BasicText
 	{
 		left .75
-		top 0
+		top 0.9
 		width .25
    		caption Score: 999
 	}
