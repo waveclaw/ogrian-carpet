@@ -466,7 +466,7 @@ void Physics::addEffect(Thing* thing)
 void Physics::addThing(Thing* thing)
 {
 	// if its a client
-	if (Multiplayer::getSingleton().isClient())
+	if (Multiplayer::getSingleton().isClient() && thing->getType() != CAMERATHING)
 	{
 		if (thing->getUpdateType() != NEVER)
 		{

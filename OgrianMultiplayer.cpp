@@ -37,14 +37,13 @@ Description: This handles all of the multiplayer networking code.
 
 #include "GetTime.h"
 
-#define STRING_MAX_LENGTH 24
+#define STRING_MAX_LENGTH 128
 
 using namespace Ogre;
 
 template<> Ogrian::Multiplayer * Singleton< Ogrian::Multiplayer >::ms_Singleton = 0;
 namespace Ogrian
 {
-
 
 //----------------------------------------------------------------------------
 
@@ -70,6 +69,7 @@ Multiplayer::~Multiplayer()
 }
 
 //----------------------------------------------------------------------------
+
 void Multiplayer::loadConfig()
 {
 	/* Set up the options */
@@ -100,6 +100,8 @@ void Multiplayer::clientStart()
 	mIsServer = false;
 	mActive = true;
 	mWasClient = true;
+
+	//Renderer::getSingleton().loadMap("Media/maps/cliffs.txt", false);
 	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
@@ -433,6 +435,7 @@ PacketID Multiplayer::getPacketIdentifier(Packet* p)
 	else
 		return (PacketID) p->data[0];
 }
+
 //----------------------------------------------------------------------------
 
 int Multiplayer::getWizardUID(PlayerID pid)
@@ -556,24 +559,20 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 		case ID_MAP_NAME: //////////////////////////////////////////////////////
 		{
-			LogManager::getSingleton().logMessage("Got Map");
 
 			// get the name
 			String map;
 			packetToString(packet,map);
 
+			String themap = (String)map.c_str();
+
+			LogManager::getSingleton().logMessage(String("Got Map") + themap);
+
 			// if the map is different from the one we have loaded
-			if (map != Renderer::getSingleton().getMapName())
+			if (themap != Renderer::getSingleton().getMapName())
 			{
-				// disconnect
-				clientDisconnect();
-
 				// load the new map as a client
-				Renderer::getSingleton().loadMap(map, false);
-
-				// reconnect
-				clientStart();
-				return true;
+				Renderer::getSingleton().loadMap(themap, false);
 			}
 
 			// send our name and skin to the server
@@ -848,6 +847,8 @@ void Multiplayer::ghostWizard(Thing* wizard)
 
 void Multiplayer::stringToBitStream(String& string, BitStream& bs, int type)
 {
+	LogManager::getSingleton().logMessage(String("Server encoding string: ") + string);
+
 	char cstr[STRING_MAX_LENGTH];
 	strcpy(cstr, string.c_str());
 	int len = (int)strlen(cstr) + 1;
@@ -870,6 +871,8 @@ void Multiplayer::packetToString(Packet* packet, String& string)
 	bs.Read(cstr,len);
 
 	string += String(cstr);
+
+	LogManager::getSingleton().logMessage(String("Client decoded string: ") + string);
 }
 
 //----------------------------------------------------------------------------
