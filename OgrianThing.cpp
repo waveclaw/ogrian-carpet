@@ -344,6 +344,8 @@ String Thing::getString()
 // only render things that are close to the camera
 void Thing::_updateVisibility()
 {
+	
+
 	// check the distance from the camera
 	Thing* cam = Renderer::getSingleton().getCameraThing();
 	if (cylinderDistance(cam) < CONR("THING_CULL_DIST") || isBuilding())
@@ -352,7 +354,7 @@ void Thing::_updateVisibility()
 		if (!mVisRep->inRenderer())
 			mVisRep->addToRenderer();
 	}
-	else
+	else if (getHeight() <= CONR("DOT_MAX_HEIGHT"))// dont do LOD on very tall things (namely beacons)
 	{
 		// remove it otherwise
         if (mVisRep->inRenderer())

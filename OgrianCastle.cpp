@@ -35,6 +35,16 @@ namespace Ogrian
 {
 
 //----------------------------------------------------------------------------
+
+CastleFlagThing::CastleFlagThing()
+	: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
+{
+	mBeacon = new CastleBeaconThing();
+	Physics::getSingleton().addEffect(mBeacon);
+}
+
+//----------------------------------------------------------------------------
+
 Castle::Castle(int teamNum, Vector3 pos) 
 	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE)
 {
@@ -43,6 +53,13 @@ Castle::Castle(int teamNum, Vector3 pos)
 
 	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH") - CONR("CASTLE_OFFSET"), 0));
 	Physics::getSingleton().addThing(this);
+
+	mBeacon = new CastleBeaconThing();
+	mBeacon->setColour(getColour());
+	Physics::getSingleton().addEffect(mBeacon);
+	Vector3 bpos = getPosition();
+	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
+	mBeacon->setPosition(bpos);
 
 	Real W = CONR("CASTLE_WIDTH");
 

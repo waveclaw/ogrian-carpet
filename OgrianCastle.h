@@ -160,14 +160,41 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////
+
+class CastleBeaconThing : public Thing
+{
+public:
+	CastleBeaconThing()
+		: Thing("Ogrian/Beacon", SPRITE, "CastleBeacon", true, CONR("CASTLE_BEACON_WIDTH"), Vector3(0,0,0), SPHERE)
+	{
+		setHeight(CONR("CASTLE_BEACON_HEIGHT"));
+	}
+	
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
 // only used by clients
 class CastleFlagThing : public Thing
 {
 public:
-	CastleFlagThing()
-		: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
+	CastleFlagThing();
+
+	virtual void setColour(ColourValue& colour)
 	{
+		Thing::setColour(colour);
+		mBeacon->setColour(colour);
 	}
+
+	virtual void setPosition(Vector3 pos)
+	{
+		Thing::setPosition(pos);
+		pos.y += CONR("CASTLE_BEACON_ALTITUDE");
+		mBeacon->setPosition(pos);
+	}
+
+	CastleBeaconThing* mBeacon;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -209,10 +236,7 @@ public:
 	// the castle doesn't move, but it does do stuff every frame
 	virtual void move(Real time);
 
-	virtual ThingType getType()
-	{
-		return CASTLEFLAG;
-	}
+	virtual ThingType getType()	{ return CASTLEFLAG; }
 
 private:
 	int mMana;
@@ -220,6 +244,8 @@ private:
 	Real mLevel;
 
 	bool mRubble;
+
+	CastleBeaconThing* mBeacon;
 
 	// a vector holding all the claimed manathings
 	std::vector<Thing*> mManaThings;
