@@ -45,7 +45,7 @@ class ClaimSpellThing : public TimedThing
 {
 public:
 	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: TimedThing("Ogrian/Rock", SPRITE, "CastleSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
+		: TimedThing("Ogrian/Rock", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
 
@@ -58,33 +58,6 @@ public:
 	}
 
 	virtual ThingType getType() { return CLAIMTHING; }
-
-	virtual void collidedGround()
-	{
-		Team* team = Physics::getSingleton().getTeam(getTeamNum());
-			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-
-		if (getGroundY() > CONR("BUILDING_MIN_GROUNDY") && team && !team->hasCastle())
-		{
-			// make sure its not too close to other buildings
-			for (int i=0; i<Physics::getSingleton().numThings(); i++)
-			{
-				Thing* thing = Physics::getSingleton().getThingByIndex(i);
-				if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
-				{
-					destroy();
-					return;
-				}
-			}
-
-			// make a castle
-			Castle* castle = new Castle(getTeamNum(), getPosition());
-			team->setCastle(castle);
-		}
-
-		// self destruct
-		destroy();
-	}
 
 	virtual void collided(Thing* e)
 	{

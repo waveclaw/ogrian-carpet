@@ -42,6 +42,7 @@ This will be changed to a quadtree or something for performance.
 
 #include "OgrianFireballThing.h"
 #include "OgrianClaimSpellThing.h"
+#include "OgrianBuildSpellThing.h"
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianFoliageThing.h"
@@ -379,6 +380,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
+		case BUILDTHING: return new BuildSpellThing(teamNum);
+
 		case BALOONTHING: return new BaloonThing(teamNum);
 
 		case CRANETHING: return new CraneThing(teamNum);
@@ -462,19 +465,21 @@ void Physics::addEffect(Thing* thing)
 void Physics::addThing(Thing* thing)
 {
 	// if its a client
-	if (Multiplayer::getSingleton().isClient() && thing->getUpdateType() != NEVER)
+	if (Multiplayer::getSingleton().isClient())
 	{
-		// send a message to the server telling it about the new thing
-		BitStream bs;
-		thing->generateBitStream(bs);
-		Multiplayer::getSingleton().clientSend(&bs);
+		if (thing->getUpdateType() != NEVER)
+		{
+			// send a message to the server telling it about the new thing
+			BitStream bs;
+			thing->generateBitStream(bs);
+			Multiplayer::getSingleton().clientSend(&bs);
 
-		// discard the thing
-		_delete(thing);
+			// discard the thing
+			_delete(thing);
+		}
 	}
 	else // if its a server or singleplayer
 	{
-
 		// make sure it's not too big
 		if (thing->getWidth() / 2.0 > mWorldSize / PHYSICS_GRID_SIZE)
 		{
@@ -496,7 +501,8 @@ void Physics::addThing(Thing* thing)
 		_sortAllThings();
 
 		// if its a claimthing and we're in pregame mode
-		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame())
+		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame()
+			|| thing->getType() == BUILDTHING && Game::getSingleton().isPreGame())
 		{
 			// destroy the thing immediately
 			thing->destroy();
@@ -711,6 +717,8 @@ void Physics::deleteThing(Thing* thing)
 
 void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 {
+	if (Multiplayer::getSingleton().isClient()) return;
+
 	int from_u = getGridU(oldPos);
 	int from_v = getGridV(oldPos);
 	int to_u = getGridU(newPos);

@@ -34,6 +34,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianManaThing.h"
 #include "OgrianFireballThing.h"
 #include "OgrianClaimSpellThing.h"
+#include "OgrianBuildSpellThing.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianRenderer.h"
 
@@ -113,6 +114,20 @@ bool Input::processKeyInput(InputReader* input)
         mTimeUntilNextCast = CONR("CLAIMSPELL_CAST_PERIOD");
 	}
 
+	// cast build
+	if (input->getMouseButton(2) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
+		&& !Game::getSingleton().isPreGame())
+	{
+		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
+		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
+		vel.normalise();
+
+		pos += vel*(CONR("WIZARD_SCALE") + CONR("BUILDSPELL_SCALE"))*1.1;
+		vel *= CONR("BUILDSPELL_SPEED");
+	
+		Physics::getSingleton().addThing(new BuildSpellThing(0, pos, vel));
+        mTimeUntilNextCast = CONR("BUILDSPELL_CAST_PERIOD");
+	}
 	return true;
 }
 
