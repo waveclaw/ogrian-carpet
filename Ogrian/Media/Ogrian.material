@@ -46,7 +46,7 @@ material Ogrian/Flag
 		{
 			scene_blend alpha_blend
 			depth_write off
-			ambient 1 1 1
+			lighting off
 
 			texture_unit
 			{	

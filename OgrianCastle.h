@@ -154,10 +154,7 @@ public:
 class CastleFlagThing : public Thing
 {
 public:
-	CastleFlagThing() 
-		: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
-	{
-	}
+	CastleFlagThing() ;
 };
 
 /////////////////////////////////////////////////////////////////////////////

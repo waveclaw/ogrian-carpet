@@ -39,6 +39,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE)
 {
 	setTeamNum(teamNum);
+	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
 
 	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH") - CONR("CASTLE_OFFSET"), 0));
 	Physics::getSingleton().addThing(this);
@@ -190,7 +191,11 @@ void Castle::setLevel(Real level)
 }
 
 //----------------------------------------------------------------------------
-
+CastleFlagThing::CastleFlagThing() 
+	: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
+{
+	setColour(Physics::getSingleton().getTeam(getTeamNum())->getColour());
+}
 //----------------------------------------------------------------------------
 
 }
