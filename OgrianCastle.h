@@ -41,35 +41,26 @@ namespace Ogrian
 {
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleTowerThing : public DamageableThing
+class CastleBlockThing : public DamageableThing
 {
 public:
-	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
+	CastleBlockThing(DamageableThing* castle, Vector3 pos) 
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
 		mCastle = castle;
-
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
-			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
-
-		setHeight(CONR("CASTLETOWER_HEIGHT"));
 		setPercentage(1);
-		setHealth(CONI("CASTLE_BASE_HEALTH"));
 	}
 
 	virtual void setPercentage(Real per)
 	{
-		setPosY(getGroundY()+getHeight()*CONR("CASTLETOWER_OFFSET")*per);
+		if (per >= 1) per = 1;
+		if (per <= 0) per = -20;
+		setPosY(getGroundY()+getHeight()*CONR("CASTLE_OFFSET")*per);
 	}
 
 	virtual void damage(int amount, int sourceTeamNum)
 	{
 		mCastle->damage(amount, sourceTeamNum);
-	}
-
-	virtual ThingType getType()
-	{
-		return CASTLETOWER;
 	}
 	
 private:
@@ -77,39 +68,43 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleWallThing : public DamageableThing
+class CastleTowerThing : public CastleBlockThing
 {
 public:
-	CastleWallThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/Wall", MODEL, "CastleWall", false, CONR("CASTLE_WIDTH"), pos, CUBE)
+	CastleTowerThing(DamageableThing* castle, Vector3 pos) 
+		: CastleBlockThing(castle, pos)
 	{
-		mCastle = castle;
+		setMaterial("Ogrian/Tower");
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
+			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
 
+		setHeight(CONR("CASTLETOWER_HEIGHT"));
+	}
+
+	virtual ThingType getType()
+	{
+		return CASTLETOWER;
+	}
+};
+
+/////////////////////////////////////////////////////////////////////////////
+class CastleWallThing : public CastleBlockThing
+{
+public:
+	CastleWallThing(DamageableThing* castle, Vector3 pos) 
+		: CastleBlockThing(castle, pos)
+	{
+		setMaterial("Ogrian/Wall");
 		static_cast<Model*>(getVisRep())->setMesh("wall.mesh",
 			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
 
 		setHeight(CONR("CASTLEWALL_HEIGHT"));
-		setPercentage(1);
-		setHealth(CONI("CASTLE_BASE_HEALTH"));
-	}
-
-	virtual void setPercentage(Real per)
-	{
-		setPosY(getGroundY()+getHeight()*CONR("CASTLEWALL_OFFSET")*per);
-	}
-
-	virtual void damage(int amount, int sourceTeamNum)
-	{
-		mCastle->damage(amount, sourceTeamNum);
 	}
 
 	virtual ThingType getType()
 	{
 		return CASTLEWALL;
 	}
-
-private:
-	DamageableThing* mCastle;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,33 +114,38 @@ public:
 	Castle(int teamNum, Vector3 pos);
 
 	// set the amount of mana this castle contains
-	void setMana(int amount);
+	virtual void setMana(int amount);
 
 	// get the amount of mana this castle contains
-	int getMana();
+	virtual int getMana();
 
 	// add to the amount of mana this castle contains
-	void addMana(int amount);
+	virtual void addMana(int amount);
 
-	// call this every frame
-	void frame(Real time);
+	// take damage
+	virtual void damage(int amount, int sourceTeamNum);
+
+	virtual ThingType getType()
+	{
+		return CASTLEFLAG;
+	}
 
 private:
-	int mTeamNum;
-	Vector3 mPos;
 	int mMana;
 
-	// an array of all the towers and walls for convenient looping
-	DamageableThing* mBlocks[49];
+	Real mLevel;
 
-	CastleTowerThing* mCenterTower;
+	// an array of all the towers and walls for convenient looping
+	CastleBlockThing* mBlocks[49];
+
+	CastleTowerThing* mCenterTower; // 0
 	
-	CastleTowerThing* mCornerTowerNE;
+	CastleTowerThing* mCornerTowerNE; // 1
 	CastleTowerThing* mCornerTowerSE;
 	CastleTowerThing* mCornerTowerSW;
 	CastleTowerThing* mCornerTowerNW;
 
-	CastleWallThing* mInnerWallN1;
+	CastleWallThing* mInnerWallN1; // 5
 	CastleWallThing* mInnerWallN2;
 	CastleWallThing* mInnerWallN3;
 	CastleWallThing* mInnerWallE1;
@@ -158,7 +158,7 @@ private:
 	CastleWallThing* mInnerWallW2;
 	CastleWallThing* mInnerWallW3;
 
-	CastleTowerThing* mFarCornerTowerN;
+	CastleTowerThing* mFarCornerTowerN; // 17
 	CastleTowerThing* mFarCornerTowerS;
 	CastleTowerThing* mFarCornerTowerE;
 	CastleTowerThing* mFarCornerTowerW;
@@ -167,7 +167,7 @@ private:
 	CastleTowerThing* mFarCornerTowerSW;
 	CastleTowerThing* mFarCornerTowerNW;
 
-	CastleWallThing* mOuterWallN1;
+	CastleWallThing* mOuterWallN1; // 25
 	CastleWallThing* mOuterWallN2;
 	CastleWallThing* mOuterWallN3;
 	CastleWallThing* mOuterWallN5;
@@ -191,6 +191,8 @@ private:
 	CastleWallThing* mOuterWallW5;
 	CastleWallThing* mOuterWallW6;
 	CastleWallThing* mOuterWallW7;
+
+	void setLevel(Real level);
 };
 
 }
