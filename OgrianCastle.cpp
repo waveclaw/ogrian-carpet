@@ -257,7 +257,20 @@ Thing* Castle::generateTarget(BaloonThing* baloon)
 		}
 
 		if (target) // if a valid target was found,
+		{
+			// check to see if we should drop off what we have before proceeding to it
+			if (baloon->getAmount() > 0)
+			{
+				Real bcdist = baloon->sphereDistance(this); // baloon -> castle distance
+				Real bmdist = baloon->sphereDistance(target); // baloon -> mana distance
+				Real mcdist = target->sphereDistance(this); // castle -> mana distance
+
+				if (bmdist + mcdist > bcdist * CONR("BALOON_RETURN_THRESHOLD_RATIO")) 
+					return this;
+			}
+
 			return target; // return it
+		}
 		else 
 			return this; // otherwise, wait at the castle
 	}
