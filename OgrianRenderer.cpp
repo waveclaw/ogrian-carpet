@@ -58,6 +58,7 @@ Renderer::Renderer()
 	mWaterNode = 0;
 	mCameraThing = 0;
 
+	mMapName = "";
 	mMapLoaded = false;
 }
 //----------------------------------------------------------------------------
@@ -299,7 +300,6 @@ void Renderer::loadMap(String configfile, bool server)
 {
 	unloadMap();
 
-	mMapName = configfile;
 
 	/* Set up the options */
 	ConfigFile config;
@@ -308,8 +308,12 @@ void Renderer::loadMap(String configfile, bool server)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" );
 
-	// set up the terrain
-    mSceneMgr->setWorldGeometry( configfile );
+	// load new terrain
+	if (configfile != mMapName)
+		mSceneMgr->setWorldGeometry( configfile );
+
+	mMapName = configfile;
+
 	HeightMap::getSingleton().loadTerrain(configfile);
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 
