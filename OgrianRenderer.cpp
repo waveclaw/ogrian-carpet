@@ -217,7 +217,7 @@ void Renderer::createScene(void)
 	HeightMap::getSingleton().loadTerrain(filename);
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
-	createFoliage(foliageMaterial,80);
+	createFoliage(foliageMaterial,100);
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));

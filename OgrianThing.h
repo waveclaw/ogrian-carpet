@@ -84,8 +84,8 @@ protected:
     static unsigned long msNextGeneratedNameExt;
 
 	virtual void _addToRenderer();
-
 	virtual void _removeFromRenderer();
+	virtual void _updateVisibility();
 };
 
 }

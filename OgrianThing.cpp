@@ -37,6 +37,9 @@ Thing::~Thing()
 
 void Thing::_addToRenderer()
 {
+	// dont do this twice!
+	if (mInRenderer) return;
+
 	// create the billboardset
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 	mBbset = sceneMgr->createBillboardSet(mName,1);
@@ -64,6 +67,9 @@ void Thing::_addToRenderer()
 
 void Thing::_removeFromRenderer()
 {
+	// dont do this twice!
+	if (!mInRenderer) return;
+
 	// remove it from the scene
 	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
 
@@ -144,6 +150,26 @@ void Thing::move(Real time)
 		mPos.x + mVel.x * time,
 		mPos.y + mVel.y * time,
 		mPos.z + mVel.z * time);
+
+	_updateVisibility();
+}
+
+void Thing::_updateVisibility()
+{
+	// check the distance from the camera
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+	if (distance(cam) < CAMERA_THING_CULL_DIST)
+	{
+		// add it if its close enough
+		if (!mInRenderer)
+			_addToRenderer();
+	}
+	else
+	{
+		// remove it otherwise
+        if (mInRenderer)
+			_removeFromRenderer();
+	}
 }
 
 Real Thing::distance(Thing* e)
