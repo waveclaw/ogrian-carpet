@@ -179,7 +179,7 @@ void Renderer::createScene(void)
     SceneNode *bedNode = 
         mSceneMgr->getRootSceneNode()->createChildSceneNode("BedNode"); 
     bedNode->attachObject(bedEntity); 
-    bedNode->translate(0, -1, 0);
+    bedNode->translate(0, -.1, 0);
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
