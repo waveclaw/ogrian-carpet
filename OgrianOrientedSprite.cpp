@@ -56,7 +56,7 @@ OrientedSprite::~OrientedSprite()
 	while (mPoses.size() > 0)
 	{
 		delete mPoses[mPoses.size()-1];
-		mPoses.erase(mPoses.end());
+		mPoses.pop_back();
 	}
 }
 

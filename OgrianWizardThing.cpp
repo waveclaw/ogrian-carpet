@@ -44,13 +44,26 @@ WizardThing::WizardThing(bool visible)
 	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
 	visible?"WizardThing":"CameraThing", true, CONR("CAMERA_HEIGHT"))
 {
+	mBar = 0;
+
 	if (visible)
 	{
 		getVisRep()->addPose("Ogrian/Wizard/");
 		getVisRep()->setPose(0);
+		
+		mBar = new HealthBarEffect(getPosition(), getHeight());
+		Physics::getSingleton().addEffect(mBar);
 	}
 
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setColour(ColourValue& colour)
+{
+	DamageableThing::setColour(colour);
+	if (mBar) mBar->setColour(colour);
 }
 
 //----------------------------------------------------------------------------
@@ -129,8 +142,19 @@ void WizardThing::move(Real time)
 	setPosition(pos);
 
 	DamageableThing::move(time);
+
+	// update health bar
+	if (mBar)
+		mBar->update(getPosition(), getHealth()/100.0*getWidth());
 }
 
 //----------------------------------------------------------------------------
-	
+
+void WizardThing::destroy()
+{
+	if (mBar) mBar->destroy();
+}
+
+//----------------------------------------------------------------------------
+
 }
