@@ -38,6 +38,8 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+#define NUM_KEYS 0xED
+
 class Input : public Singleton< Input >
 {
 public:
@@ -56,8 +58,11 @@ public:
 
 private:
 	Input();
-    Real mTimeUntilNextToggle; // prevents rapid toggling
     Real mTimeUntilNextCast; // limits casting speed
+
+	bool mKeys[NUM_KEYS]; // tracks which keys are down
+
+	void keyPressed(int key);
 };
 
 }

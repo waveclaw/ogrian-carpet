@@ -48,7 +48,6 @@ namespace Ogrian
 
 Input::Input()
 {
-	mTimeUntilNextToggle = -1;
 	mTimeUntilNextCast = 0;
 	
 	SpellManager::getSingleton().readyDefaultSpell();
@@ -66,12 +65,16 @@ Input::~Input()
 
 bool Input::processKeyInput(InputReader* input)
 {
-	// show the menu
-    if( input->isKeyDown( KC_ESCAPE ) && mTimeUntilNextToggle <= 0)
-    {            
-		Menu::getSingleton().show();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
+	// check each keycode
+	for (int i=0; i<NUM_KEYS; i++)
+	{
+		// when a key is pressed
+		if (!mKeys[i] && input->isKeyDown((Ogre::KeyCode)i))
+			keyPressed(i);
+
+		// update keys
+		mKeys[i] = input->isKeyDown((Ogre::KeyCode)i);
+	}
 
 	// show the PlayerList
     if( input->isKeyDown( KC_TAB ))
@@ -79,20 +82,6 @@ bool Input::processKeyInput(InputReader* input)
 		PlayerList::getSingleton().show();
     }
 	else PlayerList::getSingleton().hide();
-
-	// select the next spell
-	if (input->isKeyDown( KC_E ) && mTimeUntilNextToggle <= 0)
-	{
-		SpellManager::getSingleton().readyNextSpell();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-	}
-
-	// select the prev spell
-	if (input->isKeyDown( KC_Q ) && mTimeUntilNextToggle <= 0)
-	{
-		SpellManager::getSingleton().readyPrevSpell();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-	}
 
 	// cast the selected spell
 	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost())
@@ -105,9 +94,31 @@ bool Input::processKeyInput(InputReader* input)
 
 //----------------------------------------------------------------------------
 
+void Input::keyPressed(int key)
+{
+	// show the menu
+    if(key == KC_ESCAPE)
+    {            
+		Menu::getSingleton().show();
+    }
+
+	// select the next spell
+	if (key == KC_E)
+	{
+		SpellManager::getSingleton().readyNextSpell();
+	}
+
+	// select the prev spell
+	if (key == KC_Q)
+	{
+		SpellManager::getSingleton().readyPrevSpell();
+	}
+}
+
+//----------------------------------------------------------------------------
+
 void Input::frame(Real time)
 {
-	mTimeUntilNextToggle -= time;
 	mTimeUntilNextCast -= time;
 }
 
@@ -115,7 +126,7 @@ void Input::frame(Real time)
 
 void Input::delay(Real time)
 {
-	mTimeUntilNextToggle = time;
+
 }
 
 //----------------------------------------------------------------------------
