@@ -179,6 +179,8 @@ void WizardThing::destroy()
 {
 	if (mBar) mBar->destroy();
 	mBar = 0;
+
+	DamageableThing::destroy();
 }
 
 //----------------------------------------------------------------------------
