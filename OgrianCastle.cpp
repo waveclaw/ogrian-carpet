@@ -179,17 +179,22 @@ void Castle::move(Real time)
 
 void Castle::setHealth(int health)
 {
-	if (health < 0) health = 0;
+	if (health <= 0)
+	{
+		health = 0;
+		mBlocks[0]->setPercentage(0);
+		mRubble = true;
+	}
+	else
+	{
+		mBlocks[0]->setPercentage(
+			(health + CONR("CASTLE_RUBBLE"))
+			/ (CONR("CASTLE_HEALTH") + CONR("CASTLE_RUBBLE")));
+
+		mRubble = false;
+	}
 
 	DamageableThing::setHealth(health);
-	mBlocks[0]->setPercentage(
-		(health + CONR("CASTLE_RUBBLE"))
-		/ (CONR("CASTLE_HEALTH") + CONR("CASTLE_RUBBLE")));
-
-	if (health == 0)
-		mRubble = true;
-	else
-		mRubble = false;
 }
 
 //----------------------------------------------------------------------------
@@ -199,10 +204,6 @@ void Castle::setMana(int amount)
 	if (amount < 0) amount = 0;
 
 	mMana = amount;
-
-		//std::ostringstream num("");
-		//num << amount;
-		//LogManager::getSingleton().logMessage("Castle setting mana: " + num.str());
 
 	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
 
