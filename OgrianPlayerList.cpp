@@ -45,20 +45,19 @@ PlayerList::PlayerList()
 	mActive = false;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/PlayerList/Overlay");
-
-	// build the list
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/PlayerList/List"));
 
-	mList->addListItem(new StringResource("Alice"));
-	mList->addListItem(new StringResource("Bob"));
-	mList->addListItem(new StringResource("Charlie"));
-	mList->addListItem(new StringResource("Dan"));
-	mList->addListItem(new StringResource("Ed"));
-	mList->addListItem(new StringResource("Fred"));
-	mList->addListItem(new StringResource("Ghandi"));
-	mList->addListItem(new StringResource("Harry"));
-	mList->addListItem(new StringResource("Ian"));
-	mList->addListItem(new StringResource("Joss"));
+	// build the list
+	addPlayer("Alice");
+	addPlayer("Bob");
+	addPlayer("Charlie");
+	addPlayer("Dan");
+	addPlayer("Ed");
+	addPlayer("Fred");
+	addPlayer("Ghandi");
+	addPlayer("Harry");
+	addPlayer("Ian");
+	addPlayer("Joss");
 }
 
 //----------------------------------------------------------------------------
@@ -66,6 +65,13 @@ PlayerList::PlayerList()
 PlayerList::~PlayerList()
 {
 	if (mActive) hide();
+}
+
+//----------------------------------------------------------------------------
+
+void PlayerList::addPlayer(String name)
+{
+	mList->addListItem(new StringResource(name));
 }
 
 //----------------------------------------------------------------------------

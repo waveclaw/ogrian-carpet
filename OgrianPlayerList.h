@@ -55,6 +55,9 @@ public:
 	// show it if it is hidden, hide it if shown
 	void toggle();
 
+	// add a player to the list
+	void addPlayer(String name);
+
 	static PlayerList& getSingleton(void);
 
 private:
