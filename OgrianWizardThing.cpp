@@ -93,9 +93,9 @@ void WizardThing::reset()
 		mTeam = Physics::getSingleton().getTeam(teamNum);
 		mTeam->setScore(0);
 		
-		std::ostringstream num("");
-		num << teamNum;
-		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
+		//std::ostringstream num("");
+		//num << teamNum;
+		//LogManager::getSingleton().logMessage("Making server Team: " + num.str());
 	}
 
 	// add this player to the server

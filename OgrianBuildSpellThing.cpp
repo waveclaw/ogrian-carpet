@@ -47,7 +47,7 @@ void BuildSpellThing::collidedGround()
 	if (getGroundY() < CONR("BUILDING_MIN_GROUNDY"))
 	{
 		// report the problem
-		if (team->getWizardUID() == 0)
+		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
 		{
 			// send it to the HUD
 			Hud::getSingleton().setMessage(CONS("BUILD_FAIL_WATER"), true);
@@ -149,6 +149,25 @@ void BuildSpellThing::collided(Thing* e)
 		// unbuild the tower
 		((TowerThing*)e)->unbuild();
 
+		destroy();
+	}
+	else if (e->getType() == WIZARDTHING || e->getType() == CAMERATHING || e->getType() == FOLIAGETHING);
+	else // dont build inside stuff
+	{
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+
+		// report the problem
+		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+		{
+			// send it to the HUD
+			Hud::getSingleton().setMessage(CONS("BUILD_FAIL_OCCUPIED"), true);
+		}
+		else
+		{
+			// send a message to the right player
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+			Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_OCCUPIED"), player);
+		}
 		destroy();
 	}
 }
