@@ -19,7 +19,7 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianWizardThing.h
+OgrianWizardThing.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
@@ -28,30 +28,38 @@ Description: The wizard thing is the superclass of the CameraThing
 /*------------------------------------*/
 
 
-#ifndef __OgrianWizardThing_H__
-#define __OgrianWizardThing_H__
+#include "OgrianWizardThing.h"
+#include "OgrianPhysics.h"
 
-#include <Ogre.h>
-#include "OgrianConstants.h"
-#include "OgrianDamageableThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class WizardThing : public DamageableThing
+//----------------------------------------------------------------------------
+	
+WizardThing::WizardThing(bool visible) 
+	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, "WizardThing", true, CAMERA_HEIGHT)
 {
-public:
-	WizardThing(bool visible=true);
+	if (visible)
+	{
+		getVisRep()->addPose("Ogrian/Wizard/");
+		getVisRep()->setPose(0);
+	}
 
-	virtual ThingType getType()	{ return WIZARDTHING; }
-
-	virtual void destroy()	{} // DONT
-
-	virtual void die();
-};
-
+	setHealth(WIZARD_HEALTH);
 }
 
-#endif
+//----------------------------------------------------------------------------
+	
+void WizardThing::die()
+{
+	Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
+	
+	setHealth(WIZARD_HEALTH);
+}
+
+//----------------------------------------------------------------------------
+	
+}

@@ -154,6 +154,9 @@
 				RelativePath="OgrianTime.cpp">
 			</File>
 			<File
+				RelativePath="OgrianWizardThing.cpp">
+			</File>
+			<File
 				RelativePath="main.cpp">
 			</File>
 		</Filter>
