@@ -29,6 +29,7 @@ starting games and detecting victory.
 #include "OgrianGame.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianBuildingHeightMap.h"
 #include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianSkinManager.h"
@@ -309,6 +310,7 @@ void Game::startSkirmishGame()
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
+			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
 			HutThing* hut = new HutThing(pos);
 			Physics::getSingleton().addThing(hut);
@@ -335,6 +337,7 @@ void Game::startSkirmishGame()
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
+			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
 			TowerThing* tower = new TowerThing(ai->getTeamNum(),pos);
 			Physics::getSingleton().addThing(tower);

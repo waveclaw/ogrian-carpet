@@ -30,6 +30,7 @@ Description: This makes a castle or a tower
 #include "OgrianBuildSpellThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianBuildingHeightMap.h"
 
 using namespace Ogre;
 
@@ -62,7 +63,9 @@ void BuildSpellThing::collidedGround()
 		}
 
 		// make a castle
-		Castle* castle = new Castle(getTeamNum(), getPosition());
+		Vector3 pos = getPosition();
+		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
+		Castle* castle = new Castle(getTeamNum(), pos);
 		team->setCastle(castle);
 	}
 	
@@ -80,7 +83,9 @@ void BuildSpellThing::collidedGround()
 		}
 
 		// make a tower
-		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), getPosition()));
+		Vector3 pos = getPosition();
+		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
+		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), pos));
 
 		// remove the mana from the castle
 		Castle* castle = team->getCastle();

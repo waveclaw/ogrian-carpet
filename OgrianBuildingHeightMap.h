@@ -70,17 +70,21 @@ public:
 	// get the size of the world
 	int getWorldSize();
 
+	// get the distance between grid points
+	Real getGridWidth();
+
     static BuildingHeightMap& getSingleton(void);
 
 private:
 	Vector3 mScale;
 	int mSize;
 
-	const uchar* mData;
+	uchar* mData;
 	Image* mImage;
 
 	// do an array lookup
-	inline int _worldheight( int x, int z );
+	inline int _getWorldHeight( int x, int z );
+	inline void _setWorldHeight( int x, int z, int h );
 
 };
 

@@ -131,7 +131,7 @@ public:
 
 	virtual Real getCurrentLevel()
 	{
-		return getPosY() - mGroundY;
+		return getPosY() - mGroundY - .1;
 	}
 
 	virtual ThingType getType()	{ return CASTLETURRETTHING; }

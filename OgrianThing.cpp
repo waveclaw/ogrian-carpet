@@ -250,14 +250,14 @@ void Thing::setPosition(Vector3 pos)
 	if (mPlayingSound && mInEarshot && pos != mPos)
 		Audio::getSingleton().setSoundPosition(mCurrentSound, pos);
 
-	// update mPos
-	mPos = pos;
-
-	if (isBuilding())
+	if (isBuilding() && mPos != pos)
 	{
 		// update BuildingHeightMap
 		BuildingHeightMap::getSingleton().moldLandscape(this);
 	}
+
+	// update mPos
+	mPos = pos;
 }
 
 //----------------------------------------------------------------------------

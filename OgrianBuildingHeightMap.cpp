@@ -65,15 +65,25 @@ BuildingHeightMap::~BuildingHeightMap()
 
 //----------------------------------------------------------------------------
 
-void BuildingHeightMap::moldLandscape(Thing* building)
+Real BuildingHeightMap::getGridWidth()
 {
-
+	return mScale.x;
 }
 
 //----------------------------------------------------------------------------
 
 Vector3 BuildingHeightMap::alignPosition(Vector3 pos)
 {
+	// scale the coordinates
+	pos.x /= mScale.x;
+	pos.z /= mScale.z;
+
+	// calculate the matrix indeces for the grid cell
+	int fx = int(pos.x);
+	int fz = int(pos.z);
+
+	pos.x = ((Real)fx + 0.5) * mScale.x;
+	pos.z = ((Real)fz + 0.5) * mScale.z;
 
 	return pos;
 }
@@ -88,7 +98,7 @@ int BuildingHeightMap::getWorldSize()
 //----------------------------------------------------------------------------
 
 // do a lookup in the array to find the height at a grid point
-int BuildingHeightMap::_worldheight( int x, int z )
+int BuildingHeightMap::_getWorldHeight( int x, int z )
 {
 	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
 
@@ -103,6 +113,24 @@ int BuildingHeightMap::_worldheight( int x, int z )
 
 	if (height < min) return min;
 	return height;
+};
+
+//----------------------------------------------------------------------------
+
+// do a lookup in the array to set the height at a grid point
+void BuildingHeightMap::_setWorldHeight( int x, int z, int h )
+{
+	int min = CONI("HEIGTHMAP_MIN_HEIGHT");
+	if (h < min) h = min;
+
+	if (x <= 0) return;
+	if (z <= 0) return;
+	if (x >= mSize-1) return;
+	if (z >= mSize-1) return;
+
+	if (!mData) return;
+
+    mData[ ( ( z * mSize ) + x ) ] = h;
 };
 
 //----------------------------------------------------------------------------
@@ -125,10 +153,10 @@ Real BuildingHeightMap::getHeightAt(Real x, Real z)
 	Real modz = (z - fz);
 
 	// calculate the height at each corner of the cell
-	Real height00 = Real(_worldheight(fx  ,fz))   * mScale.y;
-	Real height01 = Real(_worldheight(fx  ,fz+1)) * mScale.y;
-	Real height10 = Real(_worldheight(fx+1,fz))   * mScale.y;
-	Real height11 = Real(_worldheight(fx+1,fz+1)) * mScale.y;
+	Real height00 = Real(_getWorldHeight(fx  ,fz))   * mScale.y;
+	Real height01 = Real(_getWorldHeight(fx  ,fz+1)) * mScale.y;
+	Real height10 = Real(_getWorldHeight(fx+1,fz))   * mScale.y;
+	Real height11 = Real(_getWorldHeight(fx+1,fz+1)) * mScale.y;
 
 	// calculate the weighted average
 	Real height = height00*(1-modx)*(1-modz) 
@@ -137,6 +165,52 @@ Real BuildingHeightMap::getHeightAt(Real x, Real z)
 					+ height11*(modx)*(modz);
 
 	return height;
+}
+
+//----------------------------------------------------------------------------
+
+void BuildingHeightMap::moldLandscape(Thing* building)
+{
+	// get the coordinates
+	Vector3 pos = building->getPosition();
+	Real x = pos.x;
+	Real y = pos.y + building->getHeight()/2;
+	Real z = pos.z;
+
+	// scale the coordinates
+	x /= mScale.x;
+	y /= mScale.y;
+	z /= mScale.z;
+
+	// calculate the matrix indeces for the grid cell
+	int fx = int(x);
+	int fz = int(z);
+
+	int width = building->getWidth() / mScale.x;
+	if (fx - width - 1 <= 0) fx = width + 2;
+	if (fx + width + 2 >= mSize - 1) fx = mSize - width - 1;
+	if (fz - width - 1 <= 0) fz = width + 2;
+	if (fz + width + 2 >= mSize - 1) fz = mSize - width - 1;
+
+	std::ostringstream msg("setting height: ");
+	msg << "(" << fx << ", " << y << ", " << fz << ")";
+	LogManager::getSingleton().logMessage(msg.str());
+
+	// set the height at each grid point covered by the building
+	int rowf = fx - width - 1; // the first row
+	int rowl = fx + width + 2; // the last row
+	int colf = fz - width - 1; // the first col
+	int coll = fz + width + 2; // the last col
+	for (int i=rowf; i<=rowl; i++)
+	{
+		for (int j=colf; j<=coll; j++)
+		{
+			if (y > HeightMap::getSingleton()._worldheight(i, j))
+				_setWorldHeight(i, j, y);
+			else 
+				_setWorldHeight(i, j, HeightMap::getSingleton()._worldheight(i, j));
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -161,6 +235,7 @@ Real BuildingHeightMap::getZSlopeAt(Real x, Real z)
 void BuildingHeightMap::loadTerrain()
 {
 	// make the data
+	if (mImage) delete mImage;
 	mImage = new Image(*(HeightMap::getSingleton().getImage()));
 
 	mData = mImage->getData();
