@@ -86,6 +86,9 @@ public:
 	void setInvertY(bool yinv);
 	bool getInvertY();
 
+	void setCameraFrozen(bool frozen);
+	bool getCameraFrozen();
+
 	void setGameRunning(bool running);
 	bool getGameRunning();
 
@@ -113,6 +116,7 @@ protected:
     int mAniso;
 
 	bool mGameRunning;
+	bool mCameraFrozen;
 
 };
 

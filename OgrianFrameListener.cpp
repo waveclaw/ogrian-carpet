@@ -113,6 +113,7 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 
 	mGameRunning = false;
 	mYinvert = true;
+	mCameraFrozen = true;
 }
 
 //----------------------------------------------------------------------------
@@ -127,6 +128,20 @@ OgrianFrameListener::~OgrianFrameListener()
     {
         PlatformManager::getSingleton().destroyInputReader( mInputDevice );
     }
+}
+
+//----------------------------------------------------------------------------
+
+void OgrianFrameListener::setCameraFrozen(bool frozen)
+{
+	mCameraFrozen = frozen;
+}
+
+//----------------------------------------------------------------------------
+
+bool OgrianFrameListener::getCameraFrozen()
+{
+	return mCameraFrozen;
 }
 
 //----------------------------------------------------------------------------
@@ -254,22 +269,14 @@ bool OgrianFrameListener::getInvertY()
 
 bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 {
+	// skip if the camera is frozen
+	if (mCameraFrozen) return true;
+
     /* Rotation factors, may not be used if the second mouse button is pressed. */
+	mRotX = -mInputDevice->getMouseRelativeX() * 0.13;
 
-    /* If the second mouse button is pressed, then the mouse movement results in 
-        sliding the camera, otherwise we rotate. */
-    if( mInputDevice->getMouseButton( 1 ) )
-    {
-        mTranslateVector.x += mInputDevice->getMouseRelativeX() * 0.13;
-        mTranslateVector.y -= mInputDevice->getMouseRelativeY() * 0.13;
-    }
-    else
-    {
-        mRotX = -mInputDevice->getMouseRelativeX() * 0.13;
-
-		// this handles inverting the mouse y axis
-		mRotY =  mInputDevice->getMouseRelativeY() * 0.13 * (mYinvert ? 1 : -1);
-    }
+	// this handles inverting the mouse y axis
+	mRotY =  mInputDevice->getMouseRelativeY() * 0.13 * (mYinvert ? 1 : -1);
 
 	return true;
 }

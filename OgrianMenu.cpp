@@ -92,8 +92,7 @@ void Menu::button_invertMouseToggle()
 //----------------------------------------------------------------------------
 void Menu::button_load()
 {
-	
-	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg");
+	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
 }
 
 //----------------------------------------------------------------------------
@@ -118,18 +117,6 @@ bool Menu::processKeyInput(InputReader* input)
 		button_invertMouseToggle();
         mTimeUntilNextToggle = KEY_DELAY;
     }
-
-	// 1 loads crescent //////////////////////////////
-    if ( input->isKeyDown( KC_1)  && mTimeUntilNextToggle <= 0)
-    {
-		loadMap("crescent.cfg");
-	}
-
-	// 2 loads islands //////////////////////////////
-    if ( input->isKeyDown( KC_2)  && mTimeUntilNextToggle <= 0)
-    {
-		loadMap("islands.cfg");
-	}
 
 	return true;
 }
@@ -193,6 +180,10 @@ void Menu::showMenu()
 	// show cursor
     mCursor->show();
 
+	// freeze the camera
+	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
+	if (ofl != 0) ofl->setCameraFrozen(true);
+
 	mActive = true;
 }
 
@@ -210,6 +201,8 @@ void Menu::hideMenu()
 	// hide cursor
     mCursor->hide();
 
+	// unfreeze the camera
+	Renderer::getSingleton().getFrameListener()->setCameraFrozen(false);
 	mActive = false;
 }
 
