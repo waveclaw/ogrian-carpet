@@ -33,16 +33,16 @@ Ogrian/HUD/Overlay
 	container Panel(Ogrian/HUD/Crosshair)
 	{
 		left .45 
-		top 0.45
+		top 0.44
 		width .1
-		height .1
+		height .12
 		material Ogrian/Crosshair
 	}
 
 	container TextArea(Ogrian/HUD/SpellName) : SS/Templates/BasicText
 	{
 		left .01
-		top 0.11
+		top 0.14
 		width .95
 		caption Spell Name
 	}
@@ -52,7 +52,7 @@ Ogrian/HUD/Overlay
 		left .0
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/1)
@@ -60,7 +60,7 @@ Ogrian/HUD/Overlay
 		left .1
 		top 0.0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/2)
@@ -68,7 +68,7 @@ Ogrian/HUD/Overlay
 		left .2
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/3)
@@ -76,7 +76,7 @@ Ogrian/HUD/Overlay
 		left .3
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/4)
@@ -84,7 +84,7 @@ Ogrian/HUD/Overlay
 		left .4
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/5)
@@ -92,7 +92,7 @@ Ogrian/HUD/Overlay
 		left .5
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/6)
@@ -100,7 +100,7 @@ Ogrian/HUD/Overlay
 		left .6
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/7)
@@ -108,7 +108,7 @@ Ogrian/HUD/Overlay
 		left .7
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/8)
@@ -116,7 +116,7 @@ Ogrian/HUD/Overlay
 		left .8
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/9)
@@ -124,7 +124,7 @@ Ogrian/HUD/Overlay
 		left .9
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 	container Panel(Ogrian/HUD/SpellIcon/10)
@@ -132,7 +132,7 @@ Ogrian/HUD/Overlay
 		left .95
 		top 0
 		width .1
-		height .1
+		height .13
 		material Ogrian/Clear
 	}
 
