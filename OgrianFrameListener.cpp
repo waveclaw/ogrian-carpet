@@ -109,7 +109,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
     /* Move camera forward fast by keypress. */
     if (mInputDevice->isKeyDown(KC_LSHIFT) )
     {
-        mTranslateVector.z = -mMoveScale * 5;
+        mTranslateVector.z = -mMoveScale * 10;
     }
     /* Move camera forward by mousewheel. */
     if( mInputDevice->getMouseRelativeZ() > 0 )
@@ -159,7 +159,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
 		Physics::getSingleton().addThing(e);
 
-        mTimeUntilNextToggle = .1;
+        mTimeUntilNextToggle = .5;
     }
 
     if( mInputDevice->isKeyDown( KC_ESCAPE) )

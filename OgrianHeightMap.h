@@ -18,7 +18,10 @@ public:
 
 	void loadTerrain( const String& filename );
 
-	float getHeightAt(float x, float z);
+	Real getHeightAt(Real x, Real z);
+
+	Real getXSlopeAt(Real x, Real z);
+	Real getZSlopeAt(Real x, Real z);
 
     static HeightMap& getSingleton(void);
 
@@ -26,7 +29,7 @@ private:
 	Vector3 mScale;
 	int mSize;
 
-	float mScalex, mScaley, mScalez;
+	Real mScalex, mScaley, mScalez;
 	const uchar * mData;
 
 	Image image;

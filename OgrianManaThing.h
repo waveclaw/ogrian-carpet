@@ -56,7 +56,15 @@ public:
 
 	virtual void move(Real time)
 	{
+		Vector3 vel;
+		vel.x = HeightMap::getSingleton().getXSlopeAt(mPos.x, mPos.z);
+		vel.z = HeightMap::getSingleton().getZSlopeAt(mPos.x, mPos.z);
+		vel.normalise();
+		vel *= MANA_DRIFT_SPEED;
 
+		setVelocity(vel.x,0,vel.z);
+
+		RollingThing::move(time);
 	}
 
 	virtual ThingType getType()

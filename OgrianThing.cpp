@@ -37,13 +37,13 @@ bool Thing::isAlive()
 	return mAlive;
 }
 
-void Thing::setVelocity(Vector3 mVel)
+void Thing::setVelocity(Vector3 vel)
 {
-	setVelocity(mVel.x, mVel.y, mVel.z);
+	setVelocity(vel.x, vel.y, vel.z);
 }
-void Thing::setPosition(Vector3 mPos)
+void Thing::setPosition(Vector3 pos)
 {
-	setPosition(mPos.x, mPos.y, mPos.z);
+	setPosition(pos.x, pos.y, pos.z);
 }
 
 void Thing::setPosition(Real x, Real y, Real z)

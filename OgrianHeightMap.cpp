@@ -1,6 +1,7 @@
 
 #include "Ogre.h"
 #include "OgrianHeightMap.h"
+#include "OgrianConstants.h"
 #include <OgreTerrainSceneManager.h>
 #include <OgreImage.h>
 #include <OgreConfigFile.h>
@@ -37,25 +38,55 @@ int HeightMap::_worldheight( int x, int z )
     return mData[ ( ( z * mSize ) + x ) ];
 };
 
-float HeightMap::getHeightAt(float x, float z)
+Real HeightMap::getHeightAt(Real x, Real z)
 {
-	x /= mScalex;
+/*	x /= mScalex;
 	z /= mScalez;
 
-	float modx = x - int(x);
-	float modz = z - int(z);
+	Real modx = x - int(x);
+	Real modz = z - int(z);
 
 	int height00 = _worldheight(x,z) * mScaley;
 	int height01 = _worldheight(x,z+1) * mScaley;
 	int height10 = _worldheight(x+1,z) * mScaley;
 	int height11 = _worldheight(x+1,z+1) * mScaley;
 
-	float height = height00*(1-modx)*(1-modz) 
+	Real height = height00*(1-modx)*(1-modz) 
 					+ height01*(1-modx)*(modz) 
 					+ height10*(modx)*(1-modz) 
 					+ height11*(modx)*(modz);
 
+	return height;*/
+
+	x /= mScalex;
+	z /= mScalez;
+
+	int fx = Math::Floor(x);
+	int fz = Math::Floor(z);
+	Real modx = (x - fx);
+	Real modz = (z - fz);
+
+	int height00 = _worldheight(fx  ,fz)   * mScaley;
+	int height01 = _worldheight(fx  ,fz+1) * mScaley;
+	int height10 = _worldheight(fx+1,fz)   * mScaley;
+	int height11 = _worldheight(fx+1,fz+1) * mScaley;
+
+	Real height =     height00*(1-modx)*(1-modz) 
+					+ height01*(1-modx)*(modz) 
+					+ height10*(modx)  *(1-modz) 
+					+ height11*(modx)  *(modz);
+
 	return height;
+}
+
+Real HeightMap::getXSlopeAt(Real x, Real z)
+{
+	return getHeightAt(x,z) - getHeightAt(x+HEIGTHMAP_SLOPE_DIFF,z);
+}
+
+Real HeightMap::getZSlopeAt(Real x, Real z)
+{
+	return getHeightAt(x,z) - getHeightAt(x,z+HEIGTHMAP_SLOPE_DIFF);
 }
 
 void HeightMap::loadTerrain( const String& filename )

@@ -33,8 +33,9 @@ void Physics::removeThing(Thing* ent)
 		if (things[i] == ent)
 		{
 			// erase it
+			Thing* thing = things[i];
 			things.erase(things.begin()+i);
-
+			delete thing;
 			break;
 		}
 	}
