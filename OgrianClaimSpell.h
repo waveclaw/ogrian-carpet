@@ -63,7 +63,7 @@ public:
 
 	virtual int getManaCost() { return 0; }
 
-	virtual String getString() { return String("Claim"); }
+	virtual String getString() { return CONS("NAME_CLAIM"); }
 };
 
 }

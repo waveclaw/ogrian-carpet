@@ -113,7 +113,7 @@ void Hud::makeGhost()
 	for (int i=0; i<NUM_SPELLS; i++)
 		mSpellIcons[i]->hide();
 
-	setMessage("you   are   dead   : (");
+	setMessage(CONS("HUD_DEAD"));
 }
 
 //----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ void Hud::setMana()
 	std::ostringstream base("");
 	base << mBaseMana;
 
-	mMana->setCaption(String("Mana: ") +active.str() + "/" + base.str());
+	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
 }
 
 //----------------------------------------------------------------------------
@@ -178,7 +178,7 @@ void Hud::setHealth(int health)
 	{
         std::ostringstream num("");
 		num << health;
-		setHealth(String("Health: ") + num.str());
+		setHealth(String(CONS("HUD_HEALTH")) + num.str());
 	}
 }
 

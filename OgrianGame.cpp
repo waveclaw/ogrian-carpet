@@ -111,13 +111,13 @@ void Game::serverVictoryCheck()
 		if (winner == Renderer::getSingleton().getCameraThing())
 		{
 			// we are the winner
-			Hud::getSingleton().setMessage("! ! !   a   winner   is   you   ! ! !");
+			Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
 		}
 		else
 		{
 			// send the victory message to the right player
 			PlayerID pid = Multiplayer::getSingleton().getPlayerID(winner->getUID());
-			Multiplayer::getSingleton().serverSendText("! ! !  a winner is you  ! ! !", ID_MESSAGE, pid);
+			Multiplayer::getSingleton().serverSendText(CONS("HUD_VICTORY"), ID_MESSAGE, pid);
 		}
 	}
 

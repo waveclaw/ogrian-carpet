@@ -65,7 +65,7 @@ public:
 
 	virtual int getManaCost() { return CONI("ALBATROSS_COST"); }
 
-	virtual String getString() { return String("Albatross !"); }
+	virtual String getString() { return CONS("NAME_ALBATROSS"); }
 };
 
 }

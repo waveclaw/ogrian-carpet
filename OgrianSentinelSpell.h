@@ -62,7 +62,7 @@ public:
 
 	virtual int getManaCost() { return CONI("SENTINEL_COST"); }
 
-	virtual String getString() { return String("Summon Sentinel"); }
+	virtual String getString() { return CONS("NAME_SUMMON_SENTINEL"); }
 };
 
 }

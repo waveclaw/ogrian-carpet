@@ -59,7 +59,7 @@ public:
 
 	virtual int getManaCost() { return CONI("SPEEDSPELL_MANA_COST"); }
 
-	virtual String getString() { return String("Speeed"); }
+	virtual String getString() { return CONS("NAME_SPEED"); }
 };
 
 }

@@ -62,9 +62,11 @@ public:
 private:
 	Const();
 
-	ConfigFile mFile1;
+	ConfigFile mFile1; // constants.txt
 	
-	ConfigFile mFile2;
+	ConfigFile mFile2; // config.txt
+	
+	ConfigFile mFile3; // strings.txt
 };
 
 }

@@ -32,8 +32,6 @@ starting games and detecting victory.
 
 #include <Ogre.h>
 
-#define TITLE "Ogrian Carpet 0.7"
-
 using namespace Ogre;
 
 namespace Ogrian

@@ -72,7 +72,7 @@ Menu::Menu()
 	loadMapList();
 	
 	// set the title
-	setMessage(TITLE);
+	setMessage(CONS("TITLE"));
 }
 
 //----------------------------------------------------------------------------
@@ -181,7 +181,7 @@ void Menu::button_load()
 
 void Menu::button_join()
 {
-	setMessage("Connecting .  .  . ");
+	setMessage(CONS("MSG_JOIN_CONNECTING"));
 	Multiplayer::getSingleton().clientStart();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
@@ -197,7 +197,7 @@ void Menu::button_host()
 {
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 
-	setMessage("Loading (Server) .  .  .");
+	setMessage(CONS("MSG_SERVER_LOADING"));
 	Multiplayer::getSingleton().serverStart();
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
@@ -212,7 +212,7 @@ void Menu::button_host()
 
 void Menu::button_disconnect()
 {
-	setMessage("Disconnected");
+	setMessage(CONS("MSG_DISCONNECT"));
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
@@ -227,7 +227,7 @@ void Menu::button_disconnect()
 
 void Menu::button_startGame()
 {
-	LogManager::getSingleton().logMessage("Starting game...");
+	LogManager::getSingleton().logMessage(CONS("MSG_START_GAME"));
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
 	
 	// hide the menu
@@ -271,7 +271,7 @@ bool Menu::processKeyInput(InputReader* input)
 void Menu::loadMap(String mapname)
 {
 	// Loading...
-	setMessage("Loading .   .   .");
+	setMessage(CONS("MSG_LOADMAP"));
 
 	// move the camera so the terrain will reload properly
 	Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
@@ -305,7 +305,7 @@ void Menu::frame(Real time)
 		Renderer::getSingleton().loadMap(mMapName);
 
 		// Menu
-		setMessage(TITLE);
+		setMessage(CONS("TITLE"));
 		
 		// hide the menu
 		hide();

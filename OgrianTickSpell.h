@@ -62,7 +62,7 @@ public:
 
 	virtual int getManaCost() { return CONI("TICK_COST"); }
 
-	virtual String getString() { return String("Summon Tick"); }
+	virtual String getString() { return CONS("NAME_TICK"); }
 };
 
 }

@@ -62,7 +62,7 @@ public:
 
 	virtual int getManaCost() { return CONI("GNOME_COST"); }
 
-	virtual String getString() { return String("Summon Gnome"); }
+	virtual String getString() { return CONS("NAME_SUMMON_GNOME"); }
 };
 
 }

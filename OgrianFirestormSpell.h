@@ -76,7 +76,7 @@ public:
 
 	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
 
-	virtual String getString() { return String("firestorm"); }
+	virtual String getString() { return CONS("NAME_FIRESTORM"); }
 
 };
 

@@ -42,6 +42,7 @@ Const::Const()
 {
 	mFile1.load("constants.txt");
 	mFile2.load("config.txt");
+	mFile3.load("strings.txt");
 }
 
 //----------------------------------------------------------------------------
@@ -85,8 +86,9 @@ Time Const::getConstantTime(const String &key)
 
 String Const::getConstantString(const String &key)
 {
-	String c = mFile1.getSetting(key).c_str();
-	if (c == String("")) c = mFile2.getSetting(key).c_str();
+	// only read config and strings
+	String c = mFile2.getSetting(key).c_str();
+	if (c == String("")) c = mFile3.getSetting(key).c_str();
 	if (c == String("")) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
