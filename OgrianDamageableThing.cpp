@@ -164,7 +164,10 @@ void DamageableThing::destroy()
 	if (getTeamNum() >= 0)
 		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
 			if (i != getTeamNum())
-				Physics::getSingleton().getTeam(i)->removeEnemy(this);
+			{
+				Team* team = Physics::getSingleton().getTeam(i);
+				if (team) team->removeEnemy(this);
+			}
 }
 
 //----------------------------------------------------------------------------

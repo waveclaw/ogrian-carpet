@@ -47,7 +47,7 @@ namespace Ogrian
 
 
 TowerBallThing::TowerBallThing(int teamNum)
-	: Thing("Ogrian/HutBall", SPRITE, "TowerFlag", false, CONR("TOWER_WIDTH"), Vector3(0,0,0), SPHERE)
+	: Thing("Ogrian/HutBall", SPRITE, "TowerFlag", false, CONR("TOWER_BALL_SCALE"), Vector3(0,0,0), SPHERE)
 {
 	setTeamNum(teamNum);
 	setThinkPeriod(CONR("TOWER_WIZ_REGEN_PERIOD"));
@@ -133,10 +133,12 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 		mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
 		setColour(mColour);
 
+		// set up the ball
 		mBall = new TowerBallThing(teamNum);
 		mBall->setColour(mColour);
-		bpos.y = pos.y + CONR("TOWER_HEIGHT");
-		mBall->setPosition(bpos);
+		Vector3 fpos = pos;
+		fpos.y = HeightMap::getSingleton().getHeightAt(fpos.x, fpos.z) + CONR("TOWER_BALL_ALTITUDE");
+		mBall->setPosition(fpos);
 		Physics::getSingleton().addThing(mBall);
 
 		// make the crane flock
