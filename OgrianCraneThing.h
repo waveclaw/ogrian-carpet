@@ -90,9 +90,9 @@ public:
 private:
 	Vector3 mOrbitPos;
 	int mState;
-	unsigned long mLastFlapTime;
+	Time mLastFlapTime;
 	bool mLastFlap;
-	unsigned long mUnIdleTime;
+	Time mUnIdleTime;
 
 	Real orbitDistance()
 	{

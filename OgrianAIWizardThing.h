@@ -66,11 +66,11 @@ public:
 		WizardThing::move(time);
 
 		// only think periodically
-		if (Time::getSingleton().getTime() < mNextTime) 
+		if (Clock::getSingleton().getTime() < mNextTime) 
 			return;
 
-		mNextTime = Time::getSingleton().getTime() + CONR("FIREBALL_CAST_PERIOD")
-			*1000*Math::RangeRandom(1,1.3);
+		mNextTime = Clock::getSingleton().getTime() + CONT("FIREBALL_CAST_PERIOD")
+			*Math::RangeRandom(1,1.3);
 
 		// find the nearest wizard // 
 
@@ -179,7 +179,7 @@ public:
 	}
 
 private:
-	unsigned long mNextTime;
+	Time mNextTime;
 };
 
 }

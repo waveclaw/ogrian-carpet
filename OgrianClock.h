@@ -19,7 +19,7 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianTime.h
+OgrianClock.h
 Original Author: RakkarSoft
 Additional Authors: Mike Prosser
 
@@ -27,8 +27,8 @@ Description: this is a re-do of the RakNet GetTime class to make it a proper sin
 
 /*------------------------------------*/
 
-#ifndef __OgrianTime_H__
-#define __OgrianTime_H__
+#ifndef __OgrianClock_H__
+#define __OgrianClock_H__
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -39,27 +39,31 @@ Description: this is a re-do of the RakNet GetTime class to make it a proper sin
 #include <Ogre.h>
 #include <OgreSingleton.h>
 
+
 using namespace Ogre;
+
 
 namespace Ogrian
 {
 
+typedef long Time;
+
 // A utility class to get a more accurate time than timeGetTime()
-class Time : public Singleton< Time >
+class Clock : public Singleton< Clock >
 {
 public:
-	virtual ~Time();
+	virtual ~Clock();
 
 	// this should be called at the start of main()
 	void init();
 
 	// Call this to get the current time
-	unsigned long getTime();
+	Time getTime();
 
-    static Time& getSingleton(void);
+    static Clock& getSingleton(void);
 
 private:
-	Time();
+	Clock();
 
     #ifdef _WIN32
 		LARGE_INTEGER yo;

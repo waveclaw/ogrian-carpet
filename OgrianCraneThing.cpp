@@ -93,10 +93,10 @@ void CraneThing::move(Real time)
 void CraneThing::clientThink()
 {
 	// flap
-	if (Time::getSingleton().getTime() > mLastFlapTime + CONR("CRANE_FLAP_PERIOD")*1000)
+	if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
 	{
 		mLastFlap = !mLastFlap;
-		mLastFlapTime = Time::getSingleton().getTime();
+		mLastFlapTime = Clock::getSingleton().getTime();
 
 		getVisRep()->setPose( mLastFlap ? 0 : 1 );
 	}
@@ -107,10 +107,10 @@ void CraneThing::clientThink()
 void CraneThing::think()
 {
 	// flap
-	if (Time::getSingleton().getTime() > mLastFlapTime + CONR("CRANE_FLAP_PERIOD")*1000)
+	if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
 	{
 		mLastFlap = !mLastFlap;
-		mLastFlapTime = Time::getSingleton().getTime();
+		mLastFlapTime = Clock::getSingleton().getTime();
 
 		getVisRep()->setPose( mLastFlap ? 0 : 1 );
 	}
@@ -144,7 +144,7 @@ void CraneThing::think()
 	}
 	else if (mState == CRANE_STATE_IDLE)
 	{
-		if (Time::getSingleton().getTime() > mUnIdleTime)
+		if (Clock::getSingleton().getTime() > mUnIdleTime)
 			setStateFlyOut();
 	}
 
@@ -232,7 +232,7 @@ void CraneThing::setStateIdle()
 
 	setVelocity(Vector3(0,0,0));
 	
-	mUnIdleTime = Time::getSingleton().getTime() + CONR("CRANE_IDLE_TIME") * 1000;
+	mUnIdleTime = Clock::getSingleton().getTime() + CONR("CRANE_IDLE_TIME") * 1000;
 }
 
 //----------------------------------------------------------------------------

@@ -31,8 +31,8 @@ Description: TimedThing self-destructs after a specified time
 #define __OgrianTimedThing_H__
 
 #include <Ogre.h>
+#include "OgrianClock.h"
 #include "OgrianThing.h"
-#include "OgrianTime.h"
 
 using namespace Ogre;
 
@@ -51,7 +51,7 @@ public:
 	}
 
 	// set expiration time in absolute time in microseconds
-	virtual void setAbsoluteExpirationTime(unsigned long time)
+	virtual void setAbsoluteExpirationTime(Time time)
 	{
 		mExpirationTime = time;
 	}
@@ -59,7 +59,7 @@ public:
 	// set expiration time in seconds from now
 	virtual void setRelativeExpirationTime(Real time)
 	{
-		mExpirationTime = time*1000 + Time::getSingleton().getTime();
+		mExpirationTime = time*1000 + Clock::getSingleton().getTime();
 	}
 
 	// check to see if the time is up
@@ -67,12 +67,12 @@ public:
 	{
 		Thing::move(time);
 
-		if (mExpirationTime > 0 && Time::getSingleton().getTime() > mExpirationTime && isAlive()) 
+		if (mExpirationTime > 0 && Clock::getSingleton().getTime() > mExpirationTime && isAlive()) 
 			destroy();
 	}
 
 private:
-	unsigned long mExpirationTime;
+	Time mExpirationTime;
 };
 
 }

@@ -34,9 +34,13 @@ Description: A singleton that reads all of the constants from a text file
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include <OgreConfigFile.h>
+#include "OgrianClock.h"
 
 #define CONI(x) Const::getSingleton().getConstantInt(x)
 #define CONR(x) Const::getSingleton().getConstantReal(x)
+#define CONT(x) Const::getSingleton().getConstantTime(x)
+#define CONS(x) Const::getSingleton().getConstantString(x)
+#define CONB(x) Const::getSingleton().getConstantBool(x)
 
 using namespace Ogre;
 
@@ -51,6 +55,9 @@ public:
 
 	int getConstantInt(const String &key);
 	Real getConstantReal(const String &key);
+	Time getConstantTime(const String &key);
+	String getConstantString(const String &key);
+	bool getConstantBool(const String &key);
 
 private:
 	Const();

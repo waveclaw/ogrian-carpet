@@ -37,6 +37,7 @@ It is rendered as a Billboard.
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
 #include "OgrianPacketEnum.h"
+#include "OgrianClock.h"
 
 #include "BitStream.h"
 
@@ -246,7 +247,7 @@ public:
 	virtual bool getUpdateFlag();
 
 	// get the last time a bitstream was generated for this thing
-	virtual unsigned long lastUpdateTime();
+	virtual Time lastUpdateTime();
 
 	// BE VERY CAREFUL WITH THIS
 	virtual void _setUID(int uid);
@@ -270,8 +271,8 @@ private:
 	Real mHeight; 
 
 	// for flickering
-	unsigned long mFlickerPeriod;
-	unsigned long mLastRotTime;
+	Time mFlickerPeriod;
+	Time mLastRotTime;
 	bool mLastRotDir;
 
 	ThingShape mShape;
@@ -299,9 +300,9 @@ private:
 	// a unique identifier
 	int mUID;
 
-	unsigned long mLastUpdateTime; // the last time a bitstream was generated for this thing
+	Time mLastUpdateTime; // the last time a bitstream was generated for this thing
 
-	unsigned long mLastThinkTime; // the last time this thing think()ed
+	Time mLastThinkTime; // the last time this thing think()ed
 
 	virtual void _updateVisibility(); // based on distance from camera
 

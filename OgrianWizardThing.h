@@ -154,8 +154,8 @@ private:
 	int mActiveMana;
 	int mBaseMana;
 
-	unsigned long mNextRegenTime;
-	unsigned long mLastSetPosTime;
+	Time mNextRegenTime;
+	Time mLastSetPosTime;
 
 	virtual void setupSkins();
 };

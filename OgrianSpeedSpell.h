@@ -19,50 +19,46 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianDamageableThing.h
+OgrianFireballSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: DamageableThing is a thing that can take damage, and will die
+Description: This is a fireball spell
 
 /*------------------------------------*/
 
-#ifndef __OgrianDamageableThing_H__
-#define __OgrianDamageableThing_H__
 
-#include <Ogre.h>
-#include "OgrianThing.h"
-#include "OgrianClock.h"
+#ifndef __OgrianSpeedSpell_H__
+#define __OgrianSpeedSpell_H__
+
+#include "OgrianSpell.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class DamageableThing : public Thing
+class SpeedSpell : public Spell
 {
 public:
 
-	DamageableThing(String material, ThingVisRep visrep=SPRITE, String prefix="Thing", bool fixed_y=false, 
-		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
+	// make an instance of this spell
+	virtual void cast(Vector3 pos, Vector3 dir)
+	{
 
-	virtual void setHealth(int health);
+	}
 
-	virtual int getHealth();
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
 
-	virtual void damage(int amount, int sourceTeamNum);
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
 
-	virtual int getLastDamageSourceTeamNum();
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
 
-	virtual void setTeamNum(int teamNum);
+	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD"); }
 
-	virtual void destroy();
+	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
 
-	virtual bool isDamageable()	{ return true; }
-
-private:
-	int mHealth;
-	int mLastDamageSource;
+	virtual String getString() { return String("Fireball"); }
 };
 
 }

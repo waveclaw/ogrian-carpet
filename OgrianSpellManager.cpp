@@ -74,7 +74,7 @@ Real SpellManager::castSpell()
 	Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 	Vector3 dir = Renderer::getSingleton().getCamera()->getDirection();
 
-	mSpells[mCurrentSpell]->makeThing(pos, dir);
+	mSpells[mCurrentSpell]->cast(pos, dir);
 
 	return mSpells[mCurrentSpell]->getCastPeriod();
 }

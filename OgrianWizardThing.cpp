@@ -321,9 +321,9 @@ void WizardThing::move(Real time)
 	// regenerate mana
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		if (Time::getSingleton().getTime() > mNextRegenTime)
+		if (Clock::getSingleton().getTime() > mNextRegenTime)
 		{
-			mNextRegenTime = Time::getSingleton().getTime() + CONR("WIZARD_MANA_REGEN_PERIOD")*1000;
+			mNextRegenTime = Clock::getSingleton().getTime() + CONT("WIZARD_MANA_REGEN_PERIOD");
 			mActiveMana += CONI("WIZARD_MANA_REGEN");
 			if (mActiveMana > mBaseMana)
 				mActiveMana = mBaseMana;
@@ -391,9 +391,9 @@ void WizardThing::setPosition(Vector3 pos)
 	Vector3 diff = pos - lastPos;
 	Vector3 diffb = diff;
 	diffb.y = 0;
-	unsigned long time = Time::getSingleton().getTime();
+	Time time = Clock::getSingleton().getTime();
 	Real dt = (time - mLastSetPosTime)/1000.0;
-	mLastSetPosTime = Time::getSingleton().getTime();
+	mLastSetPosTime = Clock::getSingleton().getTime();
 	Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
 	if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
 	{

@@ -166,9 +166,9 @@ public:
 	virtual void think()
 	{
 		// if its time, claim a nearby mana
-		if (Time::getSingleton().getTime() > mLastCastTime + CONR("TOWER_CAST_PERIOD")*1000)
+		if (Clock::getSingleton().getTime() > mLastCastTime + CONT("TOWER_CAST_PERIOD"))
 		{
-			mLastCastTime = Time::getSingleton().getTime();
+			mLastCastTime = Clock::getSingleton().getTime();
 
 			// regenerate
 			int health = getHealth();
@@ -229,7 +229,7 @@ private:
 
 	ColourValue mColour;
 
-	unsigned long mLastCastTime;
+	Time mLastCastTime;
 
 	std::vector<CraneThing*> mCranes;
 };

@@ -35,7 +35,7 @@ This will be changed to a quadtree or something for performance.
 
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianTime.h"
+#include "OgrianClock.h"
 #include "OgrianTeam.h"
 
 #include "OgrianFireballThing.h"
@@ -116,8 +116,8 @@ void Physics::clientFrame(Real time)
 	// do nothing if we don't have a postive uid for the camera
 	if (cthing->getUID() < 1) return;
 
-	if (cthing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD")*500)
-		< Time::getSingleton().getTime())
+	if (cthing->lastUpdateTime() + CONT("THING_UPDATE_PERIOD")/2
+		< Clock::getSingleton().getTime())
 	{
 		// notify the server of our camerathing
 		BitStream bs;
@@ -154,10 +154,9 @@ void Physics::serverFrame(Real time)
 
 			if (thing->getUpdateType() == CONTINUOUS)
 			{
-				if (thing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD"))
-						< Time::getSingleton().getTime() // only send periodically
+				if (thing->lastUpdateTime() + CONT("THING_UPDATE_PERIOD")
+						< Clock::getSingleton().getTime() // only send periodically
 					&& thing->getUID() != player.wizardUID // dont send their own wizard to them
-					//&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
 					)
 				{
 					BitStream bs;

@@ -114,12 +114,12 @@ public:
 				Physics::getSingleton().addEffect(fse);
 			}
 		}
-		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime() 
+		if (isAlive() && mLastSmokeTime + CONT("FIREBALL_SMOKE_PERIOD") < Clock::getSingleton().getTime() 
 			&& mSmokeList.size() > 0)
 		{
 			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
 			mSmokeList[mLastSmokeIndex++]->setPosition(mLastPos);
-			mLastSmokeTime = Time::getSingleton().getTime();
+			mLastSmokeTime = Clock::getSingleton().getTime();
 		}
 
 		mLastPos = getPosition();
@@ -160,7 +160,7 @@ public:
 private:
 	ColourValue mColour;
 	Vector3 mLastPos;
-	unsigned long mLastSmokeTime;
+	Time mLastSmokeTime;
 	int mLastSmokeIndex;
 	std::vector<FireballSmokeEffect*> mSmokeList;
 

@@ -19,7 +19,7 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianTime.h
+OgrianClock.h
 Original Author: RakkarSoft
 Additional Authors: Mike Prosser
 
@@ -27,38 +27,38 @@ Description: this is a re-do of the RakNet GetTime class to make it a proper sin
 
 /*------------------------------------*/
 
-#include "OgrianTime.h"
+#include "OgrianClock.h"
 
 using namespace Ogre;
 
-template<> Ogrian::Time * Singleton< Ogrian::Time >::ms_Singleton = 0;
+template<> Ogrian::Clock * Singleton< Ogrian::Clock >::ms_Singleton = 0;
 namespace Ogrian
 {
 
 //----------------------------------------------------------------------------
 
-Time::Time()
+Clock::Clock()
 {
 	initialized=false;
 }
 
 //----------------------------------------------------------------------------
 
-Time::~Time()
+Clock::~Clock()
 {
 	
 }
 
 //----------------------------------------------------------------------------
 
-unsigned long Time::getTime()
+Time Clock::getTime()
 {
 	if (initialized==false) init();
 
 	#ifdef _WIN32
 		LARGE_INTEGER PerfVal;
 		QueryPerformanceCounter(&PerfVal);
-		return (unsigned long)(PerfVal.QuadPart/counts);
+		return (Time)(PerfVal.QuadPart/counts);
 	#else
 		gettimeofday(&tp, 0);
 		// Seconds to ms and microseconds to ms
@@ -68,7 +68,7 @@ unsigned long Time::getTime()
 
 //----------------------------------------------------------------------------
 
-void Time::init()
+void Clock::init()
 {
 	#ifdef _WIN32
 		QueryPerformanceFrequency(&yo);
@@ -82,13 +82,13 @@ void Time::init()
 
 //----------------------------------------------------------------------------
 
-Time& Time::getSingleton(void)
+Clock& Clock::getSingleton(void)
 {
 	if (!ms_Singleton) 
 	{
-		ms_Singleton = new Time();
+		ms_Singleton = new Clock();
 	}
-    return Singleton<Time>::getSingleton();
+    return Singleton<Clock>::getSingleton();
 }
 
 //----------------------------------------------------------------------------

@@ -44,7 +44,7 @@ class FireballSpell : public Spell
 public:
 
 	// make an instance of this spell
-	virtual void makeThing(Vector3 pos, Vector3 dir)
+	virtual void cast(Vector3 pos, Vector3 dir)
 	{
 		dir.normalise();
 		dir *= CONR("FIREBALL_SPEED");

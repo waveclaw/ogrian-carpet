@@ -31,14 +31,14 @@ Description: makes an app and makes it go
 #include "OgrianApplication.h"
 #include <windows.h>
 
-#include "OgrianTime.h"
+#include "OgrianClock.h"
 
 using namespace Ogrian;
 
 INT WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,INT) 
 {
 	// start the clock
-	Time::getSingleton().init();
+	Clock::getSingleton().init();
 
 	OgrianApplication theApp;		// Instanciate our subclass
 	try {			// This try-catch provides a nice way of popping up errors if they occur.

@@ -45,8 +45,8 @@ public:
 	Spell() { mEnabled = false; }
 	virtual ~Spell() {}
 
-	// make an instance of this spell
-	virtual void makeThing(Vector3 pos, Vector3 dir) = 0;
+	// cast this spell
+	virtual void cast(Vector3 pos, Vector3 dir) = 0;
 
 	virtual Real getCastPeriod() = 0;
 

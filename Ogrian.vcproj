@@ -125,6 +125,12 @@
 				RelativePath="OgrianAudio.h">
 			</File>
 			<File
+				RelativePath="OgrianClock.cpp">
+			</File>
+			<File
+				RelativePath="OgrianClock.h">
+			</File>
+			<File
 				RelativePath="OgrianConst.cpp">
 			</File>
 			<File
@@ -201,12 +207,6 @@
 			</File>
 			<File
 				RelativePath="OgrianSpellManager.h">
-			</File>
-			<File
-				RelativePath="OgrianTime.cpp">
-			</File>
-			<File
-				RelativePath="OgrianTime.h">
 			</File>
 		</Filter>
 		<Filter
@@ -364,6 +364,9 @@
 			</File>
 			<File
 				RelativePath="OgrianFirestormSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianSpeedSpell.h">
 			</File>
 			<File
 				RelativePath="OgrianSpell.h">

@@ -19,51 +19,65 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianClaimSpell.h
+OgrianAkimboFireballSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a fireball spell
+Description: This is a faster-firing fireball spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianClaimSpell_H__
-#define __OgrianClaimSpell_H__
+#ifndef __OgrianFirestormSpell_H__
+#define __OgrianFirestormSpell_H__
 
 #include "OgrianSpell.h"
-#include "OgrianClaimSpellThing.h"
+#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class ClaimSpell : public Spell
+class FirestormSpell : public Spell
 {
 public:
 
 	// make an instance of this spell
 	virtual void cast(Vector3 pos, Vector3 dir)
 	{
+		Real angle = Math::RangeRandom(0,2*Math::PI);
+		Real uoff = Math::Cos(angle);
+		Real voff = Math::Sin(angle);
+
+		Vector3 u = Vector3::UNIT_Y;
+		Vector3 v = dir.crossProduct(u);
+		v.normalise();
+
+		Vector3 offset = u*uoff + v*voff;
+		offset*= CONR("WIZARD_SCALE")/2;
+
+		pos += offset;
+
 		dir.normalise();
-		dir *= CONR("CLAIMSPELL_SPEED");
+		dir *= CONR("FIREBALL_SPEED");
 	
-		ClaimSpellThing* thing = new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		FireballThing* thing = new FireballThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Ready"); }; 
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Enabled"); }; 
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Disabled"); }; 
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
 
-	virtual Real getCastPeriod() { return CONR("CLAIMSPELL_CAST_PERIOD"); }
+	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD")/4; }
 
-	virtual int getManaCost() { return 0; }
+	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
 
-	virtual String getString() { return String("Claim"); }
+	virtual String getString() { return String("firestorm"); }
+
 };
 
 }

@@ -32,7 +32,7 @@ It is rendered as a Billboard.
 #include "OgrianThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianTime.h"
+#include "OgrianClock.h"
 #include "OgrianOrientedSprite.h"
 #include "OgrianModel.h"
 
@@ -312,10 +312,10 @@ void Thing::move(Real time)
 	if (mFlickerPeriod > 0)
 	{
 		// periodically rotate 180 degrees
-		if (mLastRotTime + mFlickerPeriod < Time::getSingleton().getTime())
+		if (mLastRotTime + mFlickerPeriod < Clock::getSingleton().getTime())
 		{
 			getVisRep()->setRotation(Degree(mLastRotDir?0:180));
-			mLastRotTime = Time::getSingleton().getTime();
+			mLastRotTime = Clock::getSingleton().getTime();
 			mLastRotDir = !mLastRotDir;
 		}
 	}
@@ -326,8 +326,8 @@ void Thing::move(Real time)
 			collidedGround();
 
 	// see if it's time to think yet
-	unsigned long now = Time::getSingleton().getTime();
-	unsigned long period = unsigned long(CONR("THING_THINK_PERIOD") * 1000);
+	Time now = Clock::getSingleton().getTime();
+	Time period = CONT("THING_THINK_PERIOD");
 
 	if (mLastThinkTime + period < now)
 	{
@@ -540,7 +540,7 @@ int Thing::getTeamNum()
 
 void Thing::generateBitStream(BitStream& bitstream, int pid)
 {
-	mLastUpdateTime = Time::getSingleton().getTime();
+	mLastUpdateTime = Clock::getSingleton().getTime();
 
 	bitstream.Write(pid);
 	bitstream.Write(mUID);
@@ -603,7 +603,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 
 //----------------------------------------------------------------------------
 
-unsigned long Thing::lastUpdateTime()
+Time Thing::lastUpdateTime()
 {
 	return mLastUpdateTime;
 }
