@@ -58,15 +58,15 @@ public:
 	// stay above ground
 	virtual void setPosition(Vector3 pos)
 	{
+		// start by setting the new position
+		Thing::setPosition(pos);
+
+		// if we are now underground, go up to the surface
 		Real ground = getGroundY() + getHeight()/2;
 		if (ground > getPosY()) 
 		{
 			setVelY(0);
 			pos.y = ground;
-			Thing::setPosition(pos);
-		}
-		else 
-		{
 			Thing::setPosition(pos);
 		}
 	}
