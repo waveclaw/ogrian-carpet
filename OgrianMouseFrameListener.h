@@ -34,8 +34,9 @@ Description:
 #include "Ogre.h"
 #include "OgreEventListeners.h"
 #include "OgreException.h"
-
 #include "OgreButtonGuiElement.h"
+
+#include "OgrianMenu.h"
 
 using namespace Ogre;
 
@@ -54,10 +55,7 @@ public:
 		mEventProcessor->startProcessingEvents();
 		mInputDevice = mEventProcessor->getInputReader();
 
-		ActionTarget* quitButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
-		quitButton->addActionListener(this);
-
-		mQuit = false;
+		registerButtons();
     }
     virtual ~OgrianMouseFrameListener()
     {
@@ -83,12 +81,13 @@ public:
 
 	void actionPerformed(ActionEvent* e) 
 	{
-      std::string action = e->getActionCommand();
-      if (action == "SS/Setup/HostScreen/Exit")
-      {
-        mQuit = true;
-      }
+		std::string action = e->getActionCommand();
+
+		if (action == "SS/Setup/HostScreen/Exit") mQuit = true; 
+		else if (action == "SS/Setup/HostScreen/Load") Menu::getSingleton().button_load();
+		else if (action == "SS/Setup/HostScreen/Yinvert") Menu::getSingleton().button_invertMouseToggle();
     }
+
 	bool isMulticaster() {}
 
 protected:
@@ -96,6 +95,20 @@ protected:
     InputReader* mInputDevice;
 
 	bool mQuit; 
+	
+	void registerButtons()
+	{
+		ActionTarget* quitButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
+		quitButton->addActionListener(this);
+
+		ActionTarget* loadButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Load"));
+		loadButton->addActionListener(this);
+
+		ActionTarget* yinvButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert"));
+		yinvButton->addActionListener(this);
+		mQuit = false;
+	}
+
 };
 
 }

@@ -33,6 +33,8 @@ Description: The Menu
 #include "OgreKeyEvent.h"
 #include "OgreEventListeners.h"
 #include "OgrianInput.h"
+#include "OgreListGuiElement.h"
+#include "OgreListChanger.h"
 
 using namespace Ogre;
 
@@ -45,19 +47,23 @@ public:
 	virtual ~Menu();
 
 	// go into menu mode and display the menu
-	virtual void showMenu();
+	void showMenu();
 
 	// go into game mode and hide the menu
-	virtual void hideMenu();
+	void hideMenu();
 
 	// this is called by the OgrianFrameListener when in Menu mode
-	virtual bool processKeyInput(InputReader* input);
+	bool processKeyInput(InputReader* input);
 
 	// returns true when in menu mode
-	virtual bool isActive();
+	bool isActive();
 
 	// this should be called every frame
-	virtual void frame(Real time);
+	void frame(Real time);
+
+	// the button functions
+	void button_invertMouseToggle();
+	void button_load();
 
 	static Menu& getSingleton(void);
 
@@ -75,6 +81,7 @@ private:
 	String mMapName; // the name of the map
 
 	GuiContainer* mCursor; // the cursor
+	ListChanger* mList; // the list of maps
 };
 
 }

@@ -14,9 +14,9 @@ SS/Setup/HostScreen/Overlay
 		height 1
 		container BorderPanel(SS/Setup/HostScreen/AvailableGamesListPanel) : SS/Templates/BasicBorderPanel
 		{
-			left 0.1 
+			left 0.05 
 			top 0.1
-			width 0.6
+			width 0.5
 			height 0.8
 			material Core/StatsBlockCenter
 
@@ -25,10 +25,10 @@ SS/Setup/HostScreen/Overlay
 				item_template SS/Templates/BasicText
 				v_spacing 0.005
 				h_spacing 0.005
-				left 0.1 
-				top 0.1
-				width 0.4
-				height 0.6
+				left 0.0 
+				top 0.0
+				width 0.5
+				height 0.8
 				item_material_selected Examples/Hilite/Yellow
 				material Core/StatsBlockCenter
 				scroll_bar SS/Templates/ScrollBar
@@ -38,25 +38,37 @@ SS/Setup/HostScreen/Overlay
 		    
 		container BorderButton(SS/Setup/HostScreen/Yinvert) : SS/Templates/BasicButton
 		{
-			left 0.7
-			top 0.15
-			width 0.3 
-			caption SS/Templates/BasicText y: INV (ON)
+			left 0.6
+			top 0.05
+			width 0.4 
+			caption SS/Templates/BasicText INV MOUSE (ON)
 		}
 
 
 		container BorderButton(SS/Setup/HostScreen/Exit) : SS/Templates/BasicButton
 		{
-			left 0.7
+			left 0.6
 			top 0.75
-			width 0.3 
-			caption SS/Templates/BasicText Q: QUIT
+			width 0.2 
+			caption SS/Templates/BasicText QUIT
+		}
+				
+
+		container BorderButton(SS/Setup/HostScreen/Load) : SS/Templates/BasicButton
+		{
+			left 0.6
+			top 0.60
+			width 0.2 
+			caption SS/Templates/BasicText LOAD
 		}
 				
 
 		container TextBox(SS/Setup/HostScreen/Text) : SS/Templates/BasicTextBox
 		{
-   			caption MAP:
+			left 0.0
+			top 0.0
+			width 0.5
+   			caption pick MAP:
 		}
 
 	}

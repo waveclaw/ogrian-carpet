@@ -33,8 +33,6 @@ Description: The Menu
 
 #include "OgreCursorGuiElement.h"
 #include "OgreBorderButtonGuiElement.h"
-#include "OgreListGuiElement.h"
-#include "OgreListChanger.h"
 #include "OgreEventProcessor.h"
 #include "OgreStringResource.h"
 
@@ -58,10 +56,10 @@ Menu::Menu()
     mCursor->setDimensions(32.0/640.0, 32.0/480.0);
 
 	// build the list
-	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
+	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
 
-	list->addListItem(new StringResource("1: CRESCENT"));
-	list->addListItem(new StringResource("2: ISLANDS"));
+	mList->addListItem(new StringResource("crescent"));
+	mList->addListItem(new StringResource("islands"));
 }
 
 //----------------------------------------------------------------------------
@@ -69,6 +67,33 @@ Menu::Menu()
 Menu::~Menu()
 {
 	if (mActive) hideMenu();
+}
+
+//----------------------------------------------------------------------------
+void Menu::button_invertMouseToggle()
+{
+	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
+
+	if (ofl->getInvertY())  // uninvert the mouse y axis
+	{
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (OFF)");
+
+		ofl->setInvertY(false);
+	}
+	else // invert the mouse y axis
+	{
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (ON)");
+
+		ofl->setInvertY(true);
+	}
+}
+//----------------------------------------------------------------------------
+void Menu::button_load()
+{
+	
+	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg");
 }
 
 //----------------------------------------------------------------------------
@@ -90,23 +115,7 @@ bool Menu::processKeyInput(InputReader* input)
 	// Y toggles the inversion of the mouse Y axis //////////////////////////////
     if ( input->isKeyDown( KC_Y)  && mTimeUntilNextToggle <= 0)
     {            
-		OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
-
-		if (ofl->getInvertY())  // uninvert the mouse y axis
-		{
-			GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
-				->setParameter("caption", "SS/Templates/BasicText y: INV (OFF)");
-
-			ofl->setInvertY(false);
-		}
-		else // invert the mouse y axis
-		{
-			GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
-				->setParameter("caption", "SS/Templates/BasicText y: INV (ON)");
-
-			ofl->setInvertY(true);
-		}
-
+		button_invertMouseToggle();
         mTimeUntilNextToggle = KEY_DELAY;
     }
 
