@@ -98,12 +98,6 @@ private:
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
-
-	// the meshes
-	static Mesh* msMeshTest;
-
-	// generate the Mesh
-	virtual void generateMeshes();
 };
 }
 #endif

@@ -36,7 +36,6 @@ namespace Ogrian
 {
 
 unsigned long Model::msNextGeneratedNameExt = 1;
-Mesh* Model::msMeshTest = 0;
 
 //----------------------------------------------------------------------------
 
@@ -48,18 +47,13 @@ Model::Model()
 	mHeight = 1;
 
 	mInRenderer = false;
-
-	generateMeshes();
-
 	mMeshName = "cube.mesh";
-
 }
 
 //----------------------------------------------------------------------------
 
 Model::~Model()
 {
-
 	removeFromRenderer();
 }
 
@@ -74,181 +68,6 @@ void Model::setMesh(String mesh)
 		removeFromRenderer();
 		addToRenderer();
 	}
-}
-
-//----------------------------------------------------------------------------
-
-void Model::generateMeshes()
-{
-	if (msMeshTest != 0) return;
-
-	String name = "testMesh";
-	Plane plane;
-	plane.normal = Vector3(0,0,1);
-	Real width = 1;
-	Real height = 1; 
-	int xsegments = 1; 
-	int ysegments = 1;
-    bool normals = false;
-	int numTexCoordSets = 1;
-	Real xTile = 1;
-	Real yTile = 1; 
-	Vector3 upVector(1,1,1);
-
-	HardwareBuffer::Usage vertexBufferUsage = HardwareBuffer::HBU_STATIC;
-	HardwareBuffer::Usage indexBufferUsage = HardwareBuffer::HBU_STATIC;
-	bool vertexShadowBuffer = false;
-	bool indexShadowBuffer = false;
-
-	int i;
-	Mesh* pMesh = MeshManager::getSingleton().createManual(name);
-	SubMesh *pSub = pMesh->createSubMesh();
-
-	// Set up vertex data
-	// Use a single shared buffer
-	pMesh->sharedVertexData = new VertexData();
-	VertexData* vertexData = pMesh->sharedVertexData;
-	// Set up Vertex Declaration
-	VertexDeclaration* vertexDecl = vertexData->vertexDeclaration;
-	size_t currOffset = 0;
-	// We always need positions
-	vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_POSITION);
-	currOffset += VertexElement::getTypeSize(VET_FLOAT3);
-	// Optional normals
-	if(normals)
-	{
-		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_NORMAL);
-		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
-	}
-
-    for (i = 0; i < numTexCoordSets; ++i)
-    {
-		// Assumes 2D texture coords
-        vertexDecl->addElement(0, currOffset, VET_FLOAT2, VES_TEXTURE_COORDINATES, i);
-		currOffset += VertexElement::getTypeSize(VET_FLOAT2);
-    }
-
-	vertexData->vertexCount = (xsegments + 1) * (ysegments + 1);
-
-    // Allocate vertex buffer
-	HardwareVertexBufferSharedPtr vbuf = 
-		HardwareBufferManager::getSingleton().
-		createVertexBuffer(vertexDecl->getVertexSize(0), vertexData->vertexCount,
-		vertexBufferUsage, vertexShadowBuffer);
-
-	// Set up the binding (one source only)
-	VertexBufferBinding* binding = vertexData->vertexBufferBinding;
-	binding->setBinding(0, vbuf);
-
-	// Work out the transform required
-    // Default orientation of plane is normal along +z, distance 0
-    Matrix4 xlate, xform, rot;
-    Matrix3 rot3;
-    xlate = rot = Matrix4::IDENTITY;
-    // Determine axes
-    Vector3 zAxis, yAxis, xAxis;
-    zAxis = plane.normal;
-    zAxis.normalise();
-    yAxis = upVector;
-    yAxis.normalise();
-    xAxis = yAxis.crossProduct(zAxis);
-    if (xAxis.length() == 0)
-    {
-        //upVector must be wrong
-        Except(Exception::ERR_INVALIDPARAMS, "The upVector you supplied is parallel to the plane normal, so is not valid.",
-            "MeshManager::createPlane");
-    }
-
-    rot3.FromAxes(xAxis, yAxis, zAxis);
-    rot = rot3;
-
-    // Set up standard xform from origin
-    xlate.setTrans(plane.normal * -plane.d);
-
-    // concatenate
-    xform = xlate * rot;
-
-    // Generate vertex data
-	// Lock the whole buffer
-	Real* pReal = static_cast<Real*>(
-		vbuf->lock(HardwareBuffer::HBL_DISCARD) );
-    Real xSpace = width / xsegments;
-    Real ySpace = height / ysegments;
-    Real halfWidth = width / 2;
-    Real halfHeight = height / 2;
-    Real xTex = (1.0f * xTile) / xsegments;
-    Real yTex = (1.0f * yTile) / ysegments;
-    Vector3 vec;
-    Vector3 min, max;
-    Real maxSquaredLength;
-    bool firstTime = true;
-
-    for (int y = 0; y < ysegments + 1; ++y)
-    {
-        for (int x = 0; x < xsegments + 1; ++x)
-        {
-            // Work out centered on origin
-            vec.x = (x * xSpace) - halfWidth;
-            vec.y = (y * ySpace) - halfHeight;
-            vec.z = 0.0f;
-            // Transform by orientation and distance
-            vec = xform * vec;
-            // Assign to geometry
-            *pReal++ = vec.x;
-            *pReal++ = vec.y;
-            *pReal++ = vec.z;
-
-            // Build bounds as we go
-            if (firstTime)
-            {
-                min = vec;
-                max = vec;
-                maxSquaredLength = vec.squaredLength();
-                firstTime = false;
-            }
-            else
-            {
-                min.makeFloor(vec);
-                max.makeCeil(vec);
-                maxSquaredLength = max(maxSquaredLength, vec.squaredLength());
-            }
-
-            if (normals)
-            {
-                // Default normal is along unit Z
-                vec = Vector3::UNIT_Z;
-                // Rotate
-                vec = rot * vec;
-
-                *pReal++ = vec.x;
-                *pReal++ = vec.y;
-                *pReal++ = vec.z;
-            }
-
-            for (i = 0; i < numTexCoordSets; ++i)
-            {
-                *pReal++ = x * xTex;
-                *pReal++ = 1 - (y * yTex);
-            }
-
-
-        } // x
-    } // y
-
-	// Unlock
-	vbuf->unlock();
-    // Generate face list
-    pSub->useSharedVertices = true;
-	//MeshManager::getSingleton().tesselate2DMesh(pSub, xsegments + 1, ysegments + 1, false, indexBufferUsage, indexShadowBuffer);
-
-    //pMesh->_updateBounds();
-    pMesh->_setBounds(AxisAlignedBox(min, max));
-    pMesh->_setBoundingSphereRadius(Math::Sqrt(maxSquaredLength));
-
-    // load
-    pMesh->load();
-    pMesh->touch();
-
 }
 
 //----------------------------------------------------------------------------
@@ -346,6 +165,7 @@ void Model::addToRenderer()
 void Model::removeFromRenderer()
 {
 	if (!mInRenderer) return;
+	if (mNode == 0) return;
 
 	mNode->detachObject(mName);
 	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 

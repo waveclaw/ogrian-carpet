@@ -36,6 +36,7 @@ When they combine, one transfers all of its amount to the other.
 
 #include <Ogre.h>
 #include "OgrianFloatingThing.h"
+#include "OgrianModel.h"
 
 using namespace Ogre;
 
@@ -51,6 +52,7 @@ public:
 	{
 		setAmount(amount);
 		setColour(ColourValue(0,1,1));
+		static_cast<Model*>(getVisRep())->setMesh("cube.mesh");
 	}
 
 	// setting the amount automatically sets the scale
