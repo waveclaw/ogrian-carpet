@@ -47,6 +47,10 @@ public:
 
 	void startGame();
 
+	// while in pregame mode, claimthings cannot be made
+	void setPreGame(bool active);
+	bool isPreGame();
+
 	void updateScores();
 
 	void frame(Real time); // call this every frame
@@ -67,6 +71,8 @@ private:
 	void startClientGame();
 
 	void loadSounds();
+
+	bool mPreGame;
 };
 
 }

@@ -42,6 +42,7 @@ namespace Ogrian
 
 Game::Game()
 {
+	mPreGame = false;
 	loadSounds();
 }
 
@@ -109,6 +110,20 @@ void Game::startGame()
 
 //----------------------------------------------------------------------------
 
+void Game::setPreGame(bool active)
+{
+	mPreGame = active;
+}
+
+//----------------------------------------------------------------------------
+
+bool Game::isPreGame()
+{
+	return mPreGame;
+}
+
+//----------------------------------------------------------------------------
+
 void Game::startClientGame()
 {
 
@@ -118,7 +133,8 @@ void Game::startClientGame()
 
 void Game::startServerGame()
 {
-
+	// activate pregame mode
+	mPreGame = true;
 }
 
 //----------------------------------------------------------------------------

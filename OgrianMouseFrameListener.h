@@ -97,6 +97,7 @@ public:
 		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
 		else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
 		else if (action == "Ogrian/Menu/Disconnect") Menu::getSingleton().button_disconnect();
+		else if (action == "Ogrian/Menu/StartGame") Menu::getSingleton().button_startGame();
     }
 
 	bool isMulticaster() {}
@@ -139,6 +140,9 @@ protected:
 			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect"));
 		button->addActionListener(this);
 
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame"));
+		button->addActionListener(this);
 	}
 
 };

@@ -465,6 +465,15 @@ void Physics::addThing(Thing* thing)
 	}
 	else // if its a server or singleplayer
 	{
+		// if its a claimthing and we're in pregame mode
+		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame())
+		{
+			// discard the thing
+			delete thing;
+
+			return;
+		}
+
 		// make sure it's not too big
 		if (thing->getWidth() / 2.0 > mWorldSize / PHYSICS_GRID_SIZE)
 		{

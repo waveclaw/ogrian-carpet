@@ -131,10 +131,10 @@ void Multiplayer::serverStart()
 
 	mServer = RakNetworkFactory::GetRakServerInterface();
 
-	// Starting the server is very simple.  8 players allowed.
+	// Starting the server is very simple.  4 players allowed.
 	// 0 means we don't care about a connectionValidationInteger, and false
 	// for low priority threads
-	bool b = mServer->Start(7, 0, true, CONR("PORT"));
+	bool b = mServer->Start(3, 0, true, CONR("PORT"));
 	
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
@@ -761,22 +761,19 @@ void Multiplayer::clientRequestKick()
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::killWizard(Thing* wizard)
+void Multiplayer::killWizard(Thing* wizard, Vector3 pos)
 {
 	// find the wizard's player
 	PlayerInfo* player = getPlayerInfo(getPlayerID(wizard->getUID()));
 
 	// find the wizard's castle
 	Thing* castle = Physics::getSingleton().getTeam(wizard->getTeamNum())->getCastle();
-
-	//serverSendText(" " , ID_DIE, player);
-	Vector3 pos;
 	
 	if (castle)
 	{
 		pos = castle->getPosition();
 	}
-	else
+	else if (pos == Vector3(-1,-1,-1))
 	{
         Vector3 offset;
 		Real wdo = CONR("WIZARD_DEATH_OFFSET");

@@ -68,6 +68,7 @@ public:
 	void button_join();
 	void button_host();
 	void button_disconnect();
+	void button_startGame();
 	void button_quit();
 
 	// set the message

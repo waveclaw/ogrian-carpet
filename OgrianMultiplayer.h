@@ -120,7 +120,7 @@ public:
 	PlayerInfo getClient(int i);
 
 	// kill a player
-	void killWizard(Thing* wizard);
+	void killWizard(Thing* wizard, Vector3 pos=Vector3(-1,-1,-1));
 
 private:
 	Multiplayer();

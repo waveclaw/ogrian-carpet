@@ -63,6 +63,7 @@ Menu::Menu()
 
 	// hide the disconnect button at the start
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
 
 	// build the list
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
@@ -171,7 +172,9 @@ void Menu::button_load()
 {
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 }
+
 //----------------------------------------------------------------------------
+
 void Menu::button_join()
 {
 	setMessage("Connecting .  .  . ");
@@ -185,6 +188,7 @@ void Menu::button_join()
 }
 
 //----------------------------------------------------------------------------
+
 void Menu::button_host()
 {
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
@@ -197,9 +201,11 @@ void Menu::button_host()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->show();
 }
 
 //----------------------------------------------------------------------------
+
 void Menu::button_disconnect()
 {
 	setMessage("Disconnected");
@@ -211,6 +217,63 @@ void Menu::button_disconnect()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_startGame()
+{
+	LogManager::getSingleton().logMessage("Starting game...");
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
+	
+	// hide the menu
+	hide();
+
+	Game::getSingleton().setPreGame(false);
+
+	if (Multiplayer::getSingleton().isServer())
+	{
+		// build a list of start locations
+		std::vector<Vector3> slocs;
+		slocs.push_back(Vector3(100,0,100));
+		slocs.push_back(Vector3(900,0,100));
+		slocs.push_back(Vector3(100,0,900));
+		slocs.push_back(Vector3(900,0,900));
+
+		// chose an sloc for the camera
+		Vector3 sloc = Vector3(500,0,500);
+		if (slocs.size() > 0)
+		{
+			int index = Math::RangeRandom(0,slocs.size()-.1);
+			sloc = slocs[index];
+			slocs.erase(slocs.begin()+index);
+		}
+
+		// kill the camera
+		Renderer::getSingleton().getCameraThing()->die();
+		Renderer::getSingleton().getCameraThing()->setPosition(sloc);
+
+		// kill all wizards
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+
+			if (thing && thing->getType() == WIZARDTHING)
+			{
+				// chose an sloc
+				if (slocs.size() > 0)
+				{
+					int index = Math::RangeRandom(0,slocs.size()-.1);
+					sloc = slocs[index];
+					slocs.erase(slocs.begin()+index);
+				}
+				else sloc = Vector3(500,0,500);
+
+				Multiplayer::getSingleton().killWizard(thing, sloc);
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
