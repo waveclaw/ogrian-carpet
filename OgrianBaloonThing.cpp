@@ -112,7 +112,7 @@ void BaloonThing::move(Real time)
 		Real z = getPosition().z;
 
 		std::ostringstream num("Setting Target: ");
-		num << "(" << x << "," << y << "," << z << ")";
+		num << "( " << x << ", " << y << ", " << z << " )";
 		LogManager::getSingleton().logMessage(String("") + num.str());
 
 		lastPos = getPosition();

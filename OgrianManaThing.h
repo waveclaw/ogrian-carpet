@@ -52,7 +52,6 @@ public:
 	{
 		setAmount(amount);
 		setColour(ColourValue(1,1,1));
-		mFlag = true;
 		setUpdateType(CONTINUOUS);
 	}
 
@@ -82,6 +81,7 @@ public:
 		if (mAmount == amount) return;
 
 		mAmount=amount;
+
 		if (sqrt(amount) > CONR("MANA_MAX_SCALE"))
 			setScale(CONR("MANA_MAX_SCALE"));
 		else if (amount > 1)
@@ -104,21 +104,16 @@ public:
 		{
 			ManaThing* m = static_cast<ManaThing*>(e);
 
-			if(mFlag && m->mFlag && getAmount() > 0 && m->getAmount() > 0)
+			// if this one is the smaller of the two
+			if (getAmount() <= m->getAmount())
 			{
+				// unload into the other
+				m->setAmount(m->getAmount() + getAmount());
 
-				// set the position as a weighted average of the two
-				//setPosition(
-				//	(getPosition()*getAmount() + m->getPosition()*m->getAmount())
-				//		/ (getAmount() + m->getAmount()));
-						
-				// absorb the other
-				setAmount(getAmount() + m->getAmount());
-				m->setAmount(-1);
-				m->mFlag = false;
-				mFlag = false;
-		
-				setUpdateFlag();
+				setAmount(0);
+
+				// go away
+				destroy();
 			}
 		}
 	}
@@ -135,14 +130,6 @@ public:
 		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
-
-		if (getAmount() <= 0)
-		{
-			// be absorbed
-			destroy();
-		}
-
-		mFlag = true;
 	}
 
 	virtual ThingType getType()
@@ -159,7 +146,6 @@ public:
 
 private:
 	int mAmount;
-	bool mFlag;
 };
 
 }
