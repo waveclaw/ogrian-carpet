@@ -63,8 +63,8 @@ private:
 class TickSummonSpellThing : public SummonSpellThing
 {
 public:
-	TickSummonSpellThing::TickSummonSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) :
-		SummonSpellThing(teamNum, pos, vel) 
+	TickSummonSpellThing::TickSummonSpellThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) :
+		SummonSpellThing(teamNum, colour, pos, vel) 
 	{}
 
 	virtual ThingType getType() { return TICKSUMMONTHING; }

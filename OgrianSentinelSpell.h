@@ -48,7 +48,7 @@ public:
 		dir.normalise();
 		dir *= CONR("SUMMONSPELL_SPEED");
 	
-		SentinelSummonSpellThing* thing = new SentinelSummonSpellThing(0, pos,dir);
+		SentinelSummonSpellThing* thing = new SentinelSummonSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 

@@ -151,6 +151,7 @@ void TickThing::think()
 			}
 		}
 	}
+	setUpdateFlag();
 }
 	
 //----------------------------------------------------------------------------
@@ -160,6 +161,8 @@ void TickThing::collidedGround()
 	setVelocity(Vector3(0,0,0));
 	getVisRep()->setPose(0);
 	setPosY(getGroundY() + getHeight()/2);
+
+	setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------

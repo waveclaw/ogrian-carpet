@@ -59,8 +59,8 @@ public:
 class SentinelSummonSpellThing : public SummonSpellThing
 {
 public:
-	SentinelSummonSpellThing::SentinelSummonSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) :
-		SummonSpellThing(teamNum, pos, vel) 
+	SentinelSummonSpellThing::SentinelSummonSpellThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) :
+		SummonSpellThing(teamNum, colour, pos, vel) 
 	{}
 
 	virtual ThingType getType() { return SENTINELSUMMONTHING; }

@@ -48,7 +48,7 @@ public:
 		dir.normalise();
 		dir *= CONR("SUMMONSPELL_SPEED");
 	
-		TickSummonSpellThing* thing = new TickSummonSpellThing(0, pos,dir);
+		TickSummonSpellThing* thing = new TickSummonSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 

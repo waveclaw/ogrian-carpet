@@ -55,6 +55,8 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 
 	setPosY(getGroundY()+CONR("GNOME_SCALE")/2);
 
+	setUpdateType(CONTINUOUS);
+
 	// set our formation offset
 	Real angle = Math::RangeRandom(0,2*Math::PI);
 	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
@@ -70,6 +72,9 @@ void GnomeThing::move(Real time)
 	DamageableThing::move(time);
 
 	setPosY(getGroundY() + getHeight()/2);
+
+	if (Multiplayer::getSingleton().isClient()) return;
+
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 	if (team)
 	{

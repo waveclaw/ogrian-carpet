@@ -37,6 +37,7 @@ Description: This is a base class to be used by monsters for summoning
 #include "OgrianTeam.h"
 #include "OgrianGame.h"
 #include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
 #include "OgrianConst.h"
 
 using namespace Ogre;
@@ -47,13 +48,11 @@ namespace Ogrian
 class SummonSpellThing : public TimedThing
 {
 public:
-	SummonSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	SummonSpellThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Clay", SPRITE, "SummonSpell", false, CONR("SUMMONSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
-
-		if (!Multiplayer::getSingleton().isClient())
-			setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+		setColour(colour);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
