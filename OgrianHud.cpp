@@ -44,7 +44,11 @@ Hud::Hud()
 	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
+	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
+	mSpellIcons[0] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/0");
+	mSpellIcons[1] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/1");
+	mSpellIcons[2] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/2");
 	setMessage("");
 }
 
@@ -90,6 +94,22 @@ void Hud::setScore(String score)
 void Hud::setMessage(String msg)
 {
 	mMessage->setCaption(msg);
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setSpellName(String name)
+{
+	mSpellName->setCaption(name);
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setSpellIcon(int num, String material)
+{
+	if (num >= NUM_SPELLS) return;
+
+	mSpellIcons[num]->setMaterialName(material);
 }
 
 //----------------------------------------------------------------------------

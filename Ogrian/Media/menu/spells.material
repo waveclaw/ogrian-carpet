@@ -1,0 +1,144 @@
+
+material Ogrian/SpellIcon/Fireball/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture fireball.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Fireball/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Fireball/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/ClaimSpell/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture flare.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/ClaimSpell/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/ClaimSpell/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/BuildSpell/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture rock.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/BuildSpell/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/BuildSpell/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}

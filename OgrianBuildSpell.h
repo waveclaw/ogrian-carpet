@@ -19,66 +19,49 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHud.h
+OgrianBuildSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The heads up display
+Description: This is a fireball spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianHud_H__
-#define __OgrianHud_H__
+#ifndef __OgrianBuildSpell_H__
+#define __OgrianBuildSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianSpell.h"
+#include "OgrianBuildSpellThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Hud : public Singleton< Hud >
+class BuildSpell : public Spell
 {
 public:
-	virtual ~Hud();
-    static Hud& getSingleton(void);
+	// make an instance of this spell
+	virtual int makeThing(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("BUILDSPELL_SPEED");
+	
+		BuildSpellThing* thing = new BuildSpellThing(0, pos,dir);
+		Physics::getSingleton().addThing(thing);
+		return thing->getUID();
+	}
 
-	// show the HUD
-	void show();
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Ready"); }; 
 
-	// hide the HUD
-	void hide();
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Enabled"); }; 
 
-	// set the score
-	void setScore(int score);
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Disabled"); }; 
+	
+	virtual Real getCastPeriod() { return CONR("BUILDSPELL_CAST_PERIOD"); }
 
-	// set the health 
-	void setHealth(int health);
-
-	// set the message
-	void setMessage(String msg);
-
-	// set the spell name
-	void setSpellName(String name);
-
-	// set spell icons
-	void setSpellIcon(int num, String material);
-
-private:
-	Hud();
-	void setScore(String score);
-	void setHealth(String health);
-
-	Overlay* mOverlay;
-	GuiElement* mScore;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
-
-	GuiElement* mSpellIcons[NUM_SPELLS];
+	virtual String getString() { return String("Build"); }
 };
 
 }

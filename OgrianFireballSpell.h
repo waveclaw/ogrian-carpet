@@ -19,66 +19,50 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHud.h
+OgrianFireballSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The heads up display
+Description: This is a fireball spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianHud_H__
-#define __OgrianHud_H__
+#ifndef __OgrianFireballSpell_H__
+#define __OgrianFireballSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianSpell.h"
+#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Hud : public Singleton< Hud >
+class FireballSpell : public Spell
 {
 public:
-	virtual ~Hud();
-    static Hud& getSingleton(void);
 
-	// show the HUD
-	void show();
+	// make an instance of this spell
+	virtual int makeThing(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("FIREBALL_SPEED");
+	
+		FireballThing* thing = new FireballThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		Physics::getSingleton().addThing(thing);
+		return thing->getUID();
+	}
 
-	// hide the HUD
-	void hide();
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
 
-	// set the score
-	void setScore(int score);
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
 
-	// set the health 
-	void setHealth(int health);
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
 
-	// set the message
-	void setMessage(String msg);
+	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD"); }
 
-	// set the spell name
-	void setSpellName(String name);
-
-	// set spell icons
-	void setSpellIcon(int num, String material);
-
-private:
-	Hud();
-	void setScore(String score);
-	void setHealth(String health);
-
-	Overlay* mOverlay;
-	GuiElement* mScore;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
-
-	GuiElement* mSpellIcons[NUM_SPELLS];
+	virtual String getString() { return String("Fireball"); }
 };
 
 }

@@ -37,6 +37,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianBuildSpellThing.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianRenderer.h"
+#include "OgrianSpellManager.h"
 
 template<> Ogrian::Input * Singleton< Ogrian::Input >::ms_Singleton = 0;
 
@@ -49,6 +50,8 @@ Input::Input()
 {
 	mTimeUntilNextToggle = -1;
 	mTimeUntilNextCast = 0;
+	
+	SpellManager::getSingleton().readyDefaultSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -64,71 +67,39 @@ Input::~Input()
 bool Input::processKeyInput(InputReader* input)
 {
 	// show the menu
-    if( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
+    if( input->isKeyDown( KC_ESCAPE ) && mTimeUntilNextToggle <= 0)
     {            
 		Menu::getSingleton().show();
         mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
 	// show the PlayerList
-    if( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
+    if( input->isKeyDown( KC_TAB ))
     {            
 		PlayerList::getSingleton().show();
     }
 	else PlayerList::getSingleton().hide();
 
-	// drop a manathing
-  //  if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
-  //  {
-		//Physics::getSingleton().addThing(new ManaThing(50, 
-		//	Renderer::getSingleton().getCameraThing()->getPosition()));
-  //      mTimeUntilNextToggle = CONR("KEY_DELAY");
-  //  }
+	// select the next spell
+	if (input->isKeyDown( KC_E ) && mTimeUntilNextToggle <= 0)
+	{
+		SpellManager::getSingleton().readyNextSpell();
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
+	}
 
-	// cast a fireball
+	// select the prev spell
+	if (input->isKeyDown( KC_Q ) && mTimeUntilNextToggle <= 0)
+	{
+		SpellManager::getSingleton().readyPrevSpell();
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
+	}
+
+	// cast the selected spell
 	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost())
 	{
-		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
-		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
-		vel.normalise();
-
-		pos += vel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
-		vel *= CONR("FIREBALL_SPEED");
-	
-		Physics::getSingleton().addThing(new FireballThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,vel));
-        mTimeUntilNextCast = CONR("FIREBALL_CAST_PERIOD");
+        mTimeUntilNextCast = SpellManager::getSingleton().castSpell();
 	}
 
-	// cast claim
-	if (input->getMouseButton(1) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
-		&& !Game::getSingleton().isPreGame())
-	{
-		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
-		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
-		vel.normalise();
-
-		pos += vel*(CONR("WIZARD_SCALE") + CONR("CLAIMSPELL_SCALE"))*1.1;
-		vel *= CONR("CLAIMSPELL_SPEED");
-	
-		Physics::getSingleton().addThing(new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos, vel));
-        mTimeUntilNextCast = CONR("CLAIMSPELL_CAST_PERIOD");
-	}
-
-	// cast build
-	if ((input->getMouseButton(2) || input->getMouseButton(3) || input->getMouseButton(4) || input->isKeyDown(KC_LCONTROL))
-		&& mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
-		&& !Game::getSingleton().isPreGame())
-	{
-		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
-		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
-		vel.normalise();
-
-		pos += vel*(CONR("WIZARD_SCALE") + CONR("BUILDSPELL_SCALE"))*1.1;
-		vel *= CONR("BUILDSPELL_SPEED");
-	
-		Physics::getSingleton().addThing(new BuildSpellThing(0, pos, vel));
-        mTimeUntilNextCast = CONR("BUILDSPELL_CAST_PERIOD");
-	}
 	return true;
 }
 

@@ -19,66 +19,57 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHud.h
+OgrianSpellManager.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The heads up display
+Description: This manages the spells for the HUD, etc
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianHud_H__
-#define __OgrianHud_H__
+#ifndef __OgrianSpellManager_H__
+#define __OgrianSpellManager_H__
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianSpell.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Hud : public Singleton< Hud >
+
+#define SPELL_BUILD		0
+#define SPELL_CLAIM		1
+#define SPELL_FIREBALL	2
+#define NUM_SPELLS		3
+
+class SpellManager : public Singleton< SpellManager >
 {
 public:
-	virtual ~Hud();
-    static Hud& getSingleton(void);
+	virtual ~SpellManager();
+    static SpellManager& getSingleton(void);
 
-	// show the HUD
-	void show();
+	virtual void enableSpell(int spell);
+	virtual void disableSpell(int spell);
 
-	// hide the HUD
-	void hide();
+	virtual void disableAllSpells();
 
-	// set the score
-	void setScore(int score);
+	virtual void readyNextSpell();
+	virtual void readyPrevSpell();
+	virtual void readyDefaultSpell();
 
-	// set the health 
-	void setHealth(int health);
-
-	// set the message
-	void setMessage(String msg);
-
-	// set the spell name
-	void setSpellName(String name);
-
-	// set spell icons
-	void setSpellIcon(int num, String material);
+	virtual Real castSpell();
 
 private:
-	Hud();
-	void setScore(String score);
-	void setHealth(String health);
+	SpellManager();
+	virtual void readySpell(int spell);
 
-	Overlay* mOverlay;
-	GuiElement* mScore;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
+	int mCurrentSpell;
+	Spell* mSpells[NUM_SPELLS];
 
-	GuiElement* mSpellIcons[NUM_SPELLS];
 };
 
 }

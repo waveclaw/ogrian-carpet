@@ -19,66 +19,50 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHud.h
+OgrianClaimSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The heads up display
+Description: This is a fireball spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianHud_H__
-#define __OgrianHud_H__
+#ifndef __OgrianClaimSpell_H__
+#define __OgrianClaimSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianSpell.h"
+#include "OgrianClaimSpellThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Hud : public Singleton< Hud >
+class ClaimSpell : public Spell
 {
 public:
-	virtual ~Hud();
-    static Hud& getSingleton(void);
 
-	// show the HUD
-	void show();
+	// make an instance of this spell
+	virtual int makeThing(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("CLAIMSPELL_SPEED");
+	
+		ClaimSpellThing* thing = new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		Physics::getSingleton().addThing(thing);
+		return thing->getUID();
+	}
 
-	// hide the HUD
-	void hide();
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Ready"); }; 
 
-	// set the score
-	void setScore(int score);
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Enabled"); }; 
 
-	// set the health 
-	void setHealth(int health);
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Disabled"); }; 
 
-	// set the message
-	void setMessage(String msg);
+	virtual Real getCastPeriod() { return CONR("CLAIMSPELL_CAST_PERIOD"); }
 
-	// set the spell name
-	void setSpellName(String name);
-
-	// set spell icons
-	void setSpellIcon(int num, String material);
-
-private:
-	Hud();
-	void setScore(String score);
-	void setHealth(String health);
-
-	Overlay* mOverlay;
-	GuiElement* mScore;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
-
-	GuiElement* mSpellIcons[NUM_SPELLS];
+	virtual String getString() { return String("Claim"); }
 };
 
 }

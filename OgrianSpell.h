@@ -19,66 +19,52 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHud.h
+OgrianSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The heads up display
+Description: This is a spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianHud_H__
-#define __OgrianHud_H__
+#ifndef __OgrianSpell_H__
+#define __OgrianSpell_H__
 
 #include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Hud : public Singleton< Hud >
+class Spell
 {
 public:
-	virtual ~Hud();
-    static Hud& getSingleton(void);
+	Spell() { mEnabled = false; }
+	virtual ~Spell() {}
 
-	// show the HUD
-	void show();
+	// make an instance of this spell
+	virtual int makeThing(Vector3 pos, Vector3 dir) = 0;
 
-	// hide the HUD
-	void hide();
+	virtual Real getCastPeriod() = 0;
 
-	// set the score
-	void setScore(int score);
+	virtual String getString() = 0;
 
-	// set the health 
-	void setHealth(int health);
+	virtual String getReadyMaterial() = 0; 
 
-	// set the message
-	void setMessage(String msg);
+	virtual String getEnabledMaterial() = 0; 
 
-	// set the spell name
-	void setSpellName(String name);
+	virtual String getDisabledMaterial() = 0; 
 
-	// set spell icons
-	void setSpellIcon(int num, String material);
+	virtual void setEnabled(bool enabled) { mEnabled = enabled; }
+
+	virtual bool getEnabled() { return mEnabled; }
 
 private:
-	Hud();
-	void setScore(String score);
-	void setHealth(String health);
+	bool mEnabled;
 
-	Overlay* mOverlay;
-	GuiElement* mScore;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
-
-	GuiElement* mSpellIcons[NUM_SPELLS];
 };
 
 }

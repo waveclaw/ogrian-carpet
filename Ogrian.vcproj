@@ -197,6 +197,12 @@
 				RelativePath="OgrianSkinManager.h">
 			</File>
 			<File
+				RelativePath="OgrianSpellManager.cpp">
+			</File>
+			<File
+				RelativePath="OgrianSpellManager.h">
+			</File>
+			<File
 				RelativePath="OgrianTime.cpp">
 			</File>
 			<File
@@ -339,6 +345,22 @@
 			</File>
 			<File
 				RelativePath="OgrianVisRep.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Spells"
+			Filter="">
+			<File
+				RelativePath="OgrianBuildSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianClaimSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianFireballSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianSpell.h">
 			</File>
 		</Filter>
 	</Files>
