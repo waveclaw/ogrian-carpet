@@ -94,7 +94,7 @@ public:
 	// and the other disapears
 	virtual void collided(Thing* e)
 	{
-		if (e->getType() == MANATHING)
+		if (e->getType() == MANATHING && e->isAlive() && isAlive())
 		{
 			if(getAmount() > 0)
 			{
