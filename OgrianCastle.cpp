@@ -33,6 +33,8 @@ Description: This is a castle
 #include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 
+#define NUM_BLOCKS 13
+
 namespace Ogrian
 {
 
@@ -72,25 +74,28 @@ Castle::Castle(int teamNum, Vector3 pos)
 	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
 	mBeacon->setPosition(bpos);
 
-	Real W = CONR("CASTLE_WIDTH");
 
 	mBaloons[0] = 0; 
 	mBaloons[1] = 0;
 	mBaloons[2] = 0;
-	mBaloons[3] = 0;
+	mBaloons[3] = 0; 
 	mBaloons[4] = 0;
 
 	mNumBaloons = 0;
 	mRubble = false;
+	mLevel = -1;
 
 	// build the castle
 	mBlocks[0] = mCenterTower = new CastleKeepThing(this, pos);
+
+	for (int i=1; i<NUM_BLOCKS; i++)
+		mBlocks[i]=0;
 
 	// add them to physics
 	Physics::getSingleton().addThing(mBlocks[0]);
 
 	// start at level 0
-	setMana(400);
+	setMana(700);
 
 	setHealth(CONI("CASTLE_HEALTH"));
 
@@ -100,158 +105,6 @@ Castle::Castle(int teamNum, Vector3 pos)
 		Thing* thing = Physics::getSingleton().getThingByIndex(i);
 		if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
 			claimedManaThing(thing);
-	}
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::makeLevel1()
-{
-	Vector3 pos = getPosition();
-	Real W = CONR("CASTLE_WIDTH");
-	mBlocks[1] = mCornerTowerNE = new CastleTowerThing(this, pos + Vector3( 2*W, 0, 2*W));
-	mBlocks[2] = mCornerTowerSE = new CastleTowerThing(this, pos + Vector3( 2*W, 0,-2*W));
-	mBlocks[3] = mCornerTowerSW = new CastleTowerThing(this, pos + Vector3(-2*W, 0,-2*W));
-	mBlocks[4] = mCornerTowerNW = new CastleTowerThing(this, pos + Vector3(-2*W, 0, 2*W));
-	
-	// add them to physics
-	for (int i=1; i<5; i++)
-		Physics::getSingleton().addThing(mBlocks[i]);
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::makeLevel2()
-{
-	Vector3 pos = getPosition();
-	Real W = CONR("CASTLE_WIDTH");
-	mBlocks[5]  = mInnerWallN1 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,  -W));
-	mBlocks[6]  = mInnerWallN2 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,   0));
-	mBlocks[7]  = mInnerWallN3 = new CastleWallEWThing(this, pos + Vector3( 2*W, 0,   W));
-	mBlocks[8]  = mInnerWallE1 = new CastleWallNSThing(this, pos + Vector3(  -W, 0, 2*W));
-	mBlocks[9]  = mInnerWallE2 = new CastleWallNSThing(this, pos + Vector3(   0, 0, 2*W));
-	mBlocks[10] = mInnerWallE3 = new CastleWallNSThing(this, pos + Vector3(   W, 0, 2*W));
-	mBlocks[11] = mInnerWallS1 = new CastleWallEWThing(this, pos + Vector3(-2*W, 0,  -W));
-	mBlocks[12] = mInnerWallS2 = new CastleWallEWThing(this, pos + Vector3(-2*W, 0,   0));
-	mBlocks[13] = mInnerWallS3 = new CastleWallEWThing(this, pos + Vector3(-2*W, 0,   W));
-	mBlocks[14] = mInnerWallW1 = new CastleWallNSThing(this, pos + Vector3(  -W, 0,-2*W));
-	mBlocks[15] = mInnerWallW2 = new CastleWallNSThing(this, pos + Vector3(   0, 0,-2*W));
-	mBlocks[16] = mInnerWallW3 = new CastleWallNSThing(this, pos + Vector3(   W, 0,-2*W));
-	
-	// add them to physics
-	for (int i=5; i<17; i++)
-		Physics::getSingleton().addThing(mBlocks[i]);
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::makeLevel3()
-{
-	Vector3 pos = getPosition();
-	Real W = CONR("CASTLE_WIDTH");
-	mBlocks[17] = mFarCornerTowerN  = new CastleTowerThing(this, pos + Vector3(   0, 0, 4*W));
-	mBlocks[18] = mFarCornerTowerS  = new CastleTowerThing(this, pos + Vector3(   0, 0,-4*W));
-	mBlocks[19] = mFarCornerTowerE  = new CastleTowerThing(this, pos + Vector3( 4*W, 0,   0));
-	mBlocks[20] = mFarCornerTowerW  = new CastleTowerThing(this, pos + Vector3(-4*W, 0,   0));
-	mBlocks[21] = mFarCornerTowerNE = new CastleTowerThing(this, pos + Vector3( 4*W, 0, 4*W));
-	mBlocks[22] = mFarCornerTowerSE = new CastleTowerThing(this, pos + Vector3( 4*W, 0,-4*W));
-	mBlocks[23] = mFarCornerTowerSW = new CastleTowerThing(this, pos + Vector3(-4*W, 0,-4*W));
-	mBlocks[24] = mFarCornerTowerNW = new CastleTowerThing(this, pos + Vector3(-4*W, 0, 4*W));
-	
-	// add them to physics
-	for (int i=17; i<25; i++)
-		Physics::getSingleton().addThing(mBlocks[i]);
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::makeLevel4()
-{
-	Vector3 pos = getPosition();
-	Real W = CONR("CASTLE_WIDTH");
-	mBlocks[25] = mOuterWallN1 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,-3*W));
-	mBlocks[26] = mOuterWallN2 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,-2*W));
-	mBlocks[27] = mOuterWallN3 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,  -W));
-	mBlocks[28] = mOuterWallN5 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0,   W));
-	mBlocks[29] = mOuterWallN6 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0, 2*W));
-	mBlocks[30] = mOuterWallN7 = new CastleWallEWThing(this, pos + Vector3( 4*W, 0, 3*W));
-	mBlocks[31] = mOuterWallE1 = new CastleWallNSThing(this, pos + Vector3(-3*W, 0, 4*W));
-	mBlocks[32] = mOuterWallE2 = new CastleWallNSThing(this, pos + Vector3(-2*W, 0, 4*W));
-	mBlocks[33] = mOuterWallE3 = new CastleWallNSThing(this, pos + Vector3(  -W, 0, 4*W));
-	mBlocks[34] = mOuterWallE5 = new CastleWallNSThing(this, pos + Vector3(   W, 0, 4*W));
-	mBlocks[35] = mOuterWallE6 = new CastleWallNSThing(this, pos + Vector3( 2*W, 0, 4*W));
-	mBlocks[36] = mOuterWallE7 = new CastleWallNSThing(this, pos + Vector3( 3*W, 0, 4*W));
-	mBlocks[37] = mOuterWallS1 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0,-3*W));
-	mBlocks[38] = mOuterWallS2 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0,-2*W));
-	mBlocks[39] = mOuterWallS3 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0,  -W));
-	mBlocks[40] = mOuterWallS5 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0,   W));
-	mBlocks[41] = mOuterWallS6 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0, 2*W));
-	mBlocks[42] = mOuterWallS7 = new CastleWallEWThing(this, pos + Vector3(-4*W, 0, 3*W));
-	mBlocks[43] = mOuterWallW1 = new CastleWallNSThing(this, pos + Vector3(-3*W, 0,-4*W));
-	mBlocks[44] = mOuterWallW2 = new CastleWallNSThing(this, pos + Vector3(-2*W, 0,-4*W));
-	mBlocks[45] = mOuterWallW3 = new CastleWallNSThing(this, pos + Vector3(  -W, 0,-4*W));
-	mBlocks[46] = mOuterWallW5 = new CastleWallNSThing(this, pos + Vector3(   W, 0,-4*W));
-	mBlocks[47] = mOuterWallW6 = new CastleWallNSThing(this, pos + Vector3( 2*W, 0,-4*W));
-	mBlocks[48] = mOuterWallW7 = new CastleWallNSThing(this, pos + Vector3( 3*W, 0,-4*W));
-	
-	// add them to physics
-	for (int i=25; i<49; i++)
-		Physics::getSingleton().addThing(mBlocks[i]);
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::destroyLevel1()
-{
-	for (int i=1; i<=4; i++)
-	{
-		if (mBlocks[i])
-		{
-			mBlocks[i]->destroy();
-			mBlocks[i] = 0;
-		}
-	}
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::destroyLevel2()
-{
-	for (int i=5; i<=16; i++)
-	{
-		if (mBlocks[i])
-		{
-			mBlocks[i]->destroy();
-			mBlocks[i] = 0;
-		}
-	}
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::destroyLevel3()
-{
-	for (int i=17; i<=24; i++)
-	{
-		if (mBlocks[i])
-		{
-			mBlocks[i]->destroy();
-			mBlocks[i] = 0;
-		}
-	}
-}
-
-//----------------------------------------------------------------------------
-
-void Castle::destroyLevel4()
-{
-	for (int i=25; i<=48; i++)
-	{
-		if (mBlocks[i])
-		{
-			mBlocks[i]->destroy();
-			mBlocks[i] = 0;
-		}
 	}
 }
 
@@ -458,7 +311,8 @@ void Castle::claimedManaThing(Thing* mana)
 	for (int i=0; i<mNumBaloons; i++)
 	{
 		BaloonThing* candidate = mBaloons[i];
-		if (candidate->getTarget() == this
+		if (candidate
+			&& candidate->getTarget() == this
 			&& candidate->getAmount() == 0
 			&& bestDist > mana->cylinderDistance(candidate))
 		{
@@ -530,45 +384,23 @@ void Castle::setLevel(Real level)
 {
 	mBlocks[0]->setPercentage(1);
 
-	if (level >= 0)
+	// make and set the level of each tower
+	for (int i=1; i<NUM_BLOCKS; i++)
 	{
-		if (mLevel < 0) makeLevel1();
+		if (level > i-1 && mBlocks[i] == 0)
+		{
+			mBlocks[i] = newCastleTower(i);
+			Physics::getSingleton().addThing(mBlocks[i]);
+		}
+		else if (level <= i-1 && mBlocks[i] != 0)
+		{
+			mBlocks[i]->destroy();
+			mBlocks[i] = 0;
+		}
 
-		// place the first set
-		for (int i=1; i<5; i++)
-			mBlocks[i]->setPercentage(level);
+		if (level >= i)
+			mBlocks[i]->setPercentage(level-i+1);
 	}
-	else destroyLevel1();
-
-	if (level >= 1)
-	{
-		if (mLevel < 1) makeLevel2();
-
-		// place the second set
-		for (int i=5; i<17; i++)
-			mBlocks[i]->setPercentage(level-1);
-	}
-	else destroyLevel2();
-
-	if (level >= 2)
-	{
-		if (mLevel < 2) makeLevel3();
-
-		// place the second set
-		for (int i=17; i<25; i++)
-			mBlocks[i]->setPercentage(level-2);
-	}
-	else destroyLevel3();
-
-	if (level >= 3)
-	{
-		if (mLevel < 3) makeLevel4();
-
-		// place the second set
-		for (int i=25; i<49; i++)
-			mBlocks[i]->setPercentage(level-3);
-	}
-	else destroyLevel4();
 
 	mLevel = level;
 
@@ -577,6 +409,32 @@ void Castle::setLevel(Real level)
 
 	// set the spells
 	setSpells(level);
+}
+
+//----------------------------------------------------------------------------
+
+CastleTowerThing* Castle::newCastleTower(int level)
+{
+	Vector3 pos = getPosition();
+	Real W = CONR("CASTLE_WIDTH");
+
+	switch (level)
+	{
+		case 1: return new CastleTowerThing(this, pos + Vector3( 2*W, 0, 2*W));
+	 	case 2: return new CastleTowerThing(this, pos + Vector3( 2*W, 0,-2*W));
+	 	case 3: return new CastleTowerThing(this, pos + Vector3(-2*W, 0,-2*W));
+	 	case 4: return new CastleTowerThing(this, pos + Vector3(-2*W, 0, 2*W));
+
+	  	case 5: return new CastleTowerThing(this, pos + Vector3(   0, 0, 4*W));
+	  	case 6: return new CastleTowerThing(this, pos + Vector3(   0, 0,-4*W));
+	  	case 7: return new CastleTowerThing(this, pos + Vector3( 4*W, 0,   0));
+	  	case 8: return new CastleTowerThing(this, pos + Vector3(-4*W, 0,   0));
+		case 9: return new CastleTowerThing(this, pos + Vector3( 4*W, 0, 4*W));
+		case 10: return new CastleTowerThing(this, pos + Vector3( 4*W, 0,-4*W));
+		case 11: return new CastleTowerThing(this, pos + Vector3(-4*W, 0,-4*W));
+		case 12: return new CastleTowerThing(this, pos + Vector3(-4*W, 0, 4*W));
+	}
+	return 0;
 }
 
 //----------------------------------------------------------------------------

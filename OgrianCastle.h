@@ -184,41 +184,6 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleWallNSThing : public CastleBlockThing
-{
-public:
-	CastleWallNSThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos)
-	{
-		setMaterial("Ogrian/Wall");
-		static_cast<Model*>(getVisRep())->setMesh("wall2.mesh",
-			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
-
-		setHeight(CONR("CASTLEWALL_HEIGHT"));
-	}
-
-	virtual ThingType getType()	{ return CASTLEWALLNS; }
-};
-
-/////////////////////////////////////////////////////////////////////////////
-class CastleWallEWThing : public CastleBlockThing
-{
-public:
-	CastleWallEWThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos)
-	{
-		setMaterial("Ogrian/Wall");
-		static_cast<Model*>(getVisRep())->setMesh("wall1.mesh",
-			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
-
-		setHeight(CONR("CASTLEWALL_HEIGHT"));
-	}
-
-	virtual ThingType getType()	{ return CASTLEWALLEW; }
-};
-
-
-/////////////////////////////////////////////////////////////////////////////
 
 class CastleBeaconThing : public Thing
 {
@@ -316,67 +281,32 @@ private:
 	BaloonThing* mBaloons[NUM_BALOONS];
 
 	// an array of all the towers and walls for convenient looping
-	CastleBlockThing* mBlocks[49];
+	CastleBlockThing* mBlocks[13];
 
 	CastleKeepThing* mCenterTower; // 0
-	
-	CastleTowerThing* mCornerTowerNE; // 1
-	CastleTowerThing* mCornerTowerSE;
-	CastleTowerThing* mCornerTowerSW;
-	CastleTowerThing* mCornerTowerNW;
+	//
+	//CastleTowerThing* mCornerTowerNE;
+	//CastleTowerThing* mCornerTowerSE;
+	//CastleTowerThing* mCornerTowerSW;
+	//CastleTowerThing* mCornerTowerNW;
 
-	CastleWallEWThing* mInnerWallN1; // 5
-	CastleWallEWThing* mInnerWallN2;
-	CastleWallEWThing* mInnerWallN3;
-	CastleWallNSThing* mInnerWallE1;
-	CastleWallNSThing* mInnerWallE2;
-	CastleWallNSThing* mInnerWallE3;
-	CastleWallEWThing* mInnerWallS1;
-	CastleWallEWThing* mInnerWallS2;
-	CastleWallEWThing* mInnerWallS3;
-	CastleWallNSThing* mInnerWallW1;
-	CastleWallNSThing* mInnerWallW2;
-	CastleWallNSThing* mInnerWallW3;
-
-	CastleTowerThing* mFarCornerTowerN; // 17
-	CastleTowerThing* mFarCornerTowerS;
-	CastleTowerThing* mFarCornerTowerE;
-	CastleTowerThing* mFarCornerTowerW;
-	CastleTowerThing* mFarCornerTowerNE;
-	CastleTowerThing* mFarCornerTowerSE;
-	CastleTowerThing* mFarCornerTowerSW;
-	CastleTowerThing* mFarCornerTowerNW;
-
-	CastleWallEWThing* mOuterWallN1; // 25
-	CastleWallEWThing* mOuterWallN2;
-	CastleWallEWThing* mOuterWallN3;
-	CastleWallEWThing* mOuterWallN5;
-	CastleWallEWThing* mOuterWallN6;
-	CastleWallEWThing* mOuterWallN7;
-	CastleWallNSThing* mOuterWallE1;
-	CastleWallNSThing* mOuterWallE2;
-	CastleWallNSThing* mOuterWallE3;
-	CastleWallNSThing* mOuterWallE5;
-	CastleWallNSThing* mOuterWallE6;
-	CastleWallNSThing* mOuterWallE7;
-	CastleWallEWThing* mOuterWallS1;
-	CastleWallEWThing* mOuterWallS2;
-	CastleWallEWThing* mOuterWallS3;
-	CastleWallEWThing* mOuterWallS5;
-	CastleWallEWThing* mOuterWallS6;
-	CastleWallEWThing* mOuterWallS7;
-	CastleWallNSThing* mOuterWallW1;
-	CastleWallNSThing* mOuterWallW2;
-	CastleWallNSThing* mOuterWallW3;
-	CastleWallNSThing* mOuterWallW5;
-	CastleWallNSThing* mOuterWallW6;
-	CastleWallNSThing* mOuterWallW7;
+	//CastleTowerThing* mFarCornerTowerN; // 5
+	//CastleTowerThing* mFarCornerTowerS;
+	//CastleTowerThing* mFarCornerTowerE;
+	//CastleTowerThing* mFarCornerTowerW;
+	//CastleTowerThing* mFarCornerTowerNE;
+	//CastleTowerThing* mFarCornerTowerSE;
+	//CastleTowerThing* mFarCornerTowerSW;
+	//CastleTowerThing* mFarCornerTowerNW; // 12
 
 	// the current number of baloons
 	int mNumBaloons;
 
 	// set the castle level
 	void setLevel(Real level);
+
+	// make a tower
+	CastleTowerThing* newCastleTower(int level);
 
 	// set the number of baloons
 	void setNumBaloons(int num);
@@ -386,18 +316,6 @@ private:
 
 	// genearate a target for a baloon
 	Thing* generateTarget(BaloonThing* baloon);
-
-	// make the levels
-	void makeLevel1();
-	void makeLevel2();
-	void makeLevel3();
-	void makeLevel4();
-
-	// destroy the levels
-	void destroyLevel1();
-	void destroyLevel2();
-	void destroyLevel3();
-	void destroyLevel4();
 };
 
 }

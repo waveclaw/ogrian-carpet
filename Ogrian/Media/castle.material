@@ -32,9 +32,9 @@ material Material/ALPHA/turret.png
   {
     pass
     {
-      #scene_blend alpha_blend 
       texture_unit
       {
+	alpha_rejection greater_equal 128
         texture turret.png
       }
     }

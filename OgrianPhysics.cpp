@@ -378,9 +378,6 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case CASTLETOWER: return new CastleTowerThing(0);
 
-		case CASTLEWALLNS: return new CastleWallNSThing(0);
-		case CASTLEWALLEW: return new CastleWallEWThing(0);
-
 		case CASTLEFLAG: return new CastleFlagThing();
 
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
@@ -505,7 +502,7 @@ void Physics::addThing(Thing* thing)
 		// keep allthings sorted by uid
 		_sortAllThings();
 
-		// if its a claimthing and we're in pregame mode
+		// if its a buildthing or claim thing and we're in pregame mode
 		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame()
 			|| thing->getType() == BUILDTHING && Game::getSingleton().isPreGame())
 		{
@@ -573,18 +570,7 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 	}
 	else
 	{
-		// put it among the others
-		//mOtherThings.push_back(thing);
-
-		//LogManager::getSingleton().logMessage("WARNING - ADDING THING OUTSIDE GRID");
-
-		//// keep it inside the world
-		//Vector3 pos = thing->getPosition();
-		//if (pos.x < -CONR("COASTLINE")+1) pos.x = -CONR("COASTLINE")+1;
-		//if (pos.z < -CONR("COASTLINE")+1) pos.z = -CONR("COASTLINE")+1;
-		//if (pos.x > mWorldSize + CONR("COASTLINE")-1) pos.x = mWorldSize + CONR("COASTLINE")-1;
-		//if (pos.z > mWorldSize + CONR("COASTLINE")-1) pos.z = mWorldSize + CONR("COASTLINE")-1;
-		//thing->setPosition(pos);
+		LogManager::getSingleton().logMessage("ERROR: THING OUTSIDE WORLD");
 	}
 }
 
@@ -618,24 +604,6 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			+ /*grid_u + "," + grid_v +*/ ") " + thing->getString());
 		return false;
 	}
-	//else
-	//{
-	//	// find the thing from the other things
-	//	size_t s = mOtherThings.size();
-	//	for (int i=0; i<(int)mOtherThings.size(); i++)
-	//	{
-	//		if (mOtherThings[i] == thing)
-	//		{
-	//			// erase it
-	//			mOtherThings.erase(mOtherThings.begin()+i);
-	//			return true;
-	//		}
-	//	}
-	//	// assert that one was removed
-	//	assert(mOtherThings.size() == s-1);
-	//	LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") + thing->getString()); 
-	//	return false;
-	//}
 
 	return false;
 }
@@ -921,73 +889,6 @@ void Physics::collisionCheck()
 			}
 		}
 	}
-
-	//// check the last row for collisions with the others
-	//for (i=0; i<PHYSICS_GRID_SIZE; i++)
-	//{
-	//	for (t=0; t<mThingGrid[i][PHYSICS_GRID_SIZE-1].size(); t++)
-	//	{
-	//		// get the thing
-	//		Thing* thing = mThingGrid[i][PHYSICS_GRID_SIZE-1][t];
-
-	//		// check it against all following things in this cell
-	//		for (u=0; u<mOtherThings.size(); u++)
-	//			pairCollisionCheck(thing, mOtherThings[u]);
-	//	}
-	//}
-
-	//// check the last column for collisions with the others
-	//for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
-	//{
-	//	for (t=0; t<mThingGrid[PHYSICS_GRID_SIZE-1][j].size(); t++)
-	//	{
-	//		// get the thing
-	//		Thing* thing = mThingGrid[PHYSICS_GRID_SIZE-1][j][t];
-
-	//		// check it against all other things
-	//		for (u=0; u<mOtherThings.size(); u++)
-	//			pairCollisionCheck(thing, mOtherThings[u]);
-	//	}
-	//}
-
-	//// check the others for collisions with the first row
-	//for (i=0; i<PHYSICS_GRID_SIZE; i++)
-	//{
-	//	for (t=0; t<mThingGrid[i][0].size(); t++)
-	//	{
-	//		// get the thing
-	//		Thing* thing = mThingGrid[i][0][t];
-
-	//		// check it against all other things
-	//		for (u=0; u<mOtherThings.size(); u++)
-	//			pairCollisionCheck(thing, mOtherThings[u]);
-	//	}
-	//}
-
-	//// check the others for collisions with the first col
-	//for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
-	//{
-	//	for (t=0; t<mThingGrid[0][j].size(); t++)
-	//	{
-	//		// get the thing
-	//		Thing* thing = mThingGrid[0][j][t];
-
-	//		// check it against all other things
-	//		for (u=0; u<mOtherThings.size(); u++)
-	//			pairCollisionCheck(thing, mOtherThings[u]);
-	//	}
-	//}
-
-	//// check the others for collisions among themselves
-	//for (i=0; i<mOtherThings.size(); i++)
-	//{
-	//	// get the thing
-	//	Thing* thing = mOtherThings[i];
-
-	//	// check it against all following other things
-	//	for (u=i+1; u<mOtherThings.size(); u++)
-	//		pairCollisionCheck(thing, mOtherThings[u]);
-	//}
 }
 
 //----------------------------------------------------------------------------
