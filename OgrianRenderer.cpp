@@ -186,8 +186,8 @@ void Renderer::createCamera(void)
     // Create the camera
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
-    mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
-	mCamera->setFOVy(CAMERA_FOV);
+    mCamera->setNearClipDistance(CONR("CAMERA_NEAR_CLIP"));
+	mCamera->setFOVy(CONR("CAMERA_FOV"));
 }
 
 //----------------------------------------------------------------------------
@@ -226,11 +226,11 @@ void Renderer::createSky(const String& material)
 	// Define the required skyplane
     Plane plane;
     // num of world units from the camera
-    plane.d = SKYPLANE_DISTANCE;
+    plane.d = CONR("SKYPLANE_DISTANCE");
     // Above the camera, facing down
     plane.normal = -Vector3::UNIT_Y;
     // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, SKYPLANE_BOW);
+    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"));
 }
 
 //----------------------------------------------------------------------------
@@ -282,11 +282,11 @@ void Renderer::createFoliage(const String& material, int num)
         Real z = Math::SymmetricRandom() * 1000.0;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
+		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
-			Real scale = FOLIAGE_SCALE + (Math::SymmetricRandom()-.5) * FOLIAGE_SCALE_VAR;
+			Real scale = CONR("FOLIAGE_SCALE") + (Math::SymmetricRandom()-.5) * CONR("FOLIAGE_SCALE_VAR");
 
 			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
 		}
@@ -317,22 +317,23 @@ void Renderer::loadMap(String configfile, bool server)
 	createOcean(oceanMaterial);
 
 	// dont make foliage for a client
-	if (server)	createFoliage(foliageMaterial, FOLIAGE_NUM);
+	if (server)	createFoliage(foliageMaterial, CONI("FOLIAGE_NUM"));
 
     // Position the camera with an offset
-    mCamera->setPosition(Vector3(START_X,0,START_Z));
+    mCamera->setPosition(Vector3(CONR("START_X"),0,CONR("START_Z")));
     //mCamera->lookAt(Vector3(0,0,0));
 	createCameraThing();
 	
 	Vector3 offset;
-	offset.x = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
-	offset.z = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
+	Real wdo = CONR("WIZARD_DEATH_OFFSET");
+	offset.x = Math::RangeRandom(-wdo, wdo);
+	offset.z = Math::RangeRandom(-wdo, wdo);
 	mCameraThing->setPosition(mCameraThing->getPosition() + offset);
 
 	// start the game
 	Audio::getSingleton().start();
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
-	mCameraThing->setHealth(WIZARD_HEALTH);
+	mCameraThing->setHealth(CONR("WIZARD_HEALTH"));
 
 	mMapLoaded = true;
 }
@@ -365,7 +366,7 @@ void Renderer::createScene(void)
     mSceneMgr->setAmbientLight(ColourValue(.5, .5, .5));
 
 	// set the fog
-    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
+    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, CONR("FOG_DENSITY"), 2500,  5500 );
 
 	// show the menu
 	Menu::getSingleton().show();

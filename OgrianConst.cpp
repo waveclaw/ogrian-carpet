@@ -19,76 +19,65 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianWizardThing.cpp
+OgrianConst.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The wizard thing is the superclass of the CameraThing
+Description: A singleton that reads all of the constants from a text file
 
 /*------------------------------------*/
 
 
-#include "OgrianWizardThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianMultiplayer.h"
-
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
+template<> Ogrian::Const * Singleton< Ogrian::Const >::ms_Singleton = 0;
 namespace Ogrian
 {
 
 //----------------------------------------------------------------------------
-	
-WizardThing::WizardThing(bool visible) 
-	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
-	visible?"WizardThing":"CameraThing", true, CONR("CAMERA_HEIGHT"))
+
+Const::Const()
 {
-	if (visible)
-	{
-		getVisRep()->addPose("Ogrian/Wizard/");
-		getVisRep()->setPose(0);
-	}
+	mFile.load("constants.txt");
 }
 
 //----------------------------------------------------------------------------
 
-void WizardThing::setHealth(int health)
+Const::~Const()
 {
-	DamageableThing::setHealth(health);
 
-	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
-	{
-		// find the wizard's player
-		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
-
-		// update it
-		Multiplayer::getSingleton().serverSendText(String("Health: ") << health , ID_SETHEALTH, player);
-	}
-}
-//----------------------------------------------------------------------------
-
-void WizardThing::die()
-{
-	DamageableThing::die();
-
-	if (!Multiplayer::getSingleton().isClient())
-	{
-		Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
-
-		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
-		{
-			// find the wizard's player
-			PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
-
-			// kill it
-			Multiplayer::getSingleton().serverSendText(" " , ID_DIE, player);
-		}			
-	}
-	
-	setHealth(CONI("WIZARD_HEALTH"));
 }
 
 //----------------------------------------------------------------------------
-	
+
+int Const::getConstantInt(const String &key)
+{
+	int c = atoi(mFile.getSetting(key));
+	if (c == 0) LogManager::getSingleton().logMessage(String("Warning, key ") << key << " read as 0");
+	return c;
+}
+
+//----------------------------------------------------------------------------
+
+Real Const::getConstantReal(const String &key)
+{
+	Real c = atof(mFile.getSetting(key));
+	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") << key << " read as 0.0");
+	return c;
+}
+
+//----------------------------------------------------------------------------
+
+Const& Const::getSingleton(void)
+{
+	if (!ms_Singleton) 
+	{
+		ms_Singleton = new Const();
+	}
+    return Singleton<Const>::getSingleton();
+}
+
+
 }

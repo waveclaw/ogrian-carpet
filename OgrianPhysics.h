@@ -38,11 +38,13 @@ It is a Singleton.
 #include <OgreSingleton.h>
 #include "OgrianThing.h"
 #include "OgrianWizardThing.h"
-#include "OgrianConstants.h"
+#include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianTeam.h"
 
 using namespace Ogre;
+
+#define PHYSICS_GRID_SIZE 100
 
 namespace Ogrian
 {

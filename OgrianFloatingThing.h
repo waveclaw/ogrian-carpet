@@ -83,9 +83,9 @@ public:
 	// fall
 	virtual void move(Real time)
 	{
-		if (getVelY() > -FLOAT_FALL_MAX)
+		if (getVelY() > -CONR("FLOAT_FALL_MAX"))
 		{
-			Thing::setVelY(getVelY() - FLOAT_GRAV*time);
+			Thing::setVelY(getVelY() - CONR("FLOAT_GRAV")*time);
 		}
 
 		Thing::move(time);

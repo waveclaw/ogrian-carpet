@@ -3,7 +3,6 @@ Ogrian Carpet Notes
 to add:
 =============
 music button
-OgrianConst singleton class
 Magus AI
 Hand Sprites
 

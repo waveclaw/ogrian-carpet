@@ -62,7 +62,7 @@ public:
 		// place it slightly underground
 		setHeight(scale*1.5);
 		setPosY(getGroundY() + scale*.45);
-		setHealth(FOLIAGE_HEALTH);
+		setHealth(CONI("FOLIAGE_HEALTH"));
 	}
 
 	virtual ThingType getType()

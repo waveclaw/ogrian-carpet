@@ -37,6 +37,8 @@ Description: This handles all of the multiplayer networking code.
 
 #include "GetTime.h"
 
+#define STRING_MAX_LENGTH 24
+
 using namespace Ogre;
 
 template<> Ogrian::Multiplayer * Singleton< Ogrian::Multiplayer >::ms_Singleton = 0;
@@ -108,7 +110,7 @@ void Multiplayer::clientStart()
 
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger, and false for low priority threads
-	bool b = mClient->Connect(cn, PORT, PORT-1, 0, true);
+	bool b = mClient->Connect(cn, CONI("PORT"), CONI("PORT")-1, 0, true);
 
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
@@ -129,7 +131,7 @@ void Multiplayer::serverStart()
 	// Starting the server is very simple.  8 players allowed.
 	// 0 means we don't care about a connectionValidationInteger, and false
 	// for low priority threads
-	bool b = mServer->Start(7, 0, true, PORT);
+	bool b = mServer->Start(7, 0, true, CONR("PORT"));
 	
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
@@ -627,7 +629,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			serverSend(&bs, player.id);
 
 			// set the health of the new wizard
-			wt->setHealth(WIZARD_HEALTH);
+			wt->setHealth(CONI("WIZARD_HEALTH"));
 
 			// update everyone's scoreboard
 			updateScores();

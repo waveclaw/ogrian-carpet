@@ -166,7 +166,7 @@ bool Menu::processKeyInput(InputReader* input)
     if ( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
     {           
 		PlayerList::getSingleton().toggle();
-        mTimeUntilNextToggle = KEY_DELAY; 
+        mTimeUntilNextToggle = CONR("KEY_DELAY"); 
     }
 
 	// ESC goes back to the game //////////////////////////////
@@ -230,7 +230,7 @@ void Menu::show()
 	mOverlay->show();
 
 	// to prevent immediately going back to the game
-    mTimeUntilNextToggle = KEY_DELAY;
+    mTimeUntilNextToggle = CONR("KEY_DELAY");
 
 	// show cursor
     mCursor->show();
@@ -251,7 +251,7 @@ void Menu::hide()
 	mOverlay->hide();
 
 	// to prevent immediately going back into the menu
-	Input::getSingleton().delay(KEY_DELAY);
+	Input::getSingleton().delay(CONR("KEY_DELAY"));
 
 	// hide cursor
     mCursor->hide();

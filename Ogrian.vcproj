@@ -115,6 +115,9 @@
 				RelativePath="OgrianCameraThing.cpp">
 			</File>
 			<File
+				RelativePath="OgrianConst.cpp">
+			</File>
+			<File
 				RelativePath="OgrianFrameListener.cpp">
 			</File>
 			<File
@@ -173,7 +176,7 @@
 				RelativePath="OgrianCameraThing.h">
 			</File>
 			<File
-				RelativePath="OgrianConstants.h">
+				RelativePath="OgrianConst.h">
 			</File>
 			<File
 				RelativePath="OgrianDamageableThing.h">

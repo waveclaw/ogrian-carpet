@@ -32,7 +32,7 @@ It is a Singleton.
 
 #include "Ogre.h"
 #include "OgrianHeightMap.h"
-#include "OgrianConstants.h"
+#include "OgrianConst.h"
 #include <OgreImage.h>
 #include <OgreConfigFile.h>
 #include "OgreException.h"
@@ -72,16 +72,18 @@ int HeightMap::getWorldSize()
 // do a lookup in the array to find the height at a grid point
 int HeightMap::_worldheight( int x, int z )
 {
-	if (x < 0) return HEIGTHMAP_MIN_HEIGHT;
-	if (z < 0) return HEIGTHMAP_MIN_HEIGHT;
-	if (x > mSize) return HEIGTHMAP_MIN_HEIGHT;
-	if (z > mSize) return HEIGTHMAP_MIN_HEIGHT;
+	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
 
-	if (!mData) return HEIGTHMAP_MIN_HEIGHT;
+	if (x < 0) return min;
+	if (z < 0) return min;
+	if (x > mSize) return min;
+	if (z > mSize) return min;
+
+	if (!mData) return min;
 
     int height = mData[ ( ( z * mSize ) + x ) ];
 
-	if (height < HEIGTHMAP_MIN_HEIGHT) return HEIGTHMAP_MIN_HEIGHT;
+	if (height < min) return min;
 	return height;
 };
 
@@ -97,7 +99,7 @@ Real HeightMap::getHeightAt(Real x, Real z)
 	z /= mScalez;
 
 	// a smoothing constant
-	const int c = HEIGHTMAP_SMOOTHING;
+	const int c = CONR("HEIGHTMAP_SMOOTHING");
 
 	// calculate the matrix indeces for the grid cell
 	int fx = int(x/c)*c;
@@ -127,7 +129,7 @@ Real HeightMap::getHeightAt(Real x, Real z)
 // return the height difference between this point and a close other point
 Real HeightMap::getXSlopeAt(Real x, Real z)
 {
-	return getHeightAt(x,z) - getHeightAt(x+HEIGTHMAP_SLOPE_DIFF,z);
+	return getHeightAt(x,z) - getHeightAt(x+CONR("HEIGTHMAP_SLOPE_DIFF"),z);
 }
 
 //----------------------------------------------------------------------------
@@ -135,7 +137,7 @@ Real HeightMap::getXSlopeAt(Real x, Real z)
 // return the height difference between this point and a close other point
 Real HeightMap::getZSlopeAt(Real x, Real z)
 {
-	return getHeightAt(x,z) - getHeightAt(x,z+HEIGTHMAP_SLOPE_DIFF);
+	return getHeightAt(x,z) - getHeightAt(x,z+CONR("HEIGTHMAP_SLOPE_DIFF"));
 }
 
 //----------------------------------------------------------------------------

@@ -156,21 +156,21 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
     if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F5) && mTimeUntilNextToggle <= 0)
     {
 		switchMouseMode();
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
     if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F6) && mTimeUntilNextToggle <= 0)
     {
 		// must be going from immediate keyboard to buffered keyboard
 		switchKeyMode();
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
     if (mInputDevice->isKeyDown(KC_F1) && mTimeUntilNextToggle <= 0)
     {
         mStatsOn = !mStatsOn;
         showDebugOverlay(mStatsOn);
 
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
     if (mInputDevice->isKeyDown(KC_F2) && mTimeUntilNextToggle <= 0)
     {
@@ -195,7 +195,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
         showDebugOverlay(mStatsOn);
 
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
     if (mInputDevice->isKeyDown(KC_SYSRQ) && mTimeUntilNextToggle <= 0)
@@ -203,7 +203,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 		char tmp[20];
 		sprintf(tmp, "screenshot_%d.png", ++mNumScreenShots);
         mWindow->writeContentsToFile(tmp);
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
 		mWindow->setDebugText(String("Wrote ") + tmp);
     }
 	
@@ -215,7 +215,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 			case 1 : mCamera->setDetailLevel(SDL_WIREFRAME) ; break ;
 			case 2 : mCamera->setDetailLevel(SDL_POINTS) ; break ;
 		}
-		mTimeUntilNextToggle = KEY_DELAY;
+		mTimeUntilNextToggle = CONR("KEY_DELAY");
 	}
 
 	// handle menu or game keypresses
@@ -342,7 +342,7 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 		else
 		{
 			// Move about 100 units per second,
-			mMoveScale = CAMERA_MOVE_SPEED * evt.timeSinceLastFrame;
+			mMoveScale = CONR("CAMERA_MOVE_SPEED") * evt.timeSinceLastFrame;
 			// Take about 10 seconds for full rotation
 			mRotScale = 36 * evt.timeSinceLastFrame;
 		}

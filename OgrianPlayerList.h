@@ -32,6 +32,8 @@ Description: The Player List
 #include <Ogre.h>
 #include "OgrianConstants.h"
 
+#define MAX_PLAYERS 8
+
 using namespace Ogre;
 
 namespace Ogrian

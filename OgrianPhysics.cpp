@@ -100,7 +100,8 @@ void Physics::clientFrame(Real time)
 	// do nothing if we don't have a postive uid for the camera
 	if (cthing->getUID() < 1) return;
 
-	if (cthing->lastUpdateTime() + THING_UPDATE_PERIOD/2 < Time::getSingleton().getTime())
+	if (cthing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD")*500)
+		< Time::getSingleton().getTime())
 	{
 		// notify the server of our camerathing
 		BitStream bs;
@@ -123,9 +124,10 @@ void Physics::serverFrame(Real time)
 			Thing* thing = mAllThings[i];
 			WizardThing* wiz = static_cast<WizardThing*>(getThing(player.wizardUID));
 
-			if (thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime() // only send periodically
+			if (thing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD"))
+					< Time::getSingleton().getTime() // only send periodically
 				&& thing->getUID() != player.wizardUID // dont send their own wizard to them
-				&& thing->axisDistance(wiz) < THING_CULL_DIST // dont send things they cant see
+				&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
 				&& thing->isMoving() // dont send things that aren't moving
 				)
 			{

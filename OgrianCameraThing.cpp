@@ -124,7 +124,7 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 	mTempCam->pitch(rotY);
 	dir = mTempCam->getDirection();
 
-	if (dir.y < CAMERA_PITCH_MAX && dir.y > -CAMERA_PITCH_MAX)
+	if (dir.y < CONR("CAMERA_PITCH_MAX") && dir.y > -CONR("CAMERA_PITCH_MAX"))
 		mCamera->setDirection(dir);
 
 	// set the orientation of the thing to match the camera
@@ -169,25 +169,25 @@ void CameraThing::move(Real time)
 	}
 
 	mForce.normalise();
-	mForce *= CAMERA_MOVE_SPEED;
+	mForce *= CONR("CAMERA_MOVE_SPEED");
 
 	Vector3 vel = getVelocity();
 
-	if (mForce.length() == 0) vel -= vel*time*CAMERA_DECEL; // slowing down
-	else vel = mForce*time*CAMERA_ACCEL + vel*(1-time*CAMERA_ACCEL); // speeding up
+	if (mForce.length() == 0) vel -= vel*time*CONR("CAMERA_DECEL"); // slowing down
+	else vel = mForce*time*CONR("CAMERA_ACCEL") + vel*(1-time*CONR("CAMERA_ACCEL")); // speeding up
 
 	setVelocity(vel);
 	mForeward = mBack = mLeft = mRight = false;
 
 	// fall
-	if (getVelY() > -CAMERA_FALL_MAX)
+	if (getVelY() > -CONR("CAMERA_FALL_MAX"))
 	{
-		setVelY(getVelY() - CAMERA_GRAV*time);
+		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
 
 	// follow the landscape
 	Vector3 pos = getPosition();
-	float ground = getGroundY(pos) + CAMERA_HEIGHT;
+	float ground = getGroundY(pos) + CONR("CAMERA_HEIGHT");
 			
 	if (ground > getPosY()) 
 	{
@@ -221,8 +221,9 @@ void CameraThing::die()
 	WizardThing::die();
 
 	Vector3 offset;
-	offset.x = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
-	offset.z = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
+	Real wdo = CONR("WIZARD_DEATH_OFFSET");
+	offset.x = Math::RangeRandom(-wdo, wdo);
+	offset.z = Math::RangeRandom(-wdo, wdo);
 	setPosition(getPosition() + offset);
 }
 

@@ -64,14 +64,14 @@ bool Input::processKeyInput(InputReader* input)
     if( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
 		Menu::getSingleton().show();
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
 	// show the PlayerList
     if( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
     {            
 		PlayerList::getSingleton().toggle();
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
 	// drop a manathing
@@ -79,7 +79,7 @@ bool Input::processKeyInput(InputReader* input)
     {
 		Physics::getSingleton().addThing(new ManaThing(1, 
 			Renderer::getSingleton().getCameraThing()->getPosition()));
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
 	// cast a fireball
@@ -89,25 +89,25 @@ bool Input::processKeyInput(InputReader* input)
 		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
 		vel.normalise();
 
-		pos += vel*(WIZARD_SCALE + FIREBALL_SCALE)*1.1;
-		vel *= FIREBALL_SPEED;
+		pos += vel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
+		vel *= CONR("FIREBALL_SPEED");
 	
 		Physics::getSingleton().addThing(new FireballThing(0, pos,vel));
-        mTimeUntilNextCast = FIREBALL_CAST_PERIOD;
+        mTimeUntilNextCast = CONR("FIREBALL_CAST_PERIOD");
 	}
 
 	// play song 1
     if (input->isKeyDown(KC_N) && mTimeUntilNextToggle <= 0)
     {
 		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 	
 	// play song 2
     if (input->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
     {
 		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
 	return true;

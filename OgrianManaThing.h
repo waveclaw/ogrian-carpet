@@ -107,7 +107,7 @@ public:
 		vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
 		vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
 		vel.normalise();
-		vel *= MANA_DRIFT_SPEED;
+		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
 

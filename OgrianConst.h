@@ -19,36 +19,43 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianWizardThing.h
+OgrianConst.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The wizard thing is the superclass of the CameraThing
+Description: A singleton that reads all of the constants from a text file
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianWizardThing_H__
-#define __OgrianWizardThing_H__
+#ifndef __OgrianConst_H__
+#define __OgrianConst_H__
 
 #include <Ogre.h>
-#include "OgrianConst.h"
-#include "OgrianDamageableThing.h"
+#include <OgreSingleton.h>
+#include <OgreConfigFile.h>
+
+#define CONI(x) Const::getSingleton().getConstantInt(x)
+#define CONR(x) Const::getSingleton().getConstantReal(x)
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class WizardThing : public DamageableThing
+class Const : public Singleton< Const >
 {
 public:
-	WizardThing(bool visible=true);
+	virtual ~Const();
+    static Const& getSingleton(void);
 
-	virtual ThingType getType()	{ return WIZARDTHING; }
+	int getConstantInt(const String &key);
+	Real getConstantReal(const String &key);
 
-	virtual void setHealth(int health);
-	virtual void die();
+private:
+	Const();
+
+	ConfigFile mFile;
 };
 
 }

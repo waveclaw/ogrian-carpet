@@ -301,7 +301,7 @@ void Thing::_updateVisibility()
 {
 	// check the distance from the camera
 	Thing* cam = Renderer::getSingleton().getCameraThing();
-	if (cylinderDistance(cam) < THING_CULL_DIST)
+	if (cylinderDistance(cam) < CONR("THING_CULL_DIST"))
 	{
 		// add it if its close enough
 		if (!mVisRep->inRenderer())
@@ -437,7 +437,7 @@ void Thing::_updateAudibility()
 	Thing* cam = Renderer::getSingleton().getCameraThing();
 
 	// can it be heard?
-	mInEarshot = cylinderDistance(cam) < THING_EARSHOT;
+	mInEarshot = cylinderDistance(cam) < CONR("THING_EARSHOT");
 
 	if (mPlayingSound)
 	{
@@ -471,8 +471,11 @@ Real Thing::getOrientation()
 bool Thing::isMoving()
 {
 	if (mStopped)
-		if (mStopTime > Time::getSingleton().getTime() + THING_STOP_DELAY) 
+		if (mStopTime > Time::getSingleton().getTime() + 
+			unsigned long(CONR("THING_STOP_DELAY")*1000))
+		{
 			return false;
+		}
 
 	return true;
 }

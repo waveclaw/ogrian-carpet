@@ -47,7 +47,7 @@ class FireballSmokeEffect : public Thing
 {
 public:
 	FireballSmokeEffect(Vector3 pos) 
-		: Thing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, FIREBALL_SCALE*.8, pos, SPHERE)
+		: Thing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, CONR("FIREBALL_SCALE")*.8, pos, SPHERE)
 	{
 		setVelocity(Vector3(0,1,0));
 	}
@@ -61,11 +61,11 @@ class FireballBlastEffect : public TimedThing
 {
 public:
 	FireballBlastEffect(Vector3 pos) 
-		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, FIREBALL_SCALE*2, pos, SPHERE)
+		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_SCALE")*2, pos, SPHERE)
 	{
 		playSound("OgrianMedia/sounds/boom1.wav");
 		setRelativeExpirationTime(1);
-		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
+		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
@@ -76,20 +76,20 @@ class FireballThing : public TimedThing
 {
 public:
 	FireballThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
+		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
 	{
 		mTeamNum = teamNum;
 
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
-		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
-		setRelativeExpirationTime(FIREBALL_LIFETIME);
+		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
+		setRelativeExpirationTime(CONR("FIREBALL_LIFETIME"));
 
 		// init the smoke
 		mLastSmokeTime = 0;
 		mLastSmokeIndex = 0;
 		
-		for (int i=0; i<FIREBALL_SMOKE_NUM; i++)
+		for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
 		{
 			FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0));
 			mSmokeList.push_back(fse);
@@ -102,11 +102,11 @@ public:
 	virtual void move(Real time)
 	{
 		// fall
-		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
+		setVelocity(getVelocity() + Vector3(0, -CONR("FIREBALL_FALL_RATE") * time, 0));
 		TimedThing::move(time);
 
 		// emit smoke
-		if (isAlive() && mLastSmokeTime + FIREBALL_SMOKE_PERIOD*1000 < Time::getSingleton().getTime())
+		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime())
 		{
 			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
 			mSmokeList[mLastSmokeIndex++]->setPosition(getPosition());
@@ -120,7 +120,7 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// damage it
-		if (e->isDamageable())	e->damage(FIREBALL_DAMAGE, mTeamNum);
+		if (e->isDamageable())	e->damage(CONR("FIREBALL_DAMAGE"), mTeamNum);
 
 		// self destruct
 		destroy();
