@@ -33,30 +33,31 @@ Description:
 
 #include "Ogre.h"
 #include "OgreEventListeners.h"
-#include "OgreStringConverter.h"
 #include "OgreException.h"
+
+#include "OgreButtonGuiElement.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class OgrianMouseFrameListener: public FrameListener, public KeyListener
+class OgrianMouseFrameListener: public FrameListener, public ActionListener
 {
 public:
     // Constructor takes a RenderWindow because it uses that to determine input context
-    OgrianMouseFrameListener(RenderWindow* win, Camera* cam)
+    OgrianMouseFrameListener(RenderWindow* win)
     {
-            mEventProcessor = new EventProcessor();
-			mEventProcessor->initialise(win);
-            OverlayManager::getSingleton().createCursorOverlay();
-			mEventProcessor->startProcessingEvents();
-			mEventProcessor->addKeyListener(this);
-			mInputDevice = mEventProcessor->getInputReader();
+        mEventProcessor = new EventProcessor();
+		mEventProcessor->initialise(win);
+        OverlayManager::getSingleton().createCursorOverlay();
+		mEventProcessor->startProcessingEvents();
+		mInputDevice = mEventProcessor->getInputReader();
 
+		ActionTarget* quitButton = static_cast<ButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
+		quitButton->addActionListener(this);
 
-        mCamera = cam;
-        mWindow = win;
+		mQuit = false;
     }
     virtual ~OgrianMouseFrameListener()
     {
@@ -72,7 +73,7 @@ public:
     // Override frameStarted event to process that (don't care about frameEnded)
     bool frameStarted(const FrameEvent& evt)
     {
-		return true;
+		return !mQuit;
     }
 
     bool frameEnded(const FrameEvent& evt)
@@ -80,16 +81,21 @@ public:
         return true;
     }
 
-	void keyPressed(KeyEvent* e) {}
-	void keyReleased(KeyEvent* e) {}
-	void keyClicked(KeyEvent* e) {}
+	void actionPerformed(ActionEvent* e) 
+	{
+      std::string action = e->getActionCommand();
+      if (action == "SS/Setup/HostScreen/Exit")
+      {
+        mQuit = true;
+      }
+    }
+	bool isMulticaster() {}
 
 protected:
     EventProcessor* mEventProcessor;
     InputReader* mInputDevice;
-    Camera* mCamera;
-    RenderWindow* mWindow;
 
+	bool mQuit; 
 };
 
 }
