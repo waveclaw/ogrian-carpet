@@ -326,6 +326,7 @@ void Renderer::loadMap(String configfile, bool server)
 	else if (fogColour == "black") fogcol = ColourValue::Black;
     //mSceneMgr->setFog( FOG_EXP2, fogcol, CONR("FOG_DENSITY"), 2500,  5500 );
 	mSceneMgr->setFog(FOG_NONE);
+	mSceneMgr->setAmbientLight(ColourValue::White);
 
 	// load new terrain 
 	if (configfile != mMapName)

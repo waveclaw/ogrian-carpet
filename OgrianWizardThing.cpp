@@ -49,8 +49,9 @@ WizardThing::WizardThing(bool visible)
 
 	if (visible)
 	{
-		getVisRep()->addPose("Ogrian/Wizard/");
+		getVisRep()->addPose("Ogrian/Jeff/");
 		getVisRep()->setPose(0);
+		setWidth(CONR("CAMERA_HEIGHT") * (36.0/46.0));
 		
 		mBar = new HealthBarEffect(getPosition(), getHeight());
 		Physics::getSingleton().addEffect(mBar);
