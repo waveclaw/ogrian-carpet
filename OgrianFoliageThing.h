@@ -32,6 +32,7 @@ Description: FoliageThing has the Foliage material. It is for scenery.
 
 #include <Ogre.h>
 #include "OgrianDamageableThing.h"
+#include "OgrianTimedThing.h"
 
 using namespace Ogre;
 
@@ -40,14 +41,15 @@ namespace Ogrian
 
 /////////////////////////////////////////////////////////////////////////////
 
-class FoliageCorpse : public Thing
+class FoliageCorpse : public TimedThing
 {
 public:
 	FoliageCorpse(Vector3 pos, Real scale, String material) 
-		: Thing(material, SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
+		: TimedThing(material, SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
 	{
 		setHeight(scale*1.5);
 		setColour(ColourValue(1,1,1));
+		setRelativeExpirationTime(CONR("CORPSE_LIFETIME"));
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
@@ -81,21 +83,16 @@ public:
 
 	virtual void destroy()
 	{
-		//Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth(),
-			//Renderer::getSingleton().getFoliageMaterial() + "Dead"));
+		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth(),
+			Renderer::getSingleton().getFoliageMaterial() + "Dead"));
 
-		DamageableThing::destroy();
-	}
-
-	virtual void clearCut()
-	{
 		DamageableThing::destroy();
 	}
 
 	virtual void collided(Thing* e)
 	{
 		if (e->getType() == CASTLEWALL || e->getType() == CASTLETOWER)
-			clearCut();
+			destroy();
 	}
 };
 
