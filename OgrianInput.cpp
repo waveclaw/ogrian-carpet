@@ -110,7 +110,7 @@ bool Input::processKeyInput(InputReader* input)
 		pos += vel*(CONR("WIZARD_SCALE") + CONR("CLAIMSPELL_SCALE"))*1.1;
 		vel *= CONR("CLAIMSPELL_SPEED");
 	
-		Physics::getSingleton().addThing(new ClaimSpellThing(0, pos, vel));
+		Physics::getSingleton().addThing(new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos, vel));
         mTimeUntilNextCast = CONR("CLAIMSPELL_CAST_PERIOD");
 	}
 

@@ -55,6 +55,8 @@ public:
 	{
 		mLastCastTime = 0;
 
+		mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
+
 		// set the mesh
 		setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
@@ -187,7 +189,7 @@ public:
 				vel.normalise();
 				vel *= CONR("CLAIMSPELL_SPEED");
 
-				Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), startPos, 
+				Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), mColour , startPos, 
 					vel, CONR("TOWER_CLAIM_LIFETIME")));
 			}
 		}
@@ -216,6 +218,8 @@ public:
 private:
 	Real mTargetY;
 	Real mGroundY;
+
+	ColourValue mColour;
 
 	unsigned long mLastCastTime;
 

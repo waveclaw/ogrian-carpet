@@ -44,10 +44,11 @@ namespace Ogrian
 class ClaimSpellThing : public TimedThing
 {
 public:
-	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0), Real lifetime=CONR("CLAIMSPELL_LIFETIME")) 
-		: TimedThing("Ogrian/Rock", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
+	ClaimSpellThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0), Real lifetime=CONR("CLAIMSPELL_LIFETIME")) 
+		: TimedThing("Ogrian/Flare", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
+		setColour(colour);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
