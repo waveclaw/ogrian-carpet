@@ -94,7 +94,7 @@ bool Input::processKeyInput(InputReader* input)
 		vel *= CONR("FIREBALL_SPEED");
 	
 		Physics::getSingleton().addThing(new FireballThing(
-			Renderer::getSingleton().getCameraThing()->getUID(), pos,vel));
+			Renderer::getSingleton().getCameraThing()->getUID(), ColourValue::White, pos,vel));
         mTimeUntilNextCast = CONR("FIREBALL_CAST_PERIOD");
 	}
 

@@ -46,10 +46,11 @@ namespace Ogrian
 class FireballSmokeEffect : public Thing
 {
 public:
-	FireballSmokeEffect(Vector3 pos) 
+	FireballSmokeEffect(Vector3 pos, ColourValue colour) 
 		: Thing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, CONR("FIREBALL_SCALE")*.8, pos, SPHERE)
 	{
 		setVelocity(Vector3(0,1,0));
+		setColour(colour);
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
@@ -75,10 +76,11 @@ public:
 class FireballThing : public TimedThing
 {
 public:
-	FireballThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
 	{
 		mTeamNum = teamNum;
+		mColour = colour;
 
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh2.mp3");
@@ -92,7 +94,7 @@ public:
 		
 		for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
 		{
-			FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0));
+			FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0), mColour);
 			mSmokeList.push_back(fse);
 			Physics::getSingleton().addEffect(fse);
 		}
@@ -148,6 +150,7 @@ public:
 
 private:
 	int mTeamNum;
+	ColourValue mColour;
 	Vector3 mLastPos;
 	unsigned long mLastSmokeTime;
 	int mLastSmokeIndex;

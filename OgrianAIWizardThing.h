@@ -139,7 +139,7 @@ public:
 			fpos += fvel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
 			fvel *= CONR("FIREBALL_SPEED");
 		
-			Physics::getSingleton().addThing(new FireballThing(-1, fpos,fvel));
+			Physics::getSingleton().addThing(new FireballThing(-1, getColour(), fpos,fvel));
 		}
 	}
 
