@@ -5,6 +5,11 @@
 # how much mana is transfered to allies per build spell
 GIVE_ALLY_MANA_AMOUNT=50
 
+# teleport spell numbers
+TELEPORTSPELL_CAST_PERIOD=2
+TELEPORTSPELL_MANA_COST=50
+
+
 # portal numbers
 PORTAL_SCALE=8
 PORTAL_TOWER_DIST=10

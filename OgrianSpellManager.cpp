@@ -29,6 +29,7 @@ Description: This manages the spells for the HUD, etc
 
 #include "OgrianSpellManager.h"
 #include "OgrianHud.h"
+#include "OgrianTeleportSpell.h"
 #include "OgrianAlbatrossSpell.h"
 #include "OgrianGnomeSpell.h"
 #include "OgrianTickSpell.h"
@@ -52,12 +53,12 @@ namespace Ogrian
 SpellManager::SpellManager()
 {
 	mCurrentSpell = 0;
+	mLevel = 0;
 
 	mSpells[SPELL_BUILD] = new BuildSpell();
 	mSpells[SPELL_CLAIM] = new ClaimSpell();
 	mSpells[SPELL_FIREBALL] = new FireballSpell();
-	mSpells[SPELL_AKIMBO_FIREBALL] = new AkimboFireballSpell();
-	mSpells[SPELL_FIRESTORM] = new FirestormSpell();
+	mSpells[SPELL_TELEPORT] = new TeleportSpell();
 	mSpells[SPELL_SPEED] = new SpeedSpell();
 	mSpells[SPELL_SENTINEL] = new SentinelSpell();
 	mSpells[SPELL_TICK] = new TickSpell();
@@ -81,38 +82,49 @@ SpellManager::~SpellManager()
 
 void SpellManager::setLevel(int level)
 {
-		if (level >= -2) enableSpell(SPELL_CLAIM);
-		else			disableSpell(SPELL_CLAIM);
+	mLevel = level;
 
-		if (level >= -1) enableSpell(SPELL_BUILD);
-		else			disableSpell(SPELL_BUILD);
+	if (level >= -2) enableSpell(SPELL_CLAIM);
+	else			disableSpell(SPELL_CLAIM);
 
-		if (level >= 0) enableSpell(SPELL_FIREBALL);
-		else			disableSpell(SPELL_FIREBALL);
+	if (level >= -1) enableSpell(SPELL_BUILD);
+	else			disableSpell(SPELL_BUILD);
 
-		if (level >= 1) enableSpell(SPELL_SENTINEL);
-		else			disableSpell(SPELL_SENTINEL);
+	if (level >= 0) enableSpell(SPELL_FIREBALL);
+	else			disableSpell(SPELL_FIREBALL);
 
-		if (level >= 2) enableSpell(SPELL_AKIMBO_FIREBALL);
-		else			disableSpell(SPELL_AKIMBO_FIREBALL);
+	if (level >= 1) enableSpell(SPELL_TELEPORT);
+	else			disableSpell(SPELL_TELEPORT);
 
-		if (level >= 3) enableSpell(SPELL_GNOME);
-		else			disableSpell(SPELL_GNOME);
+	if (level >= 2) enableSpell(SPELL_SENTINEL);
+	else			disableSpell(SPELL_SENTINEL);
 
-		if (level >= 4) enableSpell(SPELL_SPEED);
-		else			disableSpell(SPELL_SPEED);
+	//if (level >= 3) enableSpell(SPELL_AKIMBO_FIREBALL);
+	//else			disableSpell(SPELL_AKIMBO_FIREBALL);
 
-		if (level >= 5) enableSpell(SPELL_TICK);
-		else			disableSpell(SPELL_TICK);
+	if (level >= 4) enableSpell(SPELL_GNOME);
+	else			disableSpell(SPELL_GNOME);
 
-		if (level >= 6) enableSpell(SPELL_ALBATROSS);
-		else			disableSpell(SPELL_ALBATROSS);
+	if (level >= 5) enableSpell(SPELL_SPEED);
+	else			disableSpell(SPELL_SPEED);
 
-		if (level >= 7) enableSpell(SPELL_FIRESTORM);
-		else			disableSpell(SPELL_FIRESTORM);
-		
-		if (level >= 8) enableSpell(SPELL_METEOR);
-		else			disableSpell(SPELL_METEOR);
+	if (level >= 6) enableSpell(SPELL_TICK);
+	else			disableSpell(SPELL_TICK);
+
+	if (level >= 7) enableSpell(SPELL_ALBATROSS);
+	else			disableSpell(SPELL_ALBATROSS);
+
+	//if (level >= 9) enableSpell(SPELL_FIRESTORM);
+	//else			disableSpell(SPELL_FIRESTORM);
+
+	readyCurrentSpell();
+}
+
+//----------------------------------------------------------------------------
+
+int SpellManager::getLevel()
+{
+	return mLevel;
 }
 
 //----------------------------------------------------------------------------
@@ -157,8 +169,6 @@ void SpellManager::disableSpell(int spell)
 
 	if (spell == mCurrentSpell)
 		mCurrentSpell = 0;
-	
-	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -171,8 +181,6 @@ void SpellManager::enableSpell(int spell)
 		return;
 
 	mSpells[spell]->setEnabled(true);
-	
-	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------

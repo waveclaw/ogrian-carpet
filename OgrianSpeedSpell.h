@@ -19,11 +19,11 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianFireballSpell.h
+OgrianSpeedSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a fireball spell
+Description: This is a speed spell
 
 /*------------------------------------*/
 

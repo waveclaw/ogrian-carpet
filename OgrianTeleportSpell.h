@@ -19,67 +19,46 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianAkimboFireballSpell.h
+OgrianTeleportSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a faster-firing fireball spell
+Description: This is a teleport spell
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianFirestormSpell_H__
-#define __OgrianFirestormSpell_H__
+#ifndef __OgrianTeleportSpell_H__
+#define __OgrianTeleportSpell_H__
 
 #include "OgrianSpell.h"
-#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class FirestormSpell : public Spell
+class TeleportSpell : public Spell
 {
 public:
 
 	// make an instance of this spell
 	virtual void cast(Vector3 pos, Vector3 dir)
 	{
-		Real angle = Math::RangeRandom(0,2*Math::PI);
-		Real uoff = Math::Cos(angle);
-		Real voff = Math::Sin(angle);
 
-		Vector3 u = Vector3::UNIT_Y;
-		Vector3 v = dir.crossProduct(u);
-		v.normalise();
-
-		Vector3 offset = u*uoff + v*voff;
-		offset*= CONR("WIZARD_SCALE")/2;
-
-		pos += offset;
-
-		dir.normalise();
-		dir *= CONR("FIREBALL_SPEED");
-	
-		Thing* cam = Renderer::getSingleton().getCameraThing();
-
-		FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
-		Physics::getSingleton().addThing(thing);
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Firestorm/Ready"); }; 
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Teleport/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Firestorm/Enabled"); }; 
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Teleport/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Firestorm/Disabled"); }; 
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Teleport/Disabled"); }; 
 
-	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD")/4; }
+	virtual Real getCastPeriod() { return CONR("TELEPORTSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
+	virtual int getManaCost() { return CONI("TELEPORTSPELL_MANA_COST"); }
 
-	virtual String getString() { return CONS("NAME_FIRESTORM"); }
-
+	virtual String getString() { return CONS("NAME_TELEPORT"); }
 };
 
 }

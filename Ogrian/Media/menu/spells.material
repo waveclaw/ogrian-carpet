@@ -1,4 +1,59 @@
 
+material Ogrian/SpellIcon/Teleport/Ready
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture swirl.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Teleport/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture swirl.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Teleport/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
 material Ogrian/SpellIcon/Albatross/Ready
 {
 	technique

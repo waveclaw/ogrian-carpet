@@ -229,15 +229,19 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
 		// Move camera forward
 		if (mInputDevice->isKeyDown(KC_W)) cam->moveForward();
+		if (mInputDevice->isKeyDown(KC_UP)) cam->moveForward();
 		
 		// Move camera back
 		if (mInputDevice->isKeyDown(KC_S)) cam->moveBack();
+		if (mInputDevice->isKeyDown(KC_DOWN)) cam->moveBack();
 
 		// Move camera left
 		if (mInputDevice->isKeyDown(KC_A)) cam->moveLeft();
+		if (mInputDevice->isKeyDown(KC_LEFT)) cam->moveLeft();
 
 		// Move camera right
 		if (mInputDevice->isKeyDown(KC_D)) cam->moveRight();
+		if (mInputDevice->isKeyDown(KC_RIGHT)) cam->moveRight();
 
 		// handle game input //
 		return Input::getSingleton().processKeyInput(mInputDevice);

@@ -393,9 +393,6 @@
 			Name="Spells"
 			Filter="">
 			<File
-				RelativePath="OgrianAkimboFireballSpell.h">
-			</File>
-			<File
 				RelativePath="OgrianAlbatrossSpell.h">
 			</File>
 			<File
@@ -408,9 +405,6 @@
 				RelativePath="OgrianFireballSpell.h">
 			</File>
 			<File
-				RelativePath="OgrianFirestormSpell.h">
-			</File>
-			<File
 				RelativePath="OgrianGnomeSpell.h">
 			</File>
 			<File
@@ -421,6 +415,9 @@
 			</File>
 			<File
 				RelativePath="OgrianSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianTeleportSpell.h">
 			</File>
 			<File
 				RelativePath="OgrianTickSpell.h">

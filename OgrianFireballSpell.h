@@ -34,6 +34,12 @@ Description: This is a fireball spell
 #include "OgrianSpell.h"
 #include "OgrianFireballThing.h"
 
+// akimbo fireball level
+#define AKLEV 3
+
+// firestorm level
+#define STLEV 9
+
 using namespace Ogre;
 
 namespace Ogrian
@@ -42,31 +48,126 @@ namespace Ogrian
 class FireballSpell : public Spell
 {
 public:
+	FireballSpell()
+	{
+		mLastSide = false;
+	}
 
 	// make an instance of this spell
 	virtual void cast(Vector3 pos, Vector3 dir)
 	{
-		dir.normalise();
-		dir *= CONR("FIREBALL_SPEED");
-	
-		Thing* cam = Renderer::getSingleton().getCameraThing();
+		if (SpellManager::getSingleton().getLevel() < AKLEV) // normal fireball
+		{
+			dir.normalise();
+			dir *= CONR("FIREBALL_SPEED");
+		
+			Thing* cam = Renderer::getSingleton().getCameraThing();
 
-		FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos, dir);
+			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos, dir);
+			Physics::getSingleton().addThing(thing);
+		}
+		else if (SpellManager::getSingleton().getLevel() < STLEV) // akimbo fireball
+		{
+			Vector3 offset = dir.crossProduct(Vector3::UNIT_Y);
+			offset.normalise();
+			offset*= CONR("WIZARD_SCALE")/2;
+			if (mLastSide) offset *= -1;
 
-		Physics::getSingleton().addThing(thing);
+			pos += offset;
+
+			dir.normalise();
+			dir *= CONR("FIREBALL_SPEED");
+		
+			Thing* cam = Renderer::getSingleton().getCameraThing();
+
+			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
+			Physics::getSingleton().addThing(thing);
+
+			mLastSide = !mLastSide;
+		}
+		else // firestorm
+		{
+			Real angle = Math::RangeRandom(0,2*Math::PI);
+			Real uoff = Math::Cos(angle);
+			Real voff = Math::Sin(angle);
+
+			Vector3 u = Vector3::UNIT_Y;
+			Vector3 v = dir.crossProduct(u);
+			v.normalise();
+
+			Vector3 offset = u*uoff + v*voff;
+			offset*= CONR("WIZARD_SCALE")/2;
+
+			pos += offset;
+
+			dir.normalise();
+			dir *= CONR("FIREBALL_SPEED");
+		
+			Thing* cam = Renderer::getSingleton().getCameraThing();
+
+			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
+			Physics::getSingleton().addThing(thing);
+		}
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
+	virtual String getReadyMaterial() 
+	{ 
+		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+			return String("Ogrian/SpellIcon/Fireball/Ready"); 
+		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+			return String("Ogrian/SpellIcon/AkimboFireball/Ready"); 
+		else 
+			return String("Ogrian/SpellIcon/Firestorm/Ready"); 
+	}; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
+	virtual String getEnabledMaterial() 
+	{ 
+		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+			return String("Ogrian/SpellIcon/Fireball/Enabled"); 
+		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+			return String("Ogrian/SpellIcon/AkimboFireball/Enabled"); 
+		else
+			return String("Ogrian/SpellIcon/Firestorm/Enabled"); 
+	}; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
+	virtual String getDisabledMaterial() 
+	{ 
+		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+			return String("Ogrian/SpellIcon/Fireball/Disabled"); 
+		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+			return String("Ogrian/SpellIcon/AkimboFireball/Disabled"); 
+		else
+			return String("Ogrian/SpellIcon/Firestorm/Disabled");
+	}; 
 
-	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD"); }
+	virtual Real getCastPeriod() 
+	{ 
+		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+			return CONR("FIREBALL_CAST_PERIOD"); 
+		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+			return CONR("FIREBALL_CAST_PERIOD")/2; 
+		else
+			return CONR("FIREBALL_CAST_PERIOD")/4; 
+	}
 
-	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
+	virtual int getManaCost() 
+	{ 
+		return CONI("FIREBALL_MANA_COST"); 
+	}
 
-	virtual String getString() { return CONS("NAME_FIREBALL"); }
+	virtual String getString() 
+	{ 
+		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+			return CONS("NAME_FIREBALL"); 
+		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+			return CONS("NAME_AKIMBO_FIREBALL");
+		else
+			return CONS("NAME_FIRESTORM");
+	}
+
+
+private:
+	bool mLastSide;
 };
 
 }
