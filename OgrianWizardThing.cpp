@@ -40,19 +40,18 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 	
-WizardThing::WizardThing(bool visible) 
+WizardThing::WizardThing(bool visible, int skin) 
 	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
 	visible?"WizardThing":"CameraThing", true, CONR("CAMERA_HEIGHT"))
 {
 	mBar = 0;
 	mTeam = 0;
+	mSkin = skin;
+
+	setupSkins();
 
 	if (visible)
 	{
-		getVisRep()->addPose("Ogrian/Jeff/");
-		getVisRep()->setPose(0);
-		setWidth(CONR("CAMERA_HEIGHT") * (36.0/46.0));
-		
 		mBar = new HealthBarEffect(getPosition(), getHeight());
 		Physics::getSingleton().addEffect(mBar);
 	}
@@ -78,6 +77,25 @@ void WizardThing::_setUID(int uid)
 {
 	DamageableThing::_setUID(uid);
 	if (mTeam) mTeam->setWizardUID(uid);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setSkin(int skin)
+{
+	mSkin = skin;
+	
+	getVisRep()->setPose(skin);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setupSkins()
+{
+	getVisRep()->addPose("Ogrian/Wizard/");
+	getVisRep()->addPose("Ogrian/Jeff/");
+	getVisRep()->addPose("Ogrian/Mike/");
+
 }
 
 //----------------------------------------------------------------------------
@@ -216,7 +234,9 @@ void WizardThing::destroy()
 void WizardThing::generateBitStream(BitStream& bitstream, int pid)
 {
 	DamageableThing::generateBitStream(bitstream,pid);
+
 	bitstream.Write(getHealth());
+	bitstream.Write(mSkin);
 }
 
 //----------------------------------------------------------------------------
@@ -225,13 +245,14 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 {
 	DamageableThing::interpretBitStream(bitstream);
 
+	int health, skin;
+
+	bitstream.Read(health);
+	bitstream.Read(skin);
+
 	// ignore incoming health if this is a server
-	if (Multiplayer::getSingleton().isClient())
-	{
-		int health;
-		bitstream.Read(health);
-		setHealth(health);
-	}
+	if (Multiplayer::getSingleton().isClient()) setHealth(health);
+	setSkin(skin);
 }
 //----------------------------------------------------------------------------
 

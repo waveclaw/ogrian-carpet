@@ -44,7 +44,7 @@ namespace Ogrian
 class AIWizardThing : public WizardThing
 {
 public:
-	AIWizardThing(Vector3 pos) : WizardThing(true) 
+	AIWizardThing(Vector3 pos, int skin) : WizardThing(true, skin) 
 	{
 		mNextTime = 0;
 

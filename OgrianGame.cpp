@@ -128,7 +128,7 @@ void Game::startSkirmishGame()
 	for (int i=0; i<CONI("NUM_BOTS"); i++)
 	{
 		AIWizardThing* ai = new AIWizardThing( 
-			Renderer::getSingleton().getCameraThing()->getPosition());
+			Renderer::getSingleton().getCameraThing()->getPosition(), 1);
 
 		Physics::getSingleton().addThing(ai);
 	}

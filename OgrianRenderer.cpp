@@ -261,7 +261,7 @@ void Renderer::createOcean(const String& material)
     MeshManager::getSingleton().createPlane(
         "WaterPlane",
         waterPlane,
-        2800, 2800,
+        5000, 5000,
         20, 20,
         true, 1, 
         80, 80,

@@ -77,6 +77,7 @@ void Multiplayer::loadConfig()
 	config.load( "config.cfg" );
 	mPlayerName = config.getSetting( "name" );
 	mServerName = config.getSetting( "server" );
+	mSkin = config.getSetting( "skin" );
 
 	// trim the name
 	std::string name = mPlayerName;
@@ -545,7 +546,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				return true;
 			}
 
-			// send our name to the server
+			// send our name and skin to the server
 			clientSendText(mPlayerName,ID_ADD_PLAYER);
 
 			// hide the menu
@@ -627,7 +628,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			packetToString(packet,playerName);
 
 			// get a new wizard
-			WizardThing* wt = new WizardThing();
+			WizardThing* wt = new WizardThing(true);
 			Physics::getSingleton().addThing(wt);
 			int wuid = wt->getUID();
 

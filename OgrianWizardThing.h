@@ -66,7 +66,7 @@ private:
 class WizardThing : public DamageableThing
 {
 public:
-	WizardThing(bool visible=true);
+	WizardThing(bool visible=true, int skin=0);
 
 	virtual ThingType getType()	{ return WIZARDTHING; }
 
@@ -90,10 +90,15 @@ public:
 
 	virtual void _setUID(int uid);
 
+	virtual void setSkin(int skin);
+
 private:
 	HealthBarEffect* mBar;
 	bool mOnBuilding;
 	Team* mTeam;
+	int mSkin;
+
+	virtual void setupSkins();
 };
 
 }
