@@ -23,4 +23,4 @@ music=false
 # set the RGB values of the colour you want your team to be
 red=0
 blue=1
-green=1
+green=0
