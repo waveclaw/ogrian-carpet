@@ -100,43 +100,38 @@ void Physics::frame(Real time)
 void Physics::clientCollisionCheck()
 {
 	CameraThing* cam = Renderer::getSingleton().getCameraThing();
+	if (!cam) return;
+
+	Thing* ramp = cam->getRamp();
+	if (!ramp) return;
 
 	for (int i=0; i<(int)mBuildings.size(); i++)
-		pairCollisionCheck(cam->getRamp(), mBuildings[i]);
+		pairCollisionCheck(ramp, mBuildings[i]);
 }
 
 //----------------------------------------------------------------------------
 
 void Physics::clientFrame(Real time)
 {
-	CameraThing* cthing = static_cast<CameraThing*>(Renderer::getSingleton().getCameraThing());
+	CameraThing* cam = static_cast<CameraThing*>(Renderer::getSingleton().getCameraThing());
 
 	// do nothing if we dont have a camera thing yet
-	if (cthing == 0) return;
+	if (cam == 0) return;
 
 	// do nothing if we don't have a postive uid for the camera
-	if (cthing->getUID() < 1) return;
+	if (cam->getUID() < 1) return;
 
-	if (cthing->lastUpdateTime() + CONT("THING_UPDATE_PERIOD")/2
+	if (cam->lastUpdateTime() + CONT("THING_UPDATE_PERIOD")/2
 		< Clock::getSingleton().getTime())
 	{
 		// notify the server of our camerathing
 		BitStream bs;
-		cthing->generateBitStream(bs);
+		cam->generateBitStream(bs);
 		Multiplayer::getSingleton().clientSend(&bs, false);
 	}
 
-	// halt all things that cannot be seen
-	for (int i=0; i<(int)mAllThings.size(); i++)
-	{
-		Thing* thing = mAllThings[i];
-
-		if (thing->axisDistance(cthing) > CONR("THING_CULL_DIST")
-			&& thing->getUpdateType() == CONTINUOUS)
-		{
-			thing->setVelocity(Vector3(0,0,0));
-		}		
-	}
+	// update the ramp
+	cam->getRamp()->move(0);
 }
 //----------------------------------------------------------------------------
 

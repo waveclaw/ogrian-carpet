@@ -56,6 +56,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
+
 	mRamp = new RampThing(this);
 	Physics::getSingleton().addThing(mRamp);
 
@@ -252,19 +253,6 @@ void WizardThing::setSkin(int skin)
 
 //----------------------------------------------------------------------------
 
-void WizardThing::setupSkins()
-{
-	getVisRep()->addPose("Ogrian/Wizard/");
-	getVisRep()->addPose("Ogrian/Jeff/");
-	getVisRep()->addPose("Ogrian/Mike/");
-	getVisRep()->addPose("Ogrian/Rick/");
-	getVisRep()->addPose("Ogrian/Jess/");
-	getVisRep()->addPose("Ogrian/Bunny/");
-
-}
-
-//----------------------------------------------------------------------------
-
 void WizardThing::setColour(ColourValue& colour)
 {
 	DamageableThing::setColour(colour);
@@ -402,7 +390,9 @@ void WizardThing::move(Real time)
 	if (!mSpeeding 
 		&& !mRamp->isOnBuilding()
 		&& getVelY() > -CONR("CAMERA_FALL_MAX")
-		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING))
+		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)
+		//&& !(Multiplayer::getSingleton().isClient() && getType() == WIZARDTHING)
+		)
 	{
 		if (getVelY() > CONR("CAMERA_RISE_MAX")) 
 			setVelY(CONR("CAMERA_RISE_MAX"));
@@ -412,7 +402,7 @@ void WizardThing::move(Real time)
 	
 	if (mRamp->isOnBuilding()) setVelY(0);
 
-	if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING) setVelY(0);
+	//if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING) setVelY(0);
 
 	DamageableThing::move(time);
 

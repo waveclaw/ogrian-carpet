@@ -204,7 +204,6 @@ private:
 	Time mNextRegenTime;
 	Time mLastSetPosTime;
 
-	virtual void setupSkins();
 	virtual Real getGroundHeight();
 };
 
