@@ -243,7 +243,18 @@ void WizardThing::move(Real time)
 
 	// follow the landscape
 	Vector3 pos = getPosition();
-	float ground = getGroundY(pos) + CONR("CAMERA_HEIGHT");
+	Real w = getWidth()/2;
+	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
+	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
+	Real ground10 = getGroundY(pos + Vector3( w,0,-w));
+	Real ground11 = getGroundY(pos + Vector3( w,0, w));
+
+	Real ground = ground00;
+	if (ground01 > ground) ground = ground01;
+	if (ground10 > ground) ground = ground10;
+	if (ground11 > ground) ground = ground11;
+
+	ground += CONR("CAMERA_HEIGHT");
 			
 	if (ground > getPosY()) 
 	{
