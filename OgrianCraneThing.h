@@ -23,10 +23,9 @@ OgrianCraneThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: the ManaThing is a ball of mana that derives from FloatingThing. 
-They drift downhill and combine when they touch. 
-They have some amount of mana.
-When they combine, one transfers all of its amount to the other.
+Description: the crane is a flying bird that orbits a point until it detects an enemy, 
+at which point, it flys towards it. when it reaches its target, it blows up, dealing damage,
+and respawns back at its home point (around which it orbits).
 
 /*------------------------------------*/
 
@@ -36,24 +35,73 @@ When they combine, one transfers all of its amount to the other.
 
 #include <Ogre.h>
 #include "OgrianDamageableThing.h"
+#include "OgrianTimedThing.h"
+#include "OgrianConst.h"
+#include "OgrianGame.h"
 
 using namespace Ogre;
+
+#define CRANE_STATE_SPAWN_FLY_OUT 0
+#define CRANE_STATE_FLY_OUT 1
+#define CRANE_STATE_FLY_IN 2
+#define CRANE_STATE_ORBIT 3
+#define CRANE_STATE_ATTACK 4
 
 namespace Ogrian
 {
 
-// extend floatingThing for floating behavior
+/////////////////////////////////////////////////////////////////////////////
+
+class CraneBlastEffect : public TimedThing
+{
+public:
+	CraneBlastEffect(Vector3 pos) 
+		: TimedThing("Ogrian/CraneBlast", SPRITE, "CraneBlast", false, CONR("CRANE_SCALE")*2, pos, SPHERE)
+	{
+		playSound(Game::getSingleton().SOUND_BANG);
+		setRelativeExpirationTime(CONR("CRANE_BLAST_LIFETIME"));
+		setFlickerPeriod(CONR("CRANE_BLAST_FLICKER_PERIOD"));
+		setColour(ColourValue(1,0,0));
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
 class CraneThing : public DamageableThing
 {
 public:
-	CraneThing(int teamNum, Vector3 orbitPos) 
-		: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, 1, pos, SPHERE)
-	{
-		mOrbitPos = orbitPos;
+	CraneThing(int teamNum, Vector3 orbitPos=Vector3(0,0,0));
 
-	}
+	virtual ThingType getType() { return CRANETHING; }
+
+	virtual void move(Real time);
+
+	virtual void think();
+
+	virtual void collided(Thing* e);
+
+	virtual void setStateFlyIn();
+	virtual void setStateFlyOut();
+	virtual void setStateSpawnFlyOut();
+	virtual void setStateOrbit();
+	virtual void setStateAttack();
+
 private:
 	Vector3 mOrbitPos;
+	int mState;
+	Thing* mTarget;
+	unsigned long mLastFlapTime;
+	bool mLastFlap;
+
+	Real orbitDistance()
+	{
+		Vector3 pos = getPosition();
+		return sqrt( (mOrbitPos.x - pos.x) * (mOrbitPos.x - pos.x) +
+					 (mOrbitPos.y - pos.y) * (mOrbitPos.y - pos.y) +
+					 (mOrbitPos.z - pos.z) * (mOrbitPos.z - pos.z) );
+	}
 };
 
 }

@@ -124,6 +124,9 @@
 				RelativePath="OgrianConst.cpp">
 			</File>
 			<File
+				RelativePath="OgrianCraneThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianDotManager.cpp">
 			</File>
 			<File

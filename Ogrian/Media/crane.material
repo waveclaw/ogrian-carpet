@@ -7,6 +7,7 @@ material Ogrian/Crane/Up/f
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -24,6 +25,7 @@ material Ogrian/Crane/Up/fl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -41,6 +43,7 @@ material Ogrian/Crane/Up/l
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -58,6 +61,7 @@ material Ogrian/Crane/Up/bl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -75,6 +79,7 @@ material Ogrian/Crane/Up/b
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -92,6 +97,7 @@ material Ogrian/Crane/Up/br
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -109,6 +115,7 @@ material Ogrian/Crane/Up/r
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -126,6 +133,7 @@ material Ogrian/Crane/Up/fr
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -144,6 +152,7 @@ material Ogrian/Crane/Down/f
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -161,6 +170,7 @@ material Ogrian/Crane/Down/fl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -178,6 +188,7 @@ material Ogrian/Crane/Down/l
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -195,6 +206,7 @@ material Ogrian/Crane/Down/bl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -212,6 +224,7 @@ material Ogrian/Crane/Down/b
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -229,6 +242,7 @@ material Ogrian/Crane/Down/br
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -246,6 +260,7 @@ material Ogrian/Crane/Down/r
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
@@ -263,10 +278,29 @@ material Ogrian/Crane/Down/fr
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting off
 
 			texture_unit
 			{
 				texture sprites/crane/crane_d_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/CraneBlast
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture sprites/fireballblast.png
 				tex_address_mode clamp
 			}
 		}

@@ -442,4 +442,24 @@ void Castle::setNumBaloons(int num)
 
 //----------------------------------------------------------------------------
 
+void CastleTowerThing::setPercentage(Real per)
+{
+	CastleBlockThing::setPercentage(per);
+	
+	if (per >= 1 && !mCrane) 
+	{
+		Vector3 pos = getPosition();
+		pos.y = getGroundY() + getHeight();
+		mCrane = new CraneThing(getTeamNum(), pos);
+		Physics::getSingleton().addThing(mCrane);
+	}
+	else if (per < 1 && mCrane)
+	{
+		mCrane->destroy();
+		mCrane = 0;
+	}
+}
+
+//----------------------------------------------------------------------------
+
 }

@@ -36,6 +36,7 @@ Description: This is a castle
 #include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianBaloonThing.h"
+#include "OgrianCraneThing.h"
 
 #define NUM_BALOONS 5
 
@@ -122,6 +123,8 @@ public:
 	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: CastleBlockThing(castle, pos)
 	{
+		mCrane = 0;
+
 		setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
 			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
@@ -129,10 +132,13 @@ public:
 		setHeight(CONR("CASTLETOWER_HEIGHT"));
 	}
 
-	virtual ThingType getType()
-	{
-		return CASTLETOWER;
-	}
+	virtual ThingType getType()	{ return CASTLETOWER; }
+	
+	virtual void setPercentage(Real per);
+
+private:
+	CraneThing* mCrane;
+
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -149,10 +155,7 @@ public:
 		setHeight(CONR("CASTLEWALL_HEIGHT"));
 	}
 
-	virtual ThingType getType()
-	{
-		return CASTLEWALL;
-	}
+	virtual ThingType getType()	{ return CASTLEWALL; }
 };
 
 
