@@ -39,17 +39,17 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class TimedThing : public Thing
+class TeleportSpellThing : public Thing
 {
 public:
 
-	TimedThing(int teamNum)
+	TeleportSpellThing(int teamNum)
 		: Thing("Ogrian/Clear")
 	{
 		// get the castle
-		Team* team = Physics::getSingleton().getTeam(teamNum));
+		Team* team = Physics::getSingleton().getTeam(teamNum);
 		Thing* castle = team->getCastle();
-		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID)
+		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
 
 		// teleport the wizard back to his castle
 		wiz->die();

@@ -392,7 +392,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case TICKTHING: return new TickThing(teamNum);
 		case GNOMETHING: return new GnomeThing(teamNum);
 
-		case TELEPORTSPELLTHING; return new TeleportSpellThing(teamNum);
+		case TELEPORTSPELLTHING: return new TeleportSpellThing(teamNum);
 
 		default:
 			std::ostringstream num("");
