@@ -52,6 +52,7 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 	getVisRep()->setPose(0);
 
 	setHealth(CONI("GNOME_HEALTH"));
+	setMaxHealth(CONI("GNOME_HEALTH"));
 
 	setPosY(getGroundY()+CONR("GNOME_SCALE")/2);
 

@@ -83,6 +83,7 @@ public:
 	virtual bool isDamageable()	{ return true; }
 
 	// used for health bars
+	virtual void setMaxHealth(int maxHealth);
 	virtual void reset();
 	virtual void setColour(ColourValue& colour);
 	virtual void move(Real time);
@@ -94,6 +95,7 @@ public:
 
 private:
 	int mHealth;
+	int mMaxHealth;
 	int mLastDamageSource;
 
 	bool mHasBar;

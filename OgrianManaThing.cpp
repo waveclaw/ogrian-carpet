@@ -88,12 +88,18 @@ void ManaThing::setAmount(int amount)
 
 	mAmount=amount;
 
-	if (sqrt(amount) > CONR("MANA_MAX_SCALE"))
+	Real a = sqrt(amount);
+
+	// max scale
+	if (a > CONR("MANA_MAX_SCALE"))
 		setScale(CONR("MANA_MAX_SCALE"));
-	else if (amount > 1)
-		setScale(sqrt(amount));
+
+	// min scale
+	else if (a < CONR("MANA_MIN_SCALE"))
+		setScale(CONR("MANA_MIN_SCALE"));
+
 	else 
-		setScale(1);
+		setScale(a);
 }
 
 //----------------------------------------------------------------------------

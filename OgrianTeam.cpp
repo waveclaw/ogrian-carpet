@@ -184,7 +184,7 @@ DamageableThing* Team::getNearestEnemy(Thing* thing, Real range)
 		DamageableThing* candidate = mEnemies[i];
 		if (candidate && candidate->isAlive())
 		{
-			Real dist = candidate->axisDistance(thing);
+			Real dist = candidate->sphereDistance(thing);
 			if (dist < bestDist)
 			{
 				bestDist = dist;

@@ -187,6 +187,8 @@ void Game::reset()
 // note: this is called from Renderer::loadMap()
 void Game::startGame(ConfigFile config)
 {
+	reset();
+
 	mConfig = config;
 
 	// read the start locations

@@ -52,6 +52,7 @@ SentinelThing::SentinelThing(int teamNum, Vector3 pos)
 	getVisRep()->setPose(0);
 
 	setHealth(CONI("SENTINEL_HEALTH"));
+	setMaxHealth(CONI("SENTINEL_HEALTH"));
 
 	setPosY(getGroundY()+CONR("SENTINEL_SCALE")/2);
 }

@@ -62,6 +62,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	setSkin(skin);
 
 	setUpdateType(CONTINUOUS);
+	setMaxHealth(CONI("WIZARD_HEALTH"));
 
 	reset();
 }
@@ -71,6 +72,9 @@ WizardThing::WizardThing(bool visible, int skin)
 void WizardThing::reset()
 {
 	DamageableThing::reset();
+
+	setHealth(CONI("WIZARD_HEALTH"));
+	setScale(CONR("WIZARD_SCALE"));
 
 	if (mTeam)
 		delete mTeam;
@@ -92,10 +96,6 @@ void WizardThing::reset()
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
 		mTeam->setScore(0);
-		
-		//std::ostringstream num("");
-		//num << teamNum;
-		//LogManager::getSingleton().logMessage("Making server Team: " + num.str());
 	}
 
 	// add this player to the server
@@ -103,6 +103,7 @@ void WizardThing::reset()
 	{
 		Multiplayer::getSingleton().serverAddCameraPlayer(this);
 	}
+
 }
 
 //----------------------------------------------------------------------------
@@ -204,7 +205,7 @@ void WizardThing::damage(int amount, int sourceTeamNum)
 void WizardThing::makeGhost()
 {
 	mGhost = true;
-	setWidth(0);
+	setScale(0);
 	
 	// remove it from the teams enemy lists
 	if (!Multiplayer::getSingleton().isClient())
@@ -286,19 +287,17 @@ void WizardThing::die()
 	{
 		setHealth(CONI("WIZARD_HEALTH"));
 
-		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
-		{
-			// kill it
-			Castle* castle = getTeam()->getCastle();
-
-			if (castle && castle->isRubble())
-			{
-				Multiplayer::getSingleton().ghostWizard(this);
-				return;
-			}
-			else
-				Multiplayer::getSingleton().killWizard(this);
-		}			
+		//if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
+		//{
+		//	// kill it
+		//	if (!getTeam()->hasCastle())
+		//	{
+		//		Multiplayer::getSingleton().ghostWizard(this);
+		//		return;
+		//	}
+		//	else
+		//		Multiplayer::getSingleton().killWizard(this);
+		//}		
 	}
 }
 
@@ -420,8 +419,9 @@ void WizardThing::setPosition(Vector3 pos)
 {
 	// follow the landscape 
 	Real ground = getGroundHeight();
-	ground += CONR("CAMERA_HEIGHT");
+	ground += CONR("WIZARD_MIN_ALTITUDE");
 			
+	// dont ever go below ground
 	if (ground > getPosY()) 
 	{
 		if (getVelY() < 0)
@@ -429,10 +429,6 @@ void WizardThing::setPosition(Vector3 pos)
 
 		pos.y = ground;
 	}
-
-	// dont ever go below ground
-	if (ground > pos.y) 
-		pos.y = ground;
 
 	DamageableThing::setPosition(pos);
 
@@ -479,9 +475,6 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(skin);
 
 	setSkin(skin);
-
-	//if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING)
-	//	reset();
 }
 
 //----------------------------------------------------------------------------

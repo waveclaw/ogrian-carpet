@@ -45,6 +45,7 @@ DamageableThing::DamageableThing(String material, ThingVisRep visrep, String pre
 	mHealth = 0;
 	mBar = 0;
 	mHasBar = hasBar;
+	mMaxHealth = 100;
 
 	reset();
 }
@@ -78,7 +79,7 @@ void DamageableThing::move(Real time)
 	
 	// update health bar
 	if (mBar)
-		mBar->update(getPosition(), mHealth/100.0*getWidth());
+		mBar->update(getPosition(), ((float)mHealth/(float)mMaxHealth)*getWidth());
 }
 
 //----------------------------------------------------------------------------
@@ -86,6 +87,13 @@ void DamageableThing::move(Real time)
 void DamageableThing::setHealth(int health)
 {
 	mHealth = health;
+}
+
+//----------------------------------------------------------------------------
+
+void DamageableThing::setMaxHealth(int maxHealth)
+{
+	mMaxHealth = maxHealth;
 }
 
 //----------------------------------------------------------------------------

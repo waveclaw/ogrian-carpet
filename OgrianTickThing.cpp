@@ -51,6 +51,7 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	getVisRep()->setPose(0);
 
 	setHealth(CONI("TICK_HEALTH"));
+	setMaxHealth(CONI("TICK_HEALTH"));
 
 	setPosY(getGroundY()+CONR("TICK_SCALE")/2);
 

@@ -81,8 +81,6 @@ void CameraThing::makeGhost()
 {
 	WizardThing::makeGhost();
 
-	setScale(0);
-
 	Hud::getSingleton().makeGhost();
 }
 
@@ -232,8 +230,7 @@ void CameraThing::die()
 
 		if (castle)
 		{
-			if (castle->isRubble()) makeGhost();
-			else setPosition(castle->getPosition());
+			setPosition(castle->getPosition());
 		}
 		else
 		{

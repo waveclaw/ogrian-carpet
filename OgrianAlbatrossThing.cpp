@@ -59,6 +59,7 @@ AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Ve
 	getVisRep()->setPose(0);
 
 	setHealth(CONI("ALBATROSS_HEALTH"));
+	setMaxHealth(CONI("ALBATROSS_HEALTH"));
 
 	setGroundScan(true);
 	

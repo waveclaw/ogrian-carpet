@@ -288,8 +288,6 @@ void Renderer::loadMap(String configfile, bool server)
 
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
-
-	Game::getSingleton().reset();
 	
 	// set the lava
 	Game::getSingleton().setLava(lava > 0);

@@ -153,6 +153,21 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
+class CastleHeartThing : public DamageableThing
+{
+public:
+	CastleHeartThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0));
+
+	void damage(int amount, int sourceTeamNum);
+	void die();
+
+	virtual ThingType getType()	{ return CASTLEHEARTTHING; }
+
+private:
+	DamageableThing* mCastle;
+};
+
+/////////////////////////////////////////////////////////////////////////////
 class Castle : public DamageableThing
 {
 public:
@@ -201,6 +216,9 @@ private:
 
 	// our portal
 	PortalThing* mPortal;
+
+	// our heart
+	CastleHeartThing* mHeart;
 
 	// set the castle level
 	void setLevel(Real level);

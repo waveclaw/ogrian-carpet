@@ -38,6 +38,39 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
+CastleHeartThing::CastleHeartThing(DamageableThing* castle, Vector3 pos)
+	: DamageableThing("Ogrian/Flag", SPRITE, "CastleHeart", true, CONR("CASTLE_HEART_SCALE"), pos, SPHERE)
+{
+	mCastle = castle;
+
+	// set the colour
+	setColour(castle->getColour());
+
+	// set the team
+	if (castle)
+		setTeamNum(castle->getTeamNum());
+
+	// set the health
+	setMaxHealth(CONI("CASTLE_HEART_HEALTH"));
+	setHealth(CONI("CASTLE_HEART_HEALTH"));
+}
+
+//----------------------------------------------------------------------------
+
+void CastleHeartThing::damage(int amount, int sourceTeamNum)
+{
+	DamageableThing::damage(amount, sourceTeamNum);
+}
+
+//----------------------------------------------------------------------------
+
+void CastleHeartThing::die()
+{
+	mCastle->destroy();
+}
+
+//----------------------------------------------------------------------------
+
 CastleFlagThing::CastleFlagThing()
 	: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
 {
@@ -231,6 +264,12 @@ Castle::Castle(int teamNum, Vector3 pos)
 	ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
 	mPortal = new PortalThing(this, ppos);
 	Physics::getSingleton().addThing(mPortal);
+
+	// set up the heart
+	Vector3 hpos = pos;
+	hpos.y = HeightMap::getSingleton().getHeightAt(hpos.x, hpos.z) + CONR("CASTLE_HEART_ALTITUDE");
+	mHeart = new CastleHeartThing(this, hpos);
+	Physics::getSingleton().addThing(mHeart);
 }
 
 //----------------------------------------------------------------------------
@@ -239,6 +278,7 @@ Castle::~Castle()
 {
 	mPortal = 0;
 	mBeacon = 0;
+	mHeart = 0;
 
 	for (int i=1; i<NUM_BLOCKS; i++)
 		mBlocks[i] = 0;
@@ -249,19 +289,32 @@ Castle::~Castle()
 void Castle::destroy()
 {
 	// destroy the portal
-	mPortal->destroy();
+	if (mPortal) mPortal->destroy();
 
 	// destroy the beacon
-	mBeacon = 0;
+	if (mBeacon) mBeacon->destroy();
+
+	// destroy the heart
+	if (mHeart) mHeart->destroy();
 
 	// destroy the blocks
 	for (int i=1; i<NUM_BLOCKS; i++)
-		if(mBlocks[i])
-			mBlocks[i]->destroy();
+		if(mBlocks[i]) mBlocks[i]->destroy();
 
 	// remove the castle from the team
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 	team->setCastle(0);
+
+	// banish the wizard
+	Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
+	((WizardThing*)wiz)->makeGhost();
+
+	if (Multiplayer::getSingleton().isServer() && wiz->getType() != CAMERATHING)
+	{
+		Multiplayer::getSingleton().ghostWizard(wiz);
+	}
+
+	DamageableThing::destroy();
 }
 
 //----------------------------------------------------------------------------
