@@ -106,7 +106,7 @@ void OgrianRenderer::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     // Position it 
-    mCamera->setPosition(Vector3(120,10,120));
+    mCamera->setPosition(Vector3(0,10,0));
     // Look back along -Z
     mCamera->lookAt(Vector3(0,0,-300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
@@ -124,11 +124,6 @@ void OgrianRenderer::createFrameListener(void)
 void OgrianRenderer::createScene(void)
 {
 	OgrianPhysics::getSingleton().test();
-
-        // Add a head, give it it's own node
-	    SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-        Entity *ent = mSceneMgr->createEntity("head", "ogrehead.mesh");
-        headNode->attachObject(ent);
 
     Entity *waterEntity;
     Plane waterPlane;

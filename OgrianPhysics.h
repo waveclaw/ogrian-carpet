@@ -26,7 +26,7 @@ public:
 	virtual void removeAll();
 
 	// notify all physical objects of a frame move
-	virtual void moveAll(long time);
+	virtual void moveAll(Real time);
 
 	// run a collision check and notify all affected physical objects
 	virtual void collisionCheck();
@@ -38,8 +38,6 @@ public:
 
 private:
 	OgrianPhysics();
-	
-	bool entCompare(OgrianPhysicalEntity* a, OgrianPhysicalEntity* b);
 
 	std::vector<OgrianPhysicalEntity*> entities;
 };

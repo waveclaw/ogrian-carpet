@@ -4,11 +4,10 @@
 #define __OgrianRenderer_H__
 
 #include "Ogre.h"
-#include "OgreConfigFile.h"
-#include "OgrianConstants.h"
+//#include "OgreConfigFile.h"
+//#include "OgrianConstants.h"
 #include "OgrianFrameListener.h"
-#include "OgrianHeightMap.h"
-#include "OgrianPhysics.h"
+//#include "OgrianHeightMap.h"
 
 using namespace Ogre;
 

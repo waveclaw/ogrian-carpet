@@ -11,5 +11,6 @@ const float CAMERA_NEAR_CLIP = 1;
 const float CAMERA_HEIGHT = 3;
 const float FOG_DENSITY = 0.002;
 const float SKYPLANE_DISTANCE = 100;
+const float MAX_ENTITY_RADIUS = 5;
 
 #endif

@@ -10,11 +10,13 @@ using namespace Ogre;
 class OgrianPhysicalEntity
 {
 public:
+	Vector3 pos;
+
 	OgrianPhysicalEntity(String mesh, Real x=0, Real y=0, Real z=0)
 	{
 		SceneManager* sceneMgr = OgrianRenderer::getSingleton().getSceneManager();
 		node = sceneMgr->getRootSceneNode()->createChildSceneNode();
-        Entity *ent = sceneMgr->createEntity(node->getName(), mesh);
+        ent = sceneMgr->createEntity(node->getName(), mesh);
         node->attachObject(ent);
 
 		setPosition(x, y, z);
@@ -36,12 +38,36 @@ public:
 		vel.z = z;
 	}
 
-	virtual void move(long time)
+	virtual void setScale(Real s)
 	{
-		time /= 1000;
-		pos.x += vel.x * time;
-		pos.y += vel.y * time;
-		pos.z += vel.z * time;
+		Real scale = s/ent->getBoundingRadius();
+		node->setScale(scale,scale,scale);
+
+		radius = s;
+	}
+
+	virtual void move(Real time)
+	{
+		setPosition(
+			pos.x + vel.x * time,
+			pos.y + vel.y * time,
+			pos.z + vel.z * time);
+	}
+
+	virtual Real distance(OgrianPhysicalEntity* e)
+	{
+		return sqrt((pos.x - e->pos.x)*(pos.x - e->pos.x) 
+			      + (pos.y - e->pos.y)*(pos.y - e->pos.y));
+	}
+
+	virtual Real getRadius()
+	{
+		return radius;
+	}
+
+	virtual void collided(OgrianPhysicalEntity* e)
+	{
+		// override this for interesting behaviors
 	}
 
 	// they are ordered by x location
@@ -52,10 +78,12 @@ public:
 
 	
 private:
-	Vector3 pos;
 	Vector3 vel;
 
+	Entity* ent;
 	SceneNode* node;
+	Real radius;
+	Real height;
 };
 
 
