@@ -33,6 +33,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianPlayerList.h"
 #include "OgrianManaThing.h"
 #include "OgrianFireballThing.h"
+#include "OgrianAIWizardThing.h"
 #include "OgrianRenderer.h"
 
 template<> Ogrian::Input * Singleton< Ogrian::Input >::ms_Singleton = 0;
@@ -78,6 +79,15 @@ bool Input::processKeyInput(InputReader* input)
     if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
 		Physics::getSingleton().addThing(new ManaThing(1, 
+			Renderer::getSingleton().getCameraThing()->getPosition()));
+        mTimeUntilNextToggle = CONR("KEY_DELAY");
+    }
+
+	// make a bot
+    if (input->isKeyDown(KC_B) && mTimeUntilNextToggle <= 0
+		&& !Multiplayer::getSingleton().isClient())
+    {
+		Physics::getSingleton().addThing(new AIWizardThing( 
 			Renderer::getSingleton().getCameraThing()->getPosition()));
         mTimeUntilNextToggle = CONR("KEY_DELAY");
     }

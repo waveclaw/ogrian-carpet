@@ -190,6 +190,7 @@ void OrientedSprite::frame()
 			newSprite->setPosition(mPos);
 			newSprite->setWidth(mWidth);
 			newSprite->setHeight(mHeight);
+			newSprite->setColour(mColour);
 			newSprite->addToRenderer();
 		}
 

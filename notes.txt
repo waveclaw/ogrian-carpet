@@ -3,7 +3,6 @@ Ogrian Carpet Notes
 to add:
 =============
 music button
-Magus AI
 Hand Sprites
 
 To consider:
