@@ -111,7 +111,7 @@ void Renderer::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     // Position it 
-    mCamera->setPosition(Vector3(0,0,10));
+    mCamera->setPosition(Vector3(100,0,100));
     // Look back along -Z
     mCamera->lookAt(Vector3(300,0,300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);

@@ -3,18 +3,18 @@
 
 #include <Ogre.h>
 #include "OgrianRenderer.h"
-#include "OgrianRollingThing.h"
+#include "OgrianFloatingThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class ManaThing : public RollingThing
+class ManaThing : public FloatingThing
 {
 public:
 	ManaThing(unsigned int amount, Real x=0, Real y=0, Real z=0) 
-		: RollingThing("Ogrian/Mana", "Mana", false, 1, x, y, z)
+		: FloatingThing("Ogrian/Mana", "Mana", false, 1, x, y, z)
 	{
 		setAmount(amount);
 	}
@@ -64,7 +64,7 @@ public:
 
 		setVelocity(vel.x,0,vel.z);
 
-		RollingThing::move(time);
+		FloatingThing::move(time);
 	}
 
 	virtual ThingType getType()

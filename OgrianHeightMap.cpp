@@ -28,53 +28,40 @@ HeightMap::HeightMap()
 
 int HeightMap::_worldheight( int x, int z )
 {
-	if (x < 0) return 0;
-	if (z < 0) return 0;
-	if (x > mSize) return 0;
-	if (z > mSize) return 0;
+	if (x < 0) return HEIGTHMAP_MIN_HEIGHT;
+	if (z < 0) return HEIGTHMAP_MIN_HEIGHT;
+	if (x > mSize) return HEIGTHMAP_MIN_HEIGHT;
+	if (z > mSize) return HEIGTHMAP_MIN_HEIGHT;
 
-	if (!mData) return 0;
+	if (!mData) return HEIGTHMAP_MIN_HEIGHT;
 
-    return mData[ ( ( z * mSize ) + x ) ];
+    int height = mData[ ( ( z * mSize ) + x ) ];
+
+	if (height < HEIGTHMAP_MIN_HEIGHT) return HEIGTHMAP_MIN_HEIGHT;
+	return height;
 };
 
 Real HeightMap::getHeightAt(Real x, Real z)
 {
-/*	x /= mScalex;
+	// This interpolates between the four corners
+	// It seems to be a bit jagged, but it won't be noticable with floaty things
+	x /= mScalex;
 	z /= mScalez;
 
 	Real modx = x - int(x);
 	Real modz = z - int(z);
+	int fx = int(x);
+	int fz = int(z);
 
-	int height00 = _worldheight(x,z) * mScaley;
-	int height01 = _worldheight(x,z+1) * mScaley;
-	int height10 = _worldheight(x+1,z) * mScaley;
-	int height11 = _worldheight(x+1,z+1) * mScaley;
+	Real height00 = _worldheight(fx  ,fz)   * mScaley;
+	Real height01 = _worldheight(fx  ,fz+1) * mScaley;
+	Real height10 = _worldheight(fx+1,fz)   * mScaley;
+	Real height11 = _worldheight(fx+1,fz+1) * mScaley;
 
 	Real height = height00*(1-modx)*(1-modz) 
 					+ height01*(1-modx)*(modz) 
 					+ height10*(modx)*(1-modz) 
 					+ height11*(modx)*(modz);
-
-	return height;*/
-
-	x /= mScalex;
-	z /= mScalez;
-
-	int fx = Math::Floor(x);
-	int fz = Math::Floor(z);
-	Real modx = (x - fx);
-	Real modz = (z - fz);
-
-	int height00 = _worldheight(fx  ,fz)   * mScaley;
-	int height01 = _worldheight(fx  ,fz+1) * mScaley;
-	int height10 = _worldheight(fx+1,fz)   * mScaley;
-	int height11 = _worldheight(fx+1,fz+1) * mScaley;
-
-	Real height =     height00*(1-modx)*(1-modz) 
-					+ height01*(1-modx)*(modz) 
-					+ height10*(modx)  *(1-modz) 
-					+ height11*(modx)  *(modz);
 
 	return height;
 }

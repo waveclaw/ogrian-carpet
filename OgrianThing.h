@@ -14,6 +14,7 @@ enum ThingType
 {
 	THING,
 	ROLLINGTHING,
+	FLOATINGTHING,
 	MANATHING,
 	FOLIAGETHING,
 };
@@ -57,7 +58,7 @@ public:
 	bool operator<(Thing* other);
 
 	
-private:
+protected:
 	Vector3 mVel;
 
 	BillboardSet* mBbset;
