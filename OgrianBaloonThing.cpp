@@ -89,10 +89,8 @@ Thing* BaloonThing::getTarget()
 
 //----------------------------------------------------------------------------
 
-void BaloonThing::move(Real time)
+void BaloonThing::think()
 {
-	Thing::move(time);
-
 	if (mTarget && mTarget->getTeamNum() == getTeamNum())
 	{
 		mNeedOrders = false;

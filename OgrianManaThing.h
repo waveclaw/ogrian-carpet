@@ -120,18 +120,17 @@ public:
 	}
 
 	// move downhill at a constant slow velocity
-	virtual void move(Real time)
+	virtual void think()
 	{
 		Vector3 vel;
 		Vector3 pos = getPosition();
 		vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
+		vel.y = 0;
 		vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
 		vel.normalise();
 		vel *= CONR("MANA_DRIFT_SPEED");
 
 		setVelocity(vel);
-
-		FloatingThing::move(time);
 	}
 
 	virtual ThingType getType()

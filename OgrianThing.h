@@ -137,6 +137,9 @@ public:
 	// applies the velocity to the position
 	virtual void move(Real time);
 
+	// this is called periodically, rather then every frame, like move
+	virtual void think() {}
+
 	// calculate the x/z distance between two Things
 	virtual Real cylinderDistance(Thing* e);
 
@@ -286,6 +289,8 @@ private:
 	int mUID;
 
 	unsigned long mLastUpdateTime; // the last time a bitstream was generated for this thing
+
+	unsigned long mLastThinkTime; // the last time this thing think()ed
 
 	virtual void _updateVisibility(); // based on distance from camera
 

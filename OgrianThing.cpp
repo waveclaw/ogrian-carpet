@@ -57,6 +57,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mCurrentSound = 0;
 	mUID = -1;
 	mLastUpdateTime = 0;
+	mLastThinkTime = 0;
 	mFlickerPeriod = 0;
 	mLastRotTime = 0;
 	mLastRotDir = false;
@@ -309,6 +310,16 @@ void Thing::move(Real time)
 	if (!Multiplayer::getSingleton().isClient())
 		if (mGroundScan && getGroundY() > getPosition().y && isAlive()) 
 			collidedGround();
+
+	// see if it's time to think yet
+	unsigned long now = Time::getSingleton().getTime();
+	unsigned long period = unsigned long(CONR("THING_THINK_PERIOD") * 1000);
+	if (mLastThinkTime + period < now)
+	{
+		think();
+
+		mLastThinkTime = now + period * Math::RangeRandom(0,.1);
+	}
 }
 
 //----------------------------------------------------------------------------

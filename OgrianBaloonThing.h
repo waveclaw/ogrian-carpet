@@ -51,7 +51,7 @@ public:
 
 	virtual Thing* getTarget();
 
-	virtual void move(Real time);
+	virtual void think();
 
 	virtual void collided(Thing* thing);
 
