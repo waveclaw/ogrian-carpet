@@ -68,6 +68,9 @@ Menu::Menu()
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
 		getGuiElement("Ogrian/Menu/AvailableMapsList"));
 	loadMapList();
+	
+	// set the title
+	setMessage(TITLE);
 }
 
 //----------------------------------------------------------------------------
@@ -255,6 +258,7 @@ void Menu::loadMap(String mapname)
 	// load the map
 	mMapName = String("Media/maps/") << mapname << ".txt";
 	mLoadMap = true;
+	mLoadDelay = CONI("LOAD_DELAY");
 }
 
 //----------------------------------------------------------------------------
@@ -265,14 +269,18 @@ void Menu::frame(Real time)
 	if (mTimeUntilNextToggle >= 0) 
 		mTimeUntilNextToggle -= time;
 
-	// load a map if theres one ready
+	// decrement mLoadDelay
 	if (mLoadMap)
+		mLoadDelay--;
+
+	// load a map if theres one ready
+	if (mLoadMap && mLoadDelay == 0)
 	{
 		// load the map
 		Renderer::getSingleton().loadMap(mMapName);
 
 		// Menu
-		setMessage("Menu");
+		setMessage(TITLE);
 		
 		// hide the menu
 		hide();

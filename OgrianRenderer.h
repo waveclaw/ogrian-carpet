@@ -95,6 +95,7 @@ protected:
     RenderWindow* mWindow;
     SceneNode* mFountainNode;
 	SceneNode* mWaterNode;
+	Entity* mWaterEntity;
 
 	bool mMapLoaded;
 	String mMapName;

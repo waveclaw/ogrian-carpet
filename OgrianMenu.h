@@ -92,6 +92,7 @@ private:
 
 	bool mLoadMap; // true when a map is ready to be loaded
 	String mMapName; // the name of the map
+	int mLoadDelay; // counts down
 
 	GuiContainer* mCursor; // the cursor
 	ListChanger* mList; // the list of maps

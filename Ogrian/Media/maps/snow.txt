@@ -1,12 +1,12 @@
 HeightMap=h_crescent.png
-WorldTexture=t_crescent.jpg
+WorldTexture=t_snow.jpg
 DetailTexture=terrain_detail.jpg
 
-Scale.x=1
+Scale.x=.5
 Scale.y=.5
-Scale.z=1
+Scale.z=.5
 
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
 FoliageMaterial=Ogrian/PineTree
-FoliageAmount=100
+FoliageAmount=10

@@ -242,11 +242,14 @@ void Renderer::createSky(const String& material)
 
 void Renderer::createOcean(const String& material)
 {
-	if (mWaterNode != 0) return;
+	if (mWaterNode != 0)
+	{
+		mWaterEntity->setMaterialName(material);
+		return;
+	}
 
 	LogManager::getSingleton().logMessage("Making Ocean...");
 
-    Entity *waterEntity;
     Plane waterPlane;
     
     // create a water plane/scene node
@@ -263,10 +266,10 @@ void Renderer::createOcean(const String& material)
     );
 
 	mWaterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(); 
-	waterEntity = mSceneMgr->createEntity(mWaterNode->getName(), "WaterPlane"); 
-	waterEntity->setMaterialName(material); 
+	mWaterEntity = mSceneMgr->createEntity(mWaterNode->getName(), "WaterPlane"); 
+	mWaterEntity->setMaterialName(material); 
 
-	mWaterNode->attachObject(waterEntity); 
+	mWaterNode->attachObject(mWaterEntity); 
 	mWaterNode->translate(0, 0, 0);
 }
 
@@ -304,15 +307,23 @@ void Renderer::loadMap(String configfile, bool server)
 {
 	unloadMap();
 
-
 	/* Set up the options */
 	ConfigFile config;
 	config.load( configfile );
 	String skyMaterial = config.getSetting( "SkyMaterial" );
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" );
+	int foliageNum = atoi(config.getSetting( "FoliageAmount" ));
+	String fogColour = config.getSetting( "FogColour" );
 
-	// load new terrain
+	// set the fog
+	ColourValue fogcol = ColourValue::White;
+	if (fogColour == "blue") fogcol = ColourValue::Blue;
+	else if (fogColour == "red") fogcol = ColourValue::Red;
+	else if (fogColour == "black") fogcol = ColourValue::Black;
+    mSceneMgr->setFog( FOG_EXP2, fogcol, CONR("FOG_DENSITY"), 2500,  5500 );
+
+	// load new terrain 
 	if (configfile != mMapName)
 		mSceneMgr->setWorldGeometry( configfile );
 
@@ -330,7 +341,7 @@ void Renderer::loadMap(String configfile, bool server)
 	createCameraThing();
 	
 	// dont make foliage for a client
-	if (server)	createFoliage(CONI("FOLIAGE_NUM"));
+	if (server)	createFoliage(foliageNum);
 
 	Vector3 offset;
 	Real wdo = CONR("WIZARD_DEATH_OFFSET");

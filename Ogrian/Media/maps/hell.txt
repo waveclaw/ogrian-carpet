@@ -1,0 +1,11 @@
+HeightMap=h_islands.png
+WorldTexture=t_hell.jpg
+DetailTexture=terrain_detail.jpg
+
+Scale.x=.5
+Scale.y=.3
+Scale.z=.5
+
+OceanMaterial=Ogrian/Lava
+SkyMaterial=Ogrian/FireySky
+FogColour=red
