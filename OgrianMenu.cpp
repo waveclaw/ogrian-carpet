@@ -94,7 +94,7 @@ void Menu::loadMapList()
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
 		Except(
-			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "ConfigFile::load" );
+			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadMapList" );
 
 	ret = fgets(rec, 100, fp);
 	while (ret != NULL)
@@ -104,7 +104,7 @@ void Menu::loadMapList()
 		// Ignore comments & blanks
 		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
 		{
-			// Tokenise on tab
+			// Tokenise on newline
 			char* pName = strtok(rec, "\n");
 			if (pName)
 			{

@@ -61,6 +61,9 @@ public:
 	// add a pose (only used by Oriented Sprites)
 	virtual void setPose(int index) = 0;
 
+	// clear the poses (only used by Oriented Sprites)
+	virtual void clearPoses() = 0;
+
 	// set the orientation from -pi to pi (only used by Oriented Sprites)
 	virtual void setOrientation(Radian orientation) = 0;
 

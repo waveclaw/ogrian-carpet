@@ -171,6 +171,17 @@ void OrientedSprite::setPose(int index)
 
 //----------------------------------------------------------------------------
 
+void OrientedSprite::clearPoses()
+{
+	// delete all the poses
+	for (int i=0; i<(int)mPoses.size(); i++)
+		delete mPoses[i];
+
+	mPoses.clear();
+}
+
+//----------------------------------------------------------------------------
+
 void OrientedSprite::setOrientation(Radian orientation)
 {
 	mOrientation = orientation;

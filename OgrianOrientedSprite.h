@@ -126,6 +126,9 @@ public:
 	// set which pose to use 
 	virtual void setPose(int index);
 
+	// clear the poses
+	virtual void clearPoses();
+
 	// set the orientation from -Math::PI to Math::PI 
 	// note, call this through Thing::setOrientation for best behavior
 	virtual void setOrientation(Radian orientation);

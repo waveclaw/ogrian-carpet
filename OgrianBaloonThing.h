@@ -91,7 +91,10 @@ public:
 			}
 			
 			// if its travelling
-			if (mState == BAL_STATE_TRAVEL
+			if (mState == BAL_STATE_TRAVEL)
+			{
+
+			}
 				
 
 		}

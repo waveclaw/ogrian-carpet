@@ -31,6 +31,7 @@ starting games and detecting victory.
 #include "OgrianMultiplayer.h"
 #include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
+#include "OgrianSkinManager.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
@@ -124,11 +125,13 @@ void Game::startServerGame()
 
 void Game::startSkirmishGame()
 {
+	int numSkins = SkinManager::getSingleton().numSkins();
+
 	// load AI Wizards
 	for (int i=0; i<CONI("NUM_BOTS"); i++)
 	{
 		AIWizardThing* ai = new AIWizardThing( 
-			Renderer::getSingleton().getCameraThing()->getPosition(), int(Math::RangeRandom(0.5,5.9)));
+			Renderer::getSingleton().getCameraThing()->getPosition(), int(Math::RangeRandom(0.5,numSkins+0.5)));
 
 		Physics::getSingleton().addThing(ai);
 	}

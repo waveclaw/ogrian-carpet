@@ -31,6 +31,7 @@ Description: The wizard thing is the superclass of the CameraThing
 #include "OgrianWizardThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianSkinManager.h"
 
 
 using namespace Ogre;
@@ -48,7 +49,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = skin;
 
-	setupSkins();
+	//setupSkins();
 	setSkin(skin);
 
 	if (visible)
@@ -86,7 +87,9 @@ void WizardThing::setSkin(int skin)
 {
 	mSkin = skin;
 	
-	getVisRep()->setPose(skin);
+	getVisRep()->clearPoses();
+	getVisRep()->addPose(SkinManager::getSingleton().getSkin(skin));
+	getVisRep()->setPose(0);
 }
 
 //----------------------------------------------------------------------------
