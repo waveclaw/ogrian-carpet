@@ -88,6 +88,7 @@ void Physics::serverFrame(Real time)
 			BitStream bs;
 			thing->generateBitStream(bs);
 			Multiplayer::getSingleton().serverSendAll(&bs);
+			LogManager::getSingleton().logMessage(String("Sending Update for ") << thing->getUID());
 		}
 	}
 }
@@ -120,15 +121,24 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 				case MANATHING:
 					thing = new ManaThing();
 					break;
+
+				default: return true;
 			}
 
 			// add it to the physics
 			LogManager::getSingleton().logMessage(String("Making New Thing for client: ") << uid);
+
+			// send the bitstream to the thing
+			thing->interpretBitStream(bitstream);
+
+			// add it to physics
 			clientAddThing(thing, uid);
 		}
-
-		// send the bitstream to the thing
-		thing->interpretBitStream(bitstream);
+		else // just send the update
+		{
+			// send the bitstream to the thing
+			thing->interpretBitStream(bitstream);
+		}
 
 		return true;
 	}
@@ -182,11 +192,11 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 				break;
 		}
 
+		// send the bitstream to the thing
+		thing->interpretBitStream(bitstream);
+
 		// add it to the physics
 		addThing(thing);
-
-		// send the bitstream to the thing
-		thing->interpretBitStream(bitstream, true);
 
 		return true;
 	}

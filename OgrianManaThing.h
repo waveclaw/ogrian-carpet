@@ -117,11 +117,11 @@ public:
 		Thing::generateBitStream(bitstream);
 		bitstream.Write(getAmount());
 	}
-	virtual void interpretBitStream(BitStream& bitstream, bool overwriteUID=false)
+	virtual void interpretBitStream(BitStream& bitstream)
 	{
 		int amount;
 
-		Thing::interpretBitStream(bitstream, overwriteUID);
+		Thing::interpretBitStream(bitstream);
 		bitstream.Read(amount);
 
 		setAmount(amount);

@@ -48,6 +48,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mPlayingSound = false;
 	mInEarshot = false;
 	mCurrentSound = 0;
+	mUID = -1;
 
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
@@ -411,7 +412,7 @@ void Thing::generateBitStream(BitStream& bitstream)
 
 //----------------------------------------------------------------------------
 
-void Thing::interpretBitStream(BitStream& bitstream, bool overwriteUID)
+void Thing::interpretBitStream(BitStream& bitstream)
 {
 	Vector3 pos,vel;
 	int pid,uid,type;
@@ -431,7 +432,6 @@ void Thing::interpretBitStream(BitStream& bitstream, bool overwriteUID)
 
 	setPosition(pos);
 	setVelocity(vel);
-	if (overwriteUID) mUID = uid;
 }
 //----------------------------------------------------------------------------
 
