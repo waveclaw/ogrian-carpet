@@ -432,7 +432,8 @@ void WizardThing::setPosition(Vector3 pos)
 
 	Vector3 lastPos = getPosition();
 
-	if (!mSpeeding) // if we are not under the infuence of the speed spell
+	if (getGroundY() > getPosY() // if we are above ground and
+		&& !mSpeeding) // if we are not under the infuence of the speed spell
 	{
 		// if this is not a teleport
 		Vector3 diff = pos - lastPos;
