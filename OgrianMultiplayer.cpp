@@ -66,6 +66,10 @@ void Multiplayer::loadConfig()
 	ConfigFile config;
 	config.load( "ogrian.cfg" );
 	mPlayerName = config.getSetting( "name" );
+
+	// trim the name
+	std::string name = mPlayerName;
+	mPlayerName = name.substr(0,PLAYER_NAME_MAX_LENGTH);
 }
 
 //----------------------------------------------------------------------------
@@ -231,11 +235,11 @@ void Multiplayer::clientRecieve()
 		// We got a packet, get the identifier with our handy function
 		PacketID packetId = getPacketIdentifier(packet);
 
-		if(handleOtherPacket(packet, packetId))
-		{
-			//Physics::getSingleton().handleClientPacket(packet, packetId);
-		}
-			
+		// handle the packet
+		if      (clientHandlePacket(packet, packetId)) {}
+		else if (handleRakPacket(packet, packetId)) {}
+		//else if (Physics::getSingleton().handleClientPacket(packet, packetId)) {}
+
 		mClient->DeallocatePacket(packet);
 		packet = mClient->Receive();
 	}
@@ -252,10 +256,10 @@ void Multiplayer::serverRecieve()
 		// We got a packet, get the identifier with our handy function
 		PacketID packetId = getPacketIdentifier(packet);
 
-		if(handleOtherPacket(packet, packetId))
-		{
-			//Physics::getSingleton().handleServerPacket(packet, packetId);
-		}
+		// handle the packet
+		if      (serverHandlePacket(packet, packetId)) {}
+		else if (handleRakPacket(packet, packetId)) {}
+		//else if (Physics::getSingleton().handleServerPacket(packet, packetId)) {}
 			
 		mServer->DeallocatePacket(packet);
 		packet = mServer->Receive();
@@ -348,66 +352,129 @@ PacketID Multiplayer::getPacketIdentifier(Packet* p)
 
 //----------------------------------------------------------------------------
 
-bool Multiplayer::handleOtherPacket(Packet* p, PacketID pid)
+bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 {
 	// Check if this is a network message packet
 	switch (pid)
 	{
-		case ID_DISCONNECTION_NOTIFICATION:
-				// Connection lost normally
-			break;
+		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
+			// update the player list
+			PlayerList::getSingleton().addPlayer(packet->data);
+			return true;
 
-		case ID_REMOTE_DISCONNECTION_NOTIFICATION: // Server telling the clients of another client disconnecting gracefully.  You can manually broadcast this in a peer to peer enviroment if you want.
+		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
+		{
+			// This tells the client they have connected
+			Menu::getSingleton().setMessage("Connected to Server!");
 			
-			break;
-		case ID_REMOTE_CONNECTION_LOST: // Server telling the clients of another client disconnecting forcefully.  You can manually broadcast this in a peer to peer enviroment if you want.
-			
-			break;
-		case ID_REMOTE_NEW_INCOMING_CONNECTION: // Server telling the clients of another client connecting.  You can manually broadcast this in a peer to peer enviroment if you want.
-			
-			break;
-		case ID_REMOTE_EXISTING_CONNECTION: // Server telling you of an existing connection that was there before you connected
-			
-			break;
-		case ID_NEW_INCOMING_CONNECTION:
-				// Somebody connected.  We have their IP now
-				mPlayers.push_back(p->playerId);
-				PlayerList::getSingleton().addPlayer( String("(") << p->playerId.binaryAddress << ")" );
-			break;
+			// send our name to the server
+			char name[PLAYER_NAME_MAX_LENGTH];
+			strcpy(name, mPlayerName);
+			int len = (int)strlen(name) + 1;
 
-		case ID_RECEIVED_STATIC_DATA:
-				// Got static data
-		
-			break;
+			BitStream bs;
+			bs.Write(ID_ADD_PLAYER);
+			bs.Write(len);
+			bs.Write(name,len);
 
+			clientSend(&bs);
 
-		case ID_NO_FREE_INCOMING_CONNECTIONS:
-			// Sorry, the server is full.  I don't do anything here but
-			// A real app should tell the user
+			// display our name
+			PlayerList::getSingleton().addPlayer(name);
+			return true;
+		}
+		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
+			// Couldn't deliver a reliable packet - i.e. the other system was abnormally terminated
+			Except( Exception::ERR_INTERNAL_ERROR, "Error: Connection to Server lost.",
+				"Multiplayer::handleOtherPacket" );
+			return true;
+	}
+	return false;
+}
+//----------------------------------------------------------------------------
+
+bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
+{
+	// Check if this is a network message packet
+	switch (pid)
+	{
+		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
+		{
+			// get the name
+			char name[PLAYER_NAME_MAX_LENGTH];
+			int len, UID;
+
+			BitStream bs(packet->data,packet->length,false);
+			bs.Read(UID);
+			bs.Read(len);
+			bs.Read(name,len);
+
+			// update the player list
+			PlayerList::getSingleton().addPlayer(name);
+
+			// forward the message to all clients
+			;
+
+			Menu::getSingleton().setMessage("Player Sent Name (" + std::string(name) + ")");
+			return true;
+		}
+		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
+			// Somebody connected.  We have their IP now
+			mPlayers.push_back(packet->playerId);
+			return true;
 			
-			break;
-		case ID_MODIFIED_PACKET:
-			// Cheater!
-			
-			break;
-
-		case ID_CONNECTION_LOST:
+		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
 			// Couldn't deliver a reliable packet - i.e. the other system was abnormally
 			// terminated
-			
-			break;
 
-		case ID_CONNECTION_REQUEST_ACCEPTED:
-			// This tells the client they have connected
+			// Do something here
 			
-			break;
+			return true;
+	}
+	return false;
+}
 
-		case ID_CONNECTION_RESUMPTION:
-			// Client reconnected before getting disconnected
+//----------------------------------------------------------------------------
+
+bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
+{
+	// Check if this is a network message packet
+	switch (pid)
+	{
+		case ID_DISCONNECTION_NOTIFICATION: // Connection lost normally
+			return true;
+
+		case ID_REMOTE_DISCONNECTION_NOTIFICATION: // Server telling the clients of another client disconnecting gracefully.
+			return true;
+
+		case ID_REMOTE_CONNECTION_LOST: // Server telling the clients of another client disconnecting forcefully.
+			return true;
+
+		case ID_REMOTE_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
+			return true;
+
+		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
+			return true;
 			
-			break;
+		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
+			return true;
 
-		default:
+		case ID_REMOTE_EXISTING_CONNECTION: // Server telling you of an existing connection that was there before you connected
+			return true;
+
+		case ID_RECEIVED_STATIC_DATA: // Got static data
+			return true;
+
+		case ID_NO_FREE_INCOMING_CONNECTIONS: // Sorry, the server is full.  I don't do anything here but A real app should tell the user
+			return true;
+
+		case ID_MODIFIED_PACKET: // Cheater!
+			return true;
+
+		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
+			return true;
+
+		case ID_CONNECTION_RESUMPTION: // Client reconnected before getting disconnected
 			return true;
 	}
 	return false;

@@ -69,9 +69,9 @@ void Physics::frame(Real time)
 
 //----------------------------------------------------------------------------
 
-void Physics::handleClientPacket(Packet* packet, PacketID pid)
+bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 {
-	if (packet == 0) return;
+	if (packet == 0) return false;
 
 	BitStream bitstream(packet->data, packet->length, false);
 	int uid, type;
@@ -96,6 +96,8 @@ void Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		// send the bitstream to the thing
 		thing->interpretBitStream(bitstream);
+
+		return true;
 	}
 	// if its a thing update
 	else if (pid == ID_UPDATE_THING)
@@ -104,6 +106,7 @@ void Physics::handleClientPacket(Packet* packet, PacketID pid)
 		
 		// send the bitstream to the thing
 
+		return true;
 	}
 	// if its a thing deletion
 	else if (pid == ID_REMOVE_THING)
@@ -112,13 +115,17 @@ void Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		// destroy it
 
+		return true;
 	}
+	return false;
 }
 
 //----------------------------------------------------------------------------
 
-void Physics::handleServerPacket(Packet* p, PacketID pid)
+bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 {
+	if (packet == 0) return false;
+
 	// if its a thing creation
 	if (pid == ID_MAKE_THING)
 	{
@@ -127,6 +134,8 @@ void Physics::handleServerPacket(Packet* p, PacketID pid)
 		// send the bitstream to the thing
 
 		// add it to the physics
+		
+		return true;
 	}
 	// if its a camera thing update
 	else if (pid == ID_UPDATE_CAMERA_THING)
@@ -135,7 +144,9 @@ void Physics::handleServerPacket(Packet* p, PacketID pid)
 		
 		// send the bitstream to the thing
 
+		return true;
 	}
+	return false;
 }
 
 //----------------------------------------------------------------------------

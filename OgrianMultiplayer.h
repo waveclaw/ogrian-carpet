@@ -115,9 +115,14 @@ private:
 	// get the packet identifier
 	PacketID getPacketIdentifier(Packet* p);
 
-	// handle misc packets, returns true if its a game packet
-	bool handleOtherPacket(Packet* p, PacketID pid);
+	// handle misc RakNet packets, returns true if the packet was handled
+	bool handleRakPacket(Packet* p, PacketID pid);
 
+	// handle misc Ogrian Server-recieved packets, returns true if the packet was handled
+	bool serverHandlePacket(Packet* p, PacketID pid);
+	
+	// handle misc Ogrian Client-recieved packets, returns true if the packet was handled
+	bool clientHandlePacket(Packet* p, PacketID pid);
 };
 
 }

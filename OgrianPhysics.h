@@ -75,11 +75,11 @@ public:
 	// this must be called before adding things
 	virtual void setWorldSize(int size);
 
-	// handle server packet
-	virtual void handleServerPacket(Packet* p, PacketID pid);
+	// handle server packet, return true if handled
+	virtual bool handleServerPacket(Packet* p, PacketID pid);
 
-	// handle client packet
-	virtual void handleClientPacket(Packet* p, PacketID pid);
+	// handle client packet, return true if handled
+	virtual bool handleClientPacket(Packet* p, PacketID pid);
 
     static Physics& getSingleton(void);
 
