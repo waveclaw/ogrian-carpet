@@ -10,6 +10,7 @@ SERVER_ADDRESS=Deatrix
 # 2: Mike
 # 3: Jess
 # 4: Rick
+# 5: finger
 PLAYER_SKIN=1
 
 # set the RGB values of the colour you want your team to be

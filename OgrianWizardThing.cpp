@@ -62,12 +62,6 @@ WizardThing::WizardThing(bool visible, int skin)
 
 	setSkin(skin);
 
-	if (mVisible)
-	{
-		mBar = new HealthBarEffect(getPosition(), getHeight());
-		Physics::getSingleton().addEffect(mBar);
-	}
-
 	setUpdateType(CONTINUOUS);
 
 	reset();
@@ -89,7 +83,6 @@ void WizardThing::reset()
 	mNumHuts = 0;
 	mBar = 0;
 	mTeam = 0;
-	mSkin = -1;
 	mGhost = false;
 
 	// make a team for this wizard'
@@ -103,6 +96,13 @@ void WizardThing::reset()
 		std::ostringstream num("");
 		num << teamNum;
 		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
+	}
+
+	// make the health bar
+	if (mVisible)
+	{
+		mBar = new HealthBarEffect(getPosition(), getHeight());
+		Physics::getSingleton().addEffect(mBar);
 	}
 
 	// add this player to the server

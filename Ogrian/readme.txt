@@ -113,9 +113,20 @@ beta testers:
 -Steven "Max" Powers
 -Jess Prosser
 -Rick Prosser
+-Corey Ulmer
 
-firball sounds and tree sprites:
+sprites:
+-Mike Prosser
+-Jeremiah Powell
 -WorldForge
+
+sounds:
+-Mike Prosser
+-WorldForge
+
+maps:
+-Mike Prosser
+-Corey Ulmer (lowlands)
 
 libraries:
 -Ogre3D

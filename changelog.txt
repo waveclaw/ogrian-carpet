@@ -2,7 +2,7 @@
 0.7.1:
 -some new sprites
 -removed baloons, mana go to castles on their own
--nerfed ticks
+-nerfed ticks and put them higher on the "tech tree"
 -improved gnomes
 -added a map option to make lava deadly
 -gave towers a healing ball and a teleport portal
