@@ -428,7 +428,11 @@ void Game::startSkirmishGame()
 	int numSkins = SkinManager::getSingleton().numSkins();
 
 	// set up a team 
-	int teamNum = Physics::getSingleton().newTeam(ColourValue::Green);
+	ColourValue colour;
+	colour.r = atoi(mConfig.getSetting( "MONSTERS_RED" ).c_str()) / 255.0;
+	colour.g = atoi(mConfig.getSetting( "MONSTERS_GREEN" ).c_str()) / 255.0;
+	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
+	int teamNum = Physics::getSingleton().newTeam(colour);
 
 	// set up some enemy towers
 	Real numTowers = atoi(mConfig.getSetting( "NUM_TOWERS" ).c_str());

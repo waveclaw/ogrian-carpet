@@ -33,6 +33,11 @@ p3startZ=291
 p4startX=395
 p4startZ=84
 
+# the RGB colour of the native monsters
+MONSTERS_RED=1
+MONSTERS_GREEN=255
+MONSTERS_BLUE=1
+
 # the number of starting stuff in skirmish mode
 NUM_TOWERS=6
 NUM_TICKS=30
