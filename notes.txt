@@ -5,15 +5,14 @@ to add:
 =========
 Hand Sprites - two frames, idle and casting, for each spell
 
-Huts - claim them to increase your mana regen
 
 Monsters
 =========
 -Crane - orbits castle towers for defense
 -Albatross! - cruise missile
--Spider - follows the wizard around by jumping to a random spot near him, summoned with egg
--Sentinel - stationary gargoyle that shoots fireballs and sends up flares when enemies nearby
--Imp - mobile archers that follow the wizard around
+-Tick - follows the wizard around by jumping to a random spot near him
+-Sentinel - stationary gargoyle that shoots fireballs at enemies
+-Gnome - mobile sentinels
 
 Spells 
 =========
@@ -21,29 +20,25 @@ Spells
 -build (castle, tower, also unbuilds)
 -fireball (done)
 
--speeed (done)
--summon spider
--akimbo fireball (done)
--summon imp
+-summon sentinel (done)
+-summon tick (done)
+-summon gnome (done)
 
--summon sentinel
--firestorm - very rapid fire with randomish trajectories (done)
+-speeed (done)
+-akimbo fireball (done)
+-firestorm (done)
 -summon albatross!
 -meteor - launched from own castle to wizard location, large area of effect
 
 
 need new art for:
 =========
-spider - playdoh
-sentinel - playdoh
-imp - playdoh
 hand sprites - photos of my hands
 hud spell sprites
 
 
 Ideas:
 =========
-have think() have setThinkPeriod() per thing.
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
 
 

@@ -12,3 +12,5 @@
 -added huts
 
 -added sentinels
+-added ticks
+-added gnomes
