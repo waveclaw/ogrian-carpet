@@ -47,7 +47,7 @@ class ManaThing : public FloatingThing
 {
 public:
 	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
-		: FloatingThing("Ogrian/Mana", "Mana", false, 1, pos)
+		: FloatingThing("Ogrian/Mana", "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
 		playSound("OgrianMedia/sounds/hum1.wav", true);

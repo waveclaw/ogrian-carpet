@@ -240,6 +240,13 @@ void Thing::move(Real time)
 
 //----------------------------------------------------------------------------
 
+String Thing::getString()
+{
+	return String(mName) << "(" << getType() << ") #" << mUID;
+}
+
+//----------------------------------------------------------------------------
+
 // only render things that are close to the camera
 void Thing::_updateVisibility()
 {
@@ -274,7 +281,7 @@ Real Thing::cylinderDistance(Thing* e)
 Real Thing::sphereDistance(Thing* e)
 {
 	return sqrt(  (mPos.x - e->mPos.x)*(mPos.x - e->mPos.x)
-				+ (mPos.y - e->mPos.y)*(mPos.z - e->mPos.y)
+				+ (mPos.y - e->mPos.y)*(mPos.y - e->mPos.y)
 			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
 }
 

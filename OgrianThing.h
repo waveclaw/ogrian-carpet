@@ -145,6 +145,9 @@ public:
 	// get the unique identifier
 	virtual int getUID();
 
+	// get a String description
+	virtual String getString();
+
 	// get the last time a bitstream was generated for this thing
 	virtual unsigned long lastUpdateTime();
 

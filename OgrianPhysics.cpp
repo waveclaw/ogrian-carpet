@@ -730,13 +730,16 @@ void Physics::pairCollisionCheck(Thing* a, Thing* b)
 	}
 
 	// for sphere intersection
-	else if (sa == SPHERE || sb == SPHERE)
+	else //if (sa == SPHERE || sb == SPHERE)
 	{
 		// if they are too far apart in the x/z plane, return
 		if (a->sphereDistance(b) > maxdist) return;
 
 		// otherwise collide
 		collide(a,b);
+
+		if (a->getType() == CAMERATHING || b->getType() == CAMERATHING);
+		else LogManager::getSingleton().logMessage(String("Collided: ") << a->getString() << ", " << b->getString());
 	}
 }
 
