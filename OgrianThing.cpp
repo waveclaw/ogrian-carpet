@@ -50,6 +50,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mInEarshot = false;
 	mCurrentSound = 0;
 	mUID = -1;
+	mLastUpdateTime = 0;
 
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;

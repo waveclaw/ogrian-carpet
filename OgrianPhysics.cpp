@@ -90,6 +90,7 @@ void Physics::serverFrame(Real time)
 			BitStream bs;
 			thing->generateBitStream(bs);
 			Multiplayer::getSingleton().serverSendAll(&bs);
+
 			LogManager::getSingleton().logMessage(String("Sending Update for ") << thing->getUID());
 		}
 	}
