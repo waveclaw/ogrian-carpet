@@ -74,7 +74,8 @@ void WizardThing::die()
 
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
+		Team* team = Physics::getSingleton().getTeam(getLastDamageSourceTeamNum());
+		if (team > 0) team->incrementScore();
 
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{

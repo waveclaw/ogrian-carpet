@@ -864,6 +864,7 @@ int Physics::addTeam(int wizardUID)
 
 Team* Physics::getTeam(int index)
 {
+	if (index < 0) return 0;
 	return mTeams[index];
 }
 

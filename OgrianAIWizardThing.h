@@ -44,14 +44,30 @@ class AIWizardThing : public WizardThing
 public:
 	AIWizardThing(Vector3 pos) : WizardThing(true) 
 	{
+		mLastTime = 0;
+
 		setPosition(pos);
 		setColour(ColourValue::Red);
-		setHealth(CONI("WIZARD_HEALTH"));
+		setHealth(CONR("WIZARD_HEALTH"));
+
+		Vector3 offset;
+		Real wdo = CONR("WIZARD_DEATH_OFFSET");
+		offset.x = Math::RangeRandom(-wdo, wdo);
+		offset.z = Math::RangeRandom(-wdo, wdo);
+		setPosition(getPosition() + offset);
 	}
 
 	// think
 	virtual void move(Real time)
 	{
+		WizardThing::move(time);
+
+		// only think periodically
+		if (Time::getSingleton().getTime() < mLastTime + CONR("FIREBALL_CAST_PERIOD")*1000) 
+			return;
+
+		mLastTime = Time::getSingleton().getTime();
+
 		WizardThing* enemy = static_cast<WizardThing*>(Renderer::getSingleton().getCameraThing());
 
 		// face the enemy //
@@ -70,9 +86,30 @@ public:
 
 		// circle strafe randomly //
 
+		// set perpindicular velocity
+		Vector3 vel = pos-epos;
+		Vector3 fvel = vel; // note the original for fireballs
+		vel = vel.crossProduct(Vector3::UNIT_Y);
+		vel.normalise();
+		vel *= CONR("CAMERA_MOVE_SPEED");
+
+		// randomize direction
+		if (Math::RangeRandom(-1,1) < 0) vel *= -1;
+
+		setVelocity(vel);
+
 		// fire fireballs //
+		if (Math::RangeRandom(-1,1) < 0)
+		{
+			Vector3 fpos = getPosition();
+			fvel.normalise();
+			fvel *= -1;
+
+			fpos += fvel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
+			fvel *= CONR("FIREBALL_SPEED");
 		
-		WizardThing::move(time);
+			Physics::getSingleton().addThing(new FireballThing(-1, fpos,fvel));
+		}
 	}
 
 	virtual void die()
@@ -87,7 +124,7 @@ public:
 	}
 
 private:
-
+	unsigned long mLastTime;
 };
 
 }
