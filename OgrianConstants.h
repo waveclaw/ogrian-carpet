@@ -83,6 +83,8 @@ const Real FIREBALL_FALL_RATE = 3;
 const Real FIREBALL_SPEED = 40;
 const Real FIREBALL_SCALE = 2;
 const Real FIREBALL_FLICKER_PERIOD = .2;
+const Real FIREBALL_SMOKE_PERIOD = .2;
+const Real FIREBALL_SMOKE_LIFETIME = 1;
 
 }
 #endif

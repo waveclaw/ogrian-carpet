@@ -50,16 +50,19 @@ public:
 		mExpirationTime = 0;
 	}
 
+	// set expiration time in absolute time in microseconds
 	virtual void setAbsoluteExpirationTime(unsigned long time)
 	{
 		mExpirationTime = time;
 	}
 
-	virtual void setRelativeExpirationTime(unsigned long time)
+	// set expiration time in seconds from now
+	virtual void setRelativeExpirationTime(Real time)
 	{
-		mExpirationTime = time + Time::getSingleton().getTime();
+		mExpirationTime = time*1000 + Time::getSingleton().getTime();
 	}
 
+	// check to see if the time is up
 	virtual void move(Real time)
 	{
 		Thing::move(time);

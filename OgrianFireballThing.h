@@ -39,6 +39,21 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+/////////////////////////////////////////////////////////////////////////////
+class FireballSmokeEffect : public TimedThing
+{
+public:
+	FireballSmokeEffect(Vector3 pos) 
+		: TimedThing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, FIREBALL_SCALE*.8, pos, SPHERE)
+	{
+		setRelativeExpirationTime(FIREBALL_SMOKE_LIFETIME);
+		setVelocity(Vector3(0,1,0));
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
 class FireballBlastEffect : public TimedThing
 {
 public:
@@ -46,13 +61,14 @@ public:
 		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, FIREBALL_SCALE*2, pos, SPHERE)
 	{
 		playSound("OgrianMedia/sounds/boom1.wav");
-		setRelativeExpirationTime(1000);
+		setRelativeExpirationTime(1);
 		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
 };
 
+/////////////////////////////////////////////////////////////////////////////
 class FireballThing : public Thing
 {
 public:
@@ -62,6 +78,8 @@ public:
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
 		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
+
+		mLastSmokeTime = 0;
 	}
 
 	virtual ThingType getType()	{ return FIREBALLTHING; }	
@@ -71,6 +89,13 @@ public:
 		// fall
 		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
 		Thing::move(time);
+
+		// emit smoke
+		if (isAlive() && mLastSmokeTime + FIREBALL_SMOKE_PERIOD*1000 < Time::getSingleton().getTime())
+		{
+			Physics::getSingleton().addEffect(new FireballSmokeEffect(getPosition()));
+			mLastSmokeTime = Time::getSingleton().getTime();
+		}
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
@@ -93,6 +118,9 @@ public:
 
 		Thing::destroy();
 	}
+
+private:
+	unsigned long mLastSmokeTime;
 };
 
 }
