@@ -80,9 +80,10 @@ public:
 	// play a sound when the colour changes
 	virtual void setColour(ColourValue& colour)
 	{
-		FloatingThing::setColour(colour);
-		
-		playSound(Game::getSingleton().SOUND_HUM);
+		if (colour != getColour())
+			playSound(Game::getSingleton().SOUND_HUM);
+	
+		FloatingThing::setColour(colour);		
 	}
 
 	// setting the amount automatically sets the scale

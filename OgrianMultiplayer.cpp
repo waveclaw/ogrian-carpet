@@ -712,7 +712,8 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// play the sound
 			Thing* thing = Physics::getSingleton().getThing(uid);
-			thing->playSound(sound);
+			if (thing)
+				thing->playSound(sound);
 			return true;
 		}
 	}
