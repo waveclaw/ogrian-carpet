@@ -40,6 +40,7 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+// extend Thing
 class FloatingThing : public Thing
 {
 public:
@@ -48,11 +49,13 @@ public:
 	{
 		
 	}
+
 	virtual ThingType getType()
 	{
 		return FLOATINGTHING;
 	}
 
+	// stay above ground
 	virtual void setPosition(Vector3 pos)
 	{
 		Real ground = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();
@@ -69,6 +72,7 @@ public:
 		}
 	}
 
+	// ignore external changes in up/down velocity
 	virtual void setVelocity(Vector3 vel)
 	{
 		vel.y = mVel.y;
@@ -76,9 +80,9 @@ public:
 	}
 
 
+	// fall
 	virtual void move(Real time)
 	{
-		// fall
 		if (mVel.y > -FLOAT_FALL_MAX)
 		{
 			mVel.y -= FLOAT_GRAV*time;

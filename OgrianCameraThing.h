@@ -26,6 +26,7 @@ Additional Authors:
 Description: This is a special Thing that is tied to the camera. 
 It also handles the specifics of camera movement behavior. 
 Later, this will derive from Wizard. 
+This is never rendered.
 
 /*------------------------------------*/
 
@@ -35,6 +36,7 @@ Later, this will derive from Wizard.
 #include <Ogre.h>
 #include "OgrianThing.h"
 #include "OgrianConstants.h"
+#include "OgrianHeightMap.h"
 
 using namespace Ogre;
 
@@ -54,8 +56,13 @@ public:
 		return CAMERATHING;
 	}
 
+	// handle camera movement given directional input 
 	virtual void moveCamera(Camera* camera, Real rotX, Real rotY, Vector3 trans)
 	{
+		// constrain the pitch
+		if (rotY > 80) rotY = 80;
+		if (rotY < -80) rotY = -80;
+
 		// Make all the changes to the camera
 		// Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW (e.g. airplane)
 		camera->yaw(rotX);
@@ -83,14 +90,16 @@ public:
 		camera->setPosition(mPos);
 	}
 
+	// ignore external up/down velocity changes
 	virtual void setVelocity(Vector3 vel)
 	{
 		vel.y = mVel.y;
 		Thing::setVelocity(mVel);
 	}
+
+	// fall
 	virtual void move(Real time)
 	{
-		// fall
 		if (mVel.y > -CAMERA_FALL_MAX)
 		{
 			mVel.y -= CAMERA_GRAV*time;
@@ -99,6 +108,18 @@ public:
 
 		Thing::move(time);
 	}
+
+	// this must not be deleted!
+	virtual void destroy()
+	{
+
+	}
+
+	// never render this Thing
+	virtual void _updateVisibility(){}
+	virtual void _addToRenderer(){}
+	virtual void _removeFromRenderer() {}
+
 };
 }
 #endif

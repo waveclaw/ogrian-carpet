@@ -25,6 +25,8 @@ Additional Authors:
 
 Description: the ManaThing is a ball of mana that derives from FloatingThing. 
 They drift downhill and combine when they touch. 
+They have some amount of mana.
+When they combine, one transfers all of its amount to the other.
 
 /*------------------------------------*/
 
@@ -40,6 +42,7 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+// extend floatingThing for floating behavior
 class ManaThing : public FloatingThing
 {
 public:
@@ -49,6 +52,7 @@ public:
 		setAmount(amount);
 	}
 
+	// setting the amount automatically sets the scale
 	virtual void setAmount(unsigned int amount)
 	{
 		mAmount=amount;
@@ -58,6 +62,7 @@ public:
 			setScale(1);
 	}
 
+	// get the amount of mana this represents
 	virtual inline unsigned int getAmount()
 	{
 		return mAmount;
@@ -84,6 +89,7 @@ public:
 		}
 	}
 
+	// move downhill at a constant slow velocity
 	virtual void move(Real time)
 	{
 		Vector3 vel;
@@ -92,7 +98,6 @@ public:
 		vel.normalise();
 		vel *= MANA_DRIFT_SPEED;
 
-		vel.y = 0;
 		setVelocity(vel);
 
 		FloatingThing::move(time);

@@ -47,7 +47,6 @@ template<> Ogrian::Renderer * Singleton< Ogrian::Renderer >::ms_Singleton = 0;
 namespace Ogrian
 {
 
-
 /// Standard constructor
 Renderer::Renderer()
 {
@@ -225,7 +224,7 @@ void Renderer::createFoliage(const String& material, int num)
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 			Real scale = FOLIAGE_SCALE + (Math::SymmetricRandom()-.5) * FOLIAGE_SCALE_VAR;
-			FoliageThing* fol = new FoliageThing("Ogrian/PalmTree",scale,pos);
+			FoliageThing* fol = new FoliageThing(scale,pos);
 			Physics::getSingleton().addThing(fol);
 		}
 	}
@@ -249,7 +248,7 @@ void Renderer::createScene(void)
 	HeightMap::getSingleton().loadTerrain(filename);
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
-	createFoliage(foliageMaterial,100);
+	createFoliage(foliageMaterial, FOLIAGE_NUM);
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));

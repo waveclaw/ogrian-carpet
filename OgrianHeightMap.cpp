@@ -51,12 +51,20 @@ template<> Ogrian::HeightMap * Singleton< Ogrian::HeightMap >::ms_Singleton = 0;
 namespace Ogrian
 {
 
-
+// null the data pointer
 HeightMap::HeightMap()
 {
 	mData = 0;
 }
 
+// clean up
+HeightMap::~HeightMap()
+{
+	// mImage is not a pointer, so it is cleaned up automatically
+	// mData is a pointer into mImage
+}
+
+// do a lookup in the array to find the height at a grid point
 int HeightMap::_worldheight( int x, int z )
 {
 	if (x < 0) return HEIGTHMAP_MIN_HEIGHT;
@@ -72,6 +80,7 @@ int HeightMap::_worldheight( int x, int z )
 	return height;
 };
 
+// get the height at any point
 Real HeightMap::getHeightAt(Real x, Real z)
 {
 	// This interpolates between the four corners
@@ -97,16 +106,19 @@ Real HeightMap::getHeightAt(Real x, Real z)
 	return height;
 }
 
+// return the height difference between this point and a close other point
 Real HeightMap::getXSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x+HEIGTHMAP_SLOPE_DIFF,z);
 }
 
+// return the height difference between this point and a close other point
 Real HeightMap::getZSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x,z+HEIGTHMAP_SLOPE_DIFF);
 }
 
+// load the array from the image file
 void HeightMap::loadTerrain( const String& filename )
 {
 	/* Set up the options */
@@ -115,28 +127,24 @@ void HeightMap::loadTerrain( const String& filename )
 	config.load( filename );
 
 	mScalex = atof( config.getSetting( "Scale.x" ) );
-
 	mScaley = atof( config.getSetting( "Scale.y" ) );
-
 	mScalez = atof( config.getSetting( "Scale.z" ) );
 
 	String terrain_filename = config.getSetting( "HeightMap" );
 
 	mScale = Vector3( mScalex, mScaley, mScalez );
 
-	//Image image;
+	mImage.load( terrain_filename );
 
-	image.load( terrain_filename );
-
-	if ( image.getFormat() != PF_L8 )
+	if ( mImage.getFormat() != PF_L8 )
 	{
 		Except( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
 				"TerrainSceneManager::setWorldGeometry" );
 	}
 
-	mData = image. getData();
+	mData = mImage. getData();
 
-	mSize = image.getWidth();
+	mSize = mImage.getWidth();
 }
 
 HeightMap& HeightMap::getSingleton(void)
@@ -146,11 +154,6 @@ HeightMap& HeightMap::getSingleton(void)
 		ms_Singleton = new HeightMap();
 	}
     return Singleton<HeightMap>::getSingleton();
-}
-
-HeightMap::~HeightMap()
-{
-	
 }
 
 }

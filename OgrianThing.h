@@ -33,7 +33,6 @@ It is rendered as a Billboard.
 #define __OgrianThing_H__
 
 #include <Ogre.h>
-#include "OgrianHeightMap.h"
 
 using namespace Ogre;
 
@@ -51,13 +50,10 @@ enum ThingType
 };
 
 
-// The OgrianPhysicalEntity class is the root of all objects that participate in physics. 
 class Thing
 {
 public:
-	Vector3 mPos;
-
-	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0));
+	Thing(String material, String prefix="Thing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0));
 	virtual ~Thing();
 
 	virtual void setVelocity(Vector3 vel);
@@ -67,52 +63,60 @@ public:
 
 	virtual void setMaterial(String material);
 
+	// applies the velocity to the position
 	virtual void move(Real time);
 
+	// calculate the x/z distance between two Things
 	virtual Real distance(Thing* e);
 
+	// the radius is half the scale
 	virtual Real getRadius();
 
 	virtual Vector3 getPosition();
 	virtual Vector3 getVelocity();
 	virtual Real getScale();
 
+	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
 
+	// override this for interesting behaviors
 	virtual void collided(Thing* e);
 
+	// get rid of this thing - sets alive to false and will cause this thing to be deleted
 	virtual void destroy();
 
+	// returns fale if this thing has been destroy()ed and is awaiting deletion.
 	virtual bool isAlive();
 
-	// they are ordered by x location
+	// things are ordered by x location
 	bool operator<(Thing* other);
 
 	
 protected:
+	Vector3 mPos;
 	Vector3 mVel;
 
+	// graphical rendering stuff
 	BillboardSet* mBbset;
 	Billboard* mBillboard;
 	bool mFixed_y;
 	String mMaterial;
-
 	SceneNode* mNode;
 	String mName;
 
 	Real mRadius;
-	Real mHeight;
+	Real mHeight; // unused so far - will be used so it can be != mRadius (all things are cylinders)
 
 	bool mAlive;
 
-	bool mInRenderer;
+	bool mInRenderer; // wether or not its being rendered at the moment
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
 
 	virtual void _addToRenderer();
 	virtual void _removeFromRenderer();
-	virtual void _updateVisibility();
+	virtual void _updateVisibility(); // based on distance from camera
 };
 
 }

@@ -66,6 +66,7 @@ Thing::~Thing()
 	_removeFromRenderer();
 }
 
+// start rendering this thing
 void Thing::_addToRenderer()
 {
 	// dont do this twice!
@@ -96,6 +97,7 @@ void Thing::_addToRenderer()
 
 }
 
+// stop rendering this thing
 void Thing::_removeFromRenderer()
 {
 	// dont do this twice!
@@ -160,6 +162,7 @@ void Thing::setMaterial(String material)
 		mBbset->setMaterialName(material);
 }
 
+// increment the position by the velocity times time
 void Thing::move(Real time)
 {
 	setPosition(mPos + mVel * time);
@@ -167,6 +170,7 @@ void Thing::move(Real time)
 	_updateVisibility();
 }
 
+// only render things that are close to the camera
 void Thing::_updateVisibility()
 {
 	// check the distance from the camera
@@ -185,6 +189,7 @@ void Thing::_updateVisibility()
 	}
 }
 
+// calculate the distance, neglecting the difference in altitude
 Real Thing::distance(Thing* e)
 {
 	return sqrt((mPos.x - e->mPos.x)*(mPos.x - e->mPos.x) 

@@ -19,11 +19,12 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHeightMap.h
+OgrianFoliageThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description:
+Description: FoliageThing has the Foliage material, and dies when it touches mana. 
+This is a very simple Thing, mainly used to demonstrate that collision detection works. 
 
 /*------------------------------------*/
 
@@ -38,11 +39,12 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+// extend RollingThing to automatically be placed on the ground
 class FoliageThing : public RollingThing
 {
 public:
-	FoliageThing(String material, Real scale, Vector3 pos=Vector3(0,0,0)) 
-		: RollingThing(material, "Foliage", true, scale, pos)
+	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
+		: RollingThing("Ogrian/PalmTree", "Foliage", true, scale, pos)
 	{
 	}
 

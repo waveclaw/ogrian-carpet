@@ -52,6 +52,7 @@ public:
 		return ROLLINGTHING;
 	}
 
+	// stay on the ground
 	virtual void setPosition(Vector3 pos)
 	{
 		pos.y = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();

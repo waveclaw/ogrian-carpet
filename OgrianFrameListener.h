@@ -25,16 +25,12 @@ Additional Authors: Mike Prosser
 
 Description: Defines a frame listener which responds to frame events.
              This frame listener handles keyboard inputs and mouse movements.
-             Mouse:    Freelook
-             W or Up:  Forward
-             S or Down:Backward
+             Mouse:    Freelook (y inverted)
+             W:        move forward
+             S:        move backward
              A:        move left
              D:        move right
-             PgUp:     Move upwards
-             PgDown:   Move downwards
-             O/P:       Yaw the root scene node (and it's children)
-             I/K:       Pitch the root scene node (and it's children)
-             F:           Toggle frame rate stats on/off
+             F:        Toggle frame rate stats on/off
 			 R:        Render mode
              T:        Cycle texture filtering
                        Bilinear, Trilinear, Anisotropic(8)

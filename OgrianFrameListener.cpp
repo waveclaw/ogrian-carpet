@@ -161,18 +161,6 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
         mTranslateVector.z = mMoveScale * 8.0;
     }
 
-    if (mInputDevice->isKeyDown(KC_PGUP))
-    {
-        // Move camera up
-        mTranslateVector.y = mMoveScale;
-    }
-
-    if (mInputDevice->isKeyDown(KC_PGDOWN))
-    {
-        // Move camera down
-        mTranslateVector.y = -mMoveScale;
-    }
-
     if (mInputDevice->isKeyDown(KC_RIGHT))
     {
         mCamera->yaw(-mRotScale);

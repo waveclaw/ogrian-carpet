@@ -27,8 +27,6 @@ Description: This holds all the global constants
 
 /*------------------------------------*/
 
-// a list of global constants
-
 #ifndef __OgrianConstants_H__
 #define __OgrianConstants_H__
 
@@ -51,9 +49,9 @@ const Real SKYPLANE_DISTANCE = 75;
 const Real SKYPLANE_BOW = .75;
 const Real MAX_THING_RADIUS = 20;
 
+const Real FOLIAGE_NUM = 1000;
 const Real FOLIAGE_SCALE = 10;
 const Real FOLIAGE_SCALE_VAR = 3;
-
 const int FOLIAGE_LINE_MIN = 5;
 const int FOLIAGE_LINE_MAX = 50;
 

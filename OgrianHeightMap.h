@@ -47,10 +47,13 @@ public:
 	HeightMap();
 	virtual ~HeightMap();
 
+	// load in the heightmap from a file
 	void loadTerrain( const String& filename );
 
+	// get the height at a Real point
 	Real getHeightAt(Real x, Real z);
 
+	// get the slope at a Real point
 	Real getXSlopeAt(Real x, Real z);
 	Real getZSlopeAt(Real x, Real z);
 
@@ -61,11 +64,12 @@ private:
 	int mSize;
 
 	Real mScalex, mScaley, mScalez;
-	const uchar * mData;
+	const uchar* mData;
 
-	Image image;
+	Image mImage;
 
-	int _worldheight( int x, int z );
+	// do an array lookup
+	inline int _worldheight( int x, int z );
 };
 
 }

@@ -28,6 +28,8 @@ When collisions are detected, the Things involved are notified via collided().
 This also has a moveAll() function that moves all of the particles.
 collisionCheck() and moveAll() should be called every frame. 
 It is a Singleton.
+At the moment, it just checks all all Things against all other Things. 
+This will be changed to a quadtree or something for performance.
 
 /*------------------------------------*/
 
@@ -49,6 +51,7 @@ Physics::Physics()
 
 }
 
+// add a Thing to the things list
 void Physics::addThing(Thing* ent)
 {
 	assert(ent != NULL);
@@ -56,6 +59,7 @@ void Physics::addThing(Thing* ent)
 	things.push_back(ent);
 }
 
+// remove a thing from the things list and delete it
 void Physics::removeThing(Thing* ent)
 {
 	assert(ent != NULL);
@@ -74,6 +78,7 @@ void Physics::removeThing(Thing* ent)
 	}
 }
 
+// remove and delete all things
 void Physics::removeAll()
 {
 	// delete each entity
@@ -84,6 +89,7 @@ void Physics::removeAll()
 	}
 }
 
+// move all things, delete the ones not alive
 void Physics::moveAll(Real time)
 {
 	for (unsigned int i=0; i<things.size(); i++)
@@ -96,6 +102,7 @@ void Physics::moveAll(Real time)
 	}
 }
 
+// the number of things in the list
 int Physics::numThings()
 {
 	return int(things.size());
@@ -124,9 +131,9 @@ void Physics::collisionCheck()
 			b = things[j];
 
 			// they should be sorted by x coord
-			assert(a->mPos.x <= b->mPos.x);
+			assert(a->getPosition().x <= b->getPosition().x);
 
-			if (b->mPos.x - a->mPos.x > MAX_THING_RADIUS*2)
+			if (b->getPosition().x - a->getPosition().x > MAX_THING_RADIUS*2)
 			{
 				// if they are very far apart, dont look at the following things - WHY DOESN'T THIS WORK?
 				//j=(unsigned int)things.size();
@@ -137,8 +144,8 @@ void Physics::collisionCheck()
 				// if they are close enough, they collide
 				if (a->distance(b) < maxdist)
 				{
-					Real ay = a->mPos.y;
-					Real by = b->mPos.y;
+					Real ay = a->getPosition().y;
+					Real by = b->getPosition().y;
 
 					// if they are close enough in altitude
 					if (ay-by < maxdist && by-ay < maxdist)
