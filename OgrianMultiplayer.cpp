@@ -480,6 +480,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// set the camera UID
 			Renderer::getSingleton().getCameraThing()->_setUID(uid);
+			return true;
 		}
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
@@ -532,9 +533,20 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
+		case ID_SETHEALTH: //////////////////////////////////////////////////////
+		{
+			// get the new health
+			String health;
+			packetToString(packet,health);
+
+			// set it
+			Hud::getSingleton().setHealth(health);
+			return true;
+		}
 		case ID_DIE: //////////////////////////////////////////////////////
 		{
 			Renderer::getSingleton().getCameraThing()->die();
+			return true;
 		}
 		case ID_SETSCORE: //////////////////////////////////////////////////////
 		{
@@ -544,10 +556,12 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// set it
 			Hud::getSingleton().setScore(score);
+			return true;
 		}
 		case ID_CLEAR_SCOREBOARD: //////////////////////////////////////////////////////
 		{
 			PlayerList::getSingleton().clear();
+			return true;
 		}
 		case ID_ADD_SCORE: //////////////////////////////////////////////////////
 		{
@@ -558,6 +572,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			// add it
 			if (strlen(player) > 2)
 				PlayerList::getSingleton().addPlayer(player);
+			return true;
 		}
 	}
 	return false;

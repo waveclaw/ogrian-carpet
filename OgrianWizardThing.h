@@ -49,6 +49,7 @@ public:
 
 	virtual void destroy()	{} // DONT
 
+	virtual void setHealth(int health);
 	virtual void die();
 };
 

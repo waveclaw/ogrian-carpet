@@ -53,7 +53,20 @@ WizardThing::WizardThing(bool visible)
 }
 
 //----------------------------------------------------------------------------
-	
+
+void WizardThing::setHealth(int health)
+{
+	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
+	{
+		// find the wizard's player
+		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
+
+		// update it
+		Multiplayer::getSingleton().serverSendText(String("Health: ") << health , ID_SETHEALTH, player);
+	}
+}
+//----------------------------------------------------------------------------
+
 void WizardThing::die()
 {
 	if (!Multiplayer::getSingleton().isClient())

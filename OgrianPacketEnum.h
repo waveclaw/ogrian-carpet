@@ -89,6 +89,7 @@ enum PacketID
 	ID_CLEAR_SCOREBOARD,
 	ID_ADD_SCORE,
 
+	ID_SETHEALTH,
 	ID_DIE,
 };
 
