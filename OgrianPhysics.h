@@ -34,9 +34,6 @@ public:
 	// run a collision check and notify all affected physical objects
 	virtual void collisionCheck();
 
-	// run a simple test
-	virtual void test();
-
     static Physics& getSingleton(void);
 
 private:

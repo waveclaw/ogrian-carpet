@@ -151,12 +151,6 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
         mCamera->yaw(mRotScale);
     }
 
-    if (mInputDevice->isKeyDown(KC_U) && mTimeUntilNextToggle <= 0)
-    {
-		Physics::getSingleton().test();
-        mTimeUntilNextToggle = 1;
-    }
-
     if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
         ManaThing* e = new ManaThing("Ogrian/Mana", 1);

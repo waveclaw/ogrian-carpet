@@ -137,6 +137,9 @@
 				RelativePath="OgrianConstants.h">
 			</File>
 			<File
+				RelativePath="OgrianFoliageThing.h">
+			</File>
+			<File
 				RelativePath="OgrianFrameListener.h">
 			</File>
 			<File

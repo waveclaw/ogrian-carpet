@@ -10,11 +10,11 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class ManaThing : public Thing
+class ManaThing : public RollingThing
 {
 public:
 	ManaThing(String material, unsigned int amount, Real x=0, Real y=0, Real z=0) 
-		: Thing(material, false, 1, x, y, z)
+		: RollingThing(material, "Mana", false, 1, x, y, z)
 	{
 		setAmount(amount);
 	}
@@ -30,19 +30,12 @@ public:
 		return mAmount;
 	}
 
-	virtual void setPosition(Vector3 pos)
-	{
-		setPosition(pos.x, pos.y, pos.z);
-	}
-
-	virtual void setPosition(Real x, Real y, Real z)
-	{
-		Thing::setPosition(x,
-			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
-			z);
-	}
-
 	virtual void collided(Thing* e)
+	{
+
+	}
+
+	virtual void move(Real time)
 	{
 
 	}

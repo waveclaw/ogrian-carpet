@@ -4,16 +4,13 @@ namespace Ogrian
 
 unsigned long Thing::msNextGeneratedNameExt = 1;
 
-Thing::Thing(String material, bool fixed_y, Real scale, Real x, Real y, Real z)
+Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, Real y, Real z)
 {
-    // Generate a name
-    static char name[64];
-	sprintf(name, "PE_%lu", msNextGeneratedNameExt++);
-
+	String name = prefix << "_" << msNextGeneratedNameExt++;
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
 	bbset = sceneMgr->createBillboardSet(name,1);
-	billboard = bbset->createBillboard(x, y, z);
+	billboard = bbset->createBillboard(0, 0, 0);
 	bbset->setMaterialName(material);
 
 	if (fixed_y)
@@ -23,7 +20,8 @@ Thing::Thing(String material, bool fixed_y, Real scale, Real x, Real y, Real z)
 		billboard->mDirection = Vector3::UNIT_Y;
 	}
 
-	sceneMgr->getRootSceneNode()->attachObject(bbset);
+	node = sceneMgr->getRootSceneNode()->createChildSceneNode();
+	node->attachObject(bbset);
 
 	setPosition(x, y, z);
 	setScale(scale);
@@ -44,7 +42,7 @@ void Thing::setPosition(Real x, Real y, Real z)
 	pos.y = y;
 	pos.z = z;
 
-	billboard->setPosition(x, y, z);
+	node->setPosition(x,y,z);
 }
 
 

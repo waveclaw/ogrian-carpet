@@ -6,7 +6,7 @@
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianManaThing.h"
+#include "OgrianFoliageThing.h"
 
 using namespace Ogre;
 
@@ -184,18 +184,8 @@ void Renderer::createFoliage(const String& material, int num)
 		if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
 		{
 			i++;
-			
-			BillboardSet* grassSet = sceneMgr->createBillboardSet("FoliageBillSet_"+i,1);
-			grassSet->setBillboardType(BBT_ORIENTED_COMMON);
-			grassSet->setCommonDirection(Vector3::UNIT_Y);
-			grassSet->setMaterialName(material);
-
-			SceneNode* grassNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
-			grassNode->setPosition(x,y+5,z);
-			grassNode->attachObject(grassSet);
-
-			Billboard* billboard = grassSet->createBillboard(0, 0, 0);
-			billboard->setDimensions(10,10);
+			FoliageThing* fol = new FoliageThing("Ogrian/PalmTree",10,x,0,z);
+			Physics::getSingleton().addThing(fol);
 		}
 	}
 
@@ -218,7 +208,7 @@ void Renderer::createScene(void)
 	HeightMap::getSingleton().loadTerrain(filename);
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
-	createFoliage(foliageMaterial,200);
+	createFoliage(foliageMaterial,100);
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));

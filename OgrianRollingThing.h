@@ -14,8 +14,8 @@ namespace Ogrian
 class RollingThing : public Thing
 {
 public:
-	RollingThing(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
-		: Thing(material, fixed_y, scale, x, y, z)
+	RollingThing(String material, String prefix="RollingThing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
+		: Thing(material, prefix, fixed_y, scale, x, y, z)
 	{
 		
 	}

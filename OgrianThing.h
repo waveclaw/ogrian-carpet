@@ -16,7 +16,7 @@ class Thing
 public:
 	Vector3 pos;
 
-	Thing(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
+	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
 
 	virtual void setVelocity(Vector3 vel);
 	virtual void setPosition(Vector3 pos);
@@ -45,6 +45,8 @@ private:
 
 	BillboardSet* bbset;
 	Billboard* billboard;
+
+	SceneNode* node;
 
 	Real radius;
 	Real height;
