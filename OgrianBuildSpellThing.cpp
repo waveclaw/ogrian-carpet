@@ -98,15 +98,7 @@ void BuildSpellThing::collided(Thing* e)
 	if (e->getType() == TOWER && e->getTeamNum() == getTeamNum())
 	{
 		// unbuild the tower
-		e->destroy();
-
-		// return the mana to the catle
-		Team* team = Physics::getSingleton().getTeam(getTeamNum());
-		if (team && team->getCastle())
-		{
-			int mana = team->getCastle()->getMana() + CONI("TOWER_COST");
-			team->getCastle()->setMana(mana);
-		}
+		((TowerThing*)e)->unbuild();
 
 		destroy();
 	}

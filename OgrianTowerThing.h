@@ -54,6 +54,7 @@ public:
 		: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
 		mLastCastTime = 0;
+		mUnbuildMode = false;
 
 		if (!Multiplayer::getSingleton().isClient())
 			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
@@ -104,12 +105,30 @@ public:
 		}
 	}
 
+	virtual void unbuild()
+	{
+		mUnbuildMode = true;
+	}
+
 	virtual void die()
 	{
-		// drop a manathing
-		ManaThing* mana = new ManaThing(CONI("TOWER_COST"), getPosition());
-		mana->setTeamNum(getTeamNum());
-		Physics::getSingleton().addThing(mana);;
+		if (mUnbuildMode)
+		{
+			// return the mana to the castle
+			Team* team = Physics::getSingleton().getTeam(getTeamNum());
+			if (team && team->getCastle())
+			{
+				int mana = team->getCastle()->getMana() + CONI("TOWER_COST");
+				team->getCastle()->setMana(mana);
+			}
+		}
+		else
+		{
+			// drop a manathing
+			ManaThing* mana = new ManaThing(CONI("TOWER_COST"), getPosition());
+			mana->setTeamNum(getTeamNum());
+			Physics::getSingleton().addThing(mana);;
+		}
 
 		destroy();
 	}
@@ -170,6 +189,15 @@ public:
 		{
 			mLastCastTime = Clock::getSingleton().getTime();
 
+			if (mUnbuildMode)
+			{
+				// un-regenerate
+				int health = getHealth();
+				setHealth(health - CONI("TOWER_DEGEN"));
+
+				return;
+			}
+
 			// regenerate
 			int health = getHealth();
 			if (health < CONI("TOWER_HEALTH"))
@@ -209,14 +237,23 @@ public:
 		}
 	}
 
+	// set the percentage to match the health
 	virtual void setHealth(int health)
 	{
 		DamageableThing::setHealth(health);
 
-		if (health < 0) health = 0;
+		if (health <= 0) die();
 
 		setPercentage((health + CONR("TOWER_RUBBLE"))
 			/ (CONR("TOWER_HEALTH") + CONR("TOWER_RUBBLE")));
+	}
+
+	// exit unbuild mode if damaged
+	virtual void damage(int amount, int source)
+	{
+		mUnbuildMode = false;
+
+		DamageableThing::damage(amount, source);
 	}
 
 	virtual bool isBuilding() { return true; }
@@ -226,6 +263,8 @@ public:
 private:
 	Real mTargetY;
 	Real mGroundY;
+
+	bool mUnbuildMode;
 
 	ColourValue mColour;
 
