@@ -80,12 +80,6 @@ public:
 	// unload the map
 	void unloadMap();
 
-	// get a new smoke emitter
-	ParticleEmitter* newSmokeEmitter();
-
-	// delete a smoke emitter
-	void deleteSmokeEmitter(ParticleEmitter* pe);
-
 	static Renderer& getSingleton(void);
 
 protected:
@@ -98,8 +92,6 @@ protected:
     RenderWindow* mWindow;
     SceneNode* mFountainNode;
 	SceneNode* mWaterNode;
-	SceneNode* mSmokeNode;
-	ParticleSystem* mSmokeParticleSystem;
 
 	bool mMapLoaded;
 	String mMapName;
@@ -123,9 +115,6 @@ protected:
 
 	// create an ocean using the specified material
 	virtual void createOcean(const String& material);
-
-	// create the smoke system using a specified particle system
-	virtual void createSmoke(const String& name);
 
     // Just override the mandatory create scene method
     void createScene(void);

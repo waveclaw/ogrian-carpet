@@ -56,8 +56,6 @@ Renderer::Renderer()
     mRoot = 0;
 	mWaterNode = 0;
 	mCameraThing = 0;
-	mSmokeNode = 0;
-	mSmokeParticleSystem = 0;
 
 	mMapLoaded = false;
 }
@@ -168,28 +166,6 @@ void Renderer::chooseSceneManager(void)
 
 //----------------------------------------------------------------------------
 
-ParticleEmitter* Renderer::newSmokeEmitter()
-{
-	ParticleEmitter* pe = mSmokeParticleSystem->addEmitter("Point");
-	pe->setTimeToLive(SMOKE_LIFETIME);
-	pe->setEmissionRate(SMOKE_RATE);
-	pe->setDirection(Vector3(0,1,0));
-	pe->setMaxParticleVelocity(1);
-	pe->setMinParticleVelocity(1);
-
-	return pe;
-}
-
-//----------------------------------------------------------------------------
-
-void Renderer::deleteSmokeEmitter(ParticleEmitter* pe)
-{
-	for (int i=0; i<mSmokeParticleSystem->getNumEmitters(); i++)
-		if (pe == mSmokeParticleSystem->getEmitter(i))
-			mSmokeParticleSystem->removeEmitter(i);
-}
-//----------------------------------------------------------------------------
-
 void Renderer::createCamera(void)
 {
     // Create the camera
@@ -270,22 +246,6 @@ void Renderer::createOcean(const String& material)
 	mWaterNode->translate(0, 0, 0);
 }
 
-void Renderer::createSmoke(const String& name)
-{
-	if (mSmokeNode == 0)
-	{
-		mSmokeNode = static_cast<SceneNode*>(Renderer::getSingleton().getSceneManager()->
-			getRootSceneNode()->createChild());
-	}
-
-	mSmokeNode->detachAllObjects();
-	
-	mSmokeParticleSystem = ParticleSystemManager::getSingleton().
-		createSystem("SmokeParticleSystem", name);
-	mSmokeNode->attachObject(mSmokeParticleSystem);
-	mSmokeParticleSystem->setRenderQueueGroup(RENDER_QUEUE_SKIES_LATE);
-}
-
 //----------------------------------------------------------------------------
 
 void Renderer::createFoliage(const String& material, int num)
@@ -334,7 +294,6 @@ void Renderer::loadMap(String configfile)
 
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
-	createSmoke("Ogrian/Smoke");
 
 	if (!Multiplayer::getSingleton().isClient())
 		createFoliage(foliageMaterial, FOLIAGE_NUM);
