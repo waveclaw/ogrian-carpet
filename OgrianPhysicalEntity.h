@@ -16,14 +16,28 @@ class PhysicalEntity
 public:
 	Vector3 pos;
 
-	PhysicalEntity(String mesh, Real x=0, Real y=0, Real z=0)
+	PhysicalEntity(String material, Real x=0, Real y=0, Real z=0)
 	{
+		LogManager::getSingleton().logMessage("adding physical entity");
+
+        // Generate a name
+        static char name[64];
+		sprintf(name, "Unnamed_%lu", msNextGeneratedNameExt++);
+
 		SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
-		node = sceneMgr->getRootSceneNode()->createChildSceneNode();
-        ent = sceneMgr->createEntity(node->getName(), mesh);
-        node->attachObject(ent);
+
+		bbset = sceneMgr->createBillboardSet(name,1);
+		billboard = bbset->createBillboard(x, y, z);
+		bbset->setMaterialName(material);
+
+		//bbset->setBillboardType(BBT_ORIENTED_COMMON);
+		//bbset->setCommonDirection(Vector3::UNIT_Y);
+
+		sceneMgr->getRootSceneNode()->attachObject(bbset);
 
 		setPosition(x, y, z);
+
+		LogManager::getSingleton().logMessage("added physical entity");
 	}
 
 	virtual void setVelocity(Vector3 vel)
@@ -41,7 +55,7 @@ public:
 		pos.y = y;
 		pos.z = z;
 
-		node->setPosition(x, y, z);
+		billboard->setPosition(x, y, z);
 	}
 
 
@@ -52,38 +66,11 @@ public:
 		vel.z = z;
 	}
 
-	virtual void setScale(Real s)
+	virtual void setScale(Real scale)
 	{
-		Real scale = s/ent->getBoundingRadius();
-		node->setScale(scale,scale,scale);
+		billboard->setDimensions(scale,scale);
 
-		radius = s;
-	}
-
-	virtual setOrientation(Quaternion q)
-	{
-		node->setOrientation(q);
-	}
-
-	virtual lookAt(Vector3 destination)
-	{
-		Vector3 yaw; 
-		yaw.x=1;
-		Vector3 direction = destination - pos;
-        Vector3 zAdjustVector = -direction;
-        zAdjustVector.normalise();
-
-        Quaternion* r = new Quaternion(1,0,0,0);
-
-		Vector3 xVector = yaw.crossProduct( zAdjustVector );
-        xVector.normalise();
-
-        Vector3 yVector = zAdjustVector.crossProduct( xVector );
-        yVector.normalise();
-
-        r->FromAxes( xVector, yVector, zAdjustVector );
-
-		node->setOrientation(*r);
+		radius = scale/2;
 	}
 
 	virtual void move(Real time)
@@ -121,10 +108,14 @@ public:
 private:
 	Vector3 vel;
 
-	Entity* ent;
-	SceneNode* node;
+	BillboardSet* bbset;
+	Billboard* billboard;
+
 	Real radius;
 	Real height;
+
+	        /// Incremented count for next name extension
+        static unsigned long msNextGeneratedNameExt;
 };
 
 }

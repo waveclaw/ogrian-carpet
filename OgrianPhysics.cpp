@@ -126,17 +126,18 @@ Physics::~Physics()
 void Physics::test()
 {
 	// test the physucks engine
+
 	LogManager::getSingleton().logMessage("physics testing - start");
 
-	RollingEntity* a = new RollingEntity("ogrehead.mesh", 2, 1, 1);
-	RollingEntity* b = new RollingEntity("ogrehead.mesh", 4, 1, 1);
-	RollingEntity* c = new RollingEntity("ogrehead.mesh", 6, 1, 1);
-	RollingEntity* d = new RollingEntity("ogrehead.mesh", 8, 1, 1);
+	RollingEntity* a = new RollingEntity("Ogrian/Smoke", 2, 1, 1);
+	RollingEntity* b = new RollingEntity("Ogrian/Smoke", 4, 1, 1);
+	RollingEntity* c = new RollingEntity("Ogrian/Smoke", 6, 1, 1);
+	RollingEntity* d = new RollingEntity("Ogrian/Smoke", 8, 1, 1);
 
-	RollingEntity* aa = new RollingEntity("ogrehead.mesh", 1, 1, 20);
-	RollingEntity* ab = new RollingEntity("ogrehead.mesh", 2, 1, 20);
-	RollingEntity* ac = new RollingEntity("ogrehead.mesh", 3, 1, 20);
-	RollingEntity* ad = new RollingEntity("ogrehead.mesh", 4, 1, 10);
+	RollingEntity* aa = new RollingEntity("Ogrian/Smoke", 1, 1, 20);
+	RollingEntity* ab = new RollingEntity("Ogrian/Smoke", 2, 1, 20);
+	RollingEntity* ac = new RollingEntity("Ogrian/Smoke", 3, 1, 20);
+	RollingEntity* ad = new RollingEntity("Ogrian/Smoke", 4, 1, 10);
 
 	a->setScale(1);
 	b->setScale(1);

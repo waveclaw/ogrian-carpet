@@ -146,14 +146,18 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
         mCamera->yaw(mRotScale);
     }
 
+    if (mInputDevice->isKeyDown(KC_U) && mTimeUntilNextToggle <= 0)
+    {
+		Physics::getSingleton().test();
+        mTimeUntilNextToggle = 1;
+    }
+
     if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-        RollingEntity* e = new RollingEntity("ogrehead.mesh");
+        RollingEntity* e = new RollingEntity("Ogrian/Mana");
 		e->setPosition(mCamera->getPosition()+mCamera->getDirection());
-		//e->lookAt(mCamera->getPosition());
-		e->setOrientation(mCamera->getOrientation());
 		e->setVelocity(mCamera->getDirection());
-		e->setScale(1);
+		e->setScale(5);
 
 		Physics::getSingleton().addPhysicalEntity(e);
 

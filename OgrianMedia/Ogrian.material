@@ -34,6 +34,41 @@ material Ogrian/OceanBed
 		}
 	}
 }
+material Ogrian/Mana
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			colour_op replace
+
+			texture_unit
+			{
+				texture mana.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Smoke
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture smoke.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/CloudySky
 {
 	technique

@@ -14,7 +14,7 @@ namespace Ogrian
 class RollingEntity : public PhysicalEntity
 {
 public:
-	RollingEntity(String mesh, Real x=0, Real y=0, Real z=0) : PhysicalEntity(mesh, x, y, z)
+	RollingEntity(String material, Real x=0, Real y=0, Real z=0) : PhysicalEntity(material, x, y, z)
 	{
 		
 	}
@@ -33,8 +33,7 @@ public:
 
 	virtual void collided(PhysicalEntity* e)
 	{
-		// stop if you hit something
-		setVelocity(0,0,0);
+
 	}
 };
 
