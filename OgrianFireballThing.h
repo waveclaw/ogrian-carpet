@@ -63,12 +63,19 @@ class FireballBlastEffect : public TimedThing
 {
 public:
 	FireballBlastEffect(Vector3 pos) 
-		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_SCALE")*2, pos, SPHERE)
+		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_BLAST_SCALE"), pos, SPHERE)
 	{
 		playSound(Game::getSingleton().SOUND_BANG);
 		setRelativeExpirationTime(CONR("FIREBALL_BLAST_LIFETIME"));
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 		setColour(ColourValue(1,0,0));
+	}
+
+	virtual void move(Real time)
+	{
+		TimedThing::move(time);
+
+		setScale(getWidth() + CONR("FIREBALL_BLAST_EXPANSION_SPEED") * time);
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
