@@ -224,27 +224,19 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 	else
 	{
 		// handle camera stuff //
-
-		// Move camera left
-		if (mInputDevice->isKeyDown(KC_A)) mTranslateVector.x = -mMoveScale;
-
-		// Move camera RIGHT
-		if (mInputDevice->isKeyDown(KC_D)) mTranslateVector.x = mMoveScale;
+		CameraThing* cam = Renderer::getSingleton().getCameraThing();
 
 		// Move camera forward
-		if (mInputDevice->isKeyDown(KC_UP) || mInputDevice->isKeyDown(KC_W) ) mTranslateVector.z = -mMoveScale;
+		if (mInputDevice->isKeyDown(KC_W)) cam->moveForward();
 		
-		// Move camera backward
-		if (mInputDevice->isKeyDown(KC_DOWN) || mInputDevice->isKeyDown(KC_S) ) mTranslateVector.z = mMoveScale;
+		// Move camera back
+		if (mInputDevice->isKeyDown(KC_S)) cam->moveBack();
 
-		// Move camera forward fast
-		if (mInputDevice->isKeyDown(KC_LSHIFT) ) mTranslateVector.z = -mMoveScale * 10;
-					
-		// Turn Camera Right
-		if (mInputDevice->isKeyDown(KC_RIGHT)) mCamera->yaw(-mRotScale);
-				
-		// Turn Camera Left
-		if (mInputDevice->isKeyDown(KC_LEFT)) mCamera->yaw(mRotScale);	
+		// Move camera left
+		if (mInputDevice->isKeyDown(KC_A)) cam->moveLeft();
+
+		// Move camera right
+		if (mInputDevice->isKeyDown(KC_D)) cam->moveRight();
 
 		// handle game input //
 		return Input::getSingleton().processKeyInput(mInputDevice);
@@ -286,7 +278,7 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 void OgrianFrameListener::moveCamera()
 {
 	if (mGameRunning)
-		Renderer::getSingleton().getCameraThing()->moveCamera(mCamera, mRotX, mRotY, mTranslateVector);
+		Renderer::getSingleton().getCameraThing()->moveCamera(mRotX, mRotY);
 }
 
 //----------------------------------------------------------------------------
