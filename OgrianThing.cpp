@@ -1,4 +1,6 @@
 #include "OgrianThing.h"
+#include "OgrianPhysics.h"
+
 namespace Ogrian
 {
 
@@ -26,6 +28,13 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, R
 	setVelocity(0,0,0);
 	setPosition(x, y, z);
 	setScale(scale);
+
+	mAlive = true;
+}
+
+bool Thing::isAlive()
+{
+	return mAlive;
 }
 
 void Thing::setVelocity(Vector3 mVel)
@@ -85,10 +94,27 @@ Real Thing::getRadius()
 	return mRadius;
 }
 
+ThingType Thing::getType()
+{
+	return THING;
+}
+
 void Thing::collided(Thing* e)
 {
 	// override this for interesting behaviors
 	
+}
+
+void Thing::destroy()
+{
+	// mark it to be deleted
+	mAlive = false;
+}
+
+Thing::~Thing()
+{
+	// remove it from the scene
+	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
 }
 
 // they are ordered by x location

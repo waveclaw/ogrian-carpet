@@ -175,17 +175,17 @@ void Renderer::createFoliage(const String& material, int num)
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
 	int i=0;
-	Real x = 0;
+	//Real x = 0;
 	while (i<num)
 	{
         // Random translate
-        //Real x = Math::SymmetricRandom() * 1000.0;
-        //Real z = Math::SymmetricRandom() * 1000.0;
-		x+= 5;
-		Real z = x;
+        Real x = Math::SymmetricRandom() * 1000.0;
+        Real z = Math::SymmetricRandom() * 1000.0;
+		//x+= 5;
+		//Real z = x;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		//if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
+		if (y > FOLIAGE_LINE_MIN && y < FOLIAGE_LINE_MAX)
 		{
 			i++;
 			FoliageThing* fol = new FoliageThing("Ogrian/PalmTree",10,x,0,z);
@@ -208,16 +208,16 @@ void Renderer::createScene(void)
 	String foliageMaterial = config.getSetting( "FoliageMaterial" );
 
 	// set up the terrain
-    //mSceneMgr->setWorldGeometry( filename );
+    mSceneMgr->setWorldGeometry( filename );
 	HeightMap::getSingleton().loadTerrain(filename);
 	createSky(skyMaterial);
-	//createOcean(oceanMaterial);
-	createFoliage(foliageMaterial,100);
+	createOcean(oceanMaterial);
+	createFoliage(foliageMaterial,80);
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
 	// set the fog
-    //mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
+    mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
 
 	// toss in some smoke
 	// Create shared node for 2 fountains

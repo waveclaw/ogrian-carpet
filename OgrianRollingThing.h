@@ -19,6 +19,10 @@ public:
 	{
 		
 	}
+	virtual ThingType getType()
+	{
+		return ROLLINGTHING;
+	}
 
 	virtual void setPosition(Vector3 pos)
 	{

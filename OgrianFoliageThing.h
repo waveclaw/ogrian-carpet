@@ -19,10 +19,17 @@ public:
 
 	}
 
+	virtual ThingType getType()
+	{
+		return FOLIAGETHING;
+	}
+
 	virtual void collided(Thing* e)
 	{
-		setMaterial("Ogrian/PalmTreeDead");
-	}
+		// dies if it touches mana
+		if (e->getType() == MANATHING)
+			setMaterial("Ogrian/PalmTreeDead");
+	}	
 };
 
 }

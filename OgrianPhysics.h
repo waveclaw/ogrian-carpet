@@ -19,9 +19,6 @@ public:
 	// add a physical entity to the world.
 	virtual void addThing(Thing* ent);
 
-	// remove a physical entity from the world. 
-	virtual void removeThing(Thing* ent);
-
 	// return the number of entities in the world
 	virtual int numThings();
 
@@ -38,6 +35,9 @@ public:
 
 private:
 	Physics();
+
+	// remove a physical entity from the world. 
+	virtual void removeThing(Thing* ent);
 
 	std::vector<Thing*> things;
 };

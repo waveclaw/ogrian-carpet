@@ -54,7 +54,11 @@ void Physics::moveAll(Real time)
 {
 	for (unsigned int i=0; i<things.size(); i++)
 	{
-		things[i]->move(time);
+		Thing* thing = things[i];
+
+		// delete anything thats not alive
+		if (!thing->isAlive()) removeThing(thing);			
+		else thing->move(time);
 	}
 }
 
@@ -75,32 +79,40 @@ void Physics::collisionCheck()
 	Thing* a;
 	Thing* b;
 
-	// for each entity
+	// for each thing
 	for (unsigned int i=0; i<things.size(); i++)
 	{
 		a = things[i];
+
+		// look at the following things
 		for (unsigned int j=i+1; j<things.size(); j++)
 		{
 			b = things[j];
-			Real dist = b->mPos.x - a->mPos.x;
 
-			// if they are too far apart, stop
-			if (dist > MAX_THING_RADIUS + a->getRadius()) break;
+			// they should be sorted by x coord
+			assert(a->mPos.x <= b->mPos.x);
 
-			Real maxdist = a->getRadius() + b->getRadius();
-
-			// if they are close enough, they collide
-			if (a->distance(b) < maxdist)
+			if (b->mPos.x - a->mPos.x > MAX_THING_RADIUS*2)
 			{
-				Real ay = a->mPos.y;
-				Real by = b->mPos.y;
-
-				// if they are close enough in altitude
-				if (ay-by < maxdist && by-ay < maxdist)
+				// if they are very far apart, dont look at the following things - WHY DOESN'T THIS WORK?
+				//j=(unsigned int)things.size();
+			}
+			else
+			{
+				Real maxdist = a->getRadius() + b->getRadius();
+				// if they are close enough, they collide
+				if (a->distance(b) < maxdist)
 				{
-					// they collide
-					a->collided(b);
-					b->collided(a);
+					Real ay = a->mPos.y;
+					Real by = b->mPos.y;
+
+					// if they are close enough in altitude
+					if (ay-by < maxdist && by-ay < maxdist)
+					{
+						// they collide
+						a->collided(b);
+						b->collided(a);
+					}
 				}
 			}
 		}

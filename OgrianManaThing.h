@@ -21,23 +21,47 @@ public:
 
 	virtual void setAmount(unsigned int amount)
 	{
-		setScale(sqrt(amount));
 		mAmount=amount;
+		if (amount > 1)
+			setScale(sqrt(amount));
+		else 
+			setScale(1);
 	}
 
-	virtual unsigned int getAmount()
+	virtual inline unsigned int getAmount()
 	{
 		return mAmount;
 	}
 
+	// When two manas collide, they combine - one takes on all of the amount of the other
+	// and the other disapears
 	virtual void collided(Thing* e)
 	{
-		setAmount(100);
+		if (e->getType() == MANATHING)
+		{
+			if(getAmount() > 0)
+			{
+				// absorb the other
+				ManaThing* m = static_cast<ManaThing*>(e);
+				setAmount(getAmount() + m->getAmount());
+				m->setAmount(0);
+			}
+			else
+			{
+				// be absorbed
+				destroy();
+			}
+		}
 	}
 
 	virtual void move(Real time)
 	{
 
+	}
+
+	virtual ThingType getType()
+	{
+		return MANATHING;
 	}
 
 private:
