@@ -11,7 +11,7 @@ Ogrian/PlayerList/Overlay
 		left .25
 		top 0.05
 		width .5
-		height .9
+		height .5
 
 
 		container TextArea(Ogrian/PlayerList/Text) : SS/Templates/BasicText
