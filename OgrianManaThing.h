@@ -93,8 +93,9 @@ public:
 	virtual void move(Real time)
 	{
 		Vector3 vel;
-		vel.x = HeightMap::getSingleton().getXSlopeAt(mPos.x, mPos.z);
-		vel.z = HeightMap::getSingleton().getZSlopeAt(mPos.x, mPos.z);
+		Vector3 pos = getPosition();
+		vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
+		vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
 		vel.normalise();
 		vel *= MANA_DRIFT_SPEED;
 

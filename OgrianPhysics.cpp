@@ -48,7 +48,7 @@ namespace Ogrian
 
 Physics::Physics()
 {
-	mWorldSize == -1;
+	mWorldSize = -1;
 }
 
 // add a Thing to the world
@@ -85,7 +85,7 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 	assert(thing != NULL);
 	assert(mWorldSize > 0);
 
-	std::vector<Thing*> vec
+	std::vector<Thing*> vec;
 
 	if (grid_u < -1 && grid_v < -1 && 
 		grid_u > PHYSICS_GRID_SIZE && grid_v > PHYSICS_GRID_SIZE-1)
@@ -112,10 +112,11 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 }
 
 // remove a thing from the world
-void Physics::deleteThing(Thing* thing, int grid_u, int grid_v)
+void Physics::deleteThing(Thing* thing)
 {
 	// remove it from the grid
-	_removeThing(thing, grid_u, grid_v);
+	Vector3 pos = thing->getOldPosition();
+	_removeThing(thing, getGridU(pos.x), getGridV(pos.z));
 
 	// find the thing
 	for (unsigned int i=0; i<mAllThings.size(); i++)
@@ -139,18 +140,27 @@ void Physics::moveThing(Thing* thing, Real time)
 	thing->move(time);
 	Vector3 pos2 = thing->getPosition();
 
-	_removeThing(thing, getGridU(pos1.x), getGridV(pos1.z));
-	_addThing(thing, getGridU(pos2.x), getGridV(pos1.z));
+	int from_u = getGridU(pos1.x);
+	int from_v = getGridV(pos1.z);
+	int to_u = getGridU(pos2.x);
+	int to_v = getGridV(pos1.z);
+
+	// if it crossed a boundary, move it to the new cell
+	if (from_u != to_u || from_v != to_v)
+	{
+		_removeThing(thing, from_u, from_v);
+		_addThing(thing, to_u, to_v);
+	}
 }
 
 int Physics::getGridU(Real x)
 {
-	return (x/mWorldSize) * PHYSICS_GRID_SIZE
+	return (x/mWorldSize) * PHYSICS_GRID_SIZE;
 }
 
 int Physics::getGridV(Real z)
 {
-	return (z/mWorldSize) * PHYSICS_GRID_SIZE
+	return (z/mWorldSize) * PHYSICS_GRID_SIZE;
 }
 
 // remove and delete all things
@@ -173,15 +183,16 @@ void Physics::clear()
 // move all things, delete the ones not alive
 void Physics::moveAll(Real time)
 {
-	for (unsigned int i=0; i<things.size(); i++)
+	for (unsigned int i=0; i<mAllThings.size(); i++)
 	{
-		Thing* thing = things[i];
+		Thing* thing = mAllThings[i];
 
 		// delete anything thats not alive
 		if (!thing->isAlive())
 		{
 			deleteThing(thing);
 		}
+		// otherwise move it
 		else moveThing(thing, time);
 	}
 }
@@ -189,7 +200,7 @@ void Physics::moveAll(Real time)
 // the number of things in the list
 int Physics::numThings()
 {
-	return int(things.size());
+	return int(mAllThings.size());
 }
 
 /* this method works by keeping all of the things in a grid. 
@@ -201,7 +212,7 @@ void Physics::collisionCheck()
 
 }
 
-void Physics::pairCollisionCheck(Thing* t1, Thing* t2)
+void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
 	Real maxdist = a->getRadius() + b->getRadius();
 
@@ -224,6 +235,11 @@ void Physics::pairCollisionCheck(Thing* t1, Thing* t2)
 	}
 }
 
+void Physics::setWorldSize(int size)
+{
+	mWorldSize = size;
+}
+
 
 Physics& Physics::getSingleton(void)
 {
@@ -237,7 +253,7 @@ Physics& Physics::getSingleton(void)
 
 Physics::~Physics()
 {
-	removeAll();
+	clear();
 }
 
 }

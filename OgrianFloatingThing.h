@@ -59,12 +59,11 @@ public:
 	virtual void setPosition(Vector3 pos)
 	{
 		Real ground = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();
-		if (ground > mPos.y) 
+		if (ground > getPosY()) 
 		{
-			mVel.y = 0;
-			pos.y = ground;
-			Thing::setVelocity(mVel);
+			setVelY(0);
 			Thing::setPosition(pos);
+			setPosY(ground);
 		}
 		else 
 		{
@@ -75,7 +74,7 @@ public:
 	// ignore external changes in up/down velocity
 	virtual void setVelocity(Vector3 vel)
 	{
-		vel.y = mVel.y;
+		vel.y = getVelY();
 		Thing::setVelocity(vel);
 	}
 
@@ -83,10 +82,9 @@ public:
 	// fall
 	virtual void move(Real time)
 	{
-		if (mVel.y > -FLOAT_FALL_MAX)
+		if (getVelY() > -FLOAT_FALL_MAX)
 		{
-			mVel.y -= FLOAT_GRAV*time;
-			Thing::setVelocity(mVel);
+			Thing::setVelY(getVelY() - FLOAT_GRAV*time);
 		}
 
 		Thing::move(time);

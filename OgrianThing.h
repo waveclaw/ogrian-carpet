@@ -76,7 +76,13 @@ public:
 	// the radius is half the scale
 	virtual Real getRadius();
 
+	// get the position at the last move()
+	virtual Vector3 getOldPosition();
+
+	// get the current position
 	virtual Vector3 getPosition();
+
+	// get the velocity
 	virtual Vector3 getVelocity();
 	virtual Real getScale();
 
@@ -95,10 +101,17 @@ public:
 	// things are ordered by x location
 	bool operator<(Thing* other);
 
+	// conveniance methods for accessing the y axis
+	virtual void setPosY(Real y);
+	virtual void setVelY(Real y);
+	virtual Real getPosY();
+	virtual Real getVelY();
+
 	
-protected:
+private:
 	Vector3 mPos;
 	Vector3 mVel;
+	Vector3 mOldPos;
 
 	// graphical rendering stuff
 	BillboardSet* mBbset;

@@ -211,7 +211,6 @@ void Renderer::createFoliage(const String& material, int num)
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
 	int i=0;
-	//Real x = 0;
 	while (i<num)
 	{
         // Random translate
@@ -246,6 +245,7 @@ void Renderer::createScene(void)
 	// set up the terrain
     mSceneMgr->setWorldGeometry( filename );
 	HeightMap::getSingleton().loadTerrain(filename);
+	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 	createFoliage(foliageMaterial, FOLIAGE_NUM);

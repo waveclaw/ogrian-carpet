@@ -1,3 +1,20 @@
+material Ogrian/Clear
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			depth_check off
+
+			texture_unit
+			{	
+				texture clear.png
+			}
+		}
+	}
+}
 material Ogrian/Ocean
 {
 	technique
@@ -76,23 +93,6 @@ material Ogrian/Mana
 			texture_unit
 			{
 				texture mana.png
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-material Ogrian/Grass
-{
-	technique
-	{
-		pass
-		{
-			scene_blend alpha_blend
-			depth_write off
-
-			texture_unit
-			{
-				texture grass1.png
 				tex_address_mode clamp
 			}
 		}

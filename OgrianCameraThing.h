@@ -47,7 +47,7 @@ class CameraThing : public Thing
 {
 public:
 	CameraThing(Camera* camera)
-		: Thing("", "CameraThing", true, CAMERA_HEIGHT)
+		: Thing("Ogrian/Clear", "CameraThing", true, CAMERA_HEIGHT)
 	{
 	}
 
@@ -69,37 +69,33 @@ public:
 		Vector3 pos = camera->getPosition();
 		float ground = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + CAMERA_HEIGHT;
 				
-		if (ground > mPos.y) 
+		if (ground > getPosY()) 
 		{
-			mVel.y = 0;
-			Thing::setVelocity(mVel);
-
+			setVelY(0);
 			pos.y = ground;
-			Thing::setPosition(pos);
 		}
 		else 
 		{
-			pos.y = mPos.y;
-			Thing::setPosition(pos);
+			pos.y = getPosY();
 		}
+		setPosition(pos);
 
-		camera->setPosition(mPos);
+		camera->setPosition(getPosition());
 	}
 
 	// ignore external up/down velocity changes
 	virtual void setVelocity(Vector3 vel)
 	{
-		vel.y = mVel.y;
+		vel.y = getVelY();
 		Thing::setVelocity(vel);
 	}
 
 	// fall
 	virtual void move(Real time)
 	{
-		if (mVel.y > -CAMERA_FALL_MAX)
+		if (getVelY() > -CAMERA_FALL_MAX)
 		{
-			mVel.y -= CAMERA_GRAV*time;
-			Thing::setVelocity(mVel);
+			setVelY(getVelY() - CAMERA_GRAV*time);
 		}
 
 		Thing::move(time);
@@ -108,14 +104,8 @@ public:
 	// this must not be deleted!
 	virtual void destroy()
 	{
-
+		assert(false);
 	}
-
-	// never render this Thing
-	virtual void _updateVisibility(){}
-	virtual void _addToRenderer(){}
-	virtual void _removeFromRenderer() {}
-
 };
 }
 #endif

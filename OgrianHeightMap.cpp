@@ -56,6 +56,11 @@ HeightMap::~HeightMap()
 	// mData is a pointer into mImage
 }
 
+int HeightMap::getWorldSize()
+{
+	return mSize;
+}
+
 // do a lookup in the array to find the height at a grid point
 int HeightMap::_worldheight( int x, int z )
 {

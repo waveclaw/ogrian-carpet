@@ -57,6 +57,9 @@ public:
 	Real getXSlopeAt(Real x, Real z);
 	Real getZSlopeAt(Real x, Real z);
 
+	// get the size of the world
+	int getWorldSize();
+
     static HeightMap& getSingleton(void);
 
 private:

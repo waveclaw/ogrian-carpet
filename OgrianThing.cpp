@@ -139,6 +139,11 @@ void Thing::setScale(Real scale)
 		mBillboard->setDimensions(scale,scale);
 }
 
+Vector3 Thing::getOldPosition()
+{
+	return mOldPos;
+}
+
 Vector3 Thing::getPosition()
 {
 	return mPos;
@@ -165,6 +170,7 @@ void Thing::setMaterial(String material)
 // increment the position by the velocity times time
 void Thing::move(Real time)
 {
+	mOldPos = mPos;
 	setPosition(mPos + mVel * time);
 
 	_updateVisibility();
@@ -228,6 +234,27 @@ void Thing::destroy()
 	// mark it to be deleted
 	mAlive = false;
 }
+
+void Thing::setPosY(Real y)
+{
+	mPos.y = y;
+}
+
+Real Thing::getPosY()
+{
+	return mPos.y;
+}
+
+void Thing::setVelY(Real y)
+{
+	mVel.y = y;
+}
+
+Real Thing::getVelY()
+{
+	return mVel.y;
+}
+
 
 
 // they are ordered by x location

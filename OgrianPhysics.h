@@ -37,6 +37,7 @@ It is a Singleton.
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianThing.h"
+#include "OgrianConstants.h"
 
 using namespace Ogre;
 
@@ -72,7 +73,7 @@ public:
 
 private:
 	// a matrix of vectors for collision culling
-	std::vector<Thing*>[PHYSICS_GRID_SIZE][PHYSICS_GRID_SIZE] mThingGrid;
+	std::vector<Thing*> mThingGrid[PHYSICS_GRID_SIZE][PHYSICS_GRID_SIZE];
 	std::vector<Thing*> mOtherThings; // the things outside the grid
 
 	std::vector<Thing*> mAllThings; // All things in the world
@@ -86,7 +87,7 @@ private:
 
 	// do a comprehensive collision check between two things,
 	// and notify them if they collide
-	virtual inline void pairCollisionCheck(Thing* t1, Thing* t2);
+	virtual inline void pairCollisionCheck(Thing* a, Thing* b);
 
 	// move a thing from one grid cell to another
 	virtual inline void moveThing(Thing* thing, Real time);
@@ -97,7 +98,7 @@ private:
 	virtual void _removeThing(Thing* thing, int grid_u, int grid_v);
 
 	// remove a thing from the world
-	virtual void deleteThing(Thing* thing, int grid_u, int grid_v);
+	virtual void deleteThing(Thing* thing);
 };
 
 }
