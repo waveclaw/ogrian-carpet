@@ -45,6 +45,9 @@ WizardThing::WizardThing(bool visible, int skin)
 	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
 	visible?"WizardThing":"CameraThing", true, CONR("WIZARD_SCALE"))
 {
+	mNextRegenTime = 0;
+	mActiveMana = 0;
+	mBaseMana = 0;
 	mBar = 0;
 	mTeam = 0;
 	mSkin = -1;
@@ -298,6 +301,17 @@ void WizardThing::collided(Thing* e)
 	
 void WizardThing::move(Real time)
 {
+	// regenerate mana
+	if (Time::getSingleton().getTime() > mNextRegenTime)
+	{
+		mNextRegenTime = Time::getSingleton().getTime() + CONR("WIZARD_MANA_REGEN_PERIOD")*1000;
+		mActiveMana += CONI("WIZARD_MANA_REGEN");
+		if (mActiveMana > mBaseMana)
+			mActiveMana = mBaseMana;
+
+		setActiveMana(mActiveMana);
+	}
+
 	// float
 	if (!mOnBuilding && getVelY() > -CONR("CAMERA_FALL_MAX")
 		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING))

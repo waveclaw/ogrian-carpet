@@ -502,13 +502,13 @@ void Physics::addThing(Thing* thing)
 		// keep allthings sorted by uid
 		_sortAllThings();
 
-		// if its a buildthing or claim thing and we're in pregame mode
-		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame()
-			|| thing->getType() == BUILDTHING && Game::getSingleton().isPreGame())
-		{
-			// destroy the thing immediately
-			thing->destroy();
-		}
+		//// if its a buildthing or claim thing and we're in pregame mode
+		//if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame()
+		//	|| thing->getType() == BUILDTHING && Game::getSingleton().isPreGame())
+		//{
+		//	// destroy the thing immediately
+		//	thing->destroy();
+		//}
 	}
 }
 

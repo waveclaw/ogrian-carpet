@@ -50,6 +50,7 @@ public:
 	// while in pregame mode, claimthings cannot be made
 	void setPreGame(bool active);
 	bool isPreGame();
+	void serverEndPreGame();
 
 	void updateScores();
 
@@ -69,6 +70,7 @@ private:
 	void startSkirmishGame();
 	void startServerGame();
 	void startClientGame();
+
 
 	void serverVictoryCheck();
 

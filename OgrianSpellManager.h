@@ -41,8 +41,8 @@ namespace Ogrian
 {
 
 
-#define SPELL_BUILD		0
-#define SPELL_CLAIM		1
+#define SPELL_CLAIM		0
+#define SPELL_BUILD		1
 #define SPELL_FIREBALL	2
 #define NUM_SPELLS		3
 

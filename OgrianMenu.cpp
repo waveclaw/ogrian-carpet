@@ -233,60 +233,9 @@ void Menu::button_startGame()
 	// hide the menu
 	hide();
 
-	Game::getSingleton().setPreGame(false);
-
+	// end the pregame - start the real game
 	if (Multiplayer::getSingleton().isServer())
-	{
-		// build a list of start locations
-		std::vector<Vector3> slocs;
-		slocs.push_back(Vector3(100,0,100));
-		slocs.push_back(Vector3(900,0,100));
-		slocs.push_back(Vector3(100,0,900));
-		slocs.push_back(Vector3(900,0,900));
-
-		// chose an sloc for the camera
-		Vector3 sloc = Vector3(500,0,500);
-		if (slocs.size() > 0)
-		{
-			int index = Math::RangeRandom(0,slocs.size()-.1);
-			sloc = slocs[index];
-			slocs.erase(slocs.begin()+index);
-		}
-
-		// kill the camera
-		Renderer::getSingleton().getCameraThing()->die();
-		Renderer::getSingleton().getCameraThing()->setPosition(sloc);
-
-		// enable the build spell
-		SpellManager::getSingleton().enableSpell(SPELL_BUILD);
-
-		// kill all wizards and enable the build spell
-		for (int i=0; i<Physics::getSingleton().numThings(); i++)
-		{
-			Thing* thing = Physics::getSingleton().getThingByIndex(i);
-
-			if (thing && thing->getType() == WIZARDTHING)
-			{
-				// chose an sloc
-				if (slocs.size() > 0)
-				{
-					int index = Math::RangeRandom(0,slocs.size()-.1);
-					sloc = slocs[index];
-					slocs.erase(slocs.begin()+index);
-				}
-				else sloc = Vector3(500,0,500);
-
-				Multiplayer::getSingleton().killWizard(thing, sloc);
-
-			}
-		}
-
-		for (i=0; i<Multiplayer::getSingleton().numClients(); i++)
-		{
-			PlayerInfo player = Multiplayer::getSingleton().getClient(i);
-            Multiplayer::getSingleton().serverSendInt(SPELL_BUILD,ID_ENABLESPELL,player.id);
-		}
-	}
+		Game::getSingleton().serverEndPreGame();
 }
 
 //----------------------------------------------------------------------------

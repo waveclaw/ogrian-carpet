@@ -153,6 +153,8 @@ private:
 	int mActiveMana;
 	int mBaseMana;
 
+	unsigned long mNextRegenTime;
+
 	virtual void setupSkins();
 };
 

@@ -51,8 +51,8 @@ SpellManager::SpellManager()
 	mSpells[SPELL_FIREBALL] = new FireballSpell();
 
 	disableAllSpells();
-	//enableSpell(SPELL_BUILD);
 	enableSpell(SPELL_CLAIM);
+	//enableSpell(SPELL_BUILD);
 	//enableSpell(SPELL_FIREBALL);
 
 	readyDefaultSpell();
