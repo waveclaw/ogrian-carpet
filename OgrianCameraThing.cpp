@@ -60,6 +60,11 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	colour.r = atof(config.getSetting( "red" ).c_str()) / 255.0;
 	colour.b = atof(config.getSetting( "blue" ).c_str()) / 255.0;
 	colour.g = atof(config.getSetting( "green" ).c_str()) / 255.0;
+
+	// check for white
+	if (colour == ColourValue(1,1,1))
+		colour = ColourValue(.95,.95,.95);
+
 	setColour(colour);
 
 	int skin = atoi(config.getSetting( "skin" ).c_str());

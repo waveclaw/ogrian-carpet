@@ -52,18 +52,12 @@ public:
 		setPosition(pos);
 
 		ColourValue colour;
-		colour.r = Math::RangeRandom(0,1);
-		colour.g = Math::RangeRandom(0,1);
-		colour.b = Math::RangeRandom(0,1);
+		colour.r = Math::RangeRandom(0,.95);
+		colour.g = Math::RangeRandom(0,.95);
+		colour.b = Math::RangeRandom(0,.95);
 		setColour(colour);
 
 		setHealth(CONR("WIZARD_HEALTH"));
-
-		Vector3 offset;
-		Real wdo = CONR("WIZARD_DEATH_OFFSET");
-		offset.x = Math::RangeRandom(-wdo, wdo);
-		offset.z = Math::RangeRandom(-wdo, wdo);
-		setPosition(getPosition() + offset);
 	}
 
 	// think

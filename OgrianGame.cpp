@@ -33,6 +33,7 @@ starting games and detecting victory.
 #include "OgrianAIWizardThing.h"
 #include "OgrianSkinManager.h"
 #include "OgrianManaThing.h"
+#include "OgrianTowerThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
@@ -162,15 +163,16 @@ void Game::startServerGame()
 void Game::startSkirmishGame()
 {
 	// set up some wild mana
+	Real size = HeightMap::getSingleton().getWorldSize();
 	int i=0;
 	while(i<CONI("MANA_START_NUM"))
 	{
         // Random translate
-        Real x = Math::SymmetricRandom() * 1000.0;
-        Real z = Math::SymmetricRandom() * 1000.0;
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
 		{
 			i++;
 			Vector3 pos = Vector3(x,0,z);
@@ -182,13 +184,26 @@ void Game::startSkirmishGame()
 
 	int numSkins = SkinManager::getSingleton().numSkins();
 
-	// load AI Wizards
-	for (int i=0; i<CONI("NUM_BOTS"); i++)
+	// set up some enemy towers
+	i=0;
+	while(i<CONI("NUM_BOTS"))
 	{
-		AIWizardThing* ai = new AIWizardThing( 
-			Renderer::getSingleton().getCameraThing()->getPosition(), int(Math::RangeRandom(0.5,numSkins+0.5)));
+        // Random translate
+        Real x = Math::SymmetricRandom() * size;
+        Real z = Math::SymmetricRandom() * size;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		Physics::getSingleton().addThing(ai);
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			AIWizardThing* ai = new AIWizardThing(pos, int(Math::RangeRandom(0.8,numSkins+0.5)));
+			Physics::getSingleton().addThing(ai);
+
+			TowerThing* tower = new TowerThing(ai->getTeamNum(),pos);
+			Physics::getSingleton().addThing(tower);
+		}
 	}
 
 	// reset the score
