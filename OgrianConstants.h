@@ -56,7 +56,7 @@ const int FOLIAGE_LINE_MAX = 50;
 
 const Real HEIGTHMAP_SLOPE_DIFF = 2;
 const Real HEIGTHMAP_MIN_HEIGHT = 3;
-const Real HEIGHTMAP_SMOOTHING = 2;
+const int HEIGHTMAP_SMOOTHING = 4;
 
 const Real MANA_DRIFT_SPEED = 1;
 const Real FLOAT_GRAV = .3;
