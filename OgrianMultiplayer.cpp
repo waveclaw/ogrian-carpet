@@ -137,12 +137,18 @@ void Multiplayer::serverStart()
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::serverStart" );
 
+	ConfigFile config;
+	config.load("config.cfg");
+	ColourValue colour;
+	colour.r = atoi(config.getSetting("red"));
+	colour.g = atoi(config.getSetting("green"));
+	colour.b = atoi(config.getSetting("blue"));
+
 	PlayerInfo server;
 	server.id.binaryAddress = 0;
 	server.name = mPlayerName + " (Serving)";
 	server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
-	server.teamNum = Physics::getSingleton().newTeam(server.wizardUID, 
-		Renderer::getSingleton().getCameraThing()->getColour());
+	server.teamNum = Physics::getSingleton().newTeam(server.wizardUID, colour);
 	mPlayers.push_back(server);
 	
 	updateScores();

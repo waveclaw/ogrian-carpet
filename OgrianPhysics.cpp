@@ -333,6 +333,12 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case CAMERATHING: return new WizardThing();
 
+		case CASTLETOWER: return new CastleTowerThing(0);
+
+		case CASTLEWALL: return new CastleWallThing(0);
+
+		case CASTLEFLAG: return new CastleFlagThing();
+
 		default:
 			LogManager::getSingleton().logMessage(String("ERROR: Thing Unknown: ") << type);
 			return 0;

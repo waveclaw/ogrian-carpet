@@ -40,7 +40,6 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-// extend floatingThing for floating behavior
 class Team
 {
 public:

@@ -34,6 +34,7 @@ Description: This is a castle
 #include "OgrianDamageableThing.h"
 #include "OgrianModel.h"
 #include "OgrianConst.h"
+#include "OgrianMultiplayer.h"
 
 using namespace Ogre;
 
@@ -74,16 +75,20 @@ public:
 		{
 			setVelY(0-CONR("CASTLE_RISE_SPEED"));
 		}
+
+		requestUpdate();
 	}
 
 	virtual void move(Real time)
 	{
 		// if it has reached its target pos.y, stop
-		if ((getVelY() < 0 && mTargetY > getPosY()) ||
-			(getVelY() > 0 && mTargetY < getPosY()))
+		if (!Multiplayer::getSingleton().isClient() && (
+			(getVelY() < 0 && mTargetY > getPosY()) ||
+			(getVelY() > 0 && mTargetY < getPosY())))
 		{
 			setPosY(mTargetY);
 			setVelY(0);
+			requestUpdate();
 		}
 
 		DamageableThing::move(time);
@@ -91,7 +96,8 @@ public:
 
 	virtual void damage(int amount, int sourceTeamNum)
 	{
-		mCastle->damage(amount, sourceTeamNum);
+		if (mCastle)
+			mCastle->damage(amount, sourceTeamNum);
 	}
 
 	virtual bool isBuilding() { return true; }
@@ -106,7 +112,7 @@ private:
 class CastleTowerThing : public CastleBlockThing
 {
 public:
-	CastleTowerThing(DamageableThing* castle, Vector3 pos) 
+	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: CastleBlockThing(castle, pos)
 	{
 		setMaterial("Ogrian/Tower");
@@ -126,7 +132,7 @@ public:
 class CastleWallThing : public CastleBlockThing
 {
 public:
-	CastleWallThing(DamageableThing* castle, Vector3 pos) 
+	CastleWallThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: CastleBlockThing(castle, pos)
 	{
 		setMaterial("Ogrian/Wall");
@@ -139,6 +145,18 @@ public:
 	virtual ThingType getType()
 	{
 		return CASTLEWALL;
+	}
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
+// only used by clients
+class CastleFlagThing : public Thing
+{
+public:
+	CastleFlagThing() 
+		: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
+	{
 	}
 };
 
