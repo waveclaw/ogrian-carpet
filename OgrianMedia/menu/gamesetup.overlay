@@ -58,8 +58,8 @@ Ogrian/Menu/Overlay
 		{
 			left 0.6
 			top 0.30
-			width 0.2 
-			caption SS/Templates/BasicText LOAD
+			width 0.4 
+			caption SS/Templates/BasicText SKIRMISH
 		}
 				
 

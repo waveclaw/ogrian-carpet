@@ -897,10 +897,17 @@ void Physics::setWorldSize(int size)
 
 //----------------------------------------------------------------------------
 
-int Physics::addTeam(int wizardUID)
+int Physics::newTeam(int wizardUID)
 {
 	mTeams.push_back(new Team(wizardUID));
 	return (int)mTeams.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+int Physics::numTeams()
+{
+	return (int)mTeams.size();
 }
 
 //----------------------------------------------------------------------------

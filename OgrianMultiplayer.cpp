@@ -141,7 +141,7 @@ void Multiplayer::serverStart()
 	server.id.binaryAddress = 0;
 	server.name = mPlayerName + " (Serving)";
 	server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
-	server.teamNum = Physics::getSingleton().addTeam(server.wizardUID);
+	server.teamNum = Physics::getSingleton().newTeam(server.wizardUID);
 	mPlayers.push_back(server);
 	
 	updateScores();
@@ -619,7 +619,7 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.id = packet->playerId;
 			player.name = playerName;
 			player.wizardUID = wuid;
-			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
+			player.teamNum = Physics::getSingleton().newTeam(player.wizardUID);
 			mPlayers.push_back(player);
 
 			// send a message to the client telling it what its wizardUID is

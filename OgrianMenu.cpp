@@ -31,6 +31,8 @@ NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
 #include "OgrianPlayerList.h"
 #include "OgrianRenderer.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianAIWizardThing.h"
+#include "OgrianPhysics.h"
 
 #include "OgreOverlayManager.h"
 
@@ -60,9 +62,6 @@ Menu::Menu()
 
 	// hide the disconnect button at the start
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
-
-	// hide the load button
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
 
 	// build the list
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/AvailableMapsList"));
@@ -147,6 +146,7 @@ void Menu::button_disconnect()
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 }
 

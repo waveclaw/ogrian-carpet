@@ -83,15 +83,6 @@ bool Input::processKeyInput(InputReader* input)
         mTimeUntilNextToggle = CONR("KEY_DELAY");
     }
 
-	// make a bot
-    if (input->isKeyDown(KC_B) && mTimeUntilNextToggle <= 0
-		&& !Multiplayer::getSingleton().isClient())
-    {
-		Physics::getSingleton().addThing(new AIWizardThing( 
-			Renderer::getSingleton().getCameraThing()->getPosition()));
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
-
 	// cast a fireball
 	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0)
 	{

@@ -93,8 +93,11 @@ public:
 	// sync a new client
 	void syncClient(PlayerInfo player);
 
-	// add a new team
-	int addTeam(int wizardUID);
+	// make a new team
+	int newTeam(int wizardUID);
+
+	// the number of teams
+	int numTeams();
 
 	// get a team by number
 	Team* getTeam(int index);

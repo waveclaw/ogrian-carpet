@@ -33,6 +33,8 @@ Description: A computer controlled Wizard
 
 #include <Ogre.h>
 #include "OgrianWizardThing.h"
+#include "OgrianFireballThing.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 
@@ -68,7 +70,29 @@ public:
 
 		mLastTime = Time::getSingleton().getTime();
 
-		WizardThing* enemy = static_cast<WizardThing*>(Renderer::getSingleton().getCameraThing());
+		// find the nearest wizard // 
+
+		WizardThing* enemy = 0;
+		Real bestDist = -1;
+		int bestWuid = -1;
+
+		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+		{
+			int wuid = Physics::getSingleton().getTeam(i)->getWizardUID();
+			if (wuid != getUID()) // if its not me
+			{
+				enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(wuid));
+				Real dist = axisDistance(enemy);
+				if (dist < bestDist || bestWuid == -1) // if its the closest so far, or the first
+				{
+					bestDist = dist; // its the new closest 
+					bestWuid = wuid;
+				}
+			}
+		}
+
+		if (bestWuid == -1) return;
+		enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(bestWuid));
 
 		// face the enemy //
 		
