@@ -127,6 +127,9 @@
 				RelativePath="OgrianMultiplayer.cpp">
 			</File>
 			<File
+				RelativePath="OgrianOrientedSprite.cpp">
+			</File>
+			<File
 				RelativePath="OgrianPhysics.cpp">
 			</File>
 			<File
@@ -189,6 +192,9 @@
 			</File>
 			<File
 				RelativePath="OgrianMultiplayer.h">
+			</File>
+			<File
+				RelativePath="OgrianOrientedSprite.h">
 			</File>
 			<File
 				RelativePath="OgrianPacketEnum.h">

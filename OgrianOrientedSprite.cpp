@@ -19,16 +19,16 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSprite.cpp
+OgrianOrientedSprite.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: A Sprite is a billboard that is properly depth
-sorted and has a unique material. 
+Description: The OrientedSprite is a visual representation that can represent an object from each of 
+the eight cardinal directions and also from any of an arbitrary number of poses. 
 
 /*------------------------------------*/
 
-#include "OgrianSprite.h"
+#include "OgrianOrientedSprite.h"
 #include "OgrianRenderer.h"
 
 using namespace Ogre;
@@ -36,35 +36,28 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-unsigned long Sprite::msNextGeneratedNameExt = 1;
-
 //----------------------------------------------------------------------------
 
-Sprite::Sprite(String name, bool fixed_y)
+OrientedSprite::OrientedSprite()
 {
-	mBbset = 0;
-	mBillboard = 0;
-	mNode = 0;
-	mName = name;
-	mFixed_y = fixed_y;
-
-	if (mName.startsWith("auto")) mName << msNextGeneratedNameExt++;
-
-	mWidth = 1;
-	mHeight = 1;
-
 	mInRenderer = false;
 }
 
 //----------------------------------------------------------------------------
 
-Sprite::~Sprite()
+OrientedSprite::~OrientedSprite()
 {
 	removeFromRenderer();
+
+	while (mPoses.size() > 0)
+	{
+		delete mPoses[mPoses.size()-1];
+		mPoses.erase(mPoses.end());
+	}
 }
 
 // returns true if it's in the renderer
-bool Sprite::inRenderer()
+bool OrientedSprite::inRenderer()
 {
 	return mInRenderer;
 }
@@ -72,91 +65,95 @@ bool Sprite::inRenderer()
 //----------------------------------------------------------------------------
 
 // set the position
-void Sprite::setPosition(Vector3 pos)
+void OrientedSprite::setPosition(Vector3 pos)
 {
 	mPos = pos;
 
 	if (mInRenderer)
-		mNode->setPosition(pos);
+		mCurrentSprite->setPosition(pos);
 }
 
 //----------------------------------------------------------------------------
 
-void Sprite::setWidth(Real width)
+void OrientedSprite::setWidth(Real width)
 {
 	mWidth = width;
 
 	if (mInRenderer)
-		mBillboard->setDimensions(mWidth,mHeight);
+		mCurrentSprite->setWidth(width);
 }
 
 //----------------------------------------------------------------------------
 
-void Sprite::setHeight(Real height)
+void OrientedSprite::setHeight(Real height)
 {
 	mHeight = height;
 	
 	if (mInRenderer)
-		mBillboard->setDimensions(mWidth,mHeight);
+		mCurrentSprite->setHeight(height);
 }
 
 //----------------------------------------------------------------------------
 
-void Sprite::setMaterial(String material)
-{
-	mMaterial = material;
-
-	if (mInRenderer)
-		mBbset->setMaterialName(material);
-}
-
-//----------------------------------------------------------------------------
-
-void Sprite::addToRenderer()
+void OrientedSprite::addToRenderer()
 {
 	// dont do this twice!
 	if (mInRenderer) return;
 
-	// create the billboardset
-	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
-	mBbset = sceneMgr->createBillboardSet(mName,1);
-	mBillboard = mBbset->createBillboard(0, 0, 0);
-
-	if (mFixed_y)
-	{
-		// it doesn't really matter if its common or self, since there's only one per set
-		mBbset->setBillboardType(BBT_ORIENTED_SELF);
-		mBillboard->mDirection = Vector3::UNIT_Y;
-	}
-
-	// attach the set
-	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
-	mNode->attachObject(mBbset);
+	mCurrentSprite->setPosition(mPos);
+	mCurrentSprite->setWidth(mWidth);
+	mCurrentSprite->setHeight(mHeight);
+	mCurrentSprite->addToRenderer();
 
 	mInRenderer = true;
-
-	// apply its properties to it
-	setMaterial(mMaterial);
-	setPosition(mPos);
-	setWidth(mWidth);
 }
 
 //----------------------------------------------------------------------------
 
-void Sprite::removeFromRenderer()
+void OrientedSprite::removeFromRenderer()
 {
 	// dont do this twice!
 	if (!mInRenderer) return;
 
-	// remove it from the scene
-	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
-
-	// null the mvars
-	mBbset = 0;
-	mBillboard = 0;
-	mNode = 0;
+	mCurrentSprite->removeFromRenderer();
 
 	mInRenderer = false;
+}
+
+//----------------------------------------------------------------------------
+
+int OrientedSprite::addPose(String basename)
+{
+	Pose* pose = new Pose(basename);
+	mPoses.push_back(pose);
+	return (int)mPoses.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+void OrientedSprite::setPose(int index)
+{
+	mCurrentPose = mPoses[index];
+
+	frame();
+}
+
+//----------------------------------------------------------------------------
+
+void OrientedSprite::frame()
+{
+	Sprite* newSprite = mCurrentPose->getSprite(Renderer::getSingleton().getCamera()->getPosition());
+
+	if (mCurrentSprite != newSprite)
+	{
+		if (mInRenderer)
+		{
+			mCurrentSprite->removeFromRenderer(); 
+			newSprite->addToRenderer();
+		}
+
+		mCurrentSprite = newSprite;
+	}
 }
 
 //----------------------------------------------------------------------------

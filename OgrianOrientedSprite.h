@@ -19,32 +19,78 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSprite.h
+OgrianOrientedSprite.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: A Sprite is a billboard that is properly depth
-sorted and has a unique material. 
+Description: The OrientedSprite is a visual representation that can represent an object from each of 
+the eight cardinal directions and also from any of an arbitrary number of poses. 
 
 /*------------------------------------*/
 
-#ifndef __OgrianSprite_H__
-#define __OgrianSprite_H__
+#ifndef __OgrianOrientedSprite_H__
+#define __OgrianOrientedSprite_H__
 
 #include <Ogre.h>
 
-#include "OgrianVisRep.h"
+#include "OgrianSprite.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Sprite : public VisRep
+class Pose
 {
 public:
-	Sprite(String name, bool fixed_y=false);
-	virtual ~Sprite();
+	Pose(String basename)
+	{
+		f  = new Sprite("auto", true);
+		fl = new Sprite("auto", true);
+		l  = new Sprite("auto", true);
+		bl = new Sprite("auto", true);
+		b  = new Sprite("auto", true);
+		br = new Sprite("auto", true);
+		r  = new Sprite("auto", true);
+		fr = new Sprite("auto", true);
+
+		// TODO: set the materials
+	}
+	virtual ~Pose()
+	{
+		delete f;
+		delete fl;
+		delete l;
+		delete bl;
+		delete b;
+		delete br;
+		delete r;
+		delete fr;
+	}
+
+	Sprite* getSprite(Vector3 campos)
+	{
+
+		return 0;
+	}
+
+private:
+	Sprite* f;
+	Sprite* fl;
+	Sprite* l;
+	Sprite* bl;
+	Sprite* b;
+	Sprite* br;
+	Sprite* r;
+	Sprite* fr;
+};
+
+class OrientedSprite
+{
+public:
+	OrientedSprite();
+
+	virtual ~OrientedSprite();
 
 	// set the position
 	virtual void setPosition(Vector3 pos);
@@ -55,40 +101,36 @@ public:
 	// set the height
 	virtual void setHeight(Real height);
 
-	// set the material used by this sprite
-	virtual void setMaterial(String material);
+	// add a pose
+	virtual int addPose(String basename);
+	
+	// set which pose to use 
+	virtual void setPose(int index);
 	
 	// unused
-	virtual int addPose(String basename) { return 0; }
-	virtual void setPose(int index) {}
-	virtual void frame() {}
+	virtual void setMaterial(String material) {}
 
-
-	// add this sprite to the renderer
+	// add this visrep to the renderer
 	virtual void addToRenderer();
 
-	// remove this sprite from the renderer
+	// remove this visrep from the renderer
 	virtual void removeFromRenderer();
 
-	// returns true if this sprite is in the renderer
+	// returns true if its in the renderer
 	virtual inline bool inRenderer();
 
-private:
-	// graphical rendering stuff
-	BillboardSet* mBbset;
-	Billboard* mBillboard;
-	bool mFixed_y;
-	String mMaterial;
-	SceneNode* mNode;
-	String mName;
+	// call this every frame to set the right sprite
+	virtual void frame();
 
-	bool mInRenderer;
+private:
+	Pose* mCurrentPose;
+	Sprite* mCurrentSprite;
+	std::vector<Pose*> mPoses;
+
 	Real mWidth;
 	Real mHeight; 
 	Vector3 mPos;
-
-	// Incremented count for next name extension
-    static unsigned long msNextGeneratedNameExt;
+	bool mInRenderer;
 };
 }
 #endif

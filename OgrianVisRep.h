@@ -49,9 +49,12 @@ public:
 	// set the height
 	virtual void setHeight(Real height) = 0;
 
-	// set the material set (only used by Oriented Sprites)
-	virtual void setMaterialSet(String materialset) = 0;
+	// add a pose (only used by Oriented Sprites)
+	virtual int addPose(String basename) = 0;
 	
+	// add a pose (only used by Oriented Sprites)
+	virtual void setPose(int index) = 0;
+
 	// set the material
 	virtual void setMaterial(String material) = 0;
 
@@ -63,6 +66,9 @@ public:
 
 	// returns true if its in the renderer
 	virtual inline bool inRenderer() = 0;
+
+	// call this every frame
+	virtual void frame() = 0;
 };
 }
 #endif
