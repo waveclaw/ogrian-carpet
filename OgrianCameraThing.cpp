@@ -91,9 +91,8 @@ void CameraThing::moveRight()
 // handle camera movement given directional input 
 void CameraThing::moveCamera(Real rotX, Real rotY)
 {
-	// Make all the changes to the camera
+	// set the yaw
 	mCamera->yaw(rotX);
-	//mCamera->pitch(rotY);
 
 	// constrain the pitch
 	Vector3 dir = mCamera->getDirection();
@@ -186,10 +185,12 @@ void CameraThing::move(Real time)
 
 //----------------------------------------------------------------------------
 
-// this must not be destroyed!
-void CameraThing::destroy()
+void CameraThing::die()
 {
-
+	Vector3 offset;
+	offset.x = Math::RangeRandom(WIZARD_DEATH_OFFSET_MIN, WIZARD_DEATH_OFFSET_MAX);
+	offset.z = Math::RangeRandom(WIZARD_DEATH_OFFSET_MIN, WIZARD_DEATH_OFFSET_MAX);
+	setPosition(getPosition() + offset);
 }
 
 //----------------------------------------------------------------------------

@@ -101,6 +101,9 @@ public:
 	// turn an player ID into a Thing UID for the associated WizardThing
 	int getWizardUID(PlayerID pid);
 
+	// turn a wizard into a playerID
+	PlayerID getPlayerID(int wizardUID);
+
 	// turn an player ID into the assiciated PlayerInfo
 	PlayerInfo* getPlayerInfo(PlayerID pid);
 

@@ -389,6 +389,19 @@ int Multiplayer::getWizardUID(PlayerID pid)
 
 //----------------------------------------------------------------------------
 
+PlayerID Multiplayer::getPlayerID(int wizardUID)
+{
+	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		if (mPlayers[i].wizardUID == wizardUID) return mPlayers[i].id;
+	}
+
+	LogManager::getSingleton().logMessage(String("WizardUID not found: #") << wizardUID);
+	return mPlayers[0].id;
+}
+
+//----------------------------------------------------------------------------
+
 PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 {
 	for (int i=0; i<(int)mPlayers.size(); i++)
@@ -517,6 +530,10 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
+		case ID_DIE: //////////////////////////////////////////////////////
+		{
+			Renderer::getSingleton().getCameraThing()->die();
+		}
 		case ID_SETSCORE: //////////////////////////////////////////////////////
 		{
 			// get the new score

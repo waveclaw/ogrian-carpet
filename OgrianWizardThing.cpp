@@ -30,6 +30,7 @@ Description: The wizard thing is the superclass of the CameraThing
 
 #include "OgrianWizardThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianMultiplayer.h"
 
 
 using namespace Ogre;
@@ -55,7 +56,19 @@ WizardThing::WizardThing(bool visible)
 	
 void WizardThing::die()
 {
-	Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		Physics::getSingleton().getTeam(getLastDamageSourceTeamNum())->incrementScore();
+
+		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
+		{
+			// find the wizard's player
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
+
+			// kill it
+			Multiplayer::getSingleton().serverSendText(" " , ID_DIE, player);
+		}			
+	}
 	
 	setHealth(WIZARD_HEALTH);
 }

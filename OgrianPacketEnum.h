@@ -88,6 +88,8 @@ enum PacketID
 	ID_SETSCORE,
 	ID_CLEAR_SCOREBOARD,
 	ID_ADD_SCORE,
+
+	ID_DIE,
 };
 
 #endif

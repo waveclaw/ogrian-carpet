@@ -64,8 +64,10 @@ public:
 
 	virtual void move(Real time);
 
+	virtual void die();
+
 	// this must not be destroyed
-	virtual void destroy();
+	virtual void destroy() {}
 
 private:
 	Camera* mCamera;

@@ -47,6 +47,8 @@ const Real CAMERA_FALL_MAX = 10;
 
 const Real WIZARD_HEALTH = 100;
 const Real WIZARD_SCALE = 3;
+const Real WIZARD_DEATH_OFFSET_MIN = 10;
+const Real WIZARD_DEATH_OFFSET_MAX = 30;
 
 const Real THING_CULL_DIST = 300;
 const Real FOG_DENSITY = 0.008;
