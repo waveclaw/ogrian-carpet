@@ -129,7 +129,9 @@ void Castle::move(Real time)
 	// check the blocks
 	for (int i=1; i<NUM_BLOCKS; i++)
 	{
-		if (mBlocks[i] && mBlocks[i]->getCurrentLevel() <= 0)
+		if (mBlocks[i] 
+			&& mBlocks[i]->getCurrentLevel() <= 0
+			&& mBlocks[i]->getVelY() <= 0 )
 		{
 			mBlocks[i]->destroy();
 			mBlocks[i] = 0;
@@ -402,7 +404,7 @@ void Castle::setLevel(Real level)
 	// set the level of each turret
 	for (int i=1; i<NUM_BLOCKS; i++)
 	{
-		if (level+1 >= i)
+		if (level+1 > i)
 		{
 			// make the turret if needed
 			if (mBlocks[i] == 0)
@@ -544,14 +546,14 @@ void CastleTurretThing::setPercentage(Real per)
 {
 	CastleBlockThing::setPercentage(per);
 	
-	if (per >= 1 && !mCrane) 
+	if (per >= 0 && !mCrane) 
 	{
 		Vector3 pos = getPosition();
 		pos.y = getGroundY() + getHeight();
 		mCrane = new CraneThing(getTeamNum(), pos);
 		Physics::getSingleton().addThing(mCrane);
 	}
-	else if (per < 1 && mCrane)
+	else if (per <= 0 && mCrane)
 	{
 		mCrane->destroy();
 		mCrane = 0;

@@ -50,28 +50,33 @@ namespace Ogrian
 class CastleBlockThing : public DamageableThing
 {
 public:
-	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width=CONR("CASTLE_WIDTH")) 
+	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height) 
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE)
 	{
+		setHeight(height);
+
 		mCastle = castle;
 
 		// find the ground	
-		Real w = getWidth()/2;
+		Real w = width/2;
 		Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
 		Real ground01 = getGroundY(pos + Vector3(-w,0, w));
 		Real ground10 = getGroundY(pos + Vector3( w,0,-w));
 		Real ground11 = getGroundY(pos + Vector3( w,0, w));
+		Real groundc  = getGroundY(pos + Vector3( 0,0, 0));
 
 		Real ground = ground00;
 		if (ground01 < ground) ground = ground01;
 		if (ground10 < ground) ground = ground10;
 		if (ground11 < ground) ground = ground11;
-		mGroundY = ground;
+		if (groundc < ground)  ground = groundc;
+
+		mGroundY = ground - CONR("CASTLE_OFFSET") - height/2;
 
 		// start at zero
-		setPosY(mGroundY - CONR("CASTLE_OFFSET") - getHeight()*2);
+		setPosY(0.1 + mGroundY);
 		mTargetY = getPosY();
-		setPercentage(0);
+		setPercentage(0.1);
 
 		// set the team
 		if (castle)
@@ -83,7 +88,9 @@ public:
 	{
 		if (per >= 1) per = 1;
 		if (per <= 0) per = -0.1;
-		Real newTargetY = mGroundY - CONR("CASTLE_OFFSET") - getHeight()/2 + getHeight()*per;
+		if (per <= CONR("CASTLETURRET_MIN_PER")) per = CONR("CASTLETURRET_MIN_PER");
+
+		Real newTargetY = mGroundY + getHeight()*per;
 
 		if (newTargetY == mTargetY) return;
 
@@ -144,15 +151,12 @@ class CastleTurretThing : public CastleBlockThing
 {
 public:
 	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"))
+		: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"), CONR("CASTLETURRET_HEIGHT"))
 	{
 		mCrane = 0;
 
-		//setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
 			CONR("CASTLETURRET_MESH_SCALE"), CONR("CASTLETURRET_MESH_RATIO"));
-
-		setHeight(CONR("CASTLETURRET_HEIGHT"));
 	}
 
 	virtual void destroy() 
@@ -177,15 +181,12 @@ class CastleKeepThing : public CastleBlockThing
 {
 public:
 	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"))
+		: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"), CONR("CASTLEKEEP_HEIGHT"))
 	{
 		mCrane = 0;
 
-		//setMaterial("Ogrian/Tower");
 		static_cast<Model*>(getVisRep())->setMesh("keep.mesh",
 			CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
-
-		setHeight(CONR("CASTLEKEEP_HEIGHT"));
 	}
 
 	virtual ThingType getType()	{ return CASTLEKEEP; }
