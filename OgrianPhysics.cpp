@@ -89,9 +89,7 @@ void Physics::serverFrame(Real time)
 		{
 			BitStream bs;
 			thing->generateBitStream(bs);
-			Multiplayer::getSingleton().serverSendAll(&bs);
-
-			LogManager::getSingleton().logMessage(String("Sending Update for ") << thing->getUID());
+			Multiplayer::getSingleton().serverSendAll(&bs, false);
 		}
 	}
 }
@@ -211,6 +209,11 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 		// add it to the physics
 		addThing(thing);
+
+		// send it to the clients immediately
+		BitStream bs;
+		thing->generateBitStream(bs);
+		Multiplayer::getSingleton().serverSendAll(&bs, false);
 
 		return true;
 	}

@@ -66,13 +66,13 @@ public:
 	void clientStart();
 
 	// send a message to the server
-	void clientSend(BitStream* bitStream);
+	void clientSend(BitStream* bitStream, bool reliable=true);
 	void clientSendText(String message, int type);
 
 	// send a message to a client
-	void serverSend(BitStream* bitStream, PlayerID player);
+	void serverSend(BitStream* bitStream, PlayerID player, bool reliable=true);
 	void serverSendText(String message, int type, PlayerID player);
-	void serverSendAll(BitStream* bitStream);
+	void serverSendAll(BitStream* bitStream, bool reliable=true);
 	void serverSendAllText(String message, int type);
 
 	// disconnect from the server
