@@ -78,20 +78,6 @@ public:
 		return true;
 	}
 
-	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING)
-	{
-		Thing::generateBitStream(bitstream,pid);
-		bitstream.Write(mHealth);
-	}
-
-	virtual void interpretBitStream(BitStream& bitstream)
-	{
-		Thing::interpretBitStream(bitstream);
-		bitstream.Read(mHealth);
-
-		setHealth(mHealth);
-	}
-
 private:
 	int mHealth;
 	int mLastDamageSource;

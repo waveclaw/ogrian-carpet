@@ -158,4 +158,26 @@ void WizardThing::destroy()
 
 //----------------------------------------------------------------------------
 
+void WizardThing::generateBitStream(BitStream& bitstream, int pid)
+{
+	DamageableThing::generateBitStream(bitstream,pid);
+	bitstream.Write(getHealth());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::interpretBitStream(BitStream& bitstream)
+{
+	DamageableThing::interpretBitStream(bitstream);
+
+	// ignore incoming health if this is a server
+	if (Multiplayer::getSingleton().isClient())
+	{
+		int health;
+		bitstream.Read(health);
+		setHealth(health);
+	}
+}
+//----------------------------------------------------------------------------
+
 }

@@ -80,6 +80,9 @@ public:
 	virtual void die();
 	
 	virtual void destroy();
+	
+	virtual void WizardThing::generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
+	virtual void WizardThing::interpretBitStream(BitStream& bitstream);
 
 private:
 	HealthBarEffect* mBar;
