@@ -147,8 +147,11 @@ private:
 
 	bool mInPhysics; // wether or not its in the physics engine yet
 
-	bool mPlayingSound;
-	int mCurrentSound;
+	bool mInEarshot; // if this thing can be heard by the camera
+	bool mPlayingSound; // if this thing is playing a sound
+	int mCurrentSound; // the index of the current sound
+	String mSoundFilename; // the filename of the sound
+	bool mSoundLoop;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
@@ -156,6 +159,8 @@ private:
 	virtual void _addToRenderer();
 	virtual void _removeFromRenderer();
 	virtual void _updateVisibility(); // based on distance from camera
+
+	virtual void _updateAudibility(); // based on distance from camera
 };
 
 }

@@ -44,6 +44,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mAlive = true;
 	mInPhysics = false;
 	mPlayingSound = false;
+	mInEarshot = false;
 	mCurrentSound = 0;
 
 	// name it
@@ -119,7 +120,7 @@ void Thing::setPosition(Vector3 pos)
 		Physics::getSingleton().updateThing(this, mPos, pos);
 
 	// update the sound
-	if (mPlayingSound)
+	if (mPlayingSound && mInEarshot && pos != mPos)
 		Audio::getSingleton().setSoundPosition(mCurrentSound, pos);
 
 	// update mPos
@@ -177,6 +178,7 @@ void Thing::move(Real time)
 	setPosition(mPos + mVel * time);
 
 	_updateVisibility();
+	_updateAudibility();
 }
 
 // only render things that are close to the camera
@@ -274,17 +276,42 @@ Real Thing::getGroundY(Vector3 pos)
 
 void Thing::playSound(String filename, bool loop)
 {
-	mCurrentSound = Audio::getSingleton().playSound(filename, getPosition(), loop);
+	mSoundFilename = filename;
+	mSoundLoop = loop;
 	mPlayingSound = true;
+
+	if (mInEarshot)
+		mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
 }
 
 void Thing::stopSound()
 {
 	if (!mPlayingSound) return;
 
-	Audio::getSingleton().stopSound(mCurrentSound);
-
 	mPlayingSound = false;
+
+	if (mInEarshot)
+		Audio::getSingleton().stopSound(mCurrentSound);
+}
+
+void Thing::_updateAudibility()
+{
+	bool wasInEarshot = mInEarshot;
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+
+	// can it be heard?
+	mInEarshot = cylinderDistance(cam) < THING_EARSHOT;
+
+	if (mPlayingSound)
+	{
+		// silence it if it has gone out of range
+		if (wasInEarshot && !mInEarshot)
+			Audio::getSingleton().stopSound(mCurrentSound);
+
+		// start the sound again when it comes in range
+		if (!wasInEarshot && mInEarshot)
+			mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
+	}
 }
 
 }
