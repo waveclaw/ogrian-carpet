@@ -84,6 +84,17 @@ public:
 
 		DamageableThing::destroy();
 	}
+
+	virtual void clearCut()
+	{
+		DamageableThing::destroy();
+	}
+
+	virtual void collided(Thing* e)
+	{
+		if (e->getType() == CASTLEWALL || e->getType() == CASTLETOWER)
+			clearCut();
+	}
 };
 
 }

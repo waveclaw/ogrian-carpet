@@ -54,7 +54,7 @@ public:
 		mCastle = castle;
 
 		// start at zero
-		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()/2);
+		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()*2);
 		mTargetY = getPosY();
 		setPercentage(0);
 	}

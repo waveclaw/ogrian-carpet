@@ -60,7 +60,7 @@ public:
 	virtual void collidedGround()
 	{
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());
-		if (team && !team->hasCastle())
+		if (getGroundY() > CONR("BUILDING_MIN_GROUNDY") && team && !team->hasCastle())
 		{
 			// make a castle
 			Castle* castle = new Castle(getTeamNum(), getPosition());
