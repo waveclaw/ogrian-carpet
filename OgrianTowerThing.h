@@ -267,7 +267,11 @@ public:
 				Vector3 startPos = getPosition();
 				startPos.y += getHeight()/2 - CONR("TOWER_OFFSET");
 
-				Vector3 vel = target->getPosition() - startPos;
+				// account for target movement
+				Real claimTravelTime = sphereDistance(target) / CONR("CLAIMSPELL_SPEED");
+				Vector3 targetOffset = target->getVelocity()*claimTravelTime;
+
+				Vector3 vel = (target->getPosition() + targetOffset) - startPos;
 				vel.normalise();
 				vel *= CONR("CLAIMSPELL_SPEED");
 

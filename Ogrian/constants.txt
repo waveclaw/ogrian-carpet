@@ -5,6 +5,9 @@
 # the number of bots in skirmish mode
 NUM_BOTS=3
 
+# the number of huts
+NUM_HUTS=20
+
 #the amount of mana a bot drops when it dies
 BOT_MANA_DROP=1
 
@@ -44,7 +47,7 @@ CRANE_SIGHT_RANGE=50
 CRANE_HEALTH=10
 CRANE_ALTITUDE_MIN=1
 CRANE_ORBIT_MIN=1
-CRANE_ORBIT_MAX=45
+CRANE_ORBIT_MAX=75
 CRANE_FLAP_PERIOD=0.1
 CRANE_IDLE_TIME=3
 CRANE_VARIANCE=.3

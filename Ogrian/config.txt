@@ -44,6 +44,6 @@ blue=255
 
 # Performance variables
 # all units are in meters, seconds, or meters per second
-THING_CULL_DIST=150
+THING_CULL_DIST=100
 THING_EARSHOT=300
 CORPSE_LIFETIME=10

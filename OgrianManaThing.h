@@ -50,6 +50,8 @@ public:
 	ManaThing(int amount=1, Vector3 pos = Vector3(0,0,0)) 
 		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
+		mStopped = false;
+
 		setAmount(amount);
 		setColour(ColourValue(.9,.9,.9));
 		setUpdateType(PERIODIC);
@@ -121,6 +123,8 @@ public:
 	// move downhill at a constant slow velocity
 	virtual void think()
 	{
+		if (mStopped) return;
+
 		Vector3 vel;
 		Vector3 pos = getPosition();
 		vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
@@ -129,7 +133,14 @@ public:
 		vel.normalise();
 		vel *= CONR("MANA_DRIFT_SPEED");
 
-		setVelocity(vel);
+		// check to see if we're stuck
+		if (Vector3(vel + getVelocity()).length() < CONR("MANA_DRIFT_SPEED")/4)
+		{
+			mStopped = true;
+			setVelocity(Vector3(0,0,0));
+		}
+		else
+			setVelocity(vel);
 
 		setUpdateFlag();
 	}
@@ -148,6 +159,7 @@ public:
 
 private:
 	int mAmount;
+	bool mStopped;
 };
 
 }
