@@ -63,6 +63,8 @@ public:
 		SummonSpellThing(teamNum, pos, vel) 
 	{}
 
+	virtual ThingType getType() { return SENTINELSUMMONTHING; }
+
 	virtual void collidedGround() 
 	{
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());

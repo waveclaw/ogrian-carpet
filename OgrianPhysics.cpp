@@ -383,13 +383,13 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case BUILDTHING: return new BuildSpellThing(teamNum);
 
-		case SUMMONTHING: return new BuildSpellThing(teamNum);
+		case SUMMONTHING: return new SummonSpellThing(teamNum);
+		case SENTINELSUMMONTHING: return new SentinelSummonSpellThing(teamNum);
 
 		case BALOONTHING: return new BaloonThing(teamNum);
 
 		case CRANETHING: return new CraneThing(teamNum);
-
-		case SENTINELTHING: return new CraneThing(teamNum);
+		case SENTINELTHING: return new SentinelThing(teamNum);
 
 		default:
 			std::ostringstream num("");

@@ -589,6 +589,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			packetToString(packet, msg);
 			Menu::getSingleton().setMessage(msg);
 			Menu::getSingleton().show();
+			Menu::getSingleton().button_disconnect();
 			return true;
 		}
 

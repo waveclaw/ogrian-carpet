@@ -164,6 +164,30 @@ public:
 		Thing::destroy();
 	}
 
+	// generate a bitstream from this thing
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING)
+	{
+		TimedThing::generateBitStream(bitstream, pid);
+		
+		// include mSmoke and mFall
+		bitstream.Write(mSmoke);
+		bitstream.Write(mFall);
+	}
+
+	// interpret a bitstream for this thing
+	virtual void interpretBitStream(BitStream& bitstream)
+	{
+		TimedThing::interpretBitStream(bitstream);
+		
+		// read mSmoke and mFall
+		bool smoke, fall;
+		bitstream.Read(smoke);
+		bitstream.Read(fall);
+
+		mSmoke = smoke;
+		mFall = fall;
+	}
+
 private:
 	bool mSmoke, mFall;
 	int mDamage;
