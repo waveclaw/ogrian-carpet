@@ -284,10 +284,10 @@ void Renderer::createFoliage(int num)
 			Vector3 pos = Vector3(x,0,z);
 			Real scale = CONR("FOLIAGE_SCALE") + (Math::SymmetricRandom()-.5) * CONR("FOLIAGE_SCALE_VAR");
 
-			//Physics::getSingleton().addThing(new FoliageThing(scale,pos));
-			ManaThing* mana = new ManaThing(10,pos);
-			mana->setTeamNum(0);
-			Physics::getSingleton().addThing(mana);
+			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
+			//ManaThing* mana = new ManaThing(10,pos);
+			//mana->setTeamNum(0);
+			//Physics::getSingleton().addThing(mana);
 		}
 	}
 }

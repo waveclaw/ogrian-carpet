@@ -5,8 +5,8 @@ name=Mike
 # 0: Angry Face
 # 1: JeffK
 # 2: Mike
-# 3: Rick
-# 4: Jess
+# 3: Jess
+# 4: Rick
 # 5: Bunny
 skin=2
 

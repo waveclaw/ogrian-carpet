@@ -1,6 +1,5 @@
-Scale.x=2
+Scale.xz=2
 Scale.y=.5
-Scale.z=2
 
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
@@ -39,7 +38,7 @@ PageSize=513
 TileSize=65
 
 # The maximum error allowed when determining which LOD to use
-MaxPixelError=3
+MaxPixelError=10
 
 # The size of a terrain page, in world units
 PageWorldX=1026

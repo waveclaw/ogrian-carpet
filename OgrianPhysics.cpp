@@ -466,7 +466,7 @@ void Physics::addThing(Thing* thing)
 	else // if its a server or singleplayer
 	{
 		// make sure it's not too big
-		if (thing->getWidth() > mWorldSize / PHYSICS_GRID_SIZE)
+		if (thing->getWidth() / 2.0 > mWorldSize / PHYSICS_GRID_SIZE)
 		{
 			Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
 					"Physics::addThing" );
@@ -547,6 +547,8 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 	{
 		// put it among the others
 		mOtherThings.push_back(thing);
+
+		LogManager::getSingleton().logMessage("WARNING - ADDING THING OUTSIDE GRID");
 	}
 }
 
@@ -699,14 +701,26 @@ void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 
 int Physics::getGridU(Real x)
 {
-	return (x/mWorldSize) * PHYSICS_GRID_SIZE;
+	// scale x so that the grid covers some of the ocean
+	//x = (x - (mWorldSize / 2.0)) * 2.0;
+
+	//return (x/mWorldSize) * PHYSICS_GRID_SIZE;
+
+	Real c = CONR("COASTLINE");
+	return ((x+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }
 
 //----------------------------------------------------------------------------
 
 int Physics::getGridV(Real z)
 {
-	return (z/mWorldSize) * PHYSICS_GRID_SIZE;
+	// scale z so that the grid covers some of the ocean
+	//z = (z - (mWorldSize / 2.0)) * 2.0;
+
+	//return (z/mWorldSize) * PHYSICS_GRID_SIZE;
+	
+	Real c = CONR("COASTLINE");
+	return ((z+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }
 
 //----------------------------------------------------------------------------
@@ -796,6 +810,8 @@ and its neighbors' things.
 */
 void Physics::collisionCheck()
 {
+	//if (true) return;
+
 	unsigned int i,j,t,u;
 	i = j = t = u = 0;
 
@@ -831,72 +847,72 @@ void Physics::collisionCheck()
 		}
 	}
 
-	// check the last row for collisions with the others
-	for (i=0; i<PHYSICS_GRID_SIZE; i++)
-	{
-		for (t=0; t<mThingGrid[i][PHYSICS_GRID_SIZE-1].size(); t++)
-		{
-			// get the thing
-			Thing* thing = mThingGrid[i][PHYSICS_GRID_SIZE-1][t];
+	//// check the last row for collisions with the others
+	//for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	//{
+	//	for (t=0; t<mThingGrid[i][PHYSICS_GRID_SIZE-1].size(); t++)
+	//	{
+	//		// get the thing
+	//		Thing* thing = mThingGrid[i][PHYSICS_GRID_SIZE-1][t];
 
-			// check it against all following things in this cell
-			for (u=0; u<mOtherThings.size(); u++)
-				pairCollisionCheck(thing, mOtherThings[u]);
-		}
-	}
+	//		// check it against all following things in this cell
+	//		for (u=0; u<mOtherThings.size(); u++)
+	//			pairCollisionCheck(thing, mOtherThings[u]);
+	//	}
+	//}
 
-	// check the last column for collisions with the others
-	for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
-	{
-		for (t=0; t<mThingGrid[PHYSICS_GRID_SIZE-1][j].size(); t++)
-		{
-			// get the thing
-			Thing* thing = mThingGrid[PHYSICS_GRID_SIZE-1][j][t];
+	//// check the last column for collisions with the others
+	//for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
+	//{
+	//	for (t=0; t<mThingGrid[PHYSICS_GRID_SIZE-1][j].size(); t++)
+	//	{
+	//		// get the thing
+	//		Thing* thing = mThingGrid[PHYSICS_GRID_SIZE-1][j][t];
 
-			// check it against all other things
-			for (u=0; u<mOtherThings.size(); u++)
-				pairCollisionCheck(thing, mOtherThings[u]);
-		}
-	}
+	//		// check it against all other things
+	//		for (u=0; u<mOtherThings.size(); u++)
+	//			pairCollisionCheck(thing, mOtherThings[u]);
+	//	}
+	//}
 
-	// check the others for collisions with the first row
-	for (i=0; i<PHYSICS_GRID_SIZE; i++)
-	{
-		for (t=0; t<mThingGrid[i][0].size(); t++)
-		{
-			// get the thing
-			Thing* thing = mThingGrid[i][0][t];
+	//// check the others for collisions with the first row
+	//for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	//{
+	//	for (t=0; t<mThingGrid[i][0].size(); t++)
+	//	{
+	//		// get the thing
+	//		Thing* thing = mThingGrid[i][0][t];
 
-			// check it against all other things
-			for (u=0; u<mOtherThings.size(); u++)
-				pairCollisionCheck(thing, mOtherThings[u]);
-		}
-	}
+	//		// check it against all other things
+	//		for (u=0; u<mOtherThings.size(); u++)
+	//			pairCollisionCheck(thing, mOtherThings[u]);
+	//	}
+	//}
 
-	// check the others for collisions with the first col
-	for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
-	{
-		for (t=0; t<mThingGrid[0][j].size(); t++)
-		{
-			// get the thing
-			Thing* thing = mThingGrid[0][j][t];
+	//// check the others for collisions with the first col
+	//for (j=0; j<PHYSICS_GRID_SIZE-1; j++)
+	//{
+	//	for (t=0; t<mThingGrid[0][j].size(); t++)
+	//	{
+	//		// get the thing
+	//		Thing* thing = mThingGrid[0][j][t];
 
-			// check it against all other things
-			for (u=0; u<mOtherThings.size(); u++)
-				pairCollisionCheck(thing, mOtherThings[u]);
-		}
-	}
+	//		// check it against all other things
+	//		for (u=0; u<mOtherThings.size(); u++)
+	//			pairCollisionCheck(thing, mOtherThings[u]);
+	//	}
+	//}
 
-	// check the others for collisions among themselves
-	for (i=0; i<mOtherThings.size(); i++)
-	{
-		// get the thing
-		Thing* thing = mOtherThings[i];
+	//// check the others for collisions among themselves
+	//for (i=0; i<mOtherThings.size(); i++)
+	//{
+	//	// get the thing
+	//	Thing* thing = mOtherThings[i];
 
-		// check it against all following other things
-		for (u=i+1; u<mOtherThings.size(); u++)
-			pairCollisionCheck(thing, mOtherThings[u]);
-	}
+	//	// check it against all following other things
+	//	for (u=i+1; u<mOtherThings.size(); u++)
+	//		pairCollisionCheck(thing, mOtherThings[u]);
+	//}
 }
 
 //----------------------------------------------------------------------------

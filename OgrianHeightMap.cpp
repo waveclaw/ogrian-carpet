@@ -66,7 +66,7 @@ HeightMap::~HeightMap()
 
 int HeightMap::getWorldSize()
 {
-	return mSize;
+	return mSize * mScalex;
 }
 
 //----------------------------------------------------------------------------
@@ -100,22 +100,19 @@ Real HeightMap::getHeightAt(Real x, Real z)
 	x /= mScalex;
 	z /= mScalez;
 
-	// a smoothing constant
-	const int c = CONR("HEIGHTMAP_SMOOTHING");
-
 	// calculate the matrix indeces for the grid cell
-	int fx = int(x/c)*c;
-	int fz = int(z/c)*c;
+	int fx = int(x);
+	int fz = int(z);
 
 	// calculate the relative location within the cell
-	Real modx = (x - fx)/c;
-	Real modz = (z - fz)/c;
+	Real modx = (x - fx);
+	Real modz = (z - fz);
 
 	// calculate the height at each corner of the cell
 	Real height00 = Real(_worldheight(fx  ,fz))   * mScaley;
-	Real height01 = Real(_worldheight(fx  ,fz+c)) * mScaley;
-	Real height10 = Real(_worldheight(fx+c,fz))   * mScaley;
-	Real height11 = Real(_worldheight(fx+c,fz+c)) * mScaley;
+	Real height01 = Real(_worldheight(fx  ,fz+1)) * mScaley;
+	Real height10 = Real(_worldheight(fx+1,fz))   * mScaley;
+	Real height11 = Real(_worldheight(fx+1,fz+1)) * mScaley;
 
 	// calculate the weighted average
 	Real height = height00*(1-modx)*(1-modz) 
@@ -155,9 +152,8 @@ void HeightMap::loadTerrain( const String& filename )
 	ConfigFile config;
 	config.load( filename );
 
-	mScalex = atof( config.getSetting( "Scale.x" ).c_str() );
+	mScalex = mScalez = atof( config.getSetting( "Scale.xz" ).c_str() );
 	mScaley = atof( config.getSetting( "Scale.y" ).c_str() );
-	mScalez = atof( config.getSetting( "Scale.z" ).c_str() );
 
 	String terrain_filename = config.getSetting( "HeightMap" );
 
