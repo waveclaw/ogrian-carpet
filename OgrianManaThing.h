@@ -90,6 +90,8 @@ public:
 				// absorb the other
 				setAmount(getAmount() + m->getAmount());
 				m->setAmount(0);
+		
+				requestUpdate();
 			}
 			else
 			{
@@ -117,21 +119,6 @@ public:
 	virtual ThingType getType()
 	{
 		return MANATHING;
-	}
-
-	virtual void generateBitStream(BitStream& bitstream)
-	{
-		Thing::generateBitStream(bitstream);
-		bitstream.Write(getAmount());
-	}
-	virtual void interpretBitStream(BitStream& bitstream)
-	{
-		int amount;
-
-		Thing::interpretBitStream(bitstream);
-		bitstream.Read(amount);
-
-		setAmount(amount);
 	}
 
 private:
