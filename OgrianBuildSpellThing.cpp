@@ -104,6 +104,19 @@ void BuildSpellThing::collidedGround()
 			Thing* thing = Physics::getSingleton().getThingByIndex(i);
 			if (thing->isBuilding() && axisDistance(thing) < 2*CONR("TOWER_WIDTH") + CONR("CASTLE_WIDTH"))
 			{
+				// report the problem
+				if (team->getWizardUID() == 0)
+				{
+					// send it to the HUD
+					Hud::getSingleton().setMessage(CONS("BUILD_FAIL_PROXIMITY"), true);
+				}
+				else
+				{
+					// send a message to the right player
+					PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+					Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_PROXIMITY"), player);
+				}
+
 				destroy();
 				return;
 			}
