@@ -158,7 +158,7 @@ void Menu::button_musicToggle()
 		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
-		Audio::getSingleton().playSong("Media/music/LastGlimpse.ogg");
+		Audio::getSingleton().playSong("Media/music/ogrian_theme.ogg");
 		mMusic = true;
 	}
 }
@@ -337,7 +337,7 @@ void Menu::show()
 
 	// play menu music
 	if (mMusic)
-		Audio::getSingleton().playSong("Media/music/LastGlimpse.ogg");
+		Audio::getSingleton().playSong("Media/music/ogrian_theme.ogg");
 
 	mActive = true;
 }

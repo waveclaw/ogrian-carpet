@@ -12,6 +12,11 @@ Jeremiah Powell:
  palmtree.png
  palmtreedead.png
  fireballblast.png
+ quartz.png
+ quartz-broken.png
+ beryl.png
+ beryl-broken.png
+ select.png
 
 
 sounds:
@@ -26,6 +31,9 @@ Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/
  Riding the Dragon 
  Last Glimpse
 
+Adrian Ouarar
+ ogrian_theme.ogg
+
 
 Skins:
 =============
@@ -33,3 +41,17 @@ Jeff Knous
 Mike Prosser
 Rick Prosser
 Jess Prosser
+
+
+maps:
+=============
+Mike Prosser
+ cliffs
+ crescent
+ islands
+ hell
+ snow
+
+Corey Ulmer
+ lowlands
+ hellbridge

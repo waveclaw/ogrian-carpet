@@ -124,6 +124,10 @@ sounds:
 -Mike Prosser
 -WorldForge
 
+music:
+-Adrian Ouarar
+-John Michel
+
 maps:
 -Mike Prosser
 -Corey Ulmer (lowlands)
