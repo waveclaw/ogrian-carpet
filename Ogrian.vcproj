@@ -216,6 +216,12 @@
 				RelativePath="OgrianAIWizardThing.h">
 			</File>
 			<File
+				RelativePath="OgrianAlbatrossThing.cpp">
+			</File>
+			<File
+				RelativePath="OgrianAlbatrossThing.h">
+			</File>
+			<File
 				RelativePath="OgrianBaloonThing.cpp">
 			</File>
 			<File
@@ -376,6 +382,9 @@
 			Filter="">
 			<File
 				RelativePath="OgrianAkimboFireballSpell.h">
+			</File>
+			<File
+				RelativePath="OgrianAlbatrossSpell.h">
 			</File>
 			<File
 				RelativePath="OgrianBuildSpell.h">

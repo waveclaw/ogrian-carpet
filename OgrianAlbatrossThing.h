@@ -19,68 +19,44 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSpellManager.h
+OgrianAlbatrossThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This manages the spells for the HUD, etc
+Description: The albatross is like a cruise missile, it just flies straight until it hits something.
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianSpellManager_H__
-#define __OgrianSpellManager_H__
+#ifndef __OgrianAlbatrossThing_H__
+#define __OgrianAlbatrossThing_H__
 
 #include <Ogre.h>
-#include <OgreSingleton.h>
-#include "OgrianSpell.h"
+#include "OgrianDamageableThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
+/////////////////////////////////////////////////////////////////////////////
 
-#define SPELL_CLAIM				0
-#define SPELL_BUILD				1
-#define SPELL_FIREBALL			2
-#define SPELL_SENTINEL			3
-#define SPELL_TICK				4
-#define SPELL_GNOME				5
-#define SPELL_SPEED				6
-#define SPELL_AKIMBO_FIREBALL	7
-#define SPELL_ALBATROSS			8
-#define SPELL_FIRESTORM			9
-#define SPELL_METEOR			10
-#define NUM_SPELLS				10
-
-class SpellManager : public Singleton< SpellManager >
+class AlbatrossThing : public DamageableThing
 {
 public:
-	virtual ~SpellManager();
-    static SpellManager& getSingleton(void);
+	AlbatrossThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0));
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
+	virtual ThingType getType() { return ALBATROSSTHING; }
 
-	virtual void disableAllSpells();
-
-	virtual void readySpell(int num);
-	virtual void readyNextSpell();
-	virtual void readyPrevSpell();
-	virtual void readyDefaultSpell();
-
-	virtual int getManaCost();
-
-	virtual Real castSpell();
+	virtual void collided(Thing* e);
+	virtual void collidedGround();
+	virtual void think();
+	virtual void clientThink();
+	virtual void die();
 
 private:
-	SpellManager();
-	virtual void readyCurrentSpell();
-
-	int mCurrentSpell;
-	Spell* mSpells[NUM_SPELLS];
-
+	bool mLastFlap;
+	Time mDeathTime;
 };
 
 }

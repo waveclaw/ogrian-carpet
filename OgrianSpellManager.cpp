@@ -29,6 +29,7 @@ Description: This manages the spells for the HUD, etc
 
 #include "OgrianSpellManager.h"
 #include "OgrianHud.h"
+#include "OgrianAlbatrossSpell.h"
 #include "OgrianGnomeSpell.h"
 #include "OgrianTickSpell.h"
 #include "OgrianSentinelSpell.h"
@@ -61,6 +62,7 @@ SpellManager::SpellManager()
 	mSpells[SPELL_SENTINEL] = new SentinelSpell();
 	mSpells[SPELL_TICK] = new TickSpell();
 	mSpells[SPELL_GNOME] = new GnomeSpell();
+	mSpells[SPELL_ALBATROSS] = new AlbatrossSpell();
 
 	disableAllSpells();
 	enableSpell(SPELL_CLAIM);

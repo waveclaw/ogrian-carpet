@@ -1,4 +1,52 @@
 
+material Ogrian/SpellIcon/Albatross/Ready
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crane/crane_u_r.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Albatross/Enabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture crosshair.png
+			}
+		}
+	}
+}
+
+material Ogrian/SpellIcon/Albatross/Disabled
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture clear.png
+			}
+		}
+	}
+}
+
 material Ogrian/SpellIcon/Gnome/Ready
 {
 	technique

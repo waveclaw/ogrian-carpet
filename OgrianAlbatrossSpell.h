@@ -19,68 +19,53 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSpellManager.h
+OgrianAlbatrossSpell.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This manages the spells for the HUD, etc
+Description: This summons an albatross
 
 /*------------------------------------*/
 
 
-#ifndef __OgrianSpellManager_H__
-#define __OgrianSpellManager_H__
+#ifndef __OgrianAlbatrossSpell_H__
+#define __OgrianAlbatrossSpell_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>
 #include "OgrianSpell.h"
+#include "OgrianRenderer.h"
+#include "OgrianPhysics.h"
+#include "OgrianAlbatrossThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-
-#define SPELL_CLAIM				0
-#define SPELL_BUILD				1
-#define SPELL_FIREBALL			2
-#define SPELL_SENTINEL			3
-#define SPELL_TICK				4
-#define SPELL_GNOME				5
-#define SPELL_SPEED				6
-#define SPELL_AKIMBO_FIREBALL	7
-#define SPELL_ALBATROSS			8
-#define SPELL_FIRESTORM			9
-#define SPELL_METEOR			10
-#define NUM_SPELLS				10
-
-class SpellManager : public Singleton< SpellManager >
+class AlbatrossSpell : public Spell
 {
 public:
-	virtual ~SpellManager();
-    static SpellManager& getSingleton(void);
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
+	// make an instance of this spell
+	virtual void cast(Vector3 pos, Vector3 dir)
+	{
+		dir.normalise();
+		dir *= CONR("ALBATROSS_SPEED");
 
-	virtual void disableAllSpells();
+		AlbatrossThing* thing = new AlbatrossThing(0, pos, dir);
+		Physics::getSingleton().addThing(thing);
+	}
 
-	virtual void readySpell(int num);
-	virtual void readyNextSpell();
-	virtual void readyPrevSpell();
-	virtual void readyDefaultSpell();
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Albatross/Ready"); }; 
 
-	virtual int getManaCost();
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Albatross/Enabled"); }; 
 
-	virtual Real castSpell();
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Albatross/Disabled"); }; 
 
-private:
-	SpellManager();
-	virtual void readyCurrentSpell();
+	virtual Real getCastPeriod() { return CONR("SUMMONSPELL_CAST_PERIOD"); }
 
-	int mCurrentSpell;
-	Spell* mSpells[NUM_SPELLS];
+	virtual int getManaCost() { return CONI("ALBATROSS_COST"); }
 
+	virtual String getString() { return String("Albatross !"); }
 };
 
 }

@@ -75,6 +75,7 @@ enum ThingType
 	SENTINELTHING,
 	TICKTHING,
 	GNOMETHING,
+	ALBATROSSTHING,
 };
 
 enum ThingVisRep

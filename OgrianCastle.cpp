@@ -459,10 +459,13 @@ void Castle::setSpells(int level)
 		if (level >= 5) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
 
-		if (level >= 6) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
+		if (level >= 6) SpellManager::getSingleton().enableSpell(SPELL_ALBATROSS);
+		else			SpellManager::getSingleton().disableSpell(SPELL_ALBATROSS);
+
+		if (level >= 7) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
 		else			SpellManager::getSingleton().disableSpell(SPELL_FIRESTORM);
 		
-		if (level >= 7) SpellManager::getSingleton().enableSpell(SPELL_METEOR);
+		if (level >= 8) SpellManager::getSingleton().enableSpell(SPELL_METEOR);
 		else			SpellManager::getSingleton().disableSpell(SPELL_METEOR);
 	}
 	else if (Multiplayer::getSingleton().isServer())
@@ -494,10 +497,13 @@ void Castle::setSpells(int level)
 				if (level >= 5) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
 
-				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
+				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_ALBATROSS,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_ALBATROSS,ID_DISABLESPELL,player.id);
+
+				if (level >= 7) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_DISABLESPELL,player.id);
 				
-				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_METEOR,ID_ENABLESPELL,player.id);
+				if (level >= 8) Multiplayer::getSingleton().serverSendInt(SPELL_METEOR,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_METEOR,ID_DISABLESPELL,player.id);
 			}
 		}

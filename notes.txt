@@ -27,7 +27,7 @@ Spells
 -speeed (done)
 -akimbo fireball (done)
 -firestorm (done)
--summon albatross!
+-summon albatross! (done)
 -meteor - launched from own castle to wizard location, large area of effect
 
 
