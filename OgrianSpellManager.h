@@ -44,9 +44,9 @@ namespace Ogrian
 #define SPELL_CLAIM				0
 #define SPELL_BUILD				1
 #define SPELL_FIREBALL			2
-#define SPELL_AKIMBO_FIREBALL	3
-#define SPELL_FIRESTORM			4
-#define SPELL_SPEED				5
+#define SPELL_SPEED				3
+#define SPELL_AKIMBO_FIREBALL	4
+#define SPELL_FIRESTORM			5
 #define NUM_SPELLS				6
 
 class SpellManager : public Singleton< SpellManager >
