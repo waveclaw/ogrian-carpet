@@ -211,6 +211,15 @@ void Thing::setVelocity(Vector3 vel)
 
 void Thing::setPosition(Vector3 pos)
 {
+	Real worldSize = HeightMap::getSingleton().getWorldSize();
+	Real coast = CONR("COASTLINE");
+
+	// keep it inside the world
+	if (pos.x < 1-coast) pos.x = 1-coast;
+	if (pos.z < 1-coast) pos.z = 1-coast;
+	if (pos.x > worldSize + coast-1) pos.x = worldSize + coast-1;
+	if (pos.z > worldSize + coast-1) pos.z = worldSize + coast-1;
+
 	// update the sprite
 	mVisRep->setPosition(pos);
 
