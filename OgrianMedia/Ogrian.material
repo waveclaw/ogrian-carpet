@@ -80,6 +80,24 @@ material Ogrian/PalmTreeDead
 		}
 	}
 }
+material Ogrian/Wizard
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 0 0
+
+			texture_unit
+			{
+				texture sprites/wizard.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/Mana
 {
 	technique
