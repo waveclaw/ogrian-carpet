@@ -97,8 +97,6 @@ void Multiplayer::clientStart()
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
 				"Multiplayer::startClient" );
-
-	Menu::getSingleton().setMessage("Client Started");
 }
 
 //----------------------------------------------------------------------------
@@ -120,12 +118,10 @@ void Multiplayer::serverStart()
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::startServer" );
-	
-	Menu::getSingleton().setMessage("Server Started");
 
 	PlayerInfo server;
 	server.id.binaryAddress = 0;
-	server.name = mPlayerName;
+	server.name = mPlayerName + " (Serving)";
 	mPlayers.push_back(server);
 	PlayerList::getSingleton().addPlayer(server.name);
 }
@@ -362,10 +358,11 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
+			// oddly, nothing is done here
 			return true;
 		}
 
-		case ID_MAP_NAME:
+		case ID_MAP_NAME: //////////////////////////////////////////////////////
 		{
 			// get the name
 			String map;
@@ -382,19 +379,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 				// reconnect
 				clientStart();
+				return true;
 			}
 
 			// send our name to the server
 			clientSendText(mPlayerName,ID_ADD_PLAYER);
-			return true;
 
+			// hide the menu
+			Menu::getSingleton().hide();
+			return true;
 		}
-
-		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
-			// Couldn't deliver a reliable packet - i.e. the other system was abnormally terminated
-			//Except( Exception::ERR_INTERNAL_ERROR, "Error: Connection to Server lost.",
-				//"Multiplayer::handleOtherPacket" );
-			return true;
 	}
 	return false;
 }

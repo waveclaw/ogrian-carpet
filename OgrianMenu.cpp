@@ -98,6 +98,16 @@ void Menu::button_invertMouseToggle()
 	}
 }
 //----------------------------------------------------------------------------
+void Menu::button_quit()
+{
+	// disconnect
+	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
+	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
+
+	// hide the menu
+	hide();
+}
+//----------------------------------------------------------------------------
 void Menu::button_load()
 {
 	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
@@ -105,7 +115,7 @@ void Menu::button_load()
 //----------------------------------------------------------------------------
 void Menu::button_join()
 {
-	setMessage("Joining Server");
+	setMessage("Loading (Client) .  .  .");
 	Multiplayer::getSingleton().clientStart();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
@@ -119,7 +129,7 @@ void Menu::button_host()
 {
 	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
 
-	setMessage("Starting Server...");
+	setMessage("Loading (Server) .  .  .");
 	Multiplayer::getSingleton().serverStart();
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();

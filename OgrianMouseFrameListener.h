@@ -86,7 +86,11 @@ public:
 		std::string action = e->getActionCommand();
 
 		// REMEMBER TO REGISTER THE BUTTON BELOW!
-		if (action == "Ogrian/Menu/Exit") mQuit = true; 
+		if (action == "Ogrian/Menu/Exit")
+		{
+			Menu::getSingleton().button_quit();
+			mQuit = true; 
+		}
 		else if (action == "Ogrian/Menu/Load") Menu::getSingleton().button_load();
 		else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
 		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
