@@ -43,6 +43,9 @@ NUM_TOWERS=3
 NUM_TICKS=60
 NUM_SENTINELS=60
 
+# keep monsters this far away from the start location
+MONSTER_MIN_DIST=100
+
 # the number of huts
 NUM_HUTS=10
 

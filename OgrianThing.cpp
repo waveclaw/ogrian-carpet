@@ -414,6 +414,15 @@ Real Thing::cylinderDistance(Thing* e)
 
 //----------------------------------------------------------------------------
 
+// calculate the distance, neglecting the difference in altitude: sqrt(x^2+y^2)
+Real Thing::cylinderDistance(Vector3 pos)
+{
+	return sqrt((mPos.x - pos.x)*(mPos.x - pos.x) 
+			    + (mPos.z - pos.z)*(mPos.z - pos.z));
+}
+
+//----------------------------------------------------------------------------
+
 // calculate the distance: sqrt(x^2+y^2+z^2)
 Real Thing::sphereDistance(Thing* e)
 {

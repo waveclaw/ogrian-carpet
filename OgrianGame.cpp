@@ -425,7 +425,11 @@ void Game::startSkirmishGame()
 		}
 	}
 
-	int numSkins = SkinManager::getSingleton().numSkins();
+	// reset the player
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+	cam->die();
+	cam->setPosition(mStartPos);
+	Hud::getSingleton().reinit();
 
 	// set up a team 
 	ColourValue colour;
@@ -433,6 +437,8 @@ void Game::startSkirmishGame()
 	colour.g = atoi(mConfig.getSetting( "MONSTERS_GREEN" ).c_str()) / 255.0;
 	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
 	int teamNum = Physics::getSingleton().newTeam(colour);
+
+	Real minDist = atoi(mConfig.getSetting( "MONSTER_MIN_DIST" ).c_str());
 
 	// set up some enemy towers
 	Real numTowers = atoi(mConfig.getSetting( "NUM_TOWERS" ).c_str());
@@ -444,10 +450,11 @@ void Game::startSkirmishGame()
         Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		Vector3 pos = Vector3(x,0,z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY") && cam->cylinderDistance(pos) > minDist)
 		{
 			i++;
-			Vector3 pos = Vector3(x,0,z);
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
 			TowerThing* tower = new TowerThing(teamNum,pos);
@@ -465,10 +472,11 @@ void Game::startSkirmishGame()
         Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		Vector3 pos = Vector3(x,0,z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY") && cam->cylinderDistance(pos) > minDist)
 		{
 			i++;
-			Vector3 pos = Vector3(x,0,z);
 
 			TickThing* tick = new TickThing(teamNum,pos);
 			Physics::getSingleton().addThing(tick);
@@ -485,10 +493,11 @@ void Game::startSkirmishGame()
         Real z = Math::SymmetricRandom() * size;
 		Real y = HeightMap::getSingleton().getHeightAt(x, z);
 
-		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		Vector3 pos = Vector3(x,0,z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY") && cam->cylinderDistance(pos) > minDist)
 		{
 			i++;
-			Vector3 pos = Vector3(x,0,z);
 
 			SentinelThing* sentinel = new SentinelThing(teamNum,pos);
 			Physics::getSingleton().addThing(sentinel);
@@ -505,11 +514,6 @@ void Game::startSkirmishGame()
 	SpellManager::getSingleton().disableAllSpells();
 	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
-
-	// reset the player
-	Renderer::getSingleton().getCameraThing()->die();
-	Renderer::getSingleton().getCameraThing()->setPosition(mStartPos);
-	Hud::getSingleton().reinit();
 }
 
 //----------------------------------------------------------------------------

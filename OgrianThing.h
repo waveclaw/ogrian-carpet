@@ -164,6 +164,9 @@ public:
 	// calculate the x/z distance between two Things
 	virtual Real cylinderDistance(Thing* e);
 
+	// calculate the x/z distance between this thign and a point
+	virtual Real cylinderDistance(Vector3 pos);
+
 	// calculate the real distance between two Things
 	virtual Real sphereDistance(Thing* e);
 
