@@ -115,6 +115,9 @@ private:
 	Vector3 mPos;
 	int mMana;
 
+	// an array of all the towers and walls for convenient looping
+	DamageableThing* mBlocks[49];
+
 	CastleTowerThing* mCenterTower;
 	
 	CastleTowerThing* mCornerTowerNE;
