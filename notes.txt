@@ -6,7 +6,6 @@ to add:
 amry counters
 health/mana hud bars
 meteor that claims nearby mana
-castle under attack message
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 move coastline to map file and dont let build castles right next to it
 fix steep walls
@@ -25,28 +24,6 @@ build whoosh
 build construction sound
 
 
-
-
-Spells 
-=========
--claim (mana, hut)
--build (castle, tower, also unbuilds)
--fireball (done)
-
--summon sentinel (done)
--summon tick (done)
--summon gnome (done)
-
--speeed (done)
--akimbo fireball (done)
--firestorm (done)
--summon albatross! (done)
--meteor - launched from own castle to wizard location, large area of effect
-
-
-need new art for:
-=========
-hud spell sprites
 
 
 Ideas:
