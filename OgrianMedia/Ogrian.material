@@ -1,0 +1,135 @@
+material Ogrian/Clear
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			depth_check off
+
+			texture_unit
+			{	
+				texture clear.png
+			}
+		}
+	}
+}
+material Ogrian/Ocean
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.3 0.3 0.3
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/PalmTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture palmtree.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/PalmTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture palmtreedead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mana
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 0.0 1 1
+
+			texture_unit
+			{
+				texture mana.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Smoke
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture smoke.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/CloudySky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture clouds.jpg
+				scroll_anim 0.015 0
+			}
+		}
+	}
+}
