@@ -33,7 +33,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianPlayerList.h"
 #include "OgrianManaThing.h"
 #include "OgrianFireballThing.h"
-#include "OgrianCastleSpellThing.h"
+#include "OgrianClaimSpellThing.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianRenderer.h"
 
@@ -98,18 +98,18 @@ bool Input::processKeyInput(InputReader* input)
         mTimeUntilNextCast = CONR("FIREBALL_CAST_PERIOD");
 	}
 
-	// cast a castle
+	// cast claim
 	if (input->getMouseButton(1) && mTimeUntilNextCast <= 0)
 	{
 		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
 		vel.normalise();
 
-		pos += vel*(CONR("WIZARD_SCALE") + CONR("CASTLESPELL_SCALE"))*1.1;
-		vel *= CONR("CASTLESPELL_SPEED");
+		pos += vel*(CONR("WIZARD_SCALE") + CONR("CLAIMSPELL_SCALE"))*1.1;
+		vel *= CONR("CLAIMSPELL_SPEED");
 	
-		Physics::getSingleton().addThing(new CastleSpellThing(0, pos, vel));
-        mTimeUntilNextCast = CONR("CASTLESPELL_CAST_PERIOD");
+		Physics::getSingleton().addThing(new ClaimSpellThing(0, pos, vel));
+        mTimeUntilNextCast = CONR("CLAIMSPELL_CAST_PERIOD");
 	}
 
 	// play song 1

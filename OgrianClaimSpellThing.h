@@ -19,16 +19,16 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianCastleSpellThing.h
+OgrianClaimSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a simple ball that creates a castle when it hits the ground 
+Description: This makes a castle, or claims a hut or mana
 
 /*------------------------------------*/
 
-#ifndef __OgrianCastleSpellThing_H__
-#define __OgrianCastleSpellThing_H__
+#ifndef __OgrianClaimSpellThing_H__
+#define __OgrianClaimSpellThing_H__
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
@@ -41,18 +41,18 @@ namespace Ogrian
 {
 
 /////////////////////////////////////////////////////////////////////////////
-class CastleSpellThing : public TimedThing
+class ClaimSpellThing : public TimedThing
 {
 public:
-	CastleSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: TimedThing("Ogrian/Rock", SPRITE, "CastleSpell", false, CONR("CASTLESPELL_SCALE"), pos, SPHERE)
+	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+		: TimedThing("Ogrian/Rock", SPRITE, "CastleSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
-		setFlickerPeriod(CONR("CASTLESPELL_FLICKER_PERIOD"));
-		setRelativeExpirationTime(CONR("CASTLESPELL_LIFETIME"));
+		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
+		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
 	}
 
 	virtual void collidedGround()
@@ -63,10 +63,6 @@ public:
 			// make a castle
 			Castle* castle = new Castle(getTeamNum(), getPosition());
 			team->setCastle(castle);
-		}
-		else
-		{
-			LogManager::getSingleton().logMessage(String("Team already has castle: ") << getTeamNum());
 		}
 
 		// self destruct

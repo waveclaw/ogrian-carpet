@@ -191,7 +191,7 @@
 				RelativePath="OgrianCastle.h">
 			</File>
 			<File
-				RelativePath="OgrianCastleSpellThing.h">
+				RelativePath="OgrianClaimSpellThing.h">
 			</File>
 			<File
 				RelativePath="OgrianConst.h">
