@@ -37,7 +37,6 @@ This will be changed to a quadtree or something for performance.
 
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianConstants.h"
 #include "OgrianTime.h"
 #include "OgrianTeam.h"
 

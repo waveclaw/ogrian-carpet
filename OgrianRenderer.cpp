@@ -33,7 +33,6 @@ It is a Singleton.
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
-#include "OgrianConstants.h"
 #include "OgrianFrameListener.h"
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"

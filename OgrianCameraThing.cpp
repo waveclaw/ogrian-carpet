@@ -133,15 +133,6 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 
 //----------------------------------------------------------------------------
 
-// ignore external up/down velocity changes
-void CameraThing::setVelocity(Vector3 vel)
-{
-	vel.y = getVelY();
-	Thing::setVelocity(vel);
-}
-
-//----------------------------------------------------------------------------
-
 void CameraThing::move(Real time)
 {
 	// set the velocity according to the orientation
@@ -179,28 +170,7 @@ void CameraThing::move(Real time)
 	setVelocity(vel);
 	mForeward = mBack = mLeft = mRight = false;
 
-	// fall
-	if (getVelY() > -CONR("CAMERA_FALL_MAX"))
-	{
-		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
-	}
-
-	// follow the landscape
-	Vector3 pos = getPosition();
-	float ground = getGroundY(pos) + CONR("CAMERA_HEIGHT");
-			
-	if (ground > getPosY()) 
-	{
-		setVelY(0);
-		pos.y = ground;
-	}
-	else 
-	{
-		pos.y = getPosY();
-	}
-	setPosition(pos);
-
-	Thing::move(time);
+	WizardThing::move(time);
 
 	mCamera->setPosition(getPosition());
 }

@@ -60,9 +60,6 @@ public:
 	// handle camera movement given directional input 
 	virtual void moveCamera(Real rotX, Real rotY);
 
-	// ignore external up/down velocity changes
-	virtual void setVelocity(Vector3 vel);
-
 	virtual void move(Real time);
 
 	virtual void die();

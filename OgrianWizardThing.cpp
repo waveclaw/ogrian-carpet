@@ -90,5 +90,42 @@ void WizardThing::die()
 }
 
 //----------------------------------------------------------------------------
+
+// ignore external up/down velocity changes
+void WizardThing::setVelocity(Vector3 vel)
+{
+	vel.y = getVelY();
+	Thing::setVelocity(vel);
+}
+
+//----------------------------------------------------------------------------
+	
+void WizardThing::move(Real time)
+{
+	// fall
+	if (getVelY() > -CONR("CAMERA_FALL_MAX"))
+	{
+		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
+	}
+
+	// follow the landscape
+	Vector3 pos = getPosition();
+	float ground = getGroundY(pos) + CONR("CAMERA_HEIGHT");
+			
+	if (ground > getPosY()) 
+	{
+		setVelY(0);
+		pos.y = ground;
+	}
+	else 
+	{
+		pos.y = getPosY();
+	}
+	setPosition(pos);
+
+	DamageableThing::move(time);
+}
+
+//----------------------------------------------------------------------------
 	
 }

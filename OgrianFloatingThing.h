@@ -32,7 +32,6 @@ Description: This is a type of thing that floats over the landscape.
 
 #include <Ogre.h>
 #include "OgrianThing.h"
-#include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
 
 using namespace Ogre;

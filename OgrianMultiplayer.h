@@ -32,7 +32,6 @@ Description: This handles all of the multiplayer networking code.
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianConstants.h"
 #include "OgrianPacketEnum.h"
 
 #include "RakNetworkFactory.h"

@@ -47,6 +47,12 @@ public:
 
 	virtual ThingType getType()	{ return WIZARDTHING; }
 
+	// ignore external up/down velocity changes
+	virtual void setVelocity(Vector3 vel);
+
+	// float
+	virtual void move(Real time);
+
 	virtual void setHealth(int health);
 	virtual void die();
 };
