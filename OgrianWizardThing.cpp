@@ -153,7 +153,21 @@ void WizardThing::setBaseMana(int baseMana)
 
 void WizardThing::subtractActiveMana(int amount)
 {
-	setActiveMana(mActiveMana - amount);
+	if (amount == 0) return;
+
+	// send an update if this is a client
+	if (Multiplayer::getSingleton().isClient())
+		Multiplayer::getSingleton().clientSendInt(mActiveMana - amount, ID_SET_ACTIVE_MANA);
+	else
+		setActiveMana(mActiveMana - amount);
+
+}
+
+//----------------------------------------------------------------------------
+
+int WizardThing::getActiveMana()
+{
+	return mActiveMana;
 }
 
 //----------------------------------------------------------------------------
@@ -302,14 +316,17 @@ void WizardThing::collided(Thing* e)
 void WizardThing::move(Real time)
 {
 	// regenerate mana
-	if (Time::getSingleton().getTime() > mNextRegenTime)
+	if (!Multiplayer::getSingleton().isClient())
 	{
-		mNextRegenTime = Time::getSingleton().getTime() + CONR("WIZARD_MANA_REGEN_PERIOD")*1000;
-		mActiveMana += CONI("WIZARD_MANA_REGEN");
-		if (mActiveMana > mBaseMana)
-			mActiveMana = mBaseMana;
+		if (Time::getSingleton().getTime() > mNextRegenTime)
+		{
+			mNextRegenTime = Time::getSingleton().getTime() + CONR("WIZARD_MANA_REGEN_PERIOD")*1000;
+			mActiveMana += CONI("WIZARD_MANA_REGEN");
+			if (mActiveMana > mBaseMana)
+				mActiveMana = mBaseMana;
 
-		setActiveMana(mActiveMana);
+			setActiveMana(mActiveMana);
+		}
 	}
 
 	// float

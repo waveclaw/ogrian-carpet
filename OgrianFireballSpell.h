@@ -61,6 +61,8 @@ public:
 
 	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD"); }
 
+	virtual int getManaCost() { return CONI("FIREBALL_MANA_COST"); }
+
 	virtual String getString() { return String("Fireball"); }
 };
 

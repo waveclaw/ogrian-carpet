@@ -487,13 +487,6 @@ void Multiplayer::updateScores()
 {
 	if (!isServer()) return;
 
-	// send each client its score
-	//for (int i=0; i<(int)mPlayers.size(); i++)
-	//{
-	//	serverSendInt(Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
-	//		ID_SETSCORE, mPlayers[i].id);
-	//}
-
 	// clear all the scoreboards
 	serverSendAllText(" ", ID_CLEAR_SCOREBOARD);
 	PlayerList::getSingleton().clear();
@@ -630,7 +623,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			bs.Read(baseMana);
 
 			// set it
-			Hud::getSingleton().setBaseMana(baseMana);
+			Renderer::getSingleton().getCameraThing()->setBaseMana(baseMana);
 			return true;
 		}
 		case ID_SET_ACTIVE_MANA: //////////////////////////////////////////////////////
@@ -642,7 +635,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			bs.Read(activeMana);
 
 			// set it
-			Hud::getSingleton().setBaseMana(activeMana);
+			Renderer::getSingleton().getCameraThing()->setActiveMana(activeMana);
 			return true;
 		}
 		case ID_DIE: //////////////////////////////////////////////////////
@@ -758,6 +751,23 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			// send the name of the map
 			LogManager::getSingleton().logMessage("Got New Incoming, sending map");
 			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
+			return true;
+		}
+
+		case ID_SET_ACTIVE_MANA: //////////////////////////////////////////////////////
+		{
+			// get the new base mana
+			int pid, activeMana;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(activeMana);
+			
+			// update the wizard
+			int teamNum = getPlayerInfo(packet->playerId)->teamNum;
+			int wuid = Physics::getSingleton().getTeam(teamNum)->getWizardUID();
+			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
+			wizard->setActiveMana(activeMana);
+
 			return true;
 		}
 

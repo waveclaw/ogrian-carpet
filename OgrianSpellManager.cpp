@@ -79,6 +79,13 @@ Real SpellManager::castSpell()
 
 //----------------------------------------------------------------------------
 
+int SpellManager::getManaCost()
+{
+	return mSpells[mCurrentSpell]->getManaCost();
+}
+
+//----------------------------------------------------------------------------
+
 void SpellManager::disableAllSpells()
 {
 	for (int i=0; i<NUM_SPELLS; i++)

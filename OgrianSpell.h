@@ -50,6 +50,8 @@ public:
 
 	virtual Real getCastPeriod() = 0;
 
+	virtual int getManaCost() = 0;
+
 	virtual String getString() = 0;
 
 	virtual String getReadyMaterial() = 0; 

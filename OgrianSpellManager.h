@@ -61,6 +61,8 @@ public:
 	virtual void readyPrevSpell();
 	virtual void readyDefaultSpell();
 
+	virtual int getManaCost();
+
 	virtual Real castSpell();
 
 private:

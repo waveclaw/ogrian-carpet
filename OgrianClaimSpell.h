@@ -61,6 +61,8 @@ public:
 
 	virtual Real getCastPeriod() { return CONR("CLAIMSPELL_CAST_PERIOD"); }
 
+	virtual int getManaCost() { return 0; }
+
 	virtual String getString() { return String("Claim"); }
 };
 

@@ -9,14 +9,14 @@ Ogrian/HUD/Overlay
 	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
 	{
 		left .01
-		top .9
+		top .8
 		width .25
    		caption Health: 100
 	}
 
 	container TextArea(Ogrian/HUD/Mana) : SS/Templates/BasicText
 	{
-		left .7
+		left .01
 		top 0.9
 		width .25
    		caption mana
@@ -25,7 +25,7 @@ Ogrian/HUD/Overlay
 	container TextArea(Ogrian/HUD/Message) : SS/Templates/BasicText
 	{
 		left .01
-		top 0.8
+		top 0.7
 		width .95
 		caption Message
 	}

@@ -125,6 +125,7 @@ public:
 	virtual void setBaseMana(int baseMana);
 	virtual void setActiveMana(int activeMana);
 	virtual void subtractActiveMana(int amount);
+	virtual int getActiveMana();
 	
 	virtual void destroy();
 
