@@ -272,7 +272,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			std::ostringstream num("");
 			num << uid;
 			LogManager::getSingleton().logMessage(String("Remove Failure on thing #") + num.str());
-			listThings();
+			//listThings();
 		}
 
 		return true;

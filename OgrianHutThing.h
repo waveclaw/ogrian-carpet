@@ -53,6 +53,7 @@ public:
 		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_WIDTH"), Vector3(0,0,0), SPHERE)
 	{
 		mHut = hut;
+		setColour(ColourValue::White);
 	}
 
 	virtual void setColour(ColourValue& colour)
@@ -60,14 +61,17 @@ public:
 		if (colour == ColourValue::White)
 		{
 			setMaterial("Ogrian/Clear");
+			setScale(0);
 		}
 		else
 		{
+			setScale(CONR("HUT_BALL_WIDTH"));
 			setMaterial("Ogrian/HutBall");
 			playSound(Game::getSingleton().SOUND_HUM);
 		}
 
 		Thing::setColour(colour);
+		setUpdateFlag();
 	}
 
 	virtual void claim(int teamNum)
@@ -95,11 +99,15 @@ public:
 
 		setHeight(CONR("HUT_HEIGHT"));
 		Thing::setTeamNum(-1);
-		mBall = new HutBallThing(this);
-		Physics::getSingleton().addThing(mBall);
+
+		mBall = 0;
 
 		if (!Multiplayer::getSingleton().isClient())
+		{
 			setColour(ColourValue::White);
+			mBall = new HutBallThing(this);
+			Physics::getSingleton().addThing(mBall);
+		}
 		
 		setPosition(pos);
 		BuildingHeightMap::getSingleton().moldLandscape(this);
@@ -107,7 +115,8 @@ public:
 
 	virtual void destroy()
 	{
-		mBall->destroy();
+		if (mBall)
+			mBall->destroy();
 	}
 
 	virtual void claim(int teamNum)
@@ -147,12 +156,13 @@ public:
 		else setColour(ColourValue::White);
 
 		Thing::setTeamNum(teamNum);
-		setUpdateFlag();
 	}
 
 	virtual void setColour(ColourValue& colour)
 	{
-		mBall->setColour(colour);
+		if (mBall)
+			mBall->setColour(colour);
+	
 		Thing::setColour(colour);
 	}
 
@@ -163,7 +173,9 @@ public:
 		Thing::setPosition(pos);
 
 		pos.y += getHeight();
-		mBall->setPosition(pos);
+
+		if (mBall)
+            mBall->setPosition(pos);
 	}
 
 	virtual bool isBuilding() { return true; }
