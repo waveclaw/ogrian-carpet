@@ -49,6 +49,8 @@ WizardThing::WizardThing(bool visible)
 		getVisRep()->addPose("Ogrian/Wizard/");
 		getVisRep()->setPose(0);
 	}
+
+	setUpdateType(CONTINUOUS);
 }
 
 //----------------------------------------------------------------------------
