@@ -46,11 +46,6 @@ PlayerList::PlayerList()
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/PlayerList/Overlay");
 	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/PlayerList/List"));
-
-	// build the list
-	addPlayer("Alice");
-	addPlayer("Alice");
-	addPlayer("Bob");
 }
 
 //----------------------------------------------------------------------------
@@ -65,12 +60,12 @@ PlayerList::~PlayerList()
 void PlayerList::addPlayer(String name)
 {
 	// ensure the player is not already on the list
-	for (unsigned int i=0; i<mPlayers.size(); i++)
+	for (int i=0; i < int(mPlayers.size()); i++)
 	{
 		if (mPlayers[i] == name)
 		{
-			// should probably do something specific here
-			return;
+			// add a unique suffix
+			name << (int)mPlayers.size();
 		}
 	}
 

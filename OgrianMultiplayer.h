@@ -94,6 +94,7 @@ private:
 	Multiplayer();
 	bool mIsServer;
 	bool mActive;
+	String mPlayerName;
 
 	// Pointers to the interfaces of our server and client.
 	RakClientInterface* mClient;
@@ -101,6 +102,9 @@ private:
 
 	// a list of connected players
 	std::vector<PlayerID> mPlayers;
+
+	// load the config file
+	void loadConfig();
 
 	// recieve packets on the client
 	void clientRecieve();

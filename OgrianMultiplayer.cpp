@@ -31,6 +31,7 @@ Description: This handles all of the multiplayer networking code.
 #include "OgrianMenu.h"
 #include "OgrianPlayerList.h"
 #include "OgrianPhysics.h"
+#include "OgreConfigFile.h"
 
 
 using namespace Ogre;
@@ -45,6 +46,8 @@ namespace Ogrian
 Multiplayer::Multiplayer()
 {
 	mActive = false;
+
+	loadConfig();
 }
 
 //----------------------------------------------------------------------------
@@ -57,7 +60,15 @@ Multiplayer::~Multiplayer()
 }
 
 //----------------------------------------------------------------------------
+void Multiplayer::loadConfig()
+{
+	/* Set up the options */
+	ConfigFile config;
+	config.load( "ogrian.cfg" );
+	mPlayerName = config.getSetting( "name" );
+}
 
+//----------------------------------------------------------------------------
 void Multiplayer::clientStart(char* server)
 {
 	assert(!mActive);
@@ -100,7 +111,7 @@ void Multiplayer::serverStart()
 	
 	Menu::getSingleton().setMessage("Server Started");
 
-	PlayerList::getSingleton().addPlayer("Server");
+	PlayerList::getSingleton().addPlayer(mPlayerName + " (Server)");
 }
 
 //----------------------------------------------------------------------------

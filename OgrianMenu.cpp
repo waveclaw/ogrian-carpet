@@ -103,6 +103,9 @@ void Menu::button_join()
 {
 	setMessage("Joining Server");
 	Multiplayer::getSingleton().clientStart("localhost");
+	
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 }
 
 //----------------------------------------------------------------------------
@@ -110,6 +113,9 @@ void Menu::button_host()
 {
 	setMessage("Starting Server");
 	Multiplayer::getSingleton().serverStart();
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 }
 
 //----------------------------------------------------------------------------
