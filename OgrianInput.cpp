@@ -78,12 +78,12 @@ bool Input::processKeyInput(InputReader* input)
 	else PlayerList::getSingleton().hide();
 
 	// drop a manathing
-    if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
-    {
-		Physics::getSingleton().addThing(new ManaThing(50, 
-			Renderer::getSingleton().getCameraThing()->getPosition()));
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
+  //  if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
+  //  {
+		//Physics::getSingleton().addThing(new ManaThing(50, 
+		//	Renderer::getSingleton().getCameraThing()->getPosition()));
+  //      mTimeUntilNextToggle = CONR("KEY_DELAY");
+  //  }
 
 	// cast a fireball
 	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost())
