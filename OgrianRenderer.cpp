@@ -57,6 +57,7 @@ Renderer::Renderer()
     mFrameListener = 0;
     mRoot = 0;
 	mWaterNode = 0;
+	mCamera = 0;
 	mCameraThing = 0;
 
 	mMapName = "";
@@ -174,6 +175,8 @@ void Renderer::chooseSceneManager(void)
 
 void Renderer::createCamera(void)
 {
+	if (mCamera) return;
+
     // Create the camera
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
@@ -185,13 +188,12 @@ void Renderer::createCamera(void)
 
 void Renderer::createCameraThing()
 {
+	// ensure there's a camera
+	if (!mCamera) createCamera();
+
 	// make the camera thing
 	if (!mCameraThing)
 		mCameraThing = new CameraThing(mCamera);
-
-	mCameraThing->reset();
-	Physics::getSingleton().addThing(mCameraThing);
-	mCameraThing->setPosition(Vector3(mCamera->getPosition()));
 }
 //----------------------------------------------------------------------------
 
@@ -287,7 +289,8 @@ void Renderer::loadMap(String configfile, bool server)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-	createCameraThing();
+	Game::getSingleton().reset();
+	//createCameraThing();
 	
 	// set the lava
 	mCameraThing->setLava(lava > 0);
@@ -319,7 +322,7 @@ void Renderer::unloadMap()
 	if (!mMapLoaded) return;
 
 	// remove all Things
-	Physics::getSingleton().clear();
+	Physics::getSingleton().reset();
 
 	mMapLoaded = false;
 }
@@ -347,6 +350,9 @@ Camera* Renderer::getCamera()
 //----------------------------------------------------------------------------
 void Renderer::createViewports(void)
 {
+	// ensure the camera exists
+	createCamera();
+
     // Create one viewport, entire window
     Viewport* vp = mWindow->addViewport(mCamera);
     vp->setBackgroundColour(ColourValue(0,0,0));

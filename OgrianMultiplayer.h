@@ -64,6 +64,7 @@ public:
 
 	// start a server
 	void serverStart();
+	void serverAddCameraPlayer(Thing* cam);
 
 	// start a client
 	void clientStart();

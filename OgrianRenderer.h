@@ -80,6 +80,8 @@ public:
 	// unload the map
 	void unloadMap();
 
+	void createCameraThing(void);
+
 	static Renderer& getSingleton(void);
 
 protected:
@@ -109,7 +111,6 @@ protected:
 
     void chooseSceneManager(void);
     void createCamera(void);
-	void createCameraThing(void);
     void createFrameListener(void);
 
 	// Create a sky using the specified material

@@ -106,6 +106,12 @@ void WizardThing::reset()
 		num << teamNum;
 		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
 	}
+
+	// add this player to the server
+	if (Multiplayer::getSingleton().isServer() && getType() == CAMERATHING)
+	{
+		Multiplayer::getSingleton().serverAddCameraPlayer(this);
+	}
 }
 
 //----------------------------------------------------------------------------

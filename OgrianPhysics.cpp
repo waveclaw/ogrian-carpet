@@ -507,14 +507,6 @@ void Physics::addThing(Thing* thing)
 
 		// keep allthings sorted by uid
 		_sortAllThings();
-
-		//// if its a buildthing or claim thing and we're in pregame mode
-		//if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame()
-		//	|| thing->getType() == BUILDTHING && Game::getSingleton().isPreGame())
-		//{
-		//	// destroy the thing immediately
-		//	thing->destroy();
-		//}
 	}
 }
 
@@ -761,7 +753,7 @@ void Physics::_delete(Thing* thing)
 //----------------------------------------------------------------------------
 
 // remove and delete all things
-void Physics::clear()
+void Physics::reset()
 {
 	if (!Multiplayer::getSingleton().isClient())
 	{
@@ -1018,7 +1010,7 @@ Physics& Physics::getSingleton(void)
 
 Physics::~Physics()
 {
-	clear();
+	reset();
 }
 
 //----------------------------------------------------------------------------

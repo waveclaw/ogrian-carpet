@@ -182,6 +182,7 @@ void Menu::button_load()
 void Menu::button_join()
 {
 	setMessage(CONS("MSG_JOIN_CONNECTING"));
+
 	Multiplayer::getSingleton().clientStart();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
@@ -198,6 +199,7 @@ void Menu::button_host()
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 
 	setMessage(CONS("MSG_SERVER_LOADING"));
+
 	Multiplayer::getSingleton().serverStart();
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
@@ -275,7 +277,7 @@ void Menu::loadMap(String mapname)
 	setMessage(CONS("MSG_LOADMAP"));
 
 	// move the camera so the terrain will reload properly
-	Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
+	//Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
 
 	// stop the game
 	Audio::getSingleton().stop();

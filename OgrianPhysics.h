@@ -79,7 +79,7 @@ public:
 	Thing* getThingByIndex(int index);
 
 	// remove and delete all things in the world
-	void clear();
+	void reset();
 
 	// call this every frame
 	void frame(Real time);

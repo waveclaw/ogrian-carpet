@@ -157,6 +157,18 @@ void Game::updateScores()
 
 //----------------------------------------------------------------------------
 
+void Game::reset()
+{
+	Physics::getSingleton().reset();
+
+	Renderer::getSingleton().createCameraThing();
+	CameraThing* cam = Renderer::getSingleton().getCameraThing();
+	cam->reset();
+	Physics::getSingleton().addThing(cam);
+}
+
+//----------------------------------------------------------------------------
+
 // note: this is called from Renderer::loadMap()
 void Game::startGame(ConfigFile config)
 {

@@ -43,6 +43,9 @@ class Game : public Singleton< Game >
 public:
 	virtual ~Game();
 
+	// reset the game
+	void reset();
+
 	void startGame(ConfigFile config);
 
 	// while in pregame mode, claimthings cannot be made

@@ -140,18 +140,28 @@ void Multiplayer::serverStart()
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::serverStart" );
 
-	ConfigFile config;
-	config.load("config.txt");
-	ColourValue colour;
-	colour.r = atoi(config.getSetting("red").c_str());
-	colour.g = atoi(config.getSetting("green").c_str());
-	colour.b = atoi(config.getSetting("blue").c_str());
+}
 
+//----------------------------------------------------------------------------
+
+
+void Multiplayer::serverAddCameraPlayer(Thing* cam)
+{
 	PlayerInfo server;
 	server.id.binaryAddress = 0;
 	server.name = mPlayerName + " (Serving)";
-	server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
-	server.teamNum = Physics::getSingleton().newTeam(colour, server.wizardUID);
+
+	//if (cam)
+	//{
+		server.wizardUID = cam->getUID();
+		server.teamNum = cam->getTeamNum();
+	//}
+	//else
+	//{
+		//server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
+		//server.teamNum = Physics::getSingleton().newTeam(colour, server.wizardUID);
+	//}
+	mPlayers.clear();
 	mPlayers.push_back(server);
 	
 	updateScores();
@@ -362,8 +372,8 @@ void Multiplayer::clientDisconnect()
 	// clear the player list
 	PlayerList::getSingleton().clear();
 
-	// clear the physics
-	Physics::getSingleton().clear();
+	// reset the physics
+	Physics::getSingleton().reset();
 	
 	mActive = false;
 }
@@ -384,6 +394,8 @@ void Multiplayer::serverDisconnect()
 
 	// clear the player list
 	PlayerList::getSingleton().clear();
+	mPlayers.clear();
+
 	mActive = false;
 }
 
@@ -499,8 +511,9 @@ void Multiplayer::updateScores()
 	// re-add all the players + scores
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
+		int teamNum = mPlayers[i].teamNum;
 		std::ostringstream num("");
-		num << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore();
+		num << Physics::getSingleton().getTeam(teamNum)->getScore();
 
 		String player = String("") + num.str() + "   " + mPlayers[i].name;
 			
