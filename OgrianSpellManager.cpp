@@ -114,6 +114,9 @@ void SpellManager::disableSpell(int spell)
 		return;
 
 	mSpells[spell]->setEnabled(false);
+
+	if (spell == mCurrentSpell)
+		mCurrentSpell = 0;
 	
 	readyCurrentSpell();
 }
