@@ -39,6 +39,8 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianManaThing.h"
 #include "OgrianConstants.h"
 
+#include "OgreLogManager.h"
+
 using namespace Ogre;
 
 template<> Ogrian::Physics * Singleton< Ogrian::Physics >::ms_Singleton = 0;
@@ -208,7 +210,9 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 Thing* Physics::getThing(int uid)
 {
-	// binary search
+	if (mAllThings.size() == 0) return 0;
+
+	/*// binary search
 	int left = 0;
 	int right = (int)mAllThings.size();
 	int mid, cuid;
@@ -220,6 +224,13 @@ Thing* Physics::getThing(int uid)
 		if (cuid == uid) return mAllThings[mid];
 		else if (uid < cuid) right = mid-1;
 		else if (uid > cuid) left = mid+1;
+	}
+	*/
+
+	// linear search
+	for (int i=0; i<(int)mAllThings.size(); i++)
+	{
+		if (mAllThings[i]->getUID() == uid) return mAllThings[i];
 	}
 
 	return 0;
