@@ -95,7 +95,7 @@ Ogrian/Menu/Overlay
 			left 0.0
 			top 0.0
 			width 1
-   			caption pick MAP:
+   			caption OGRIAN    CARPET    0.5
 		}
 
 	}
