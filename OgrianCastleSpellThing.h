@@ -19,49 +19,53 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianGame.h
+OgrianCastleSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: Game is a singleton that holds general game-related code, such as for
-starting games and detecting victory. 
+Description: This is a simple ball that creates a castle when it hits the ground 
+
 /*------------------------------------*/
 
-#ifndef __OgrianGame_H__
-#define __OgrianGame_H__
+#ifndef __OgrianCastleSpellThing_H__
+#define __OgrianCastleSpellThing_H__
 
 #include <Ogre.h>
-
-#define TITLE "Ogrian Carpet 0.5"
+#include "OgrianTimedThing.h"
+#include "OgrianCastleTowerThing.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-
-class Game : public Singleton< Game >
+/////////////////////////////////////////////////////////////////////////////
+class CastleSpellThing : public TimedThing
 {
 public:
-	virtual ~Game();
+	CastleSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+		: TimedThing("Ogrian/Rock", SPRITE, "CastleSpell", false, CONR("CASTLESPELL_SCALE"), pos, SPHERE)
+	{
+		mTeamNum = teamNum;
 
-	void startGame();
+		setVelocity(vel);
+		playSound(Game::getSingleton().SOUND_WHOOSH);
+		setFlickerPeriod(CONR("CASTLESPELL_FLICKER_PERIOD"));
+		setRelativeExpirationTime(CONR("CASTLESPELL_LIFETIME"));
+	}
 
-	void updateScores();
+	virtual void collidedGround()
+	{
+		// make a castle
+		Physics::getSingleton().addThing(new CastleTowerThing(mTeamNum, getPosition()));
 
-	static Game& getSingleton(void);
+		// self destruct
+		destroy();
+	}
 
-	// sound indexes
-	int SOUND_WHOOSH;
-	int SOUND_BANG;
 private:
-	Game();
-
-	void startSkirmishGame();
-	void startServerGame();
-	void startClientGame();
-
-	void loadSounds();
+	int mTeamNum;
 };
 
 }

@@ -118,6 +118,16 @@ void WizardThing::setVelocity(Vector3 vel)
 
 //----------------------------------------------------------------------------
 	
+void WizardThing::collided(Thing* e)
+{
+	if (e->getType() == CASTLETOWER)
+	{
+		setPosY(e->getPosY() + e->getHeight()/2.0 + getHeight()*.45);
+	}
+}
+
+//----------------------------------------------------------------------------
+	
 void WizardThing::move(Real time)
 {
 	// fall

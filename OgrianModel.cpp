@@ -59,9 +59,10 @@ Model::~Model()
 
 //----------------------------------------------------------------------------
 
-void Model::setMesh(String mesh)
+void Model::setMesh(String mesh, Real ratio)
 {
 	mMeshName = mesh;
+	mRatio = ratio;
 	
 	if (mInRenderer)
 	{
@@ -105,7 +106,7 @@ void Model::setWidth(Real width)
 	if (mInRenderer)
 	{
 		Real b = mEntity->getMesh()->getBoundingSphereRadius();
-		mNode->setScale(mWidth/b,mHeight/b,mWidth/b);
+		mNode->setScale(mWidth/b,mHeight/mRatio/b,mWidth/b);
 	}
 }
 
@@ -118,7 +119,7 @@ void Model::setHeight(Real height)
 	if (mInRenderer)
 	{
 		Real b = mEntity->getMesh()->getBoundingSphereRadius();
-		mNode->setScale(mWidth/b,mHeight/b,mWidth/b);
+		mNode->setScale(mWidth/b,mHeight/mRatio/b,mWidth/b);
 	}
 }
 

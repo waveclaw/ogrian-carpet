@@ -55,8 +55,8 @@ Game::~Game()
 
 void Game::loadSounds()
 {
-	SOUND_FIREBALL_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3");
-	SOUND_FIREBALL_BANG = Audio::getSingleton().loadSound("Media/sounds/boom2.mp3");
+	SOUND_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3");
+	SOUND_BANG = Audio::getSingleton().loadSound("Media/sounds/boom2.mp3");
 }
 
 //----------------------------------------------------------------------------

@@ -75,6 +75,9 @@ public:
 	// float
 	virtual void move(Real time);
 
+	// go over castle walls
+	virtual void collided(Thing* e);
+
 	virtual void setColour(ColourValue& colour);
 	virtual void setHealth(int health);
 	virtual void die();

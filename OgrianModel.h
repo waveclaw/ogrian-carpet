@@ -47,7 +47,7 @@ public:
 	virtual ~Model();
 
 	// set the mesh 
-	virtual void setMesh(String mesh);
+	virtual void setMesh(String mesh, Real ratio=1);
 
 	// set the position
 	virtual void setPosition(Vector3 pos);
@@ -88,6 +88,8 @@ private:
 	bool mInRenderer;
 	Real mWidth;
 	Real mHeight; 
+	Real mRatio; // the ratio height/width of the mesh
+
 	Vector3 mPos;
 	String mMaterial;
 	String mName;

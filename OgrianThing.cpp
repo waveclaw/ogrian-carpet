@@ -288,6 +288,11 @@ void Thing::move(Real time)
 			mLastRotDir = !mLastRotDir;
 		}
 	}
+
+	// call collidedground when it hits the ground
+	if (!Multiplayer::getSingleton().isClient())
+		if (getGroundY() > getPosition().y && isAlive()) 
+			collidedGround();
 }
 
 //----------------------------------------------------------------------------

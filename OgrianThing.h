@@ -56,6 +56,7 @@ enum ThingType
 	FOLIAGETHING,
 	CAMERATHING,
 	WIZARDTHING,
+	CASTLETOWER,
 };
 
 enum ThingVisRep
@@ -152,8 +153,11 @@ public:
 	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
 
-	// override this for interesting behaviors
+	// override this for interesting behaviors (not called on clients)
 	virtual void collided(Thing* e) { }
+
+	// override this for interesting behaviors (not called on clients)
+	virtual void collidedGround() {}
 
 	// returns true if this thing can be damaged
 	virtual bool isDamageable() { return false; }

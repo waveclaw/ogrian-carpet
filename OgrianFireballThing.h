@@ -64,7 +64,7 @@ public:
 	FireballBlastEffect(Vector3 pos) 
 		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_SCALE")*2, pos, SPHERE)
 	{
-		playSound(Game::getSingleton().SOUND_FIREBALL_BANG);
+		playSound(Game::getSingleton().SOUND_BANG);
 		setRelativeExpirationTime(1);
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 	}
@@ -83,7 +83,7 @@ public:
 		mColour = colour;
 
 		setVelocity(vel);
-		playSound(Game::getSingleton().SOUND_FIREBALL_WHOOSH);
+		playSound(Game::getSingleton().SOUND_WHOOSH);
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 		setRelativeExpirationTime(CONR("FIREBALL_LIFETIME"));
 
@@ -116,11 +116,6 @@ public:
 			mLastSmokeTime = Time::getSingleton().getTime();
 		}
 
-		// die when it hits the ground
-		if (!Multiplayer::getSingleton().isClient())
-			if (getGroundY() > getPosition().y) 
-				destroy();
-
 		mLastPos = getPosition();
 	}
 
@@ -130,6 +125,11 @@ public:
 		if (e->isDamageable())	e->damage(CONR("FIREBALL_DAMAGE"), mTeamNum);
 
 		// self destruct
+		destroy();
+	}
+
+	virtual void collidedGround()
+	{
 		destroy();
 	}
 
