@@ -79,6 +79,8 @@ void CameraThing::makeGhost()
 {
 	WizardThing::makeGhost();
 	setScale(0);
+
+	Hud::getSingleton().setHealth("Game Over - You Are Dead!");
 }
 
 //----------------------------------------------------------------------------

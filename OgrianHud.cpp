@@ -72,7 +72,7 @@ void Hud::setScore(int score)
 {
 	std::ostringstream num("");
 	num << score;
-	setScore(String("Score: ") + num.str());
+	setScore(String("Mana: ") + num.str());
 }
 
 //----------------------------------------------------------------------------
