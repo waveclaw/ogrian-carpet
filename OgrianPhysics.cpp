@@ -41,6 +41,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianTeam.h"
 
 #include "OgrianFireballThing.h"
+#include "OgrianClaimSpellThing.h"
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianFoliageThing.h"
@@ -338,6 +339,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case CASTLEWALL: return new CastleWallThing(0);
 
 		case CASTLEFLAG: return new CastleFlagThing();
+			
+		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
 		default:
 			LogManager::getSingleton().logMessage(String("ERROR: Thing Unknown: ") << type);

@@ -59,6 +59,7 @@ enum ThingType
 	CASTLETOWER,
 	CASTLEWALL,
 	CASTLEFLAG,
+	CLAIMTHING,
 };
 
 enum ThingVisRep

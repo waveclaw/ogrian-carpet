@@ -55,6 +55,8 @@ public:
 		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
 	}
 
+	virtual ThingType getType() { return CLAIMTHING; }
+
 	virtual void collidedGround()
 	{
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());
