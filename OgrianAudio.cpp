@@ -43,6 +43,7 @@ Audio::Audio()
 	mSongStream = 0;
 	mSongChannel = -1;
 	mRunning = false;
+	mScale = CONR("SOUND_SCALE");
 }
 
 //----------------------------------------------------------------------------
@@ -113,9 +114,9 @@ void Audio::setSoundPosition(int channel, Vector3 pos)
 
 	// set the position
 	float posv[3];
-	posv[0] = pos.x;
-	posv[1] = pos.y;
-	posv[2] = -pos.z;
+	posv[0] = pos.x * mScale;
+	posv[1] = pos.y * mScale;
+	posv[2] = -pos.z * mScale;
 	FSOUND_3D_SetAttributes(channel, &posv[0], 0);
 }
 
@@ -153,9 +154,9 @@ void Audio::frame(Real time)
 	Vector3 campos = Renderer::getSingleton().getCameraThing()->getPosition();
 	Vector3 f = Renderer::getSingleton().getCameraThing()->getDirection();
 
-	listenerpos[0] = campos.x;
-	listenerpos[1] = campos.y;
-	listenerpos[2] = -campos.z;
+	listenerpos[0] = campos.x * mScale;
+	listenerpos[1] = campos.y * mScale;
+	listenerpos[2] = -campos.z * mScale;
 
 	FSOUND_3D_Listener_SetAttributes(&listenerpos[0], 0, f.x, f.y, -f.z, 0, 1, 0); // update 'ears'
 

@@ -63,7 +63,7 @@ public:
 	FireballBlastEffect(Vector3 pos) 
 		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_SCALE")*2, pos, SPHERE)
 	{
-		playSound("OgrianMedia/sounds/boom1.wav");
+		playSound("OgrianMedia/sounds/boom2.mp3");
 		setRelativeExpirationTime(1);
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 	}
@@ -81,7 +81,7 @@ public:
 		mTeamNum = teamNum;
 
 		setVelocity(vel);
-		playSound("OgrianMedia/sounds/whoosh1.wav");
+		playSound("OgrianMedia/sounds/whoosh2.mp3");
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 		setRelativeExpirationTime(CONR("FIREBALL_LIFETIME"));
 

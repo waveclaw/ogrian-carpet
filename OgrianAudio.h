@@ -74,6 +74,8 @@ private:
 	FSOUND_STREAM* mSongStream;
 	int mSongChannel;
 	bool mRunning; // wether or not the engine is running
+	
+	Real mScale; // a scalar applied to 3d positioning
 };
 
 }

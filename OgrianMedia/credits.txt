@@ -1,0 +1,5 @@
+palmtree.png - from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/pine_01_mature_thc.png)
+palmtree_dead.png - from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/pine_01_mature_barren_thc.png)
+
+boom2.mp3 - from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/items/explosion/old_generic_128kbs_48khz_mono_golgotha.mp3)
+whoosh2.mp3 - from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/items/machinery/missle_in_flight_128kbs_48khz_mono_golgotha.mp3)
