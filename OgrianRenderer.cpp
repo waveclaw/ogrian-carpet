@@ -342,6 +342,9 @@ void Renderer::createScene(void)
 
 	// show the menu
 	Menu::getSingleton().show();
+
+	// show the hud
+	((Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay"))->show();
 }
 
 //----------------------------------------------------------------------------
