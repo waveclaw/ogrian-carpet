@@ -397,6 +397,13 @@ void Thing::_updateAudibility()
 
 //----------------------------------------------------------------------------
 
+bool Thing::isMoving()
+{
+	return (mPos == Vector3(0,0,0));
+}
+
+//----------------------------------------------------------------------------
+
 void Thing::generateBitStream(BitStream& bitstream)
 {
 	mLastUpdateTime = Time::getSingleton().getTime();
@@ -438,7 +445,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 }
 //----------------------------------------------------------------------------
 
-Real Thing::lastUpdateTime()
+unsigned long Thing::lastUpdateTime()
 {
 	return mLastUpdateTime;
 }

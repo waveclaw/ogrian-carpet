@@ -38,6 +38,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianPhysics.h"
 #include "OgrianManaThing.h"
 #include "OgrianConstants.h"
+#include "OgrianTime.h"
 
 #include "OgreLogManager.h"
 
@@ -83,7 +84,8 @@ void Physics::serverFrame(Real time)
 	for (int i=0; i<(int)mAllThings.size(); i++)
 	{
 		Thing* thing = mAllThings[i];
-		if (thing->getType() == MANATHING)
+		if (thing->getType() == MANATHING // || CAMERATHING etc...
+			&& thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime())
 		{
 			BitStream bs;
 			thing->generateBitStream(bs);

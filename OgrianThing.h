@@ -106,6 +106,9 @@ public:
 	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
 
+	// returns true if the velocity is 0,0,0
+	virtual bool isMoving();
+
 	// override this for interesting behaviors
 	virtual void collided(Thing* e);
 
@@ -142,7 +145,7 @@ public:
 	virtual int getUID();
 
 	// get the last time a bitstream was generated for this thing
-	virtual Real lastUpdateTime();
+	virtual unsigned long lastUpdateTime();
 
 	
 private:
