@@ -59,7 +59,7 @@ DetailTile=3
 PageSource=Heightmap
 
 # Heightmap-source specific settings
-Heightmap.image=h_islands.png
+Heightmap.image=h_hell.png
 
 # If you use RAW, fill in the below too
 # RAW-specific setting - size (horizontal/vertical)
