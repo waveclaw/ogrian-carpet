@@ -54,8 +54,32 @@ public:
 		return WIZARDTHING;
 	}
 
+	virtual void move(Real time)
+	{
+		Vector3 lastPos = getPosition();
+
+		Thing::move(time);
+
+		Vector3 pos = getPosition();
+
+		// generate a velocity to use for multiplayer interpolation
+		mInterpVel = (pos - lastPos) / time;
+	}
+
+	virtual void generateBitStream(BitStream& bitstream)
+	{
+		Vector3 originalVel = getVelocity();
+
+		// give the bitstream the inerpolation velocity
+		setVelocity(mInterpVel);
+		Thing::generateBitStream(bitstream);
+
+		// clean up
+		setVelocity(originalVel);
+	}
 
 private:
+	Vector3 mInterpVel;
 };
 
 }
