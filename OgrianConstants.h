@@ -36,6 +36,8 @@ namespace Ogrian
 {
 
 const Real CAMERA_MOVE_SPEED = 15;
+const Real CAMERA_ACCEL = 2;
+const Real CAMERA_DECEL = 1;
 const Real CAMERA_FOV = 80;
 const Real CAMERA_NEAR_CLIP = 1;
 const Real CAMERA_HEIGHT = 3;

@@ -114,31 +114,36 @@ void CameraThing::setVelocity(Vector3 vel)
 void CameraThing::move(Real time)
 {
 	// set the velocity according to the orientation
-	Vector3 vel(0,0,0);
+	mForce = Vector3(0,0,0);
 	Real or = getOrientation();
 	if (mForeward && !mBack)
 	{
-		vel.x += sin(or);
-		vel.z += cos(or);
+		mForce.x += sin(or);
+		mForce.z += cos(or);
 	}
 	if (mBack && !mForeward)
 	{
-		vel.x -= sin(or);
-		vel.z -= cos(or);
+		mForce.x -= sin(or);
+		mForce.z -= cos(or);
 	}
 	if (mLeft && !mRight)
 	{
-		vel.x += cos(or);
-		vel.z -= sin(or);
+		mForce.x += cos(or);
+		mForce.z -= sin(or);
 	}
 	if (mRight && !mLeft)
 	{
-		vel.x -= cos(or);
-		vel.z += sin(or);
+		mForce.x -= cos(or);
+		mForce.z += sin(or);
 	}
 
-	vel.normalise();
-	vel *= CAMERA_MOVE_SPEED;
+	mForce.normalise();
+	mForce *= CAMERA_MOVE_SPEED;
+
+	Vector3 vel = getVelocity();
+
+	if (mForce.length() == 0) vel -= vel*time*CAMERA_DECEL; // slowing down
+	else vel = mForce*time*CAMERA_ACCEL + vel*(1-time*CAMERA_ACCEL); // speeding up
 
 	setVelocity(vel);
 	mForeward = mBack = mLeft = mRight = false;

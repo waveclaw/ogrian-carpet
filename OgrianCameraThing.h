@@ -70,6 +70,7 @@ public:
 private:
 	Camera* mCamera;
 	bool mForeward, mBack, mLeft, mRight;
+	Vector3 mForce;
 
 };
 }
