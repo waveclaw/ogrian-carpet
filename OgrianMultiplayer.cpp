@@ -50,6 +50,8 @@ Multiplayer::Multiplayer()
 {
 	mActive = false;
 	mClientReady = false;
+	mClient = 0;
+	mServer = 0;
 
 	loadConfig();
 }

@@ -196,6 +196,8 @@ void CameraThing::move(Real time)
 
 void CameraThing::setHealth(int health)
 {
+	WizardThing::setHealth(health);
+
 	Hud::getSingleton().setHealth(health);
 }
 
@@ -203,6 +205,8 @@ void CameraThing::setHealth(int health)
 
 void CameraThing::die()
 {
+	WizardThing::die();
+
 	Vector3 offset;
 	offset.x = Math::RangeRandom(WIZARD_DEATH_OFFSET_MIN, WIZARD_DEATH_OFFSET_MAX);
 	offset.z = Math::RangeRandom(WIZARD_DEATH_OFFSET_MIN, WIZARD_DEATH_OFFSET_MAX);
