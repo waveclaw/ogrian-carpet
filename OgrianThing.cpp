@@ -397,6 +397,7 @@ void Thing::_updateAudibility()
 
 void Thing::generateBitStream(BitStream& bitstream)
 {
+	bitstream.Write(ID_UPDATE_THING);
 	bitstream.Write(mUID);
 	bitstream.Write(getType());
 
@@ -413,6 +414,11 @@ void Thing::generateBitStream(BitStream& bitstream)
 void Thing::interpretBitStream(BitStream& bitstream)
 {
 	Vector3 pos,vel;
+	int pid,type;
+
+	bitstream.Read(pid);
+	bitstream.Read(mUID);
+	bitstream.Read(type);
 
 	bitstream.Read(pos.x);
 	bitstream.Read(pos.y);
@@ -421,7 +427,6 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(vel.y);
 	bitstream.Read(vel.z);
 
-	assert(uid == mUID);
 	assert(type == getType());
 
 	setPosition(pos);

@@ -97,31 +97,34 @@ private:
 	Physics();
 
 	// notify all things of a frame move
-	virtual void moveAll(Real time);
+	void moveAll(Real time);
 
 	// run a collision check and notify all affected things
-	virtual void collisionCheck();
+	void collisionCheck();
 
-	virtual inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
-	virtual inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord
+	inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
+	inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord
 
 	// do a comprehensive collision check between two things,
 	// and notify them if they collide
-	virtual inline void pairCollisionCheck(Thing* a, Thing* b);
+	inline void pairCollisionCheck(Thing* a, Thing* b);
 
 	// cause a and b to collide
-	virtual inline void collide(Thing* a, Thing* b);
+	inline void collide(Thing* a, Thing* b);
 
 	// add a thing to the grid
-	virtual void _addThing(Thing* thing, int grid_u, int grid_v);
+	void _addThing(Thing* thing, int grid_u, int grid_v);
 	// remove a thing from the grid. 
-	virtual void _removeThing(Thing* thing, int grid_u, int grid_v);
+	void _removeThing(Thing* thing, int grid_u, int grid_v);
 
 	// remove a thing from the world
-	virtual void deleteThing(Thing* thing);
+	void deleteThing(Thing* thing);
 
 	// add a thing as a client
-	virtual void clientAddThing(Thing* thing, int uid);
+	void clientAddThing(Thing* thing, int uid);
+
+	// sort mAllThings by uid
+	void _sortAllThings();
 };
 
 }

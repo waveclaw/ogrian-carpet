@@ -134,7 +134,6 @@ void Multiplayer::clientSend(BitStream* bitStream)
 	assert(mActive);
 
 	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
 	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
 	// RELIABLE_ORDERED means make sure the message arrives in the right order
 	mClient->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0);
@@ -148,13 +147,28 @@ void Multiplayer::serverSend(BitStream* bitStream, PlayerID player)
 	assert(mActive);
 
 	// bitstream is the data to send
-	// strlen(message)+1 is to send the null terminator
 	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
 	// RELIABLE_ORDERED means make sure the message arrives in the right order
 	// We arbitrarily pick 0 for the ordering stream
 	// false to send to only one player
 	// true for security
 	mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, player, false, true);
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::serverSendAll(BitStream* bitStream)
+{
+	assert(mIsServer);
+	assert(mActive);
+
+	// bitstream is the data to send
+	// HIGH_PRIORITY doesn't actually matter here because we don't use any other priority
+	// RELIABLE_ORDERED means make sure the message arrives in the right order
+	// We arbitrarily pick 0 for the ordering stream
+	// true to send to all palyers
+	// true for security
+	mServer->Send(bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_PLAYER_ID, true, true);
 }
 
 //----------------------------------------------------------------------------
@@ -189,15 +203,6 @@ void Multiplayer::serverSendAllText(String message, int type)
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::serverSendAll(BitStream* bitStream)
-{
-	assert(mIsServer);
-	assert(mActive);
-
-}
-
-//----------------------------------------------------------------------------
-
 void Multiplayer::frame()
 {
 	if (!mActive) return;
@@ -220,7 +225,7 @@ void Multiplayer::clientRecieve()
 		// handle the packet
 		if      (clientHandlePacket(packet, packetId)) {}
 		else if (handleRakPacket(packet, packetId)) {}
-		//else if (Physics::getSingleton().handleClientPacket(packet, packetId)) {}
+		else if (Physics::getSingleton().handleClientPacket(packet, packetId)) {}
 
 		mClient->DeallocatePacket(packet);
 		packet = mClient->Receive();
@@ -241,7 +246,7 @@ void Multiplayer::serverRecieve()
 		// handle the packet
 		if      (serverHandlePacket(packet, packetId)) {}
 		else if (handleRakPacket(packet, packetId)) {}
-		//else if (Physics::getSingleton().handleServerPacket(packet, packetId)) {}
+		else if (Physics::getSingleton().handleServerPacket(packet, packetId)) {}
 			
 		mServer->DeallocatePacket(packet);
 		packet = mServer->Receive();
@@ -272,7 +277,8 @@ void Multiplayer::serverDisconnect()
 	assert(mIsServer);
 	assert(mActive);
 
-	// should probably kick all players first
+	// kick all players first
+	serverSendAllText("kicked", ID_KICK);
 
 	// disconnect
 	mServer->Disconnect();
@@ -387,6 +393,19 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// hide the menu
 			Menu::getSingleton().hide();
+			return true;
+		}
+
+		case ID_KICK: //////////////////////////////////////////////////////
+		{
+			// disconnect
+			//clientDisconnect();
+
+			// get the message
+			String msg;
+			packetToString(packet, msg);
+			Menu::getSingleton().setMessage("Kicked: " + msg);
+			Menu::getSingleton().show();
 			return true;
 		}
 	}

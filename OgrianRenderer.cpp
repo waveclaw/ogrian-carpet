@@ -293,7 +293,7 @@ void Renderer::loadMap(String configfile)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-	createFoliage(foliageMaterial, FOLIAGE_NUM);
+	//createFoliage(foliageMaterial, FOLIAGE_NUM);
 
     // Position the camera
     mCamera->setPosition(Vector3(100,0,100));

@@ -65,6 +65,20 @@ void Physics::frame(Real time)
 		// clients dont do collision checking
 		collisionCheck();
 	}
+	if (Multiplayer::getSingleton().isServer())
+	{
+		// servers notify clients of all things
+		for (int i=0; i<(int)mAllThings.size(); i++)
+		{
+			Thing* thing = mAllThings[i];
+			if (thing->getType() == MANATHING)
+			{
+				BitStream bs;
+				thing->generateBitStream(bs);
+				Multiplayer::getSingleton().serverSendAll(&bs);
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -73,50 +87,59 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 {
 	if (packet == 0) return false;
 
-	BitStream bitstream(packet->data, packet->length, false);
-	int uid, type;
-
-	bitstream.Read(uid);
-	bitstream.Read(type);
-
-	// if its a thing creation
-	if (pid == ID_MAKE_THING)
+	// if its a thing update
+	if (pid == ID_UPDATE_THING)
 	{
-		// make a new thing
-		Thing* thing;
-		switch(type)
-		{
-			case MANATHING:
-				thing = new ManaThing();
-				break;
-		}
+		// find the thing
+		BitStream bitstream(packet->data, packet->length, true);
+		int id, uid, type;
 
-		// add it to the physics
-		clientAddThing(thing, uid);
+		bitstream.Read(id);
+		bitstream.Read(uid);
+		bitstream.Read(type);
+		bitstream.ResetReadPointer();
+
+		Thing* thing = getThing(uid);
+
+		if (thing == 0) // we need to make a new one if we dont have it
+		{
+			// make a new thing
+			switch(type)
+			{
+				case MANATHING:
+					thing = new ManaThing();
+					break;
+			}
+
+			// add it to the physics
+			clientAddThing(thing, uid);
+		}
 
 		// send the bitstream to the thing
 		thing->interpretBitStream(bitstream);
 
 		return true;
 	}
-	// if its a thing update
-	else if (pid == ID_UPDATE_THING)
-	{
-		// find the thing
-		
-		// send the bitstream to the thing
 
-		return true;
-	}
 	// if its a thing deletion
 	else if (pid == ID_REMOVE_THING)
 	{
 		// find the thing
+		BitStream bitstream(packet->data, packet->length, true);
+		int id, uid;
+
+		bitstream.Read(id);
+		bitstream.Read(uid);
+		bitstream.ResetReadPointer();
+
+		Thing* thing = getThing(uid);
 
 		// destroy it
+		if (thing != 0) thing->destroy();
 
 		return true;
 	}
+
 	return false;
 }
 
@@ -126,23 +149,55 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 {
 	if (packet == 0) return false;
 
-	// if its a thing creation
-	if (pid == ID_MAKE_THING)
-	{
-		// make a new thing
-
-		// send the bitstream to the thing
-
-		// add it to the physics
-		
-		return true;
-	}
-	// if its a camera thing update
-	else if (pid == ID_UPDATE_CAMERA_THING)
+	// if its a thing update
+	if (pid == ID_UPDATE_THING)
 	{
 		// find the thing
-		
+		BitStream bitstream(packet->data, packet->length, true);
+		int id, uid, type;
+
+		bitstream.Read(id);
+		bitstream.Read(uid);
+		bitstream.Read(type);
+		bitstream.ResetReadPointer();
+
+		Thing* thing = getThing(uid);
+
+		if (thing == 0) // we need to make a new one if we dont have it
+		{
+			// make a new thing
+			switch(type)
+			{
+				case MANATHING:
+					thing = new ManaThing();
+					break;
+			}
+
+			// add it to the physics
+			clientAddThing(thing, uid);
+		}
+
 		// send the bitstream to the thing
+		thing->interpretBitStream(bitstream);
+
+		return true;
+	}
+	
+	// if its a thing deletion
+	else if (pid == ID_REMOVE_THING)
+	{
+		// find the thing
+		BitStream bitstream(packet->data, packet->length, true);
+		int id, uid;
+
+		bitstream.Read(id);
+		bitstream.Read(uid);
+		bitstream.ResetReadPointer();
+
+		Thing* thing = getThing(uid);
+
+		// destroy it
+		if (thing != 0) thing->destroy();
 
 		return true;
 	}
@@ -208,8 +263,30 @@ void Physics::addThing(Thing* thing)
 		// add to full list
 		mAllThings.push_back(thing);
 
+		// keep allthings sorted by uid
+		_sortAllThings();
+
 		// notify the thing
 		thing->placedInPhysics(mCurrentUID++);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::_sortAllThings()
+{
+	// use insertion sort because it should already be sorted or nearly sorted
+	for (int i=1; i<(int)mAllThings.size(); i++)
+	{
+		Thing* t = mAllThings[i];
+		int u = t->getUID();
+		int j=i;
+		while (j>0 && mAllThings[j-1]->getUID() > u)
+		{
+			mAllThings[j] = mAllThings[j-1];
+			j--;
+		}
+		mAllThings[j] = t;
 	}
 }
 
