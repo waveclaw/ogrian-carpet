@@ -156,7 +156,7 @@ void Physics::serverFrame(Real time)
 				if (thing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD"))
 						< Time::getSingleton().getTime() // only send periodically
 					&& thing->getUID() != player.wizardUID // dont send their own wizard to them
-					&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
+					//&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
 					)
 				{
 					BitStream bs;
