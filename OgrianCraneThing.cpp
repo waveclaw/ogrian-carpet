@@ -54,7 +54,8 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 
 	getVisRep()->setPose(0);
 
-	setStateSpawnFlyOut();
+	setHealth(CONI("CRANE_HEALTH"));
+	setStateFlyOut();
 }
 
 void CraneThing::move(Real time)
@@ -64,16 +65,6 @@ void CraneThing::move(Real time)
 	// stay above a minimum altitude
 	if (getPosY() < getGroundY() + CONR("CRANE_ALTITUDE_MIN")) 
 		setPosY(getGroundY() + CONR("CRANE_ALTITUDE_MIN"));
-
-	// orbit
-	if (mState == CRANE_STATE_ORBIT)
-	{
-		Vector3 dir = getPosition() - mOrbitPos;
-		dir.y = 0;
-		dir = dir.crossProduct( Vector3::UNIT_Y );
-		dir.normalise();
-		setVelocity(dir * CONR("CRANE_SPEED"));
-	}
 }
 
 void CraneThing::think()
@@ -93,52 +84,12 @@ void CraneThing::think()
 		// stay in the orbit zone
 		if (orbitDistance() < CONR("CRANE_ORBIT_MIN"))
 			setStateFlyOut();
-
-		// check for orbit
-		if (orbitDistance() < CONR("CRANE_ORBIT_MAX"))
-			setStateOrbit();
 	}
 	else if (mState == CRANE_STATE_FLY_OUT)
 	{
 		// stay in the orbit zone
 		if (orbitDistance() > CONR("CRANE_ORBIT_MAX"))
 			setStateFlyIn();
-
-		// check for orbit
-		if (orbitDistance() > CONR("CRANE_ORBIT_MIN"))
-			setStateOrbit();
-	}
-	else if (mState == CRANE_STATE_SPAWN_FLY_OUT)
-	{
-		// stay in the orbit zone
-		if (orbitDistance() > CONR("CRANE_ORBIT_MAX"))
-			setStateFlyIn();
-
-		// check for orbit
-		if (orbitDistance() > CONR("CRANE_ORBIT_MIN"))
-			setStateOrbit();
-	}
-	else if (mState == CRANE_STATE_ORBIT)
-	{
-		// orbit
-		Vector3 dir = getPosition() - mOrbitPos;
-		dir.y = 0;
-		dir = dir.crossProduct( Vector3::UNIT_Y );
-		dir.normalise();
-		setVelocity(dir * CONR("CRANE_SPEED"));
-
-		// stay in the orbit zone
-		if (orbitDistance() > CONR("CRANE_ORBIT_MAX"))
-			setStateFlyIn();
-
-		if (orbitDistance() < CONR("CRANE_ORBIT_MIN"))
-			setStateFlyOut();
-
-		// look for enemies to attack
-
-		// TODO
-		mTarget = 0;
-
 	}
 	else if (mState == CRANE_STATE_ATTACK)
 	{
@@ -166,9 +117,17 @@ void CraneThing::collided(Thing* e)
 	{
 		e->damage(CONI("CRANE_DAMAGE"), getTeamNum());
 		Physics::getSingleton().addEffect(new CraneBlastEffect(getPosition()));
-		setPosition(mOrbitPos);
-		setStateSpawnFlyOut();
+		die();
 	}
+}
+
+void CraneThing::die()
+{
+	DamageableThing::die();
+
+	setHealth(CONI("CRANE_HEALTH"));
+	setPosition(mOrbitPos);
+	setStateFlyOut();
 }
 
 void CraneThing::setStateFlyIn()
@@ -178,42 +137,18 @@ void CraneThing::setStateFlyIn()
 	Vector3 dir = mOrbitPos - getPosition();
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
-
-	LogManager::getSingleton().logMessage("crane state fly in");
 }
 
 void CraneThing::setStateFlyOut()
 {
 	mState = CRANE_STATE_FLY_OUT;
 				
-	Vector3 dir = getPosition() - mOrbitPos;
-	dir.normalise();
-	setVelocity(dir * CONR("CRANE_SPEED"));
-
-	LogManager::getSingleton().logMessage("crane state fly in");
-}
-
-void CraneThing::setStateSpawnFlyOut()
-{
-	mState = CRANE_STATE_SPAWN_FLY_OUT;
-				
 	Vector3 dir;
 	dir.x = Math::RangeRandom(-1,1);
-	dir.y = 0;
+	dir.y = Math::RangeRandom(-.5,.5);
 	dir.z = Math::RangeRandom(-1,1);
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
-
-	LogManager::getSingleton().logMessage("crane state fly out");
-}
-
-void CraneThing::setStateOrbit()
-{
-	mState = CRANE_STATE_ORBIT;
-	
-	setVelocity(Vector3(0,0,0));
-
-	LogManager::getSingleton().logMessage("crane state orbit");
 }
 
 void CraneThing::setStateAttack()
@@ -224,8 +159,6 @@ void CraneThing::setStateAttack()
 	Vector3 dir = mTarget->getPosition() - getPosition();
 	dir.normalise();
 	setVelocity(dir * CONR("CRANE_SPEED"));
-
-	LogManager::getSingleton().logMessage("crane state attack");
 }
 
 }

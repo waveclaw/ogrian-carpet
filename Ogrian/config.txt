@@ -27,4 +27,4 @@ green=0
 
 
 # Performance variables
-THING_CULL_DIST=300
+THING_CULL_DIST=100

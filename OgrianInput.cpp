@@ -79,7 +79,7 @@ bool Input::processKeyInput(InputReader* input)
 	// drop a manathing
     if (input->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-		Physics::getSingleton().addThing(new ManaThing(1, 
+		Physics::getSingleton().addThing(new ManaThing(50, 
 			Renderer::getSingleton().getCameraThing()->getPosition()));
         mTimeUntilNextToggle = CONR("KEY_DELAY");
     }

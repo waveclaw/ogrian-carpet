@@ -82,10 +82,10 @@ public:
 
 	virtual void collided(Thing* e);
 
+	virtual void die();
+
 	virtual void setStateFlyIn();
 	virtual void setStateFlyOut();
-	virtual void setStateSpawnFlyOut();
-	virtual void setStateOrbit();
 	virtual void setStateAttack();
 
 private:
