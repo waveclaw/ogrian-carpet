@@ -5,3 +5,5 @@
  Firestorm
  Speed
  Akimbo Fireball
+
+-gave towers new models and beacons

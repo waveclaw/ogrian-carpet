@@ -264,6 +264,9 @@
 				RelativePath="OgrianFoliageThing.h">
 			</File>
 			<File
+				RelativePath="OgrianHutThing.h">
+			</File>
+			<File
 				RelativePath="OgrianManaThing.h">
 			</File>
 			<File

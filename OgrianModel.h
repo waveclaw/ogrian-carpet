@@ -74,7 +74,7 @@ public:
 	virtual void frame() {}
 	virtual void setOrientation(Radian orientation) {}
 	virtual void setRotation(Radian rotation) {}
-	virtual void setColour(ColourValue& colour) {}
+	virtual void setColour(ColourValue& colour) { mColour = colour;}
 
 	// add this model to the renderer
 	virtual void addToRenderer();
@@ -99,6 +99,8 @@ private:
 
 	SceneNode* mNode;
 	Entity* mEntity;
+
+	ColourValue mColour;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;

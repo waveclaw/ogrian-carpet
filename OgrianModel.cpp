@@ -78,7 +78,7 @@ void Model::setMesh(String mesh, Real scale, Real ratio)
 
 ColourValue Model::getColour()
 {
-	return ColourValue::White;
+	return mColour;
 }
 
 //----------------------------------------------------------------------------

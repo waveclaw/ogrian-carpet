@@ -47,8 +47,6 @@ CastleFlagThing::CastleFlagThing()
 	Vector3 bpos = getPosition();
 	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
 	mBeacon->setPosition(bpos);
-
-	LogManager::getSingleton().logMessage("Making Beacon");
 }
 
 //----------------------------------------------------------------------------
@@ -557,8 +555,8 @@ void CastleTurretThing::setPercentage(Real per)
 	{
 		Vector3 pos = getPosition();
 		pos.y = getGroundY() + getHeight();
-		mCrane = new CraneThing(getTeamNum(), pos);
-		Physics::getSingleton().addThing(mCrane);
+		//mCrane = new CraneThing(getTeamNum(), pos);
+		//Physics::getSingleton().addThing(mCrane);
 	}
 	else if (per <= 0 && mCrane)
 	{
@@ -577,8 +575,8 @@ void CastleKeepThing::setPercentage(Real per)
 	{
 		Vector3 pos = getPosition();
 		pos.y = getGroundY() + getHeight();
-		mCrane = new CraneThing(getTeamNum(), pos);
-		Physics::getSingleton().addThing(mCrane);
+		//mCrane = new CraneThing(getTeamNum(), pos);
+		//Physics::getSingleton().addThing(mCrane);
 	}
 	else if (per < 1 && mCrane)
 	{

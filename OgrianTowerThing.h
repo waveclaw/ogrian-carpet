@@ -70,20 +70,22 @@ public:
 		mLastCastTime = 0;
 		mUnbuildMode = false;
 
-		if (!Multiplayer::getSingleton().isClient())
-			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
-		else 
-			mColour = ColourValue::White;
-
 		// set up the beacon
 		mBeacon = new TowerBeaconThing();
 		Physics::getSingleton().addEffect(mBeacon);
 
-		mBeacon->setColour(mColour);
-
 		Vector3 bpos = getPosition();
 		bpos.y += CONR("TOWER_BEACON_ALTITUDE");
 		mBeacon->setPosition(bpos);
+
+
+		if (!Multiplayer::getSingleton().isClient())
+		{
+			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
+			setColour(mColour);
+		}
+		//else 
+			//mColour = ColourValue::White;
 
 
 		// set the mesh
@@ -128,6 +130,25 @@ public:
 				Physics::getSingleton().addThing(crane);
 			}
 		}
+	}
+
+	virtual void generateBitStream(BitStream& bitstream, int pid)
+	{
+		DamageableThing::generateBitStream(bitstream, pid);
+	}
+
+	virtual void setColour(ColourValue& colour)
+	{
+		DamageableThing::setColour(colour);
+		mBeacon->setColour(colour);
+	}
+
+	virtual void setPosition(Vector3 pos)
+	{
+		DamageableThing::setPosition(pos);
+
+		pos.y += CONR("TOWER_BEACON_ALTITUDE");
+		mBeacon->setPosition(pos);
 	}
 
 	virtual void unbuild()

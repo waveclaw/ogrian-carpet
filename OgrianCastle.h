@@ -112,8 +112,8 @@ public:
 	{
 		// if it has reached its target pos.y, stop
 		if (!Multiplayer::getSingleton().isClient() && (
-			(getVelY() < 0 && mTargetY > getPosY()) ||
-			(getVelY() > 0 && mTargetY < getPosY())))
+			(getVelY() < -CONR("CASTLE_RISE_SPEED")/2 && mTargetY > getPosY()) ||
+			(getVelY() > CONR("CASTLE_RISE_SPEED")/2 && mTargetY < getPosY())))
 		{
 			setPosY(mTargetY);
 			setVelY(0);
