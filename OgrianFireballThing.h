@@ -128,7 +128,7 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// damage it
-		if (e->isDamageable())
+		if (e->isDamageable() && (getTeamNum() != e->getTeamNum()))
 		{
 			e->damage(CONR("FIREBALL_DAMAGE"), getTeamNum());
 

@@ -221,22 +221,7 @@ void WizardThing::setVelocity(Vector3 vel)
 	
 void WizardThing::collided(Thing* e)
 {
-	// sit on top of buildings
-	//if (e->isBuilding())
-	//{
-	//	Real topPosY = e->getPosY() + e->getHeight()/2.0 + getHeight()*.45;
 
-	//	//if (getPosY() < topPosY)
-	//	//{
-	//	//	setVelY(CONR("CAMERA_CLIMB_RATE"));
-	//	//}
-	//	//else
-	//	//{
-	//		setPosY(topPosY);
-	//		setVelY(0);
-	//	//}
-	//	mOnBuilding = true;
-	//}
 }
 
 //----------------------------------------------------------------------------

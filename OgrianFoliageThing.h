@@ -81,8 +81,8 @@ public:
 
 	virtual void destroy()
 	{
-		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth(),
-			Renderer::getSingleton().getFoliageMaterial() + "Dead"));
+		//Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth(),
+			//Renderer::getSingleton().getFoliageMaterial() + "Dead"));
 
 		DamageableThing::destroy();
 	}

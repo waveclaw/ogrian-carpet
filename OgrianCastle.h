@@ -57,6 +57,9 @@ public:
 		setPosY(getGroundY() - CONR("CASTLE_OFFSET") - getHeight()*2);
 		mTargetY = getPosY();
 		setPercentage(0);
+
+		// set the team
+		setTeamNum(castle->getTeamNum());
 	}
 
 	// set how far up this block should go to
