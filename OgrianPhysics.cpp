@@ -469,7 +469,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 		}
 		// assert that one was removed
 		assert(mThingGrid[grid_u][grid_v].size() == s-1);
-		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: ") << thing);
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: ") << thing->getString());
 		return false;
 	}
 	else
@@ -487,7 +487,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 		}
 		// assert that one was removed
 		assert(mOtherThings.size() == s-1);
-		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") << thing); 
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in others: ") << thing->getString()); 
 		return false;
 	}
 }

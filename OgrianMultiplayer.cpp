@@ -711,7 +711,9 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 void Multiplayer::clientRequestKick()
 {
 	// stop sending camera updates
-	Renderer::getSingleton().getCameraThing()->_setUID(0);
+	CameraThing* cam = Renderer::getSingleton().getCameraThing();
+	
+	if (cam!=0) cam->_setUID(0);
 
 	clientSendText(" ", ID_KICKME);
 }
