@@ -63,6 +63,13 @@ bool Physics::containsThing(Thing* thing)
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
 {
+	// make sure it's not too big
+	if (thing->getWidth() > mWorldSize / PHYSICS_GRID_SIZE)
+	{
+		Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
+				"Physics::addThing" );
+	}
+
 	// add to grid
 	Vector3 pos = thing->getPosition();
 	_addThing(thing, getGridU(pos.x), getGridV(pos.z));
@@ -340,27 +347,55 @@ void Physics::collisionCheck()
 
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
-	Real maxdist = 
-		a->getRadius() 
-		+ b->getRadius();
+	Real maxdist = (a->getWidth() + b->getWidth())/2;
+	Real maxHdist = (a->getHeight() + b->getHeight())/2;
+
+	Vector3 apos = a->getPosition();
+	Vector3 bpos = b->getPosition();
 
 	// if their AABB don't interset, return
-	if (Math::Abs(a->getPosition().x - b->getPosition().x) > maxdist) return;
-	if (Math::Abs(a->getPosition().z - b->getPosition().z) > maxdist) return;
+	if (Math::Abs(apos.x - bpos.x) > maxdist) return;
+	if (Math::Abs(apos.y - bpos.y) > maxHdist) return;
+	if (Math::Abs(apos.z - bpos.z) > maxdist) return;
 
-	// if they are too far apart in the x/z plane, return
-	if (a->distance(b) > maxdist) return;
+	ThingShape sa = a->getShape();
+	ThingShape sb = b->getShape();
 
-	Real ay = a->getPosition().y;
-	Real by = b->getPosition().y;
-
-	// if they are close enough in altitude
-	if (ay-by < maxdist && by-ay < maxdist)
+	// for cube intersection
+	if (sa == CUBE || sb == CUBE)
 	{
-		// they collide
-		a->collided(b);
-		b->collided(a);
+		// note, their AABB already intersect, so we're done
+		collide(a,b);
 	}
+
+	// for cylidner intersection
+	else if (sa == CYLINDER || sb == CYLINDER)
+	{
+		// if they are too far apart in the x/z plane, return
+		if (a->cylinderDistance(b) > maxdist) return;
+
+		// otherwise collide
+		collide(a,b);
+	}
+
+	// for sphere intersection
+	else if (sa == SPHERE || sb == SPHERE)
+	{
+		// if they are too far apart in the x/z plane, return
+		if (a->sphereDistance(b) > maxdist) return;
+
+		// otherwise collide
+		collide(a,b);
+	}
+
+
+}
+
+void Physics::collide(Thing* a, Thing* b)
+{
+	// they collide
+	a->collided(b);
+	b->collided(a);
 }
 
 void Physics::setWorldSize(int size)
@@ -381,7 +416,7 @@ Physics& Physics::getSingleton(void)
 
 Physics::~Physics()
 {
-	//clear();
+	clear();
 }
 
 }

@@ -55,7 +55,7 @@ public:
 	// stay on the ground
 	virtual void setPosition(Vector3 pos)
 	{
-		pos.y = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getRadius();
+		pos.y = HeightMap::getSingleton().getHeightAt(pos.x,pos.z) + getHeight()/2;
 		Thing::setPosition(pos);
 	}
 };

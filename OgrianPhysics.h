@@ -95,6 +95,9 @@ private:
 	// and notify them if they collide
 	virtual inline void pairCollisionCheck(Thing* a, Thing* b);
 
+	// cause a and b to collide
+	virtual inline void collide(Thing* a, Thing* b);
+
 	// add a thing to the grid
 	virtual void _addThing(Thing* thing, int grid_u, int grid_v);
 	// remove a thing from the grid. 

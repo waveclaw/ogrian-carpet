@@ -225,8 +225,8 @@ void Renderer::createFoliage(const String& material, int num)
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 			Real scale = FOLIAGE_SCALE + (Math::SymmetricRandom()-.5) * FOLIAGE_SCALE_VAR;
-			FoliageThing* fol = new FoliageThing(scale,pos);
-			Physics::getSingleton().addThing(fol);
+
+			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
 		}
 	}
 

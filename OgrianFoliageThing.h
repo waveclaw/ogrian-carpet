@@ -46,6 +46,7 @@ public:
 	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
 		: RollingThing("Ogrian/PalmTree", "Foliage", true, scale, pos)
 	{
+		setShape(CYLINDER);
 	}
 
 	virtual ThingType getType()

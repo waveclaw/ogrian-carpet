@@ -38,7 +38,7 @@ namespace Ogrian
 
 unsigned long Thing::msNextGeneratedNameExt = 1;
 
-Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 pos)
+Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 pos, ThingShape shape)
 {
 	// initialize the mvars
 	mAlive = true;
@@ -57,6 +57,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	setVelocity(Vector3(0,0,0));
 	setPosition(pos);
 	setScale(scale);
+	setShape(shape);
 
 	// add it to the renderer
 	_addToRenderer();
@@ -99,7 +100,8 @@ void Thing::_addToRenderer()
 	// apply its properties to it
 	setMaterial(mMaterial);
 	Thing::setPosition(mPos);
-	setScale(mRadius*2);
+	setHeight(mHeight);
+	setWidth(mWidth);
 
 }
 
@@ -125,6 +127,16 @@ bool Thing::isAlive()
 	return mAlive;
 }
 
+void Thing::setShape(ThingShape shape)
+{
+	mShape = shape;
+}
+
+ThingShape Thing::getShape()
+{
+	return mShape;
+}
+
 void Thing::setVelocity(Vector3 vel)
 {
 	mVel = vel;
@@ -145,10 +157,24 @@ void Thing::setPosition(Vector3 pos)
 
 void Thing::setScale(Real scale)
 {
-	mRadius = scale/2;
+	setHeight(scale);
+	setWidth(scale);
+}
+
+void Thing::setHeight(Real height)
+{
+	mHeight = height;
+	
+	if (mInRenderer)
+		mBillboard->setDimensions(mWidth,mHeight);
+}
+
+void Thing::setWidth(Real width)
+{
+	mWidth = width;
 
 	if (mInRenderer)
-		mBillboard->setDimensions(scale,scale);
+		mBillboard->setDimensions(mWidth,mHeight);
 }
 
 Vector3 Thing::getPosition()
@@ -161,9 +187,14 @@ Vector3 Thing::getVelocity()
 	return mVel;
 }
 
-Real Thing::getScale()
+Real Thing::getWidth()
 {
-	return mRadius*2;
+	return mWidth;
+}
+
+Real Thing::getHeight()
+{
+	return mHeight;
 }
 
 void Thing::setMaterial(String material)
@@ -187,7 +218,7 @@ void Thing::_updateVisibility()
 {
 	// check the distance from the camera
 	Thing* cam = Renderer::getSingleton().getCameraThing();
-	if (distance(cam) < THING_CULL_DIST)
+	if (cylinderDistance(cam) < THING_CULL_DIST)
 	{
 		// add it if its close enough
 		if (!mInRenderer)
@@ -201,10 +232,18 @@ void Thing::_updateVisibility()
 	}
 }
 
-// calculate the distance, neglecting the difference in altitude
-Real Thing::distance(Thing* e)
+// calculate the distance, neglecting the difference in altitude: sqrt(x^2+y^2)
+Real Thing::cylinderDistance(Thing* e)
 {
 	return sqrt((mPos.x - e->mPos.x)*(mPos.x - e->mPos.x) 
+			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
+}
+
+// calculate the distance: sqrt(x^2+y^2+z^2)
+Real Thing::sphereDistance(Thing* e)
+{
+	return sqrt(  (mPos.x - e->mPos.x)*(mPos.x - e->mPos.x)
+				+ (mPos.y - e->mPos.y)*(mPos.z - e->mPos.y)
 			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
 }
 
@@ -217,11 +256,6 @@ Real Thing::axisDistance(Thing* e)
 
 	// return the greater of the two
 	return (xdist > zdist) ? xdist : zdist;
-}
-
-Real Thing::getRadius()
-{
-	return mRadius;
 }
 
 ThingType Thing::getType()
@@ -259,14 +293,6 @@ void Thing::setVelY(Real y)
 Real Thing::getVelY()
 {
 	return mVel.y;
-}
-
-
-
-// they are ordered by x location
-bool Thing::operator<(Thing* other)
-{
-	return (mPos.x < other->mPos.x);
 }
 
 }

@@ -49,11 +49,19 @@ enum ThingType
 	CAMERATHING,
 };
 
+// this is used for collision detection
+enum ThingShape
+{
+	SPHERE,
+	CYLINDER,
+	CUBE,
+};
 
 class Thing
 {
 public:
-	Thing(String material, String prefix="Thing", bool fixed_y=false, Real scale=1, Vector3 pos=Vector3(0,0,0));
+	Thing(String material, String prefix="Thing", bool fixed_y=false, 
+		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
 	virtual ~Thing();
 
 	virtual void setVelocity(Vector3 vel);
@@ -62,28 +70,34 @@ public:
 	virtual void setPosition(Vector3 pos);
 
 	virtual void setScale(Real scale);
+	virtual void setWidth(Real width);
+	virtual void setHeight(Real height);
 
 	virtual void setMaterial(String material);
+
+	virtual inline void setShape(ThingShape);
+	virtual inline ThingShape getShape();
 
 	// applies the velocity to the position
 	virtual void move(Real time);
 
 	// calculate the x/z distance between two Things
-	virtual Real distance(Thing* e);
+	virtual Real cylinderDistance(Thing* e);
+
+	// calculate the real distance between two Things
+	virtual Real sphereDistance(Thing* e);
 
 	// calculate the rectangular distance between two things using only the x and z axis
 	// this is like using a square instead of a circle for distance
 	virtual Real axisDistance(Thing* e);
-
-	// the radius is half the scale
-	virtual Real getRadius();
 
 	// get the position
 	virtual Vector3 getPosition();
 
 	// get the velocity
 	virtual Vector3 getVelocity();
-	virtual Real getScale();
+	virtual Real getWidth();
+	virtual Real getHeight();
 
 	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
@@ -122,8 +136,10 @@ private:
 	SceneNode* mNode;
 	String mName;
 
-	Real mRadius;
-	Real mHeight; // unused so far - will be used so it can be != mRadius (all things are cylinders)
+	Real mWidth;
+	Real mHeight; 
+
+	ThingShape mShape;
 
 	bool mAlive;
 
