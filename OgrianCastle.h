@@ -35,6 +35,7 @@ Description: This is a castle
 #include "OgrianModel.h"
 #include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianBuildingHeightMap.h"
 #include "OgrianBaloonThing.h"
 #include "OgrianCraneThing.h"
 
@@ -81,6 +82,8 @@ public:
 		// set the team
 		if (castle)
 			setTeamNum(castle->getTeamNum());
+		
+		BuildingHeightMap::getSingleton().moldLandscape(this);
 	}
 
 	// set how far up this block should go to

@@ -135,7 +135,7 @@ Real HeightMap::getHeightAt(Real x, Real z)
 					+ height10*(modx)*(1-modz) 
 					+ height11*(modx)*(modz);
 
-	return height;
+	return height*2;
 }
 
 //----------------------------------------------------------------------------
@@ -182,6 +182,10 @@ void HeightMap::loadTerrain(const String& filename)
 
 	mData = mImage->getData();
 	mSize = mImage->getWidth();
+
+	// cut mData in half to allow room for buildings
+	for (int i=0; i<mSize*mSize; i++)
+		mData[i] /= 2;
 }
 
 //----------------------------------------------------------------------------

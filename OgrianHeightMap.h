@@ -75,7 +75,7 @@ private:
 	Vector3 mScale;
 	int mSize;
 
-	const uchar* mData;
+	uchar* mData;
 	Image* mImage;
 };
 

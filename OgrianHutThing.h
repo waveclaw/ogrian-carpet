@@ -32,6 +32,7 @@ Description: This is a hut which can be claimed to increase mana regen for a wiz
 
 #include <Ogre.h>
 #include "OgrianMultiplayer.h"
+#include "OgrianBuildingHeightMap.h"
 #include "OgrianConst.h"
 #include "OgrianModel.h"
 #include "OgrianPhysics.h"
@@ -84,6 +85,9 @@ public:
 
 		if (!Multiplayer::getSingleton().isClient())
 			setColour(ColourValue::White);
+		
+		setPosition(pos);
+		BuildingHeightMap::getSingleton().moldLandscape(this);
 	}
 
 	virtual void destroy()

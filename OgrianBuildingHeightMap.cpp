@@ -118,10 +118,11 @@ int BuildingHeightMap::_getWorldHeight( int x, int z )
 //----------------------------------------------------------------------------
 
 // do a lookup in the array to set the height at a grid point
-void BuildingHeightMap::_setWorldHeight( int x, int z, int h )
+void BuildingHeightMap::_setWorldHeight( int x, int z, int height )
 {
-	int min = CONI("HEIGTHMAP_MIN_HEIGHT");
-	if (h < min) h = min;
+	int min = HeightMap::getSingleton()._worldheight(x, z);
+	if (height < min) height = min;
+	if (height > 255) height = 255;
 
 	if (x <= 0) return;
 	if (z <= 0) return;
@@ -130,7 +131,7 @@ void BuildingHeightMap::_setWorldHeight( int x, int z, int h )
 
 	if (!mData) return;
 
-    mData[ ( ( z * mSize ) + x ) ] = h;
+    mData[ ( ( z * mSize ) + x ) ] = height;
 };
 
 //----------------------------------------------------------------------------
@@ -164,13 +165,16 @@ Real BuildingHeightMap::getHeightAt(Real x, Real z)
 					+ height10*(modx)*(1-modz) 
 					+ height11*(modx)*(modz);
 
-	return height;
+	return height*2;
 }
 
 //----------------------------------------------------------------------------
 
 void BuildingHeightMap::moldLandscape(Thing* building)
 {
+	if (building->getType() == HUTTHING)
+		LogManager::getSingleton().logMessage("molding hut");
+
 	// get the coordinates
 	Vector3 pos = building->getPosition();
 	Real x = pos.x;
@@ -182,6 +186,9 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	y /= mScale.y;
 	z /= mScale.z;
 
+	y++;
+	y /= 2;
+
 	// calculate the matrix indeces for the grid cell
 	int fx = int(x);
 	int fz = int(z);
@@ -192,25 +199,18 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	if (fz - width - 1 <= 0) fz = width + 2;
 	if (fz + width + 2 >= mSize - 1) fz = mSize - width - 1;
 
-	//std::ostringstream msg("setting height: ");
-	//msg << "(" << fx << ", " << y << ", " << fz << ")";
-	//LogManager::getSingleton().logMessage(msg.str());
+	std::ostringstream msg("setting height: ");
+	msg << "(" << fx << ", " << y << ", " << fz << ")";
+	LogManager::getSingleton().logMessage(msg.str());
 
 	// set the height at each grid point covered by the building
-	int rowf = fx - width - 1; // the first row
-	int rowl = fx + width + 2; // the last row
-	int colf = fz - width - 1; // the first col
-	int coll = fz + width + 2; // the last col
+	int rowf = fx - width +1; // the first row
+	int rowl = fx + width ; // the last row
+	int colf = fz - width +1; // the first col
+	int coll = fz + width ; // the last col
 	for (int i=rowf; i<=rowl; i++)
-	{
 		for (int j=colf; j<=coll; j++)
-		{
-			if (y > HeightMap::getSingleton()._worldheight(i, j))
-				_setWorldHeight(i, j, y);
-			else 
-				_setWorldHeight(i, j, HeightMap::getSingleton()._worldheight(i, j));
-		}
-	}
+			_setWorldHeight(i, j, y);
 }
 
 //----------------------------------------------------------------------------
