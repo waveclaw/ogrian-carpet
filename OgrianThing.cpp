@@ -49,6 +49,7 @@ unsigned long Thing::msNextGeneratedNameExt = 0;
 Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, Real scale, Vector3 pos, ThingShape shape)
 {
 	// initialize the mvars
+	mDeleteFlag = false;
 	mAlive = true;
 	mInPhysics = false;
 	mGroundScan = false;
@@ -107,6 +108,9 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 
 Thing::~Thing()
 {
+	if (!mDeleteFlag) // break if this was deleted incorrectly
+		((Thing*)0)->isAlive();
+
 	stopSound();
 
 	if (mVisRep)

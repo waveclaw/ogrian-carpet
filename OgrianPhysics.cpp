@@ -45,7 +45,6 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 #include "OgrianFoliageThing.h"
-//#include "OgrianCraneThing.h"
 
 #include "OgreLogManager.h"
 
@@ -471,7 +470,7 @@ void Physics::addThing(Thing* thing)
 		Multiplayer::getSingleton().clientSend(&bs);
 
 		// discard the thing
-		delete thing;
+		_delete(thing);
 	}
 	else // if its a server or singleplayer
 	{
@@ -643,7 +642,7 @@ void Physics::deleteEffect(Thing* thing)
 		}
 	}
 
-	delete thing;
+	_delete(thing);
 }
 
 //----------------------------------------------------------------------------
@@ -702,7 +701,7 @@ void Physics::deleteThing(Thing* thing)
 
 	// delete it
 	if (removed)
-		delete thing;
+		_delete(thing);
 	else LogManager::getSingleton().logMessage(String("ERROR: THING NOT DELETED: ") + thing->getString());
 }
 
@@ -741,6 +740,14 @@ int Physics::getGridV(Real z)
 
 //----------------------------------------------------------------------------
 
+void Physics::_delete(Thing* thing)
+{
+	thing->setDeleteFlag();
+	delete thing;
+}
+
+//----------------------------------------------------------------------------
+
 // remove and delete all things
 void Physics::clear()
 {
@@ -757,14 +764,14 @@ void Physics::clear()
 	while(!mAllThings.empty())
 	{
 		Thing* thing = mAllThings[mAllThings.size()-1];
-		if (thing->getType() != CAMERATHING) delete thing;
+		if (thing->getType() != CAMERATHING) _delete(thing);
 		mAllThings.pop_back();
 	}
 
 	// delete each effect from mEffects
 	while (!mEffects.empty())
 	{
-		delete mEffects[mEffects.size()-1];
+		_delete(mEffects[mEffects.size()-1]);
 		mEffects.pop_back();
 	}
 

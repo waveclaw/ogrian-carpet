@@ -247,11 +247,15 @@ public:
 	virtual void _setUID(int uid);
 
 	
+	void setDeleteFlag() { mDeleteFlag = true; }
 private:
 	Vector3 mPos;
 	Vector3 mVel;
 	Real mOrientation;
 	int mTeamNum;
+
+	// this flag must be set to true before deleting
+	bool mDeleteFlag;
 
 	// graphical rendering stuff
 	VisRep* mVisRep; // the visual representation

@@ -130,6 +130,9 @@ private:
 
 	Physics();
 
+	// delete thing
+	void _delete(Thing* thing);
+
 	// notify all things of a frame move
 	void moveAll(Real time);
 
