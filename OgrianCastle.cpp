@@ -170,6 +170,8 @@ void Castle::setHealth(int health)
 
 void Castle::setMana(int amount)
 {
+	if (amount < 0) amount = 0;
+
 	mMana = amount;
 
 		std::ostringstream num("");

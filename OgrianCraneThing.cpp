@@ -46,6 +46,7 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	mOrbitPos = orbitPos;
 	mLastFlapTime = 0;
 	mLastFlap = false;
+	mUnIdleTime = 0;
 
 	setTeamNum(teamNum);
 	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
@@ -79,6 +80,7 @@ void CraneThing::move(Real time)
 	DamageableThing::move(time);
 
 	// stay above a minimum altitude
+	if (mState != CRANE_STATE_ATTACK && !Multiplayer::getSingleton().isClient())
 	if (getPosY() < getGroundY() + CONR("CRANE_ALTITUDE_MIN")) 
 		setPosY(getGroundY() + CONR("CRANE_ALTITUDE_MIN"));
 }
@@ -123,6 +125,11 @@ void CraneThing::think()
 	{
 		setStateAttack();
 	}
+	else if (mState == CRANE_STATE_IDLE)
+	{
+		if (Time::getSingleton().getTime() > mUnIdleTime)
+			setStateFlyOut();
+	}
 
 	setUpdateFlag();
 }
@@ -147,7 +154,7 @@ void CraneThing::die()
 
 	setHealth(CONI("CRANE_HEALTH"));
 	setPosition(mOrbitPos);
-	setStateFlyOut();
+	setStateIdle();
 }
 
 //----------------------------------------------------------------------------
@@ -198,6 +205,15 @@ void CraneThing::setStateAttack()
 		// return to base
 		setStateFlyIn();
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void CraneThing::setStateIdle()
+{
+	mState = CRANE_STATE_IDLE;
+	
+	mUnIdleTime = Time::getSingleton().getTime() + CONR("CRANE_IDLE_TIME") * 1000;
 }
 
 //----------------------------------------------------------------------------

@@ -564,9 +564,17 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 	else
 	{
 		// put it among the others
-		mOtherThings.push_back(thing);
+		//mOtherThings.push_back(thing);
 
-		LogManager::getSingleton().logMessage("WARNING - ADDING THING OUTSIDE GRID");
+		//LogManager::getSingleton().logMessage("WARNING - ADDING THING OUTSIDE GRID");
+
+		// keep it inside the world
+		Vector3 pos = thing->getPosition();
+		if (pos.x < -CONR("COASTLINE")) pos.x = -CONR("COASTLINE")+1;
+		if (pos.z < -CONR("COASTLINE")) pos.z = -CONR("COASTLINE")+1;
+		if (pos.x > mWorldSize + CONR("COASTLINE")) pos.x = 1026 + CONR("COASTLINE"-1);
+		if (pos.z > mWorldSize + CONR("COASTLINE")) pos.z = 1026 + CONR("COASTLINE"-1);
+		thing->setPosition(pos);
 	}
 }
 
@@ -719,11 +727,6 @@ void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 
 int Physics::getGridU(Real x)
 {
-	// scale x so that the grid covers some of the ocean
-	//x = (x - (mWorldSize / 2.0)) * 2.0;
-
-	//return (x/mWorldSize) * PHYSICS_GRID_SIZE;
-
 	Real c = CONR("COASTLINE");
 	return ((x+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }
@@ -732,11 +735,6 @@ int Physics::getGridU(Real x)
 
 int Physics::getGridV(Real z)
 {
-	// scale z so that the grid covers some of the ocean
-	//z = (z - (mWorldSize / 2.0)) * 2.0;
-
-	//return (z/mWorldSize) * PHYSICS_GRID_SIZE;
-	
 	Real c = CONR("COASTLINE");
 	return ((z+c)/(mWorldSize+2*c)) * PHYSICS_GRID_SIZE;
 }

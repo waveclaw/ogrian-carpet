@@ -41,11 +41,10 @@ and respawns back at its home point (around which it orbits).
 
 using namespace Ogre;
 
-#define CRANE_STATE_SPAWN_FLY_OUT 0
+#define CRANE_STATE_IDLE 0
 #define CRANE_STATE_FLY_OUT 1
 #define CRANE_STATE_FLY_IN 2
-#define CRANE_STATE_ORBIT 3
-#define CRANE_STATE_ATTACK 4
+#define CRANE_STATE_ATTACK 3
 
 namespace Ogrian
 {
@@ -82,6 +81,7 @@ public:
 	virtual void collided(Thing* e);
 	virtual void die();
 
+	virtual void setStateIdle();
 	virtual void setStateFlyIn();
 	virtual void setStateFlyOut();
 	virtual void setStateAttack();
@@ -89,9 +89,9 @@ public:
 private:
 	Vector3 mOrbitPos;
 	int mState;
-	//Thing* mTarget;
 	unsigned long mLastFlapTime;
 	bool mLastFlap;
+	unsigned long mUnIdleTime;
 
 	Real orbitDistance()
 	{
