@@ -7,6 +7,7 @@
 -added a map option to make lava deadly
 -gave towers a healing ball and a teleport portal
 -lots more settings for maps including start location(s)
+-towers now dont drop all of their mana when they die, some is sent back to the castle, like monsters
 
 
 

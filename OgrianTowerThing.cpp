@@ -199,9 +199,16 @@ void TowerThing::die()
 		}
 	}
 	else
-	{
+	{	// return some mana to the castle
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		if (team && team->getCastle())
+		{
+			int mana = team->getCastle()->getMana() + CONI("TOWER_COST") - CONI("TOWER_DROP");
+			team->getCastle()->setMana(mana);
+		}
+
 		// drop a manathing
-		ManaThing* mana = new ManaThing(CONI("TOWER_COST"), getPosition());
+		ManaThing* mana = new ManaThing(CONI("TOWER_DROP"), getPosition());
 		mana->setTeamNum(getTeamNum());
 		Physics::getSingleton().addThing(mana);;
 	}
