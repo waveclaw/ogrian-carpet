@@ -98,7 +98,7 @@ void SentinelThing::think()
 
 			// shoot it
 			Physics::getSingleton().addThing(new FireballThing(getTeamNum(), team->getColour(),
-				pos, vel, CONI("SENTINEL_DAMAGE"), false, false));
+				pos, vel, CONI("SENTINEL_DAMAGE"), true));
 		}
 	}
 }

@@ -139,7 +139,7 @@ void GnomeThing::think()
 
 			// shoot at it
 			Physics::getSingleton().addThing(new FireballThing(getTeamNum(), team->getColour(),
-				pos, vel, CONI("GNOME_DAMAGE"), false, false));
+				pos, vel, CONI("GNOME_DAMAGE"), true));
 
 			// set the attack pose
 			getVisRep()->setPose(1);

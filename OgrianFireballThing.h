@@ -23,8 +23,9 @@ OgrianFireballThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: Fireballs fly in an arc and destroy() whatever they touch.
-They self destruct when they hit the ground or another thing. 
+Description: Fireballs are the basic form of ranged attack. There are two modes.
+In simple=true mode, they fly straight with no smoke and dont hurt teammates.
+In simple=false mode, they fly in an arc, leave a smoke trail, and hurt teammates. 
 
 /*------------------------------------*/
 
@@ -78,11 +79,10 @@ class FireballThing : public TimedThing
 {
 public:
 	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0),
-		int damage=CONR("FIREBALL_DAMAGE"), bool smoke=true, bool fall=true) 
+		int damage=CONR("FIREBALL_DAMAGE"), bool simple=false) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
 	{
-		mSmoke = smoke;
-		mFall = fall;
+		mSimple = simple;
 		mDamage = damage;
 
 		setTeamNum(teamNum);
@@ -106,13 +106,13 @@ public:
 	virtual void move(Real time)
 	{
 		// fall
-		if (mFall)
+		if (!mSimple)
 			setVelocity(getVelocity() + Vector3(0, -CONR("FIREBALL_FALL_RATE") * time, 0));
 	
 		TimedThing::move(time);
 
 		// emit smoke
-		if (isAlive() && mSmoke && mSmokeList.size() == 0)
+		if (isAlive() && !mSimple && mSmokeList.size() == 0)
 		{
 			for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
 			{
@@ -135,7 +135,9 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// damage it
-		if (e->isDamageable() && (getTeamNum() != e->getTeamNum()))
+		if (e->isDamageable() 
+			&& (!mSimple || getTeamNum() != e->getTeamNum()) // dont let simple fireballs hurt allies
+			&& !((e->getType() == CAMERATHING || e->getType() == WIZARDTHING) && getTeamNum() == e->getTeamNum())) // dont let any fireballs hurt allied wizards
 		{
 			e->damage(mDamage, getTeamNum());
 
@@ -169,9 +171,8 @@ public:
 	{
 		TimedThing::generateBitStream(bitstream, pid);
 		
-		// include mSmoke and mFall
-		bitstream.Write(mSmoke);
-		bitstream.Write(mFall);
+		// include mSimple
+		bitstream.Write(mSimple);
 	}
 
 	// interpret a bitstream for this thing
@@ -179,17 +180,15 @@ public:
 	{
 		TimedThing::interpretBitStream(bitstream);
 		
-		// read mSmoke and mFall
-		bool smoke, fall;
-		bitstream.Read(smoke);
-		bitstream.Read(fall);
+		// read mSimple
+		bool simple;
+		bitstream.Read(simple);
 
-		mSmoke = smoke;
-		mFall = fall;
+		mSimple = simple;
 	}
 
 private:
-	bool mSmoke, mFall;
+	bool mSimple;
 	int mDamage;
 	ColourValue mColour;
 	Vector3 mLastPos;
