@@ -93,10 +93,20 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 {
 	// Make all the changes to the camera
 	mCamera->yaw(rotX);
-	mCamera->pitch(rotY);
+	//mCamera->pitch(rotY);
+
+	// constrain the pitch
+	Vector3 dir = mCamera->getDirection();
+
+	Camera tcam("temp", 0);
+	tcam.setDirection(dir);
+	tcam.pitch(rotY);
+	dir = tcam.getDirection();
+
+	if (dir.y < CAMERA_PITCH_MAX && dir.y > -CAMERA_PITCH_MAX)
+		mCamera->setDirection(dir);
 
 	// set the orientation of the thing to match the camera
-	Vector3 dir = mCamera->getDirection();
 	setOrientation(atan2(dir.x, dir.z));
 }
 
