@@ -102,6 +102,7 @@ private:
 
 	// a list of connected players
 	std::vector<PlayerID> mPlayers;
+	std::vector<String> mPlayerNames;
 
 	// load the config file
 	void loadConfig();

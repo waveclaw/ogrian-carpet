@@ -5,7 +5,7 @@
 Ogrian/Menu/Overlay
 {
 	zorder 490
-	// Stats block
+	
 	container BorderPanel(Ogrian/Menu/BackPanel) : SS/Templates/BasicBorderPanel
 	{
 		left 0 
@@ -85,7 +85,7 @@ Ogrian/Menu/Overlay
 		{
 			left 0.0
 			top 0.0
-			width 0.5
+			width 1
    			caption pick MAP:
 		}
 

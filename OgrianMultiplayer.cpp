@@ -115,7 +115,8 @@ void Multiplayer::serverStart()
 	
 	Menu::getSingleton().setMessage("Server Started");
 
-	PlayerList::getSingleton().addPlayer(mPlayerName + " (Server)");
+	mPlayerNames.push_back(mPlayerName);
+	PlayerList::getSingleton().addPlayer(mPlayerName);
 }
 
 //----------------------------------------------------------------------------
@@ -358,15 +359,24 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 	switch (pid)
 	{
 		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
+		{
+			// get the name
+			char name[PLAYER_NAME_MAX_LENGTH];
+			int len, UID;
+
+			BitStream bs(packet->data,packet->length,false);
+			bs.Read(UID);
+			bs.Read(len);
+			bs.Read(name,len);
+
 			// update the player list
-			PlayerList::getSingleton().addPlayer(packet->data);
+			PlayerList::getSingleton().addPlayer(name);
+
 			return true;
+		}
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
-			// This tells the client they have connected
-			Menu::getSingleton().setMessage("Connected to Server!");
-			
 			// send our name to the server
 			char name[PLAYER_NAME_MAX_LENGTH];
 			strcpy(name, mPlayerName);
@@ -378,9 +388,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			bs.Write(name,len);
 
 			clientSend(&bs);
-
-			// display our name
-			PlayerList::getSingleton().addPlayer(name);
 			return true;
 		}
 		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
@@ -404,25 +411,44 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			char name[PLAYER_NAME_MAX_LENGTH];
 			int len, UID;
 
-			BitStream bs(packet->data,packet->length,false);
+			BitStream bs(packet->data,packet->length,true);
 			bs.Read(UID);
 			bs.Read(len);
 			bs.Read(name,len);
 
 			// update the player list
+			mPlayerNames.push_back(name);
 			PlayerList::getSingleton().addPlayer(name);
 
 			// forward the message to all clients
-			;
+			BitStream bt(packet->data, packet->length, false);
+			serverSendAll(&bt);
 
-			Menu::getSingleton().setMessage("Player Sent Name (" + std::string(name) + ")");
 			return true;
 		}
+
 		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
+		{
 			// Somebody connected.  We have their IP now
 			mPlayers.push_back(packet->playerId);
+
+			// send the names of the existing players
+			char name[PLAYER_NAME_MAX_LENGTH];
+			for (int i=0; i<(int)mPlayerNames.size(); i++)
+			{
+				strcpy(name, mPlayerName);
+				int len = (int)strlen(name) + 1;
+
+				BitStream bs;
+				bs.Write(ID_ADD_PLAYER);
+				bs.Write(len);
+				bs.Write(name,len);
+
+				serverSend(&bs,packet->playerId);
+			}
 			return true;
-			
+		}
+
 		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
 			// Couldn't deliver a reliable packet - i.e. the other system was abnormally
 			// terminated
