@@ -211,6 +211,9 @@ public:
 	// get a String description
 	virtual String getString();
 
+	// activate or deactivate the ground scan
+	virtual void setGroundScan(bool active);
+
 	// set the team number
 	virtual void setTeamNum(int teamNum);
 
@@ -262,6 +265,8 @@ private:
 	bool mAlive;
 
 	bool mInPhysics; // wether or not its in the physics engine yet
+
+	bool mGroundScan; 
 
 	bool mInEarshot; // if this thing can be heard by the camera
 	bool mPlayingSound; // if this thing is playing a sound

@@ -51,6 +51,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	// initialize the mvars
 	mAlive = true;
 	mInPhysics = false;
+	mGroundScan = false;
 	mPlayingSound = false;
 	mInEarshot = false;
 	mCurrentSound = 0;
@@ -113,6 +114,14 @@ Thing::~Thing()
 
 		delete mVisRep;
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::setGroundScan(bool active)
+{
+	if (!Multiplayer::getSingleton().isClient())
+		mGroundScan = active;
 }
 
 //----------------------------------------------------------------------------
@@ -298,7 +307,7 @@ void Thing::move(Real time)
 
 	// call collidedground when it hits the ground
 	if (!Multiplayer::getSingleton().isClient())
-		if (getGroundY() > getPosition().y && isAlive()) 
+		if (mGroundScan && getGroundY() > getPosition().y && isAlive()) 
 			collidedGround();
 }
 

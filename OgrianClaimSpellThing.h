@@ -53,6 +53,8 @@ public:
 		playSound(Game::getSingleton().SOUND_WHOOSH);
 		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
 		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
+
+		setGroundScan(true);
 	}
 
 	virtual ThingType getType() { return CLAIMTHING; }

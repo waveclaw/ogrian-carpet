@@ -82,6 +82,7 @@ public:
 		setTeamNum(teamNum);
 		mColour = colour;
 		setColour(mColour);
+		setGroundScan(true);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
