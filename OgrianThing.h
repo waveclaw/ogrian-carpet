@@ -57,6 +57,8 @@ public:
 	virtual ~Thing();
 
 	virtual void setVelocity(Vector3 vel);
+
+	// set the position
 	virtual void setPosition(Vector3 pos);
 
 	virtual void setScale(Real scale);
@@ -76,10 +78,7 @@ public:
 	// the radius is half the scale
 	virtual Real getRadius();
 
-	// get the position at the last move()
-	virtual Vector3 getOldPosition();
-
-	// get the current position
+	// get the position
 	virtual Vector3 getPosition();
 
 	// get the velocity
@@ -111,7 +110,6 @@ public:
 private:
 	Vector3 mPos;
 	Vector3 mVel;
-	Vector3 mOldPos;
 
 	// graphical rendering stuff
 	BillboardSet* mBbset;

@@ -54,9 +54,11 @@ Physics::Physics()
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
 {
+	// add to grid
 	Vector3 pos = thing->getPosition();
 	_addThing(thing, getGridU(pos.x), getGridV(pos.z));
 
+	// add to full list
 	mAllThings.push_back(thing);
 }
 
@@ -66,8 +68,10 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 	assert(thing != NULL);
 	assert(mWorldSize > 0);
 
-	if (grid_u < -1 && grid_v < -1 && 
-		grid_u > PHYSICS_GRID_SIZE && grid_v > PHYSICS_GRID_SIZE-1)
+	if (grid_u >= 0 && 
+		grid_v >= 0 && 
+		grid_u < PHYSICS_GRID_SIZE && 
+		grid_v < PHYSICS_GRID_SIZE)
 	{
 		// put it in the grid
 		mThingGrid[grid_u][grid_v].push_back(thing);
@@ -87,8 +91,10 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 
 	std::vector<Thing*> vec;
 
-	if (grid_u < -1 && grid_v < -1 && 
-		grid_u > PHYSICS_GRID_SIZE && grid_v > PHYSICS_GRID_SIZE-1)
+	if (grid_u >= 0 && 
+		grid_v >= 0 && 
+		grid_u < PHYSICS_GRID_SIZE && 
+		grid_v < PHYSICS_GRID_SIZE)
 	{
 		// it is in the grid
 		vec = mThingGrid[grid_u][grid_v];
@@ -109,16 +115,17 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			break;
 		}
 	}
+	assert(i<vec.size());
 }
 
 // remove a thing from the world
 void Physics::deleteThing(Thing* thing)
 {
 	// remove it from the grid
-	Vector3 pos = thing->getOldPosition();
+	Vector3 pos = thing->getPosition();
 	_removeThing(thing, getGridU(pos.x), getGridV(pos.z));
 
-	// find the thing
+	// remove it from allThings
 	for (unsigned int i=0; i<mAllThings.size(); i++)
 	{
 		if (mAllThings[i] == thing)
@@ -129,21 +136,19 @@ void Physics::deleteThing(Thing* thing)
 		}
 	}
 
+	assert(i<mAllThings.size());
+
 	// delete it
 	delete thing;
 }
 
-// move the thing from one grid to another
-void Physics::moveThing(Thing* thing, Real time)
+void Physics::updateThing(Thing* thing, Vector3 lastPos)
 {
-	Vector3 pos1 = thing->getPosition();
-	thing->move(time);
-	Vector3 pos2 = thing->getPosition();
-
-	int from_u = getGridU(pos1.x);
-	int from_v = getGridV(pos1.z);
-	int to_u = getGridU(pos2.x);
-	int to_v = getGridV(pos1.z);
+	Vector3 pos = thing->getPosition();
+	int from_u = getGridU(lastPos.x);
+	int from_v = getGridV(lastPos.z);
+	int to_u = getGridU(pos.x);
+	int to_v = getGridV(pos.z);
 
 	// if it crossed a boundary, move it to the new cell
 	if (from_u != to_u || from_v != to_v)
@@ -193,7 +198,7 @@ void Physics::moveAll(Real time)
 			deleteThing(thing);
 		}
 		// otherwise move it
-		else moveThing(thing, time);
+		else thing->move(time);
 	}
 }
 
@@ -209,12 +214,58 @@ and its neighbors' things.
 */
 void Physics::collisionCheck()
 {
+	unsigned int i,j,t,u;
+	i = j = t = u = 0;
+
+	// check the grid for collisions among itself
+	for (i=0; i<PHYSICS_GRID_SIZE; i++)
+	{
+		for (j=0; j<PHYSICS_GRID_SIZE; j++)
+		{
+			for (t=0; t<mThingGrid[i][j].size(); t++)
+			{
+				// get the thing
+				Thing* thing = mThingGrid[i][j][t];
+
+				// check it against all following things in this cell
+				for (u=t+1; u<mThingGrid[i][j].size(); u++)
+					pairCollisionCheck(thing, mThingGrid[i][j][u]);
+
+				// check it against all things in the first adjacent cell
+				if (i+1 < PHYSICS_GRID_SIZE)
+					for (u=0; u<mThingGrid[i+1][j].size(); u++)
+						pairCollisionCheck(thing, mThingGrid[i+1][j][u]);
+				
+				// check it against all things in the second adjacent cell
+				if (j+1 < PHYSICS_GRID_SIZE)
+					for (u=0; u<mThingGrid[i][j+1].size(); u++)
+						pairCollisionCheck(thing, mThingGrid[i][j+1][u]);
+				
+				// check it against all things in the third adjacent cell
+				if (i+1 < PHYSICS_GRID_SIZE && j+1 < PHYSICS_GRID_SIZE)
+					for (u=0; u<mThingGrid[i+1][j+1].size(); u++)
+						pairCollisionCheck(thing, mThingGrid[i+1][j+1][u]);
+			}
+		}
+	}
+
+	// check the last row for collisions with the others
+	
+	// check the last column for collisions with the others
+
+	// check the others for collisions with the first row
+
+	// check the others for collisions with the first col
+
+	// check the others for collisions among themselves
 
 }
 
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
-	Real maxdist = a->getRadius() + b->getRadius();
+	Real maxdist = 
+		a->getRadius() 
+		+ b->getRadius();
 
 	// if their AABB don't interset, return
 	if (Math::Abs(a->getPosition().x - b->getPosition().x) > maxdist) return;

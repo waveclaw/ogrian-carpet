@@ -54,6 +54,9 @@ public:
 	// -1 for grid_u or grid_v puts it outside the grid
 	virtual void addThing(Thing* thing);
 
+	// this should be called by Thing::setPosition();
+	virtual void updateThing(Thing* thing, Vector3 lastPos);
+
 	// return the number of entities in the world
 	virtual int numThings();
 
@@ -88,9 +91,6 @@ private:
 	// do a comprehensive collision check between two things,
 	// and notify them if they collide
 	virtual inline void pairCollisionCheck(Thing* a, Thing* b);
-
-	// move a thing from one grid cell to another
-	virtual inline void moveThing(Thing* thing, Real time);
 
 	// add a thing to the grid
 	virtual void _addThing(Thing* thing, int grid_u, int grid_v);

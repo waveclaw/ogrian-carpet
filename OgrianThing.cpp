@@ -125,10 +125,16 @@ void Thing::setVelocity(Vector3 vel)
 }
 void Thing::setPosition(Vector3 pos)
 {
-	mPos = pos;
-
+	// update renderer
 	if (mInRenderer)
 		mNode->setPosition(pos);
+
+	// update physics
+	if (pos != mPos)
+		Physics::getSingleton().updateThing(this, mPos);
+
+	// update mPos
+	mPos = pos;
 }
 
 void Thing::setScale(Real scale)
@@ -137,11 +143,6 @@ void Thing::setScale(Real scale)
 
 	if (mInRenderer)
 		mBillboard->setDimensions(scale,scale);
-}
-
-Vector3 Thing::getOldPosition()
-{
-	return mOldPos;
 }
 
 Vector3 Thing::getPosition()
@@ -170,7 +171,6 @@ void Thing::setMaterial(String material)
 // increment the position by the velocity times time
 void Thing::move(Real time)
 {
-	mOldPos = mPos;
 	setPosition(mPos + mVel * time);
 
 	_updateVisibility();
