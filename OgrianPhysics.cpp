@@ -72,8 +72,13 @@ void Physics::frame(Real time)
 
 	if (!Multiplayer::getSingleton().wasClient())
 	{
-		// clients dont do collision checking
+		// clients dont do normal collision checking
 		collisionCheck();
+	}
+	else if (Multiplayer::getSingleton().isClient())
+	{
+		// check the camera against the buildings
+		clientCollisionCheck();
 	}
 
 	if (Multiplayer::getSingleton().isClient())
@@ -86,6 +91,16 @@ void Physics::frame(Real time)
 		// servers need to send updates
 		serverFrame(time);
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::clientCollisionCheck()
+{
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+
+	for (int i=0; i<(int)mBuildings.size(); i++)
+		pairCollisionCheck(cam, mBuildings[i]);
 }
 
 //----------------------------------------------------------------------------
@@ -332,6 +347,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case FIREBALLTHING:	return new FireballThing(teamNum);
 
+		case WIZARDTHING: 
 		case CAMERATHING: return new WizardThing();
 
 		case CASTLETOWER: return new CastleTowerThing(0);
@@ -448,6 +464,12 @@ void Physics::clientAddThing(Thing* thing, int uid)
 {
 	// add to full list
 	mAllThings.push_back(thing);
+
+	// add buildings to mBuildings
+	if (thing->isBuilding())
+	{
+		mBuildings.push_back(thing);
+	}
 
 	// notify the thing
 	thing->placedInPhysics(uid);

@@ -117,6 +117,8 @@ private:
 	std::vector<Thing*> mAllThings; // All things in the world
 	std::vector<Thing*> mEffects; // a list of effects
 
+	std::vector<Thing*> mBuildings; // a list of buildings for the client
+
 	std::vector<Team*> mTeams;
 
 	int mWorldSize;
@@ -130,6 +132,9 @@ private:
 
 	// run a collision check and notify all affected things
 	void collisionCheck();
+
+	// run a collision check for a client
+	void clientCollisionCheck();
 
 	inline int getGridU(Real x); // get the grid u index that corresponds to the real x coord
 	inline int getGridV(Real z); // get the grid v index that corresponds to the real z coord
