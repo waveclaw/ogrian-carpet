@@ -47,15 +47,20 @@ public:
 	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLETOWER_SCALE"), pos, CUBE)
 	{
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh", 3);
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh", CONR("CASTLETOWER_RATIO"));
 
-		setHeight(getWidth()*3);
-		setPosY(getGroundY()+getHeight()/6);
+		setHeight(getWidth()*CONR("CASTLETOWER_RATIO"));
+		setPosY(getGroundY()+getHeight()*CONR("CASTLETOWER_OFFSET"));
 	}
 
 	virtual ThingType getType()
 	{
 		return CASTLETOWER;
+	}
+
+	virtual void die()
+	{
+		setPosY(getPosY() - 1);
 	}
 
 private:
