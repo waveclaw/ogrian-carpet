@@ -54,6 +54,7 @@ public:
 		mStopped = false;
 
 		setAmount(amount);
+		setTeamNum(-1);
 		setColour(ColourValue(.9,.9,.9));
 		setUpdateType(PERIODIC);
 		setThinkPeriod(CONR("MANA_THINK_PERIOD"));
@@ -63,12 +64,12 @@ public:
 	virtual void setTeamNum(int teamNum)
 	{
 		// remove it from the old castle
-		Team*  oldTeam = Physics::getSingleton().getTeam(getTeamNum());
-		if (oldTeam && oldTeam->hasCastle()) oldTeam->getCastle()->unclaimedManaThing(this);
+		//Team*  oldTeam = Physics::getSingleton().getTeam(getTeamNum());
+		//if (oldTeam && oldTeam->hasCastle()) oldTeam->getCastle()->unclaimedManaThing(this);
 
 		// add it to the new castle
 		Team*  newTeam = Physics::getSingleton().getTeam(teamNum);
-		if (newTeam && newTeam->hasCastle()) newTeam->getCastle()->claimedManaThing(this);
+		//if (newTeam && newTeam->hasCastle()) newTeam->getCastle()->claimedManaThing(this);
 
 		// change the colour
 		if (newTeam) setColour(newTeam->getColour());
@@ -79,6 +80,7 @@ public:
 
 	virtual void claim(int teamNum)
 	{
+		mStopped = false;
 		playSound(Game::getSingleton().SOUND_HUM, true);
 
 		setTeamNum(teamNum);
@@ -125,29 +127,49 @@ public:
 				destroy();
 			}
 		}
+
+		
+		else if (e->getType() == CASTLEKEEPTHING || e->getType() == CASTLETURRETTHING)
+		{
+			if (e->getTeamNum() == getTeamNum())
+			{
+				Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addMana(mAmount);
+				destroy();
+			}
+		}
 	}
 
-	// move downhill at a constant slow velocity
+	// move downhill at a constant slow velocity if unclaimed
 	virtual void think()
 	{
-		if (mStopped) return;
-
-		Vector3 vel;
-		Vector3 pos = getPosition();
-		vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
-		vel.y = 0;
-		vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
-		vel.normalise();
-		vel *= CONR("MANA_DRIFT_SPEED");
-
-		// check to see if we're stuck
-		if (Vector3(vel + getVelocity()).length() < CONR("MANA_DRIFT_SPEED")/4)
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		if (team && team->hasCastle())
 		{
-			mStopped = true;
-			setVelocity(Vector3(0,0,0));
-		}
-		else
+			Vector3 vel = team->getCastle()->getPosition() - getPosition();
+			vel.y = 0;
+			vel.normalise();
+			vel *= CONR("MANA_MOVE_SPEED");
 			setVelocity(vel);
+		}
+		else if (!mStopped)
+		{
+			Vector3 vel;
+			Vector3 pos = getPosition();
+			vel.x = HeightMap::getSingleton().getXSlopeAt(pos.x, pos.z);
+			vel.y = 0;
+			vel.z = HeightMap::getSingleton().getZSlopeAt(pos.x, pos.z);
+			vel.normalise();
+			vel *= CONR("MANA_DRIFT_SPEED");
+
+			// check to see if we're stuck
+			if (Vector3(vel + getVelocity()).length() < CONR("MANA_DRIFT_SPEED")/4)
+			{
+				mStopped = true;
+				setVelocity(Vector3(0,0,0));
+			}
+			else
+				setVelocity(vel);
+		}
 
 		setUpdateFlag();
 	}

@@ -39,7 +39,7 @@ Description: This is a castle
 #include "OgrianBaloonThing.h"
 #include "OgrianCraneThing.h"
 
-#define NUM_BALOONS 5
+#define NUM_BALOONS 0
 #define NUM_BLOCKS 9
 
 using namespace Ogre;
@@ -301,7 +301,7 @@ private:
 	std::vector<Thing*> mManaThings;
 
 	// an array of the baloons
-	BaloonThing* mBaloons[NUM_BALOONS];
+//	BaloonThing* mBaloons[NUM_BALOONS];
 
 	// an array of all the turrets and the keep
 	CastleBlockThing* mBlocks[NUM_BLOCKS];

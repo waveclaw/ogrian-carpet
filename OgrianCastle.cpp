@@ -70,11 +70,11 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mBeacon->setPosition(bpos);
 
 
-	mBaloons[0] = 0; 
-	mBaloons[1] = 0;
-	mBaloons[2] = 0;
-	mBaloons[3] = 0; 
-	mBaloons[4] = 0;
+	//mBaloons[0] = 0; 
+	//mBaloons[1] = 0;
+	//mBaloons[2] = 0;
+	//mBaloons[3] = 0; 
+	//mBaloons[4] = 0;
 
 	mNumBaloons = 0;
 	mRubble = false;
@@ -94,12 +94,12 @@ Castle::Castle(int teamNum, Vector3 pos)
 	setPosition(mBlocks[0]->getPosition() + Vector3(0, CONR("CASTLEKEEP_HEIGHT")*1.5 + CONR("CASTLE_WIDTH")/4, 0));
 
 	// add existing claimed mana to the list
-	for (int i=0; i<Physics::getSingleton().numThings(); i++)
-	{
-		Thing* thing = Physics::getSingleton().getThingByIndex(i);
-		if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
-			claimedManaThing(thing);
-	}
+	//for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	//{
+	//	Thing* thing = Physics::getSingleton().getThingByIndex(i);
+	//	if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
+	//		claimedManaThing(thing);
+	//}
 }
 
 //----------------------------------------------------------------------------
@@ -108,19 +108,19 @@ void Castle::move(Real time)
 {
 	DamageableThing::move(time);
 
-	// every frame, we check the baloons
-	for (int i=0; i<NUM_BALOONS; i++)
-	{
-		if (mBaloons[i] && mBaloons[i]->needsOrders())
-		{
-			BaloonThing* baloon = mBaloons[i];
-			Thing* target = generateTarget(baloon);
+	//// every frame, we check the baloons
+	//for (int i=0; i<NUM_BALOONS; i++)
+	//{
+	//	if (mBaloons[i] && mBaloons[i]->needsOrders())
+	//	{
+	//		BaloonThing* baloon = mBaloons[i];
+	//		Thing* target = generateTarget(baloon);
 
-			// set the target unless its got no mana to get and is already at the castle
-			if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth() + baloon->getWidth())
-				baloon->setTarget(target);
-		}
-	}
+	//		// set the target unless its got no mana to get and is already at the castle
+	//		if (target->getType() == MANATHING || sphereDistance(baloon) > getWidth() + baloon->getWidth())
+	//			baloon->setTarget(target);
+	//	}
+	//}
 
 	// check the blocks
 	for (int i=1; i<NUM_BLOCKS; i++)
@@ -208,72 +208,72 @@ void Castle::damage(int amount, int sourceTeamNum)
 
 Thing* Castle::generateTarget(BaloonThing* baloon)
 {
-	// if the baloon is full, return to the castle
-	if (baloon->getAmount() >= CONI("BALOON_CAPACITY"))
-		return this;
+	//// if the baloon is full, return to the castle
+	//if (baloon->getAmount() >= CONI("BALOON_CAPACITY"))
+	//	return this;
 
-	// pick a target mana
-	ManaThing* target = 0;
-	if ((int)mManaThings.size() > 0)
-	{
-		// build a list of the other targets
-		std::vector<ManaThing*> targets;
-		for (int i=0; i<mNumBaloons; i++)
-			if (mBaloons[i]->getTarget() && mBaloons[i]->getTarget()->getType() == MANATHING
-				&& mBaloons[i]->getTarget()->isAlive())
-				targets.push_back((ManaThing*)mBaloons[i]->getTarget());
+	//// pick a target mana
+	//ManaThing* target = 0;
+	//if ((int)mManaThings.size() > 0)
+	//{
+	//	// build a list of the other targets
+	//	std::vector<ManaThing*> targets;
+	//	for (int i=0; i<mNumBaloons; i++)
+	//		if (mBaloons[i]->getTarget() && mBaloons[i]->getTarget()->getType() == MANATHING
+	//			&& mBaloons[i]->getTarget()->isAlive())
+	//			targets.push_back((ManaThing*)mBaloons[i]->getTarget());
 
-		// chose the mana closest to this baloon
-		Real bestScore = 0;
+	//	// chose the mana closest to this baloon
+	//	Real bestScore = 0;
 
-		// check each mana in the list
-		for (int i=0; i<(int)mManaThings.size(); i++)
-		{
-			ManaThing* candidate = (ManaThing*)mManaThings[i];
+	//	// check each mana in the list
+	//	for (int i=0; i<(int)mManaThings.size(); i++)
+	//	{
+	//		ManaThing* candidate = (ManaThing*)mManaThings[i];
 
-			// skip dead manas
-			if (candidate->isAlive())
-			{
-				Real score = 1.0f / baloon->sphereDistance(candidate);
+	//		// skip dead manas
+	//		if (candidate->isAlive())
+	//		{
+	//			Real score = 1.0f / baloon->sphereDistance(candidate);
 
-				// see if its already a target
-				bool isATarget = false;
-				for (int j=0; j<(int)targets.size(); j++)
-				{
-					if (targets[j] == candidate)
-					{
-						isATarget = true;
-						break;
-					}
-				}
-									
-				// if its the best so far, store it
-				if (score > bestScore
-					&& !isATarget)
-				{
-					bestScore = score;
-					target = candidate;
-				}
-			}
-		}
-	}
+	//			// see if its already a target
+	//			bool isATarget = false;
+	//			for (int j=0; j<(int)targets.size(); j++)
+	//			{
+	//				if (targets[j] == candidate)
+	//				{
+	//					isATarget = true;
+	//					break;
+	//				}
+	//			}
+	//								
+	//			// if its the best so far, store it
+	//			if (score > bestScore
+	//				&& !isATarget)
+	//			{
+	//				bestScore = score;
+	//				target = candidate;
+	//			}
+	//		}
+	//	}
+	//}
 
-	if (target) // if a valid target was found,
-	{
-		// check to see if we should drop off what we have before proceeding to it
-		if (baloon->getAmount() > 0)
-		{
-			Real bcdist = baloon->sphereDistance(this); // baloon -> castle distance
-			Real bmdist = baloon->sphereDistance(target); // baloon -> mana distance
-			Real mcdist = target->sphereDistance(this); // castle -> mana distance
+	//if (target) // if a valid target was found,
+	//{
+	//	// check to see if we should drop off what we have before proceeding to it
+	//	if (baloon->getAmount() > 0)
+	//	{
+	//		Real bcdist = baloon->sphereDistance(this); // baloon -> castle distance
+	//		Real bmdist = baloon->sphereDistance(target); // baloon -> mana distance
+	//		Real mcdist = target->sphereDistance(this); // castle -> mana distance
 
-			if (bmdist + mcdist > bcdist * CONR("BALOON_RETURN_THRESHOLD_RATIO")) 
-				return this;
-		}
+	//		if (bmdist + mcdist > bcdist * CONR("BALOON_RETURN_THRESHOLD_RATIO")) 
+	//			return this;
+	//	}
 
-		return target; // return it
-	}
-	else 
+	//	return target; // return it
+	//}
+	//else 
 		return this; // otherwise, wait at the castle
 }
 
@@ -288,51 +288,51 @@ bool Castle::isRubble()
 
 void Castle::claimedManaThing(Thing* mana)
 {
-	// add the mana to the list
-	mManaThings.push_back(mana);
+	//// add the mana to the list
+	//mManaThings.push_back(mana);
 
-	// check to see if an empty baloon is heading back to the castle
-	// find the closest such baloon and set it to pick up this mana
-	BaloonThing* bal = 0;
-	Real bestDist = HeightMap::getSingleton().getWorldSize()*2;
-	for (int i=0; i<mNumBaloons; i++)
-	{
-		BaloonThing* candidate = mBaloons[i];
-		if (candidate
-			&& candidate->getTarget() == this
-			&& candidate->getAmount() == 0
-			&& bestDist > mana->cylinderDistance(candidate))
-		{
-			bal = candidate;
-			bestDist = mana->cylinderDistance(candidate);
-		}
-	}
+	//// check to see if an empty baloon is heading back to the castle
+	//// find the closest such baloon and set it to pick up this mana
+	//BaloonThing* bal = 0;
+	//Real bestDist = HeightMap::getSingleton().getWorldSize()*2;
+	//for (int i=0; i<mNumBaloons; i++)
+	//{
+	//	BaloonThing* candidate = mBaloons[i];
+	//	if (candidate
+	//		&& candidate->getTarget() == this
+	//		&& candidate->getAmount() == 0
+	//		&& bestDist > mana->cylinderDistance(candidate))
+	//	{
+	//		bal = candidate;
+	//		bestDist = mana->cylinderDistance(candidate);
+	//	}
+	//}
 
-	if (bal) bal->setTarget(mana);
+	//if (bal) bal->setTarget(mana);
 }
 
 //----------------------------------------------------------------------------
 
 void Castle::unclaimedManaThing(Thing* mana)
 {
-	// remove the mana from the list
-	for (int i=0; i<(int)mManaThings.size(); i++)
-	{
-		if (mManaThings[i] == mana)
-		{
-			mManaThings[i]=0;
-	        mManaThings.erase(mManaThings.begin()+i);
-		}
-	}
+	//// remove the mana from the list
+	//for (int i=0; i<(int)mManaThings.size(); i++)
+	//{
+	//	if (mManaThings[i] == mana)
+	//	{
+	//		mManaThings[i]=0;
+	//        mManaThings.erase(mManaThings.begin()+i);
+	//	}
+	//}
 
-	// retarget the baloon that was getting it
-	for (int i=0; i<mNumBaloons; i++)
-	{
-		if (mBaloons[i]->getTarget() == mana)
-		{
-			mBaloons[i]->setTarget(0);
-		}
-	}
+	//// retarget the baloon that was getting it
+	//for (int i=0; i<mNumBaloons; i++)
+	//{
+	//	if (mBaloons[i]->getTarget() == mana)
+	//	{
+	//		mBaloons[i]->setTarget(0);
+	//	}
+	//}
 }
 
 //----------------------------------------------------------------------------
@@ -392,7 +392,7 @@ void Castle::setLevel(Real level)
 	mLevel = level;
 
 	// set the number of baloons equal to the level+1
-	setNumBaloons(level+1);
+	//setNumBaloons(level+1);
 
 	// set the spells
 	setSpells(level);
@@ -514,36 +514,36 @@ void Castle::setSpells(int level)
 
 void Castle::setNumBaloons(int num)
 {
-	// 0 <= num <= NUM_BALOONS
-	if (num < 0) num = 0;
-	if (num > NUM_BALOONS) num = NUM_BALOONS;
+	//// 0 <= num <= NUM_BALOONS
+	//if (num < 0) num = 0;
+	//if (num > NUM_BALOONS) num = NUM_BALOONS;
 
-	// loop through each baloon slot
-	for (int i=1; i<=NUM_BALOONS; i++)
-	{
-		// if the baloon there is being removed
-		if (mNumBaloons >= i && num < i)
-		{
-			// drop any mana that it is carrying
-			ManaThing* mana = new ManaThing(mBaloons[i-1]->unload(), mBaloons[i-1]->getPosition());
-			mana->setTeamNum(getTeamNum());
-			Physics::getSingleton().addThing(mana);
-			
-			// remove the baloon
-			mBaloons[i-1]->destroy();
-			mBaloons[i-1] = 0;
-		}
-		// else if a baloon needs to be added to this slot
-		else if (mNumBaloons < i && num >= i)
-		{
-			// add the baloon
-			mBaloons[i-1] = new BaloonThing(getTeamNum(), getPosition());
-			Physics::getSingleton().addThing(mBaloons[i-1]);
-		}
-	}
+	//// loop through each baloon slot
+	//for (int i=1; i<=NUM_BALOONS; i++)
+	//{
+	//	// if the baloon there is being removed
+	//	if (mNumBaloons >= i && num < i)
+	//	{
+	//		// drop any mana that it is carrying
+	//		ManaThing* mana = new ManaThing(mBaloons[i-1]->unload(), mBaloons[i-1]->getPosition());
+	//		mana->setTeamNum(getTeamNum());
+	//		Physics::getSingleton().addThing(mana);
+	//		
+	//		// remove the baloon
+	//		mBaloons[i-1]->destroy();
+	//		mBaloons[i-1] = 0;
+	//	}
+	//	// else if a baloon needs to be added to this slot
+	//	else if (mNumBaloons < i && num >= i)
+	//	{
+	//		// add the baloon
+	//		mBaloons[i-1] = new BaloonThing(getTeamNum(), getPosition());
+	//		Physics::getSingleton().addThing(mBaloons[i-1]);
+	//	}
+	//}
 
-	// update mNumBaloons
-	mNumBaloons = num;
+	//// update mNumBaloons
+	//mNumBaloons = num;
 }
 
 //----------------------------------------------------------------------------
