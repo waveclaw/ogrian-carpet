@@ -103,10 +103,6 @@ void Menu::button_invertMouseToggle()
 //----------------------------------------------------------------------------
 void Menu::button_quit()
 {
-	// disconnect
-	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
-	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
-
 	// hide the menu
 	hide();
 }
@@ -145,7 +141,7 @@ void Menu::button_host()
 void Menu::button_disconnect()
 {
 	setMessage("Disconnecting");
-	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientDisconnect();
+	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();

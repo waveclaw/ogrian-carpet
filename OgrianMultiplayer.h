@@ -77,8 +77,8 @@ public:
 	void serverSendAll(BitStream* bitStream, bool reliable=true);
 	void serverSendAllText(String message, int type);
 
-	// disconnect from the server
-	void clientDisconnect();
+	// request a kick (to disconnect cleanly)
+	void clientRequestKick();
 
 	// disconnect all clients from this server
 	void serverDisconnect();
@@ -120,6 +120,7 @@ private:
 	bool mIsServer;
 	bool mActive;
 	bool mClientReady;
+	bool mClientReadyToDisconnect;
 	String mPlayerName;
 	String mServerName;
 
@@ -138,6 +139,9 @@ private:
 
 	// receive packets on the server
 	void serverRecieve();
+
+	// disconnect from the server
+	void clientDisconnect();
 
 	// get the packet identifier
 	PacketID getPacketIdentifier(Packet* p);

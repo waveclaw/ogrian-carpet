@@ -50,6 +50,7 @@ Multiplayer::Multiplayer()
 {
 	mActive = false;
 	mClientReady = false;
+	mClientReadyToDisconnect = false;
 	mClient = 0;
 	mServer = 0;
 
@@ -99,9 +100,6 @@ void Multiplayer::clientStart()
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger, and false for low priority threads
 	bool b = mClient->Connect(cn, PORT, PORT-1, 0, true);
-
-	// get the map name
-	clientSendText(" ", ID_GET_MAP_NAME);
 
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
@@ -264,6 +262,8 @@ void Multiplayer::clientRecieve()
 		mClient->DeallocatePacket(packet);
 		packet = mClient->Receive();
 	}
+
+	if (mClientReadyToDisconnect) clientDisconnect();
 }
 
 //----------------------------------------------------------------------------
@@ -523,12 +523,12 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_KICK: //////////////////////////////////////////////////////
 		{
 			// disconnect
-			clientDisconnect();
+			mClientReadyToDisconnect = true;
 
 			// get the message
 			String msg;
 			packetToString(packet, msg);
-			Menu::getSingleton().setMessage("Kicked: " + msg);
+			Menu::getSingleton().setMessage(msg);
 			Menu::getSingleton().show();
 			return true;
 		}
@@ -612,18 +612,14 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 
 		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
 		{
-			// do nothing
-			return true;
-		}
-
-		case ID_GET_MAP_NAME: //////////////////////////////////////////////////////
-		{
 			// send the name of the map
 			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
 			return true;
 		}
 
-		case ID_DISCONNECTION_NOTIFICATION: //////////////////////////////////////////////////////
+		case ID_KICKME://////////////////////////////////////////////////////
+			serverSendText("Disconnected ",ID_KICK,packet->playerId);
+		case ID_DISCONNECTION_NOTIFICATION: 
 		case ID_CONNECTION_LOST: 
 		{
 			// find the client no longer connected
@@ -689,6 +685,13 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 			return true;
 	}
 	return false;
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::clientRequestKick()
+{
+	clientSendText(" ", ID_KICKME);
 }
 
 //----------------------------------------------------------------------------
