@@ -39,7 +39,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 {
 	setTeamNum(teamNum);
 
-	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH"), 0));
+	setPosition(pos + Vector3(0, CONR("CASTLETOWER_HEIGHT") + CONR("CASTLE_WIDTH") - CONR("CASTLE_OFFSET"), 0));
 	Physics::getSingleton().addThing(this);
 
 	Real W = CONR("CASTLE_WIDTH");

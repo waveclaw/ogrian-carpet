@@ -161,6 +161,9 @@ public:
 	// override this for interesting behaviors (not called on clients)
 	virtual void collidedGround() {}
 
+	// returns true if this is a solid building
+	virtual bool isBuilding() { return false; }
+
 	// returns true if this thing can be damaged
 	virtual bool isDamageable() { return false; }
 

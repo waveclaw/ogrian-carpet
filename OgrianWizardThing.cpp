@@ -120,7 +120,8 @@ void WizardThing::setVelocity(Vector3 vel)
 	
 void WizardThing::collided(Thing* e)
 {
-	if (e->getType() == CASTLETOWER || e->getType() == CASTLEWALL)
+	// climb buildings
+	if (e->isBuilding())
 	{
 		Real topPosY = e->getPosY() + e->getHeight()/2.0 + getHeight()*.45;
 
@@ -150,7 +151,6 @@ void WizardThing::move(Real time)
 		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
 	}
 
-	
 	mOnBuilding = false;
 
 	// follow the landscape
@@ -159,14 +159,12 @@ void WizardThing::move(Real time)
 			
 	if (ground > getPosY()) 
 	{
-		setVelY(0);
+		if (getVelY() < 0)
+			setVelY(0);
+
 		pos.y = ground;
+		setPosition(pos);
 	}
-	else 
-	{
-		pos.y = getPosY();
-	}
-	setPosition(pos);
 
 	DamageableThing::move(time);
 

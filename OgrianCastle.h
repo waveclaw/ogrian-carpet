@@ -62,6 +62,8 @@ public:
 	{
 		mCastle->damage(amount, sourceTeamNum);
 	}
+
+	virtual bool isBuilding() { return true; }
 	
 private:
 	DamageableThing* mCastle;
