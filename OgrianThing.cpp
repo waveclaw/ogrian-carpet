@@ -66,19 +66,22 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	setShape(shape);
 
 	// add it to the renderer
-	_addToRenderer();
+	mSprite->addToRenderer();
 }
 
 //----------------------------------------------------------------------------
 
 Thing::~Thing()
 {
-	_removeFromRenderer();
 
 	stopSound();
 
 	if (mSprite)
+	{
+		mSprite->removeFromRenderer();
+
 		delete mSprite;
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -101,22 +104,6 @@ void Thing::placedInPhysics(int uid)
 {
 	mUID = uid;
 	mInPhysics = true;
-}
-
-//----------------------------------------------------------------------------
-
-// start rendering this thing
-void Thing::_addToRenderer()
-{
-	mSprite->addToRenderer();
-}
-
-//----------------------------------------------------------------------------
-
-// stop rendering this thing
-void Thing::_removeFromRenderer()
-{
-	mSprite->removeFromRenderer();
 }
 
 //----------------------------------------------------------------------------
@@ -256,13 +243,13 @@ void Thing::_updateVisibility()
 	{
 		// add it if its close enough
 		if (!mSprite->inRenderer())
-			_addToRenderer();
+			mSprite->addToRenderer();
 	}
 	else
 	{
 		// remove it otherwise
         if (mSprite->inRenderer())
-			_removeFromRenderer();
+			mSprite->removeFromRenderer();
 	}
 }
 

@@ -186,8 +186,6 @@ private:
 
 	unsigned long mLastUpdateTime; // the last time a bitstream was generated for this thing
 
-	virtual void _addToRenderer();
-	virtual void _removeFromRenderer();
 	virtual void _updateVisibility(); // based on distance from camera
 
 	virtual void _updateAudibility(); // based on distance from camera

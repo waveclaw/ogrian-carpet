@@ -737,9 +737,6 @@ void Physics::pairCollisionCheck(Thing* a, Thing* b)
 
 		// otherwise collide
 		collide(a,b);
-
-		if (a->getType() == CAMERATHING || b->getType() == CAMERATHING);
-		else LogManager::getSingleton().logMessage(String("Collided: ") << a->getString() << ", " << b->getString());
 	}
 }
 
