@@ -3,23 +3,9 @@
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
+#include "OgrianPhysicalEntity.h"
 
-namespace Ogre
-{
-
-// The OgrianPhysicalEntity class is the root of all objects that participate in physics. 
-class OgrianPhysicalEntity
-{
-public:
-	virtual void move(long time)
-	{
-
-	}
-
-private:
-	Vector3 pos;
-	Vector3 vel;
-};
+using namespace Ogre;
 
 // The OgrianPysics class handles collision detection and notification among all OgrianPhysicalEntity objects.
 class OgrianPhysics : public Singleton< OgrianPhysics >
@@ -52,8 +38,10 @@ public:
 
 private:
 	OgrianPhysics();
+	
+	bool entCompare(OgrianPhysicalEntity* a, OgrianPhysicalEntity* b);
+
 	std::vector<OgrianPhysicalEntity*> entities;
 };
 
-}
 #endif

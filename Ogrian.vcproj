@@ -134,6 +134,9 @@
 				RelativePath="OgrianHeightMap.h">
 			</File>
 			<File
+				RelativePath="OgrianPhysicalEntity.h">
+			</File>
+			<File
 				RelativePath="OgrianPhysics.h">
 			</File>
 		</Filter>

@@ -5,9 +5,7 @@
 #include <OgreSingleton.h>
 #include <OgreTerrainSceneManager.h>
 
-namespace Ogre
-{
-
+using namespace Ogre;
 
 class OgrianHeightMap : public Singleton< OgrianHeightMap >
 {
@@ -44,5 +42,4 @@ private:
 	int _worldheight( int x, int z );
 };
 
-}
 #endif

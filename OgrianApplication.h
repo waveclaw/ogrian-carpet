@@ -39,7 +39,6 @@ Description: Main class for Ogrian Carpet
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 
-
 using namespace Ogre;
 
 /** Base class which manages the standard startup of an Ogre application.
@@ -254,6 +253,5 @@ protected:
 
 
 };
-
 
 #endif
