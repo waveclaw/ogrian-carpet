@@ -27,6 +27,8 @@ Description: the Thing class is the basic moveable object.
 It interacts with the renderer and the physics engine. 
 It is rendered as a Billboard.
 
+NB: you must place the Thing into the physics engine before calling setPosition()
+
 /*------------------------------------*/
 
 #ifndef __OgrianThing_H__

@@ -54,7 +54,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mFixed_y = fixed_y;
 	setMaterial(material);
 	setVelocity(Vector3(0,0,0));
-	setPosition(pos);
+	mPos = pos; // DO NOT call setPosition(), since it's not in they physics engine yet. 
 	setScale(scale);
 
 	// add it to the renderer
@@ -131,7 +131,7 @@ void Thing::setPosition(Vector3 pos)
 
 	// update physics
 	if (pos != mPos)
-		Physics::getSingleton().updateThing(this, mPos);
+		Physics::getSingleton().updateThing(this, mPos, pos);
 
 	// update mPos
 	mPos = pos;

@@ -51,6 +51,15 @@ Physics::Physics()
 	mWorldSize = -1;
 }
 
+// checks to see if a thing is in the list mAllThings
+bool Physics::containsThing(Thing* thing)
+{
+	for (unsigned int i=0; i<mAllThings.size(); i++)
+		if (mAllThings[i] == thing) return true;
+
+	return false;
+}
+
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
 {
@@ -152,13 +161,12 @@ void Physics::deleteThing(Thing* thing)
 	delete thing;
 }
 
-void Physics::updateThing(Thing* thing, Vector3 lastPos)
+void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 {
-	Vector3 pos = thing->getPosition();
-	int from_u = getGridU(lastPos.x);
-	int from_v = getGridV(lastPos.z);
-	int to_u = getGridU(pos.x);
-	int to_v = getGridV(pos.z);
+	int from_u = getGridU(oldPos.x);
+	int from_v = getGridV(oldPos.z);
+	int to_u = getGridU(newPos.x);
+	int to_v = getGridV(newPos.z);
 
 	// if it crossed a boundary, move it to the new cell
 	if (from_u != to_u || from_v != to_v)

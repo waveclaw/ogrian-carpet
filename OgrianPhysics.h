@@ -55,10 +55,13 @@ public:
 	virtual void addThing(Thing* thing);
 
 	// this should be called by Thing::setPosition();
-	virtual void updateThing(Thing* thing, Vector3 lastPos);
+	virtual void updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos);
 
 	// return the number of entities in the world
 	virtual int numThings();
+
+	// returns true if the thing is in the physics engine
+	virtual bool containsThing(Thing* thing);
 
 	// remove and delete all things in the world
 	virtual void clear();
