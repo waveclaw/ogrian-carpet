@@ -116,7 +116,8 @@ public:
 	virtual bool isAlive();
 
 	// the physics engine calls this when this thing is added to the physics engine
-	virtual void placedInPhysics();
+	// and provides a unique identifier
+	virtual void placedInPhysics(int uid);
 
 	// conveniance methods for accessing the y axis
 	virtual void setPosY(Real y);
@@ -136,6 +137,9 @@ public:
 
 	// interpret a bitstream for this thing
 	virtual void interpretBitStream(BitStream& bitstream);
+
+	// get the unique identifier
+	virtual int getUID();
 
 	
 private:
@@ -163,6 +167,9 @@ private:
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
+
+	// a unique identifier
+	int mUID;
 
 	virtual void _addToRenderer();
 	virtual void _removeFromRenderer();

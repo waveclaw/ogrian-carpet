@@ -29,6 +29,7 @@ Description: This handles all of the multiplayer networking code.
 
 #include "OgrianMultiplayer.h"
 #include "OgrianMenu.h"
+#include "OgrianPhysics.h"
 
 
 using namespace Ogre;
@@ -197,16 +198,23 @@ void Multiplayer::serverSendAll(BitStream* bitStream)
 
 //----------------------------------------------------------------------------
 
+void Multiplayer::frame()
+{
+	if (!mActive) return;
+
+	if (mIsServer) serverRecieve();
+	else clientRecieve();
+}
+
+//----------------------------------------------------------------------------
+
 void Multiplayer::clientRecieve()
 {
-	assert(!mIsServer);
-	assert(mActive);
-
 	Packet* p = mClient->Receive();
 
 	// do stuff here
 	if (p != 0)
-		Menu::getSingleton().setMessage(p->data);
+		Physics::getSingleton().handleClientPacket(p);
 
 	mClient->DeallocatePacket(p);
 }
@@ -215,14 +223,11 @@ void Multiplayer::clientRecieve()
 
 void Multiplayer::serverRecieve()
 {
-	assert(mIsServer);
-	assert(mActive);
-
 	Packet* p = mServer->Receive();
 
 	// do stuff here
 	if (p != 0)
-		Menu::getSingleton().setMessage(p->data);
+		Physics::getSingleton().handleServerPacket(p);
 
 	mServer->DeallocatePacket(p);
 }
@@ -261,8 +266,16 @@ void Multiplayer::serverDisconnect()
 
 bool Multiplayer::isServer()
 {
-	return mIsServer;
+	return (mIsServer && mActive);
 }
+
+//----------------------------------------------------------------------------
+
+bool Multiplayer::isClient()
+{
+	return (!mIsServer && mActive);
+}
+
 //----------------------------------------------------------------------------
 
 int Multiplayer::serverNumPlayers()

@@ -38,6 +38,7 @@ It is a Singleton.
 #include <OgreSingleton.h>
 #include "OgrianThing.h"
 #include "OgrianConstants.h"
+#include "OgrianMultiplayer.h"
 
 using namespace Ogre;
 
@@ -72,6 +73,12 @@ public:
 	// this must be called before adding things
 	virtual void setWorldSize(int size);
 
+	// handle server packet
+	virtual void handleServerPacket(Packet* p);
+
+	// handle client packet
+	virtual void handleClientPacket(Packet* p);
+
     static Physics& getSingleton(void);
 
 private:
@@ -82,6 +89,8 @@ private:
 	std::vector<Thing*> mAllThings; // All things in the world
 
 	int mWorldSize;
+
+	int mCurrentUID; // each thing is assigned an incrementing UID
 
 	Physics();
 

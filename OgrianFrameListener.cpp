@@ -312,6 +312,9 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 // Override frameStarted event to process that (don't care about frameEnded)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 {
+	// tick the multiplayer
+	Multiplayer::getSingleton().frame();
+
 	// tick the physics
 	Physics::getSingleton().frame(evt.timeSinceLastFrame);
 

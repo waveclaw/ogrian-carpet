@@ -51,6 +51,7 @@ namespace Ogrian
 Physics::Physics()
 {
 	mWorldSize = -1;
+	mCurrentUID = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -58,7 +59,38 @@ Physics::Physics()
 void Physics::frame(Real time)
 {
 	moveAll(time);
-	collisionCheck();
+
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		// clients dont do collision checking
+		collisionCheck();
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::handleClientPacket(Packet* p)
+{
+	// get the packet type
+
+	// if its a thing update, find the thing
+
+	// send the bitstream to the thing
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::handleServerPacket(Packet* p)
+{
+	// get the packet type
+
+	// if its a thing creation
+
+	// create the thing
+
+	// if its a camera thing update
+
+	// udpate the camerathing
 }
 
 //----------------------------------------------------------------------------
@@ -77,22 +109,32 @@ bool Physics::containsThing(Thing* thing)
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
 {
-	// make sure it's not too big
-	if (thing->getWidth() > mWorldSize / PHYSICS_GRID_SIZE)
+	// if its a client
+	if (Multiplayer::getSingleton().isClient())
 	{
-		Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
-				"Physics::addThing" );
+		// send a message to the server telling it about the new thing
+
+		// discard the thing
 	}
+	else // if its a server or singleplayer
+	{
+		// make sure it's not too big
+		if (thing->getWidth() > mWorldSize / PHYSICS_GRID_SIZE)
+		{
+			Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
+					"Physics::addThing" );
+		}
 
-	// add to grid
-	Vector3 pos = thing->getPosition();
-	_addThing(thing, getGridU(pos.x), getGridV(pos.z));
+		// add to grid
+		Vector3 pos = thing->getPosition();
+		_addThing(thing, getGridU(pos.x), getGridV(pos.z));
 
-	// add to full list
-	mAllThings.push_back(thing);
+		// add to full list
+		mAllThings.push_back(thing);
 
-	// notify the thing
-	thing->placedInPhysics();
+		// notify the thing
+		thing->placedInPhysics(mCurrentUID++);
+	}
 }
 
 //----------------------------------------------------------------------------

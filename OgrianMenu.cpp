@@ -176,34 +176,16 @@ void Menu::frame(Real time)
 	if (mLoadMap)
 	{
 		// load the map
-		//Renderer::getSingleton().loadMap(mMapName);
+		Renderer::getSingleton().loadMap(mMapName);
 		
 		// Menu
-		//setMessage("Menu");
+		setMessage("Menu");
 		
 		// hide the menu
-		//hideMenu();
-
-		if (Multiplayer::getSingleton().isServer())
-			Multiplayer::getSingleton().serverSendAll("load map");
-		else
-			Multiplayer::getSingleton().clientSend("load map");
+		hideMenu();
 
 		mLoadMap = false;
 	}
-
-	if (Multiplayer::getSingleton().isConnected())
-	{
-		//setMessage("Connected");
-
-		// handle packets
-		if (Multiplayer::getSingleton().isServer())
-			Multiplayer::getSingleton().serverRecieve();
-		else
-			Multiplayer::getSingleton().clientRecieve();
-
-	}
-
 }
 
 //----------------------------------------------------------------------------

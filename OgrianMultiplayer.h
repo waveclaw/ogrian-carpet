@@ -69,20 +69,20 @@ public:
 	void serverSendAll(BitStream* bitStream);
 	void serverSendAll(char* message);
 
-	// recieve packets on the client
-	void clientRecieve();
-
-	// receive packets on the server
-	void serverRecieve();
-
 	// disconnect from the server
 	void clientDisconnect();
 
 	// disconnect all clients from this server
 	void serverDisconnect();
 
-	// to determine which mode we're in
+	// true if this is an active server
 	bool isServer();
+
+	// true if this is an active client
+	bool isClient();
+
+	// call this every frame
+	void frame();
 
 	// the number of clients connected
 	int serverNumPlayers();
@@ -98,6 +98,12 @@ private:
 	// Pointers to the interfaces of our server and client.
 	RakClientInterface* mClient;
 	RakServerInterface* mServer;
+
+	// recieve packets on the client
+	void clientRecieve();
+
+	// receive packets on the server
+	void serverRecieve();
 
 };
 
