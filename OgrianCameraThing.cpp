@@ -177,7 +177,7 @@ void CameraThing::move(Real time)
 	mForce.normalise();
 	mForce *= CONR("CAMERA_MOVE_SPEED");
 
-	if (isSpeeding())
+	if (isSpeeding() || isGhost())
 		mForce *= CONR("SPEEDSPELL_MULTIPLIER");
 
 	Vector3 vel = getVelocity();

@@ -13,7 +13,7 @@ FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
 # Lava on(1) or off(0)
-Lava=0
+Lava=1
 
 # Single-player start locations
 startX=232

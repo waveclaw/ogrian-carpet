@@ -311,21 +311,27 @@ void Game::serverEndPreGame()
 	
 	// build a list of start locations
 	std::vector<Vector3> slocs;
-	slocs.push_back(Vector3(
+	Vector3 spawn1(
 		atoi(mConfig.getSetting( "p1startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p1startZ" ).c_str()) ));
+		atoi(mConfig.getSetting( "p1startZ" ).c_str()) );
 
-	slocs.push_back(Vector3(
+	Vector3 spawn2(
 		atoi(mConfig.getSetting( "p2startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p2startZ" ).c_str()) ));
+		atoi(mConfig.getSetting( "p2startZ" ).c_str()) );
 
-	slocs.push_back(Vector3(
+	Vector3 spawn3(
 		atoi(mConfig.getSetting( "p3startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p3startZ" ).c_str()) ));
+		atoi(mConfig.getSetting( "p3startZ" ).c_str()) );
 
-	slocs.push_back(Vector3(
+	Vector3 spawn4(
 		atoi(mConfig.getSetting( "p4startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p4startZ" ).c_str()) ));
+		atoi(mConfig.getSetting( "p4startZ" ).c_str()) );
+
+
+	if (spawn1.length() > 1) slocs.push_back(spawn1);
+	if (spawn2.length() > 1) slocs.push_back(spawn2);
+	if (spawn3.length() > 1) slocs.push_back(spawn3);
+	if (spawn4.length() > 1) slocs.push_back(spawn4);
 
 	// chose an sloc for the camera
 	Vector3 sloc = Vector3(500,0,500);
@@ -335,6 +341,7 @@ void Game::serverEndPreGame()
 		sloc = slocs[index];
 		slocs.erase(slocs.begin()+index);
 	}
+	else sloc = spawn1;
 
 	sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
 
@@ -359,7 +366,7 @@ void Game::serverEndPreGame()
 				sloc = slocs[index];
 				slocs.erase(slocs.begin()+index);
 			}
-			else sloc = Vector3(500,0,500);
+			else sloc = spawn1;
 
 			sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
 

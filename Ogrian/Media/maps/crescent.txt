@@ -39,7 +39,7 @@ MONSTERS_BLUE=1
 
 # the number of starting stuff in skirmish mode
 NUM_TOWERS=6
-NUM_TICKS=30
+NUM_TICKS=120
 NUM_SENTINELS=30
 
 # keep monsters this far away from the start location

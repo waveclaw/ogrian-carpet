@@ -302,7 +302,7 @@ void WizardThing::die()
 // ignore external up/down velocity changes
 void WizardThing::setVelocity(Vector3 vel)
 {
-	if (!mSpeeding || Game::getSingleton().getLava())
+	if ((!mSpeeding || Game::getSingleton().getLava()) && !mGhost)
 		vel.y = getVelY();
 	
 	Thing::setVelocity(vel);
@@ -383,7 +383,7 @@ void WizardThing::move(Real time)
 	}
 
 	// float
-	if (!(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)) // dont make remote wizards float
+	if (!(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING) && !mGhost) // dont make remote wizards float
 	{
 		float fall_max = CONR("CAMERA_FALL_MAX");
 		float grav = CONR("CAMERA_GRAV");

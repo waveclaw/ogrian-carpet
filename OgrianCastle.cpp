@@ -308,7 +308,7 @@ void Castle::destroy()
 	if (mHeart) mHeart->destroy();
 
 	// destroy the blocks
-	for (int i=1; i<NUM_BLOCKS; i++)
+	for (int i=0; i<NUM_BLOCKS; i++)
 		if(mBlocks[i]) mBlocks[i]->destroy();
 
 	// remove the castle from the team
