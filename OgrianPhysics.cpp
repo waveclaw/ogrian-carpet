@@ -200,7 +200,12 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		Thing* thing = getThing(uid);
 
 		// destroy it
-		if (thing != 0) thing->destroy();
+		if (thing != 0)
+		{
+			// send the bitstream to the thing
+			thing->interpretBitStream(bitstream);
+			thing->destroy();
+		}
 		else 
 		{
 			LogManager::getSingleton().logMessage(String("Remove Failure on thing #") << uid);
@@ -469,7 +474,8 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 		}
 		// assert that one was removed
 		assert(mThingGrid[grid_u][grid_v].size() == s-1);
-		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: ") << thing->getString());
+		LogManager::getSingleton().logMessage(String("Error Removing Thing, not found in grid: (") 
+			<< grid_u << "," << grid_v << ") " << thing->getString());
 		return false;
 	}
 	else
@@ -482,7 +488,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 			{
 				// erase it
 				mOtherThings.erase(mOtherThings.begin()+i);
-				return true;;
+				return true;
 			}
 		}
 		// assert that one was removed
@@ -544,7 +550,11 @@ void Physics::deleteThing(Thing* thing)
 
 	// remove it from the grid
 	Vector3 pos = thing->getPosition();
-	bool removed = _removeThing(thing, getGridU(pos.x), getGridV(pos.z));
+	bool removed = true;
+
+	// it's not in the grid if its a client
+	if (!Multiplayer::getSingleton().isClient())
+		removed = _removeThing(thing, getGridU(pos.x), getGridV(pos.z));
 
 	// remove it from allThings
 	size_t s = mAllThings.size();
