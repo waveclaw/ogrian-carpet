@@ -301,7 +301,7 @@ void Menu::show()
 
 	// play menu music
 	if (mMusic)
-		Audio::getSingleton().playSong("Media/music/Verdiales.ogg");
+		Audio::getSingleton().playSong("Media/music/LastGlimpse.ogg");
 
 	mActive = true;
 }
@@ -325,7 +325,7 @@ void Menu::hide()
 	
 	// play game music
 	if (mMusic)
-		Audio::getSingleton().playSong("Media/music/Bulerias.ogg");
+		Audio::getSingleton().playSong("Media/music/RidingTheDragon.ogg");
 
 	mActive = false;
 }
