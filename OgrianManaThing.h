@@ -52,8 +52,9 @@ public:
 		setAmount(amount);
 		playSound("OgrianMedia/sounds/hum1.wav", true);
 
-		getVisRep()->addPose("Ogrian/Spider/Sitting/");
+		getVisRep()->addPose("Ogrian/Wizard/");
 		getVisRep()->setPose(0);
+		getVisRep()->setOrientation(Math::RangeRandom(-Math::PI, Math::PI));
 	}
 
 	// setting the amount automatically sets the scale

@@ -69,8 +69,14 @@ public:
 
 	Sprite* getSprite(Vector3 campos, Vector3 pos, float offset)
 	{
-		float dir = -atan2(campos.x - pos.x, campos.z - pos.z) - offset;
+		// determine the direction
+		float dir = -atan2(campos.x - pos.x, campos.z - pos.z) + offset;
 
+		// constrain the offset
+		while (dir > Math::PI) dir -= 2*Math::PI;
+		while (dir < -Math::PI) dir += 2*Math::PI;
+
+		// return the propper sprite
 		if (dir <= (-7/8.0)*Math::PI) return b;
 		if (dir <= (-5/8.0)*Math::PI && dir >= (-7/8.0)*Math::PI) return bl;
 		if (dir <= (-3/8.0)*Math::PI && dir >= (-5/8.0)*Math::PI) return l;
@@ -81,6 +87,7 @@ public:
 		if (dir <= (7/8.0)*Math::PI && dir >= (5/8.0)*Math::PI) return br;
 		if (dir >= (7/8.0)*Math::PI) return b;
 
+		// error
 		LogManager::getSingleton().logMessage(String("ERROR! dir: ") << dir*8/Math::PI << "/8*Math::PI");
 
 		return 0;

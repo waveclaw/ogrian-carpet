@@ -1,0 +1,137 @@
+
+material Ogrian/Wizard/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Wizard/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/wizard/wizard_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
