@@ -59,10 +59,9 @@ Model::~Model()
 
 //----------------------------------------------------------------------------
 
-void Model::setMesh(String mesh, Real ratio)
+void Model::setMesh(String mesh)
 {
 	mMeshName = mesh;
-	mRatio = ratio;
 	
 	if (mInRenderer)
 	{
@@ -102,12 +101,7 @@ void Model::setPosition(Vector3 pos)
 void Model::setWidth(Real width)
 {
 	mWidth = width;
-
-	if (mInRenderer)
-	{
-		Real b = mEntity->getMesh()->getBoundingSphereRadius();
-		mNode->setScale(mWidth/b,mHeight/mRatio/b,mWidth/b);
-	}
+	_updateScale();
 }
 
 //----------------------------------------------------------------------------
@@ -115,11 +109,24 @@ void Model::setWidth(Real width)
 void Model::setHeight(Real height)
 {
 	mHeight = height;
+	_updateScale();
+}
 
+//----------------------------------------------------------------------------
+
+void Model::_updateScale()
+{
 	if (mInRenderer)
 	{
-		Real b = mEntity->getMesh()->getBoundingSphereRadius();
-		mNode->setScale(mWidth/b,mHeight/mRatio/b,mWidth/b);
+		AxisAlignedBox box = mEntity->getMesh()->getBounds();
+
+		Real aawidth = box.getMaximum().x - box.getMinimum().x;
+		Real aaheight = box.getMaximum().y - box.getMinimum().y;
+
+		mNode->setScale(
+			mWidth*2/aawidth,
+			mHeight*2/aaheight,
+			mWidth*2/aawidth);
 	}
 }
 
@@ -158,7 +165,7 @@ void Model::addToRenderer()
 	// apply its properteis
 	setMaterial(mMaterial);
 	setPosition(mPos);
-	setWidth(mWidth);
+	_updateScale();
 }
 
 //----------------------------------------------------------------------------

@@ -57,6 +57,7 @@ enum ThingType
 	CAMERATHING,
 	WIZARDTHING,
 	CASTLETOWER,
+	CASTLEWALL,
 };
 
 enum ThingVisRep

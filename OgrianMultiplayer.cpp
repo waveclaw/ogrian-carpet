@@ -246,7 +246,7 @@ void Multiplayer::serverSendAllText(String message, int type)
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::frame()
+void Multiplayer::frame(Real time)
 {
 	if (!mActive) return;
 

@@ -53,6 +53,32 @@ Game::~Game()
 
 //----------------------------------------------------------------------------
 
+void Game::frame(Real time)
+{
+	// tick the multiplayer
+	Multiplayer::getSingleton().frame(time);
+
+	// tick the physics
+	Physics::getSingleton().frame(time);
+
+	// tick the audio
+	Audio::getSingleton().frame(time);
+
+	// tick the input
+	Menu::getSingleton().frame(time);
+	Input::getSingleton().frame(time);
+
+	// tick the castles
+	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+	{
+		Castle* castle = Physics::getSingleton().getTeam(i)->getCastle();
+		if (castle) 
+			castle->frame(time);
+	}
+}
+
+//----------------------------------------------------------------------------
+
 void Game::loadSounds()
 {
 	SOUND_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3");

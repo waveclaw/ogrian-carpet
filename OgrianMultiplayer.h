@@ -92,7 +92,7 @@ public:
 	bool wasClient();
 
 	// call this every frame
-	void frame();
+	void frame(Real time);
 
 	// the number of clients connected
 	int serverNumPlayers();

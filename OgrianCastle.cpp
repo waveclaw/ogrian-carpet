@@ -39,12 +39,38 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mPos = pos;
 	mTeamNum = teamNum;
 
-	LogManager::getSingleton().logMessage("Making Tower");
+	//mCenterTower = new CastleTowerThing(mTeamNum, mPos);
+	//Physics::getSingleton().addThing(mCenterTower);
 
-	mCenterTower = new CastleTowerThing(mTeamNum, mPos);
-	Physics::getSingleton().addThing(mCenterTower);
+	Physics::getSingleton().addThing(new CastleWallThing(mTeamNum, mPos));
 }
 //----------------------------------------------------------------------------
+
+void Castle::setMana(int amount)
+{
+	mMana = amount;
+}
+
+//----------------------------------------------------------------------------
+
+int Castle::getMana()
+{
+	return mMana;
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::addMana(int amount)
+{
+	mMana += amount;
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::frame(Real time)
+{
+
+}
 
 //----------------------------------------------------------------------------
 

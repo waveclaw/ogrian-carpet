@@ -45,26 +45,49 @@ class CastleTowerThing : public DamageableThing
 {
 public:
 	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLETOWER_SCALE"), pos, CUBE)
+		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh", CONR("CASTLETOWER_RATIO"));
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh");
 
-		setHeight(getWidth()*CONR("CASTLETOWER_RATIO"));
-		setPosY(getGroundY()+getHeight()*CONR("CASTLETOWER_OFFSET"));
+		setHeight(CONR("CASTLETOWER_HEIGHT"));
+		setPercentage(1);
+		setHealth(CONI("CASTLE_BASE_HEALTH"));
+	}
+
+	virtual void setPercentage(Real per)
+	{
+		setPosY(getGroundY()+getHeight()*CONR("CASTLETOWER_OFFSET")*per);
 	}
 
 	virtual ThingType getType()
 	{
 		return CASTLETOWER;
 	}
+};
 
-	virtual void die()
+/////////////////////////////////////////////////////////////////////////////
+class CastleWallThing : public DamageableThing
+{
+public:
+	CastleWallThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
+		: DamageableThing("Ogrian/Wall", MODEL, "CastleWall", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
-		setPosY(getPosY() - 1);
+		static_cast<Model*>(getVisRep())->setMesh("wall.mesh");
+
+		setHeight(CONR("CASTLEWALL_HEIGHT"));
+		setPercentage(1);
+		setHealth(CONI("CASTLE_BASE_HEALTH"));
 	}
 
-private:
-	int mTeamNum;
+	virtual void setPercentage(Real per)
+	{
+		setPosY(getGroundY()+getHeight()*CONR("CASTLEWALL_OFFSET")*per);
+	}
+
+	virtual ThingType getType()
+	{
+		return CASTLEWALL;
+	}
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -73,12 +96,76 @@ class Castle
 public:
 	Castle(int teamNum, Vector3 pos);
 
+	// set the amount of mana this castle contains
+	void setMana(int amount);
+
+	// get the amount of mana this castle contains
+	int getMana();
+
+	// add to the amount of mana this castle contains
+	void addMana(int amount);
+
+	// call this every frame
+	void frame(Real time);
 
 private:
 	int mTeamNum;
 	Vector3 mPos;
+	int mMana;
 
 	CastleTowerThing* mCenterTower;
+	
+	CastleTowerThing* mCornerTowerNE;
+	CastleTowerThing* mCornerTowerSE;
+	CastleTowerThing* mCornerTowerSW;
+	CastleTowerThing* mCornerTowerNW;
+
+	CastleWallThing* mInnerWallN1;
+	CastleWallThing* mInnerWallN2;
+	CastleWallThing* mInnerWallN3;
+	CastleWallThing* mInnerWallE1;
+	CastleWallThing* mInnerWallE2;
+	CastleWallThing* mInnerWallE3;
+	CastleWallThing* mInnerWallS1;
+	CastleWallThing* mInnerWallS2;
+	CastleWallThing* mInnerWallS3;
+	CastleWallThing* mInnerWallW1;
+	CastleWallThing* mInnerWallW2;
+	CastleWallThing* mInnerWallW3;
+
+	CastleTowerThing* mFarCornerTowerN;
+	CastleTowerThing* mFarCornerTowerS;
+	CastleTowerThing* mFarCornerTowerE;
+	CastleTowerThing* mFarCornerTowerW;
+	CastleTowerThing* mFarCornerTowerNE;
+	CastleTowerThing* mFarCornerTowerSE;
+	CastleTowerThing* mFarCornerTowerSW;
+	CastleTowerThing* mFarCornerTowerNW;
+
+	CastleWallThing* mOuterWallN1;
+	CastleWallThing* mOuterWallN2;
+	CastleWallThing* mOuterWallN3;
+	CastleWallThing* mOuterWallN5;
+	CastleWallThing* mOuterWallN6;
+	CastleWallThing* mOuterWallN7;
+	CastleWallThing* mOuterWallE1;
+	CastleWallThing* mOuterWallE2;
+	CastleWallThing* mOuterWallE3;
+	CastleWallThing* mOuterWallE5;
+	CastleWallThing* mOuterWallE6;
+	CastleWallThing* mOuterWallE7;
+	CastleWallThing* mOuterWallS1;
+	CastleWallThing* mOuterWallS2;
+	CastleWallThing* mOuterWallS3;
+	CastleWallThing* mOuterWallS5;
+	CastleWallThing* mOuterWallS6;
+	CastleWallThing* mOuterWallS7;
+	CastleWallThing* mOuterWallW1;
+	CastleWallThing* mOuterWallW2;
+	CastleWallThing* mOuterWallW3;
+	CastleWallThing* mOuterWallW5;
+	CastleWallThing* mOuterWallW6;
+	CastleWallThing* mOuterWallW7;
 };
 
 }

@@ -120,7 +120,7 @@ void WizardThing::setVelocity(Vector3 vel)
 	
 void WizardThing::collided(Thing* e)
 {
-	if (e->getType() == CASTLETOWER)
+	if (e->getType() == CASTLETOWER || e->getType() == CASTLEWALL)
 	{
 		setPosY(e->getPosY() + e->getHeight()/2.0 + getHeight()*.45);
 	}

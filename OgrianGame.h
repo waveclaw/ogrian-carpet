@@ -49,6 +49,8 @@ public:
 
 	void updateScores();
 
+	void frame(Real time); // call this every frame
+
 	static Game& getSingleton(void);
 
 	// sound indexes

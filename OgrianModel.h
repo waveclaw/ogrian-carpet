@@ -47,7 +47,7 @@ public:
 	virtual ~Model();
 
 	// set the mesh 
-	virtual void setMesh(String mesh, Real ratio=1);
+	virtual void setMesh(String mesh);
 
 	// set the position
 	virtual void setPosition(Vector3 pos);
@@ -88,7 +88,6 @@ private:
 	bool mInRenderer;
 	Real mWidth;
 	Real mHeight; 
-	Real mRatio; // the ratio height/width of the mesh
 
 	Vector3 mPos;
 	String mMaterial;
@@ -100,6 +99,8 @@ private:
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
+
+	void _updateScale();
 };
 }
 #endif

@@ -305,18 +305,7 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 // Override frameStarted event to process that (don't care about frameEnded)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 {
-	// tick the multiplayer
-	Multiplayer::getSingleton().frame();
-
-	// tick the physics
-	Physics::getSingleton().frame(evt.timeSinceLastFrame);
-
-	// tick the audio
-	Audio::getSingleton().frame(evt.timeSinceLastFrame);
-
-	// tick the input
-	Menu::getSingleton().frame(evt.timeSinceLastFrame);
-	Input::getSingleton().frame(evt.timeSinceLastFrame);
+	Game::getSingleton().frame(evt.timeSinceLastFrame);
 
 	// handle input //
     if (!mInputTypeSwitchingOn)
