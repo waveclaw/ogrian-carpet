@@ -139,10 +139,9 @@ bool HeightmapLoader::initialise(const String& filename)
     {
 		// get material
 		mMaterial = mSceneRoot->getCreator()->getMaterial("NaturePatchMaterial");
+		if (mMaterial != 0) MaterialManager::getSingleton().unload(mMaterial);
 
-		if (mMaterial == 0) mMaterial = mSceneRoot->getCreator()->createMaterial("NaturePatchMaterial");
-
-		//mMaterial->removeAllTechniques();
+		mMaterial = mSceneRoot->getCreator()->createMaterial("NaturePatchMaterial");
 	    
 		TextureUnitState *layer;
 		layer = mMaterial->getTechnique(0)->getPass(0)->createTextureUnitState(texture, 1);
