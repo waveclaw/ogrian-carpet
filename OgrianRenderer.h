@@ -72,7 +72,7 @@ public:
 	OgrianFrameListener* getFrameListener();
 
 	// load a map
-	void loadMap(String configfile);
+	void loadMap(String configfile, bool server=true);
 
 	// get the name of the current map
 	String getMapName();

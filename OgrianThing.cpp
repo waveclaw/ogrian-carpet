@@ -487,7 +487,10 @@ void Thing::generateBitStream(BitStream& bitstream)
 	bitstream.Write(mVel.x);
 	bitstream.Write(mVel.y);
 	bitstream.Write(mVel.z);
+
 	bitstream.Write(mOrientation);
+	bitstream.Write(mHeight);
+	bitstream.Write(mWidth);
 }
 
 //----------------------------------------------------------------------------
@@ -496,7 +499,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 {
 	Vector3 pos,vel;
 	int pid,uid,type;
-	Real orientation;
+	Real orientation, height, width;
 
 	bitstream.Read(pid);
 	bitstream.Read(uid);
@@ -508,13 +511,18 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(vel.x);
 	bitstream.Read(vel.y);
 	bitstream.Read(vel.z);
+
 	bitstream.Read(orientation);
+	bitstream.Read(height);
+	bitstream.Read(width);
 
 	assert(type == getType());
 
 	setPosition(pos);
 	setVelocity(vel);
 	setOrientation(orientation);
+	setHeight(height);
+	setWidth(width);
 }
 //----------------------------------------------------------------------------
 

@@ -207,6 +207,8 @@ CameraThing* Renderer::getCameraThing(void)
 
 void Renderer::createSky(const String& material)
 {
+	LogManager::getSingleton().logMessage("Making Sky...");
+
 	// Define the required skyplane
     Plane plane;
     // num of world units from the camera
@@ -222,6 +224,8 @@ void Renderer::createSky(const String& material)
 void Renderer::createOcean(const String& material)
 {
 	if (mWaterNode != 0) return;
+
+	LogManager::getSingleton().logMessage("Making Ocean...");
 
     Entity *waterEntity;
     Plane waterPlane;
@@ -251,6 +255,8 @@ void Renderer::createOcean(const String& material)
 
 void Renderer::createFoliage(const String& material, int num)
 {
+	LogManager::getSingleton().logMessage("Making Foliage...");
+
 	// set up some foliage
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
@@ -275,7 +281,7 @@ void Renderer::createFoliage(const String& material, int num)
 
 //----------------------------------------------------------------------------
 
-void Renderer::loadMap(String configfile)
+void Renderer::loadMap(String configfile, bool server)
 {
 	unloadMap();
 
@@ -296,8 +302,8 @@ void Renderer::loadMap(String configfile)
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 
-	if (!Multiplayer::getSingleton().isClient())
-		createFoliage(foliageMaterial, FOLIAGE_NUM);
+	// dont make foliage for a client
+	if (server)	createFoliage(foliageMaterial, FOLIAGE_NUM);
 
     // Position the camera
     mCamera->setPosition(Vector3(100,0,100));

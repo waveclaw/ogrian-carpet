@@ -413,9 +413,6 @@ void Multiplayer::updateScores()
 	// send each client its score
 	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
-		LogManager::getSingleton().logMessage(String("Player: ") << i << ", Team: " << mPlayers[i].teamNum
-			<< ", Score: " << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore());
-
 		serverSendText(String("Score: ") << 
 			Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
 			ID_SETSCORE, mPlayers[i].id);
@@ -487,8 +484,8 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				// disconnect
 				clientDisconnect();
 
-				// load the new map
-				Renderer::getSingleton().loadMap(map);
+				// load the new map as a client
+				Renderer::getSingleton().loadMap(map, false);
 
 				// reconnect
 				clientStart();

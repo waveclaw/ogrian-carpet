@@ -44,6 +44,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianFireballThing.h"
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
+#include "OgrianFoliageThing.h"
 
 #include "OgreLogManager.h"
 
@@ -270,6 +271,8 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 	switch(type)
 	{
+		case FOLIAGETHING:	return new FoliageThing();
+
 		case MANATHING:	return new ManaThing();
 
 		case FIREBALLTHING:	return new FireballThing(teamNum);

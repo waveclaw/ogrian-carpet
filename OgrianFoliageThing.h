@@ -57,7 +57,7 @@ public:
 class FoliageThing : public Thing
 {
 public:
-	FoliageThing(Real scale, Vector3 pos=Vector3(0,0,0)) 
+	FoliageThing(Real scale=1, Vector3 pos=Vector3(0,0,0)) 
 		: Thing("Ogrian/PalmTree", SPRITE, "Foliage", true, scale, pos, CYLINDER)
 	{
 		// place it slightly underground
