@@ -14,7 +14,8 @@ namespace Ogrian
 class RollingEntity : public PhysicalEntity
 {
 public:
-	RollingEntity(String material, Real x=0, Real y=0, Real z=0) : PhysicalEntity(material, x, y, z)
+	RollingEntity(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0) 
+		: PhysicalEntity(material, fixed_y, scale, x, y, z)
 	{
 		
 	}
@@ -29,11 +30,6 @@ public:
 		PhysicalEntity::setPosition(x,
 			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
 			z);
-	}
-
-	virtual void collided(PhysicalEntity* e)
-	{
-
 	}
 };
 

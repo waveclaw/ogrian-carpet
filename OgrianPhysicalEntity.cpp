@@ -4,7 +4,7 @@ namespace Ogrian
 
 unsigned long PhysicalEntity::msNextGeneratedNameExt = 1;
 
-PhysicalEntity::PhysicalEntity(String material, Real x, Real y, Real z)
+PhysicalEntity::PhysicalEntity(String material, bool fixed_y, Real scale, Real x, Real y, Real z)
 {
     // Generate a name
     static char name[64];
@@ -16,13 +16,17 @@ PhysicalEntity::PhysicalEntity(String material, Real x, Real y, Real z)
 	billboard = bbset->createBillboard(x, y, z);
 	bbset->setMaterialName(material);
 
-	// it doesn't really matter if its common or self, since there's only one per set
-	bbset->setBillboardType(BBT_ORIENTED_SELF);
-	billboard->mDirection = Vector3::UNIT_Y;
+	if (fixed_y)
+	{
+		// it doesn't really matter if its common or self, since there's only one per set
+		bbset->setBillboardType(BBT_ORIENTED_SELF);
+		billboard->mDirection = Vector3::UNIT_Y;
+	}
 
 	sceneMgr->getRootSceneNode()->attachObject(bbset);
 
 	setPosition(x, y, z);
+	setScale(scale);
 }
 
 void PhysicalEntity::setVelocity(Vector3 vel)

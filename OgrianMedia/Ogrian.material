@@ -40,12 +40,29 @@ material Ogrian/Mana
 	{
 		pass
 		{
-			lighting off
-			colour_op replace
+			scene_blend alpha_blend
+			depth_write off
 
 			texture_unit
 			{
 				texture mana.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Grass
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture grass1.png
 				tex_address_mode clamp
 			}
 		}

@@ -111,7 +111,7 @@ void Renderer::createCamera(void)
     // Position it 
     mCamera->setPosition(Vector3(0,0,10));
     // Look back along -Z
-    mCamera->lookAt(Vector3(0,0,-300));
+    mCamera->lookAt(Vector3(300,0,300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
 	mCamera->setFOVy(CAMERA_FOV);
 
@@ -202,6 +202,31 @@ void Renderer::createScene(void)
     mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, false, 0.5f);
 
     mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
+
+	// set up some foliage
+	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
+	BillboardSet* grassSet = sceneMgr->createBillboardSet("Foliage",1);
+	grassSet->setBillboardType(BBT_ORIENTED_COMMON);
+	grassSet->setCommonDirection(Vector3::UNIT_Y);
+	grassSet->setMaterialName("Ogrian/Grass");
+
+	int i=0;
+	while (i<1000)
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * 500.0;
+        Real z = Math::SymmetricRandom() * 500.0;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > 10)
+		{
+			i++;
+			Billboard* billboard = grassSet->createBillboard(x, y, z);
+			billboard->setDimensions(1,10);
+		}
+	}
+
+	sceneMgr->getRootSceneNode()->attachObject(grassSet);
 }
 
 void Renderer::createViewports(void)

@@ -16,7 +16,7 @@ class PhysicalEntity
 public:
 	Vector3 pos;
 
-	PhysicalEntity(String material, Real x=0, Real y=0, Real z=0);
+	PhysicalEntity(String material, bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
 
 	virtual void setVelocity(Vector3 vel);
 	virtual void setPosition(Vector3 pos);

@@ -3,7 +3,7 @@
 #include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
-#include "OgrianRollingEntity.h"
+#include "OgrianManaEntity.h"
 
 namespace Ogrian
 {
@@ -154,14 +154,12 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
     if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
     {
-        RollingEntity* e = new RollingEntity("Ogrian/Mana");
-		e->setPosition(mCamera->getPosition()+mCamera->getDirection());
-		e->setVelocity(mCamera->getDirection());
-		e->setScale(5);
+        ManaEntity* e = new ManaEntity("Ogrian/Mana", 1);
+		e->setPosition(mCamera->getPosition());
 
 		Physics::getSingleton().addPhysicalEntity(e);
 
-        mTimeUntilNextToggle = 1;
+        mTimeUntilNextToggle = .1;
     }
 
     if( mInputDevice->isKeyDown( KC_ESCAPE) )
@@ -271,6 +269,7 @@ void OgrianFrameListener::moveCamera()
     mCamera->pitch(mRotY);
     mCamera->moveRelative(mTranslateVector);
 
+	// follow the landscape
 	Vector3 pos = mCamera->getPosition();
 	float altitude = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
 	pos.y = altitude + CAMERA_HEIGHT;
