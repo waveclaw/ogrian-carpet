@@ -34,7 +34,7 @@ It is a Singleton.
 #include "Ogre.h"
 #include "OgreConfigFile.h"
 #include "OgrianFrameListener.h"
-#include "OgrianHeightMap.h"
+//#include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
 #include "OgrianFoliageThing.h"
@@ -123,6 +123,7 @@ bool Renderer::setup(void)
     if (!carryOn) return false;
 
     chooseSceneManager();
+
     createCamera();
     createViewports();
 
@@ -181,7 +182,7 @@ bool Renderer::configure(void)
 void Renderer::chooseSceneManager(void)
 {
     // Get the SceneManager, in this case a generic one
-    mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_FAR);
+    mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_CLOSE);
 }
 
 //----------------------------------------------------------------------------
@@ -192,6 +193,7 @@ void Renderer::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     mCamera->setNearClipDistance(CONR("CAMERA_NEAR_CLIP"));
+	//mCamera->setFarClipDistance(CONR("CAMERA_FAR_CLIP"));
 	mCamera->setFOVy(Degree(CONR("CAMERA_FOV")));
 }
 
@@ -235,7 +237,8 @@ void Renderer::createSky(const String& material)
     // Above the camera, facing down
     plane.normal = -Vector3::UNIT_Y;
     // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"),10,10);
+    //mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, CONR("SKYPLANE_BOW"),10,10);
+	mSceneMgr->setSkyDome(true, material,10,8,40,true);
 }
 
 //----------------------------------------------------------------------------
@@ -321,7 +324,8 @@ void Renderer::loadMap(String configfile, bool server)
 	if (fogColour == "blue") fogcol = ColourValue::Blue;
 	else if (fogColour == "red") fogcol = ColourValue::Red;
 	else if (fogColour == "black") fogcol = ColourValue::Black;
-    mSceneMgr->setFog( FOG_EXP2, fogcol, CONR("FOG_DENSITY"), 2500,  5500 );
+    //mSceneMgr->setFog( FOG_EXP2, fogcol, CONR("FOG_DENSITY"), 2500,  5500 );
+	mSceneMgr->setFog(FOG_NONE);
 
 	// load new terrain 
 	if (configfile != mMapName)

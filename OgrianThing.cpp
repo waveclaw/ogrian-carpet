@@ -419,7 +419,7 @@ Real Thing::getGroundY()
 
 Real Thing::getGroundY(Vector3 pos)
 {
-	return HeightMap::getSingleton().getHeightAt(pos.x,pos.z);
+	return HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
 }
 
 //----------------------------------------------------------------------------
