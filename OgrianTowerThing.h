@@ -35,6 +35,7 @@ a flock of cranes
 #include "OgrianDamageableThing.h"
 #include "OgrianConst.h"
 #include "OgrianCraneThing.h"
+#include "OgrianPortalThing.h"
 
 using namespace Ogre;
 
@@ -123,6 +124,8 @@ private:
 
 	TowerBeaconThing* mBeacon;
 	TowerBallThing* mBall;
+
+	PortalThing* mPortal;
 };
 
 }

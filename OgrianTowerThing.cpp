@@ -150,6 +150,13 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 			Physics::getSingleton().addThing(crane);
 		}
 	}
+
+	// set up the portal
+	Vector3 ppos = pos;
+	ppos.x += CONR("PORTAL_TOWER_DIST");
+	ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
+	mPortal = new PortalThing(this, ppos);
+	Physics::getSingleton().addThing(mPortal);
 }
 
 //----------------------------------------------------------------------------
@@ -216,6 +223,7 @@ void TowerThing::destroy()
 
 	mBeacon->destroy();
 	mBall->destroy();
+	mPortal->destroy();
 
 	DamageableThing::destroy();
 }

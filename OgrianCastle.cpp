@@ -100,6 +100,14 @@ Castle::Castle(int teamNum, Vector3 pos)
 	//	if (thing->getType() == MANATHING && thing->getTeamNum() == getTeamNum())
 	//		claimedManaThing(thing);
 	//}
+
+	
+	// set up the portal
+	Vector3 ppos = pos;
+	ppos.x += CONR("PORTAL_CASTLE_DIST");
+	ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
+	mPortal = new PortalThing(this, ppos);
+	Physics::getSingleton().addThing(mPortal);
 }
 
 //----------------------------------------------------------------------------

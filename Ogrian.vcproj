@@ -291,6 +291,12 @@
 				RelativePath="OgrianManaThing.h">
 			</File>
 			<File
+				RelativePath="OgrianPortalThing.cpp">
+			</File>
+			<File
+				RelativePath="OgrianPortalThing.h">
+			</File>
+			<File
 				RelativePath="OgrianRollingThing.h">
 			</File>
 			<File

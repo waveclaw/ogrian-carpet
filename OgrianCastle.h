@@ -38,6 +38,7 @@ Description: This is a castle
 #include "OgrianBuildingHeightMap.h"
 #include "OgrianBaloonThing.h"
 #include "OgrianCraneThing.h"
+#include "OgrianPortalThing.h"
 
 #define NUM_BALOONS 0
 #define NUM_BLOCKS 9
@@ -296,6 +297,8 @@ private:
 	bool mRubble;
 
 	CastleBeaconThing* mBeacon;
+
+	PortalThing* mPortal;
 
 	// a vector holding all the claimed manathings
 	std::vector<Thing*> mManaThings;

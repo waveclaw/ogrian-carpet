@@ -52,6 +52,9 @@ public:
 	// hide the HUD
 	void hide();
 
+	// toggle the HUD on/off
+	void toggle();
+
 	// change the HUD to ghost mode
 	void makeGhost();
 

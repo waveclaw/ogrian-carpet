@@ -12,6 +12,26 @@ material 1 - Default
 	}
 }
 
+material Ogrian/Swirl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{	
+
+				texture swirl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
 material Ogrian/Clay
 {
 	technique

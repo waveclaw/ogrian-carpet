@@ -28,6 +28,7 @@ Description: Handle game input, as opposed to menu input.
 
 #include "OgrianInput.h"
 #include "OgrianPhysics.h"
+#include "OgrianHud.h"
 #include "OgrianAudio.h"
 #include "OgrianMenu.h"
 #include "OgrianPlayerList.h"
@@ -127,8 +128,12 @@ bool Input::processKeyInput(InputReader* input)
 void Input::keyPressed(int key)
 {
 	// show the menu
-    if(key == KC_ESCAPE)
+    if (key == KC_ESCAPE)
 		Menu::getSingleton().show();
+
+	// toggle the hud
+	if (key == KC_H)
+		Hud::getSingleton().toggle();
 
 	// select the next spell
 	if (key == KC_E)
