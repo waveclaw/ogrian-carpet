@@ -56,7 +56,8 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	mName = prefix << "_" << msNextGeneratedNameExt++;
 
 	// make the sprite
-	mSprite = new Sprite(mName, fixed_y);
+	Sprite* sprite = new Sprite(mName, fixed_y);
+	mVisRep = sprite;
 
 	// set the settings
 	setMaterial(material);
@@ -66,7 +67,7 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	setShape(shape);
 
 	// add it to the renderer
-	mSprite->addToRenderer();
+	mVisRep->addToRenderer();
 }
 
 //----------------------------------------------------------------------------
@@ -76,11 +77,11 @@ Thing::~Thing()
 
 	stopSound();
 
-	if (mSprite)
+	if (mVisRep)
 	{
-		mSprite->removeFromRenderer();
+		mVisRep->removeFromRenderer();
 
-		delete mSprite;
+		delete mVisRep;
 	}
 }
 
@@ -139,7 +140,7 @@ void Thing::setVelocity(Vector3 vel)
 void Thing::setPosition(Vector3 pos)
 {
 	// update the sprite
-	mSprite->setPosition(pos);
+	mVisRep->setPosition(pos);
 
 	// update physics
 	if (mInPhysics && pos != mPos)
@@ -167,7 +168,7 @@ void Thing::setHeight(Real height)
 {
 	mHeight = height;
 	
-	mSprite->setHeight(height);
+	mVisRep->setHeight(height);
 }
 
 //----------------------------------------------------------------------------
@@ -176,7 +177,7 @@ void Thing::setWidth(Real width)
 {
 	mWidth = width;
 
-	mSprite->setWidth(width);
+	mVisRep->setWidth(width);
 }
 
 //----------------------------------------------------------------------------
@@ -211,7 +212,7 @@ Real Thing::getHeight()
 
 void Thing::setMaterial(String material)
 {
-	mSprite->setMaterial(material);
+	mVisRep->setMaterial(material);
 }
 
 //----------------------------------------------------------------------------
@@ -242,14 +243,14 @@ void Thing::_updateVisibility()
 	if (cylinderDistance(cam) < THING_CULL_DIST)
 	{
 		// add it if its close enough
-		if (!mSprite->inRenderer())
-			mSprite->addToRenderer();
+		if (!mVisRep->inRenderer())
+			mVisRep->addToRenderer();
 	}
 	else
 	{
 		// remove it otherwise
-        if (mSprite->inRenderer())
-			mSprite->removeFromRenderer();
+        if (mVisRep->inRenderer())
+			mVisRep->removeFromRenderer();
 	}
 }
 

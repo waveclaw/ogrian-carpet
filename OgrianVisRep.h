@@ -19,71 +19,50 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianSprite.h
+OgrianVisRep.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: A Sprite is a billboard that is properly depth
-sorted and has a unique material. 
+Description: The VisRep class serves as a superclass for Sprites, OrientedSprites, and Meshes. 
 
 /*------------------------------------*/
 
-#ifndef __OgrianSprite_H__
-#define __OgrianSprite_H__
+#ifndef __OgrianVisRep_H__
+#define __OgrianVisRep_H__
 
 #include <Ogre.h>
-
-#include "OgrianVisRep.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Sprite : public VisRep
+class VisRep
 {
 public:
-	Sprite(String name, bool fixed_y=false);
-	virtual ~Sprite();
-
 	// set the position
-	virtual void setPosition(Vector3 pos);
+	virtual void setPosition(Vector3 pos) = 0;
 
 	// set the width
-	virtual void setWidth(Real width);
+	virtual void setWidth(Real width) = 0;
 
 	// set the height
-	virtual void setHeight(Real height);
+	virtual void setHeight(Real height) = 0;
 
-	// set the material used by this sprite
-	virtual void setMaterial(String material);
+	// set the material set (only used by Oriented Sprites)
+	virtual void setMaterialSet(String materialset) = 0;
 	
-	// unused
-	virtual void setMaterialSet(String materialset) {}
+	// set the material
+	virtual void setMaterial(String material) = 0;
 
-	// add this sprite to the renderer
-	virtual void addToRenderer();
+	// add this visrep to the renderer
+	virtual void addToRenderer() = 0;
 
-	// remove this sprite from the renderer
-	virtual void removeFromRenderer();
+	// remove this visrep from the renderer
+	virtual void removeFromRenderer() = 0;
 
-	// returns true if this sprite is in the renderer
-	virtual inline bool inRenderer();
-
-private:
-	// graphical rendering stuff
-	BillboardSet* mBbset;
-	Billboard* mBillboard;
-	bool mFixed_y;
-	String mMaterial;
-	SceneNode* mNode;
-	String mName;
-
-	bool mInRenderer;
-	Real mWidth;
-	Real mHeight; 
-	Vector3 mPos;
-
+	// returns true if its in the renderer
+	virtual inline bool inRenderer() = 0;
 };
 }
 #endif

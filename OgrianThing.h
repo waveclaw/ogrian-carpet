@@ -160,8 +160,8 @@ private:
 	Vector3 mVel;
 
 	// graphical rendering stuff
-	Sprite* mSprite;
-	String mName;
+	VisRep* mVisRep; // the visual representation
+	String mName; // the name of the visual representation
 
 	Real mWidth;
 	Real mHeight; 
