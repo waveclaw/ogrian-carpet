@@ -47,12 +47,13 @@ namespace Ogrian
 class ManaThing : public FloatingThing
 {
 public:
-	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
+	ManaThing(int amount=1, Vector3 pos = Vector3(0,0,0)) 
 		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
 		setColour(ColourValue(1,1,1));
 		mFlag = true;
+		setUpdateType(CONTINUOUS);
 	}
 
 	// change the colour to reflect team ownership
@@ -74,8 +75,10 @@ public:
 	}
 
 	// setting the amount automatically sets the scale
-	virtual void setAmount(unsigned int amount)
+	virtual void setAmount(int amount)
 	{
+		if (amount < 0) amount = 0;
+
 		if (mAmount == amount) return;
 
 		mAmount=amount;
@@ -88,7 +91,7 @@ public:
 	}
 
 	// get the amount of mana this represents
-	virtual inline unsigned int getAmount()
+	virtual inline int getAmount()
 	{
 		return mAmount;
 	}
@@ -105,9 +108,9 @@ public:
 			{
 
 				// set the position as a weighted average of the two
-				setPosition(
-					(getPosition()*getAmount() + m->getPosition()*m->getAmount())
-						/ (getAmount() + m->getAmount()));
+				//setPosition(
+				//	(getPosition()*getAmount() + m->getPosition()*m->getAmount())
+				//		/ (getAmount() + m->getAmount()));
 						
 				// absorb the other
 				setAmount(getAmount() + m->getAmount());

@@ -41,7 +41,7 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-BaloonThing::BaloonThing(int team, Vector3 pos, unsigned int amount) 
+BaloonThing::BaloonThing(int team, Vector3 pos, int amount) 
 	: Thing("Ogrian/Baloon", SPRITE, "ManaThing", false, CONR("BALOON_SCALE"), pos, SPHERE)
 {
 	mState = -1;
@@ -49,6 +49,8 @@ BaloonThing::BaloonThing(int team, Vector3 pos, unsigned int amount)
 	setTarget(0);
 	setUpdateType(CONTINUOUS);
 	unload();
+
+	lastPos = pos;
 }
 
 //----------------------------------------------------------------------------
@@ -99,6 +101,21 @@ void BaloonThing::move(Real time)
 		// stay above the minimum altitude
 		if (getPosY() < getGroundY() + CONR("BALOON_ALTITUDE"))
 			setPosY(getGroundY() + CONR("BALOON_ALTITUDE"));
+	}
+	
+	if (Math::Abs(lastPos.x - getPosition().x) > 10 || 
+		Math::Abs(lastPos.z - getPosition().z) > 10 || 
+		Math::Abs(lastPos.y - getPosition().y) > 10)
+	{
+		Real x = getPosition().x;
+		Real y = getPosition().y;
+		Real z = getPosition().z;
+
+		std::ostringstream num("Setting Target: ");
+		num << "(" << x << "," << y << "," << z << ")";
+		LogManager::getSingleton().logMessage(String("") + num.str());
+
+		lastPos = getPosition();
 	}
 }
 

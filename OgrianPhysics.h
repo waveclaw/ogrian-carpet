@@ -58,8 +58,7 @@ public:
 	virtual ~Physics();
 
 	// add a thing to the world 
-	// returns false if the thing was discarded and deleted
-	bool addThing(Thing* thing);
+	void addThing(Thing* thing);
 
 	// add a thing to the world, but don't do collision detection for it. Useful for effects like smoke.
 	void addEffect(Thing* thing);

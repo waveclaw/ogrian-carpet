@@ -334,7 +334,9 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 			thing->interpretBitStream(bitstream);
 
 			// add it to the physics
-			if (addThing(thing))
+			addThing(thing);
+
+			if (thing->isAlive())
 			{
 				// send it to the clients immediately
 				BitStream bs;
@@ -432,7 +434,7 @@ Thing* Physics::getThingByIndex(int index)
 // checks to see if a thing is in the list mAllThings
 bool Physics::containsThing(Thing* thing)
 {
-	for (unsigned int i=0; i<mAllThings.size(); i++)
+	for (int i=0; i<(int)mAllThings.size(); i++)
 		if (mAllThings[i] == thing) return true;
 
 	return false;
@@ -451,7 +453,7 @@ void Physics::addEffect(Thing* thing)
 //----------------------------------------------------------------------------
 
 // add a Thing to the world
-bool Physics::addThing(Thing* thing)
+void Physics::addThing(Thing* thing)
 {
 	// if its a client
 	if (Multiplayer::getSingleton().isClient())
@@ -466,14 +468,6 @@ bool Physics::addThing(Thing* thing)
 	}
 	else // if its a server or singleplayer
 	{
-		// if its a claimthing and we're in pregame mode
-		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame())
-		{
-			// discard the thing
-			delete thing;
-
-			return false;
-		}
 
 		// make sure it's not too big
 		if (thing->getWidth() / 2.0 > mWorldSize / PHYSICS_GRID_SIZE)
@@ -494,9 +488,14 @@ bool Physics::addThing(Thing* thing)
 
 		// keep allthings sorted by uid
 		_sortAllThings();
-	}
 
-	return true;
+		// if its a claimthing and we're in pregame mode
+		if (thing->getType() == CLAIMTHING && Game::getSingleton().isPreGame())
+		{
+			// destroy the thing immediately
+			thing->destroy();
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -579,7 +578,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 	{
 		// find the thing from the grid
 		size_t s = mThingGrid[grid_u][grid_v].size();
-		for (unsigned int i=0; i<mThingGrid[grid_u][grid_v].size(); i++)
+		for (int i=0; i<(int)mThingGrid[grid_u][grid_v].size(); i++)
 		{
 			if (mThingGrid[grid_u][grid_v][i] == thing)
 			{
@@ -598,7 +597,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 	{
 		// find the thing from the other things
 		size_t s = mOtherThings.size();
-		for (unsigned int i=0; i<mOtherThings.size(); i++)
+		for (int i=0; i<(int)mOtherThings.size(); i++)
 		{
 			if (mOtherThings[i] == thing)
 			{
@@ -619,7 +618,7 @@ bool Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 void Physics::deleteEffect(Thing* thing)
 {
 	// remove it from mEffects
-	for (unsigned int i=0; i<mEffects.size(); i++)
+	for (int i=0; i<(int)mEffects.size(); i++)
 	{
 		if (mEffects[i] == thing)
 		{
@@ -673,7 +672,7 @@ void Physics::deleteThing(Thing* thing)
 
 	// remove it from allThings
 	size_t s = mAllThings.size();
-	for (unsigned int i=0; i<mAllThings.size(); i++)
+	for (int i=0; i<(int)mAllThings.size(); i++)
 	{
 		if (mAllThings[i] == thing)
 		{
@@ -778,7 +777,7 @@ void Physics::clear()
 void Physics::moveAll(Real time)
 {
 	// move all things
-	for (unsigned int i=0; i<mAllThings.size(); i++)
+	for (int i=0; i<(int)mAllThings.size(); i++)
 	{
 		Thing* thing = mAllThings[i];
 
@@ -792,7 +791,7 @@ void Physics::moveAll(Real time)
 	}
 	
 	// move all effects
-	for (unsigned int i=0; i<mEffects.size(); i++)
+	for (int i=0; i<(int)mEffects.size(); i++)
 	{
 		Thing* thing = mEffects[i];
 
@@ -822,8 +821,6 @@ and its neighbors' things.
 */
 void Physics::collisionCheck()
 {
-	//if (true) return;
-
 	unsigned int i,j,t,u;
 	i = j = t = u = 0;
 

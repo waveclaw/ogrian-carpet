@@ -42,7 +42,7 @@ namespace Ogrian
 class BaloonThing : public Thing
 {
 public:
-	BaloonThing(int team, Vector3 pos = Vector3(0,0,0), unsigned int amount=1);
+	BaloonThing(int team, Vector3 pos = Vector3(0,0,0), int amount=1);
 
 	// change the colour to reflect team ownership
 	virtual void setTeamNum(int teamNum);
@@ -72,6 +72,8 @@ private:
 	bool mNeedOrders;
 	int mAmount;
 	int mState; 
+
+	Vector3 lastPos;
 
 	// state changes
 	inline void setStateWait();
