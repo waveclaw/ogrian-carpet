@@ -74,7 +74,7 @@ const int PORT = 6006;
 const int MAX_PLAYERS = 8;
 const int STRING_MAX_LENGTH = 24;
 
-const unsigned long THING_UPDATE_PERIOD = 100;
+const unsigned long THING_UPDATE_PERIOD = 200;
 
 }
 #endif

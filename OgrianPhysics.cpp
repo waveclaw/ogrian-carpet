@@ -117,8 +117,6 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		if (thing == 0) // we need to make a new one if we dont have it
 		{
-			listThings();
-
 			// make a new thing
 			switch(type)
 			{
@@ -138,7 +136,11 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 			// add it to physics
 			clientAddThing(thing, uid);
 
-			if (getThing(uid) == 0) LogManager::getSingleton().logMessage("Add Failure");
+			if (getThing(uid) == 0) 
+			{
+				LogManager::getSingleton().logMessage(String("Add Failure on thing #") << uid);
+				listThings();
+			}
 		}
 		else // just send the update
 		{
@@ -164,7 +166,11 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		// destroy it
 		if (thing != 0) thing->destroy();
-		else LogManager::getSingleton().logMessage("Remove Failure");
+		else 
+		{
+			LogManager::getSingleton().logMessage(String("Remove Failure on thing #") << uid);
+			listThings();
+		}
 
 		return true;
 	}
@@ -377,26 +383,6 @@ void Physics::_sortAllThings()
 		}
 		mAllThings[j] = t;
 	}
-
-	/* 
-	// bubble sort
-
-	bool done = false;
-	while (!done)
-	{
-		done = true;
-		for (int i=0; i<(int)mAllThings.size()-1; i++)
-		{
-			if (mAllThings[i]->getUID() > mAllThings[i+1]->getUID())
-			{
-				Thing* t = mAllThings[i];
-				mAllThings[i] = mAllThings[i+1];
-				mAllThings[i+1] = t;
-				done = false;
-			}
-		}
-	}
-	*/
 }
 
 //----------------------------------------------------------------------------
