@@ -141,8 +141,11 @@ public:
 	// applies the velocity to the position
 	virtual void move(Real time);
 
-	// this is called periodically, rather then every frame, like move
+	// this is called periodically, rather then every frame, like move (not on clients)
 	virtual void think() {}
+
+	// this is called periodically, rather then every frame, like move, but on clients
+	virtual void clientThink() {}
 
 	// calculate the x/z distance between two Things
 	virtual Real cylinderDistance(Thing* e);

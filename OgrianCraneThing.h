@@ -77,6 +77,7 @@ public:
 
 	virtual void move(Real time);
 	virtual void think();
+	virtual void clientThink();
 	virtual void setVelocity(Vector3 vel);
 	virtual void collided(Thing* e);
 	virtual void die();

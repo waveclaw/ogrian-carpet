@@ -66,13 +66,15 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 
 void CraneThing::setVelocity(Vector3 vel)
 {
-	DamageableThing::setVelocity(vel);
+	Vector3 vvel = vel;
+	DamageableThing::setVelocity(vvel);
 
 	vel.y = 0;
 	vel.normalise();
 
 	Radian orientation = Math::ATan2(vel.x, vel.z);
-	getVisRep()->setOrientation(orientation);
+	//getVisRep()->
+		setOrientation(orientation.valueRadians());
 }
 
 //----------------------------------------------------------------------------
@@ -84,6 +86,20 @@ void CraneThing::move(Real time)
 	// stay above a minimum altitude
 	if (getPosY() < getGroundY() + CONR("CRANE_ALTITUDE_MIN")) 
 		setPosY(getGroundY() + CONR("CRANE_ALTITUDE_MIN"));
+}
+
+//----------------------------------------------------------------------------
+
+void CraneThing::clientThink()
+{
+	// flap
+	if (Time::getSingleton().getTime() > mLastFlapTime + CONR("CRANE_FLAP_PERIOD")*1000)
+	{
+		mLastFlap = !mLastFlap;
+		mLastFlapTime = Time::getSingleton().getTime();
+
+		getVisRep()->setPose( mLastFlap ? 0 : 1 );
+	}
 }
 
 //----------------------------------------------------------------------------
