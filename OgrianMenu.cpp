@@ -153,7 +153,7 @@ void Menu::button_musicToggle()
 		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
-		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+		Audio::getSingleton().playSong("Media/music/Verdiales.ogg");
 		mMusic = true;
 	}
 }
@@ -166,7 +166,7 @@ void Menu::button_quit()
 //----------------------------------------------------------------------------
 void Menu::button_load()
 {
-	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
+	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 }
 //----------------------------------------------------------------------------
 void Menu::button_join()
@@ -184,7 +184,7 @@ void Menu::button_join()
 //----------------------------------------------------------------------------
 void Menu::button_host()
 {
-	loadMap( static_cast<StringResource*>(mList->getSelectedItem())->getName() + ".cfg" );
+	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 
 	setMessage("Loading (Server) .  .  .");
 	Multiplayer::getSingleton().serverStart();
@@ -199,7 +199,7 @@ void Menu::button_host()
 //----------------------------------------------------------------------------
 void Menu::button_disconnect()
 {
-	setMessage("Disconnecting");
+	setMessage("Disconnected");
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
@@ -243,7 +243,7 @@ bool Menu::processKeyInput(InputReader* input)
 void Menu::loadMap(String mapname)
 {
 	// Loading...
-	setMessage("Loading...");
+	setMessage("Loading .   .   .");
 
 	// move the camera so the terrain will reload properly
 	Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
@@ -253,7 +253,7 @@ void Menu::loadMap(String mapname)
 	Renderer::getSingleton().getFrameListener()->setGameRunning(false);
 
 	// load the map
-	mMapName = mapname;
+	mMapName = String("Media/maps/") << mapname << ".txt";
 	mLoadMap = true;
 }
 
@@ -301,7 +301,7 @@ void Menu::show()
 
 	// play menu music
 	if (mMusic)
-		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+		Audio::getSingleton().playSong("Media/music/Verdiales.ogg");
 
 	mActive = true;
 }
@@ -325,7 +325,7 @@ void Menu::hide()
 	
 	// play game music
 	if (mMusic)
-		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
+		Audio::getSingleton().playSong("Media/music/Bulerias.ogg");
 
 	mActive = false;
 }

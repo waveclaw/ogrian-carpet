@@ -50,7 +50,6 @@ public:
 		: FloatingThing("Ogrian/Mana", SPRITE, "ManaThing", false, 1, pos, SPHERE)
 	{
 		setAmount(amount);
-		playSound("OgrianMedia/sounds/hum1.wav", true);
 		setColour(ColourValue(0,1,1));
 	}
 
