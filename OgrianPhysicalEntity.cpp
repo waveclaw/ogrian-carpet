@@ -16,8 +16,10 @@ PhysicalEntity::PhysicalEntity(String material, Real x, Real y, Real z)
 	billboard = bbset->createBillboard(x, y, z);
 	bbset->setMaterialName(material);
 
-	bbset->setBillboardType(BBT_ORIENTED_COMMON);
-	bbset->setCommonDirection(Vector3::UNIT_Y);
+	// it doesn't really matter if its common or self, since there's only one per set
+	bbset->setBillboardType(BBT_ORIENTED_SELF);
+	//bbset->setCommonDirection(Vector3::UNIT_Y);
+	billboard->mDirection = Vector3::UNIT_Y;
 
 	sceneMgr->getRootSceneNode()->attachObject(bbset);
 
