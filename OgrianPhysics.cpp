@@ -615,6 +615,7 @@ void Physics::deleteThing(Thing* thing)
 	// delete it
 	if (removed)
 		delete thing;
+	else LogManager::getSingleton().logMessage(String("ERROR: THING NOT DELETED: ") << thing->getString());
 }
 
 //----------------------------------------------------------------------------

@@ -188,7 +188,11 @@ void Sprite::removeFromRenderer()
 	if (!mInRenderer) return;
 
 	// remove it from the scene
+	mBbset->clear();
+	mNode->detachAllObjects();
 	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
+
+	delete mBbset;
 
 	// null the mvars
 	mBbset = 0;
