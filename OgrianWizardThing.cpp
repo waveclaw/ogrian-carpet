@@ -153,6 +153,7 @@ void WizardThing::move(Real time)
 void WizardThing::destroy()
 {
 	if (mBar) mBar->destroy();
+	mBar = 0;
 }
 
 //----------------------------------------------------------------------------
