@@ -47,26 +47,38 @@ void BuildSpellThing::collidedGround()
 		return;
 	}
 	
-	// make sure its not too close to other buildings
-	for (int i=0; i<Physics::getSingleton().numThings(); i++)
-	{
-		Thing* thing = Physics::getSingleton().getThingByIndex(i);
-		if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
-		{
-			destroy();
-			return;
-		}
-	}
 
 	if (team && !team->hasCastle())
 	{
+		// make sure its not too close to other buildings
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
+			{
+				destroy();
+				return;
+			}
+		}
+
 		// make a castle
 		Castle* castle = new Castle(getTeamNum(), getPosition());
 		team->setCastle(castle);
 	}
 	
-	if (team && team->getCastle() && team->getCastle()->getMana() > CONI("TOWER_COST"))
+	else if (team && team->getCastle() && team->getCastle()->getMana() > CONI("TOWER_COST"))
 	{
+		// make sure its not too close to other buildings
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->isBuilding() && axisDistance(thing) < 2*CONR("TOWER_WIDTH") + CONR("CASTLE_WIDTH"))
+			{
+				destroy();
+				return;
+			}
+		}
+
 		// make a tower
 		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), getPosition()));
 
@@ -77,6 +89,23 @@ void BuildSpellThing::collidedGround()
 
 	// self destruct
 	destroy();
+}
+
+void BuildSpellThing::collided(Thing* e)
+{
+	if (e->getType() == TOWER && e->getTeamNum() == getTeamNum())
+	{
+		// unbuild the tower
+		e->destroy();
+
+		// return the mana to the catle
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		if (team && team->getCastle())
+		{
+			int mana = team->getCastle()->getMana() + CONI("TOWER_COST");
+			team->getCastle()->setMana(mana);
+		}
+	}
 }
 
 }

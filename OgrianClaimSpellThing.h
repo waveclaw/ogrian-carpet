@@ -52,7 +52,6 @@ public:
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
-		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
 		setRelativeExpirationTime(lifetime);
 	}
 

@@ -102,13 +102,18 @@ public:
 		}
 	}
 
-	virtual void destroy()
+	virtual void die()
 	{
 		// drop a manathing
 		ManaThing* mana = new ManaThing(CONI("TOWER_COST"), getPosition());
 		mana->setTeamNum(getTeamNum());
 		Physics::getSingleton().addThing(mana);;
 
+		destroy();
+	}
+
+	virtual void destroy()
+	{
 		// remove the cranes
 		for (int i=0; i<(int)mCranes.size(); i++)
 			mCranes[i]->destroy();
@@ -163,6 +168,9 @@ public:
 		{
 			mLastCastTime = Time::getSingleton().getTime();
 
+			// regen
+			setHealth(getHealth() + CONI("TOWER_REGEN"));
+
 			// cast a mana at the nearest manathing in range
 			Thing* target = 0;
 			Real bestDist = CONR("TOWER_RANGE");;
@@ -204,12 +212,6 @@ public:
 		setPercentage((health + CONR("TOWER_RUBBLE"))
 			/ (CONR("TOWER_HEALTH") + CONR("TOWER_RUBBLE")));
 	}
-
-	virtual void die()
-	{
-		destroy();
-	}
-
 
 	virtual bool isBuilding() { return true; }
 	

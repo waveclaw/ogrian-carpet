@@ -200,9 +200,9 @@ void Castle::setMana(int amount)
 
 	mMana = amount;
 
-		std::ostringstream num("");
-		num << amount;
-		LogManager::getSingleton().logMessage("Castle setting mana: " + num.str());
+		//std::ostringstream num("");
+		//num << amount;
+		//LogManager::getSingleton().logMessage("Castle setting mana: " + num.str());
 
 	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
 
@@ -223,9 +223,9 @@ int Castle::getMana()
 
 void Castle::addMana(int amount)
 {
-		std::ostringstream num("");
-		num << amount;
-		LogManager::getSingleton().logMessage("Castle gaining mana: " + num.str());
+		//std::ostringstream num("");
+		//num << amount;
+		//LogManager::getSingleton().logMessage("Castle gaining mana: " + num.str());
 
 	setMana(mMana + amount);
 }

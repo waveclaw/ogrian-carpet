@@ -1,5 +1,12 @@
 Ogrian Carpet Notes
 
+to do:
+tower regen
+tower unbuild
+tower build close
+touch flag for regen
+255 colour
+
 to add:
 =========
 Hand Sprites - two frames, idle and casting, for each spell

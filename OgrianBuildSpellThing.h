@@ -59,6 +59,8 @@ public:
 	virtual ThingType getType() { return BUILDTHING; }
 
 	virtual void collidedGround();
+
+	virtual void collided(Thing* e);
 };
 
 }

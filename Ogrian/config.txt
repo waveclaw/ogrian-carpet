@@ -11,7 +11,7 @@ name=Mike
 skin=2
 
 # set this to the IP address of whoever is hosting
-server=192.168.0.6
+server=192.168.0.7
 
 # mouselook options
 mouse_y_inv=true
@@ -23,8 +23,8 @@ MUSIC_VOLUME=128
 
 # set the RGB values of the colour you want your team to be
 red=0
-blue=1
-green=0
+blue=255
+green=255
 
 
 # Performance variables

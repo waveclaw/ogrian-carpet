@@ -235,7 +235,9 @@ void WizardThing::setVelocity(Vector3 vel)
 	
 void WizardThing::collided(Thing* e)
 {
-
+	// if its your castle
+	if(!mGhost && e->getType() == CASTLEFLAG && e->getTeamNum() == getTeamNum())
+		setHealth(CONI("WIZARD_HEALTH"));
 }
 
 //----------------------------------------------------------------------------
