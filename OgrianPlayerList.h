@@ -66,7 +66,8 @@ private:
 	bool mActive; // wether or not the PlayerList mode is active
 	Overlay* mOverlay; // the PlayerList overlay
 
-	ListChanger* mList; // the list of players
+	ListChanger* mList; // the GUI List
+	std::vector<String> mPlayers; // a vector of the players names
 };
 
 }

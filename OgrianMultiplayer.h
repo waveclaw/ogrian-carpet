@@ -99,6 +99,9 @@ private:
 	RakClientInterface* mClient;
 	RakServerInterface* mServer;
 
+	// a list of connected players
+	std::vector<PlayerID> mPlayers;
+
 	// recieve packets on the client
 	void clientRecieve();
 

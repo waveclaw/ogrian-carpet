@@ -49,15 +49,8 @@ PlayerList::PlayerList()
 
 	// build the list
 	addPlayer("Alice");
+	addPlayer("Alice");
 	addPlayer("Bob");
-	addPlayer("Charlie");
-	addPlayer("Dan");
-	addPlayer("Ed");
-	addPlayer("Fred");
-	addPlayer("Ghandi");
-	addPlayer("Harry");
-	addPlayer("Ian");
-	addPlayer("Joss");
 }
 
 //----------------------------------------------------------------------------
@@ -71,7 +64,18 @@ PlayerList::~PlayerList()
 
 void PlayerList::addPlayer(String name)
 {
+	// ensure the player is not already on the list
+	for (unsigned int i=0; i<mPlayers.size(); i++)
+	{
+		if (mPlayers[i] == name)
+		{
+			// should probably do something specific here
+			return;
+		}
+	}
+
 	mList->addListItem(new StringResource(name));
+	mPlayers.push_back(name);
 }
 
 //----------------------------------------------------------------------------

@@ -29,6 +29,7 @@ Description: This handles all of the multiplayer networking code.
 
 #include "OgrianMultiplayer.h"
 #include "OgrianMenu.h"
+#include "OgrianPlayerList.h"
 #include "OgrianPhysics.h"
 
 
@@ -98,6 +99,8 @@ void Multiplayer::serverStart()
 				"Multiplayer::startServer" );
 	
 	Menu::getSingleton().setMessage("Server Started");
+
+	PlayerList::getSingleton().addPlayer("Server");
 }
 
 //----------------------------------------------------------------------------
@@ -359,7 +362,8 @@ bool Multiplayer::handleOtherPacket(Packet* p, PacketID pid)
 			break;
 		case ID_NEW_INCOMING_CONNECTION:
 				// Somebody connected.  We have their IP now
-			
+				mPlayers.push_back(p->playerId);
+				PlayerList::getSingleton().addPlayer( String("(") << p->playerId.binaryAddress << ")" );
 			break;
 
 		case ID_RECEIVED_STATIC_DATA:
