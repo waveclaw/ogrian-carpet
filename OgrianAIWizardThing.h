@@ -46,7 +46,7 @@ class AIWizardThing : public WizardThing
 public:
 	AIWizardThing(Vector3 pos) : WizardThing(true) 
 	{
-		mLastTime = 0;
+		mNextTime = 0;
 
 		setPosition(pos);
 		setColour(ColourValue::Red);
@@ -65,10 +65,11 @@ public:
 		WizardThing::move(time);
 
 		// only think periodically
-		if (Time::getSingleton().getTime() < mLastTime + CONR("FIREBALL_CAST_PERIOD")*1000) 
+		if (Time::getSingleton().getTime() < mNextTime) 
 			return;
 
-		mLastTime = Time::getSingleton().getTime();
+		mNextTime = Time::getSingleton().getTime() + CONR("FIREBALL_CAST_PERIOD")
+			*1000*Math::RangeRandom(1,1.3);
 
 		// find the nearest wizard // 
 
@@ -148,7 +149,7 @@ public:
 	}
 
 private:
-	unsigned long mLastTime;
+	unsigned long mNextTime;
 };
 
 }

@@ -121,6 +121,9 @@
 				RelativePath="OgrianFrameListener.cpp">
 			</File>
 			<File
+				RelativePath="OgrianGame.cpp">
+			</File>
+			<File
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File
@@ -195,6 +198,9 @@
 			</File>
 			<File
 				RelativePath="OgrianFrameListener.h">
+			</File>
+			<File
+				RelativePath="OgrianGame.h">
 			</File>
 			<File
 				RelativePath="OgrianHeightMap.h">

@@ -38,7 +38,7 @@ It is a Singleton.
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
 #include "OgrianFoliageThing.h"
-#include "OgrianAIWizardThing.h"
+#include "OgrianGame.h"
 #include "OgrianMenu.h"
 #include "OgrianHud.h"
 
@@ -331,23 +331,7 @@ void Renderer::loadMap(String configfile, bool server)
 	mCameraThing->setPosition(mCameraThing->getPosition() + offset);
 
 	// start the game
-	Audio::getSingleton().start();
-	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
-	mCameraThing->setHealth(CONR("WIZARD_HEALTH"));
-
-		//if (!Multiplayer::getSingleton().isClient() && !Multiplayer::getSingleton().isServer())
-		{
-			// load AI Wizards
-			for (int i=0; i<CONI("NUM_BOTS"); i++)
-			{
-				AIWizardThing* ai = new AIWizardThing( 
-					Renderer::getSingleton().getCameraThing()->getPosition());
-
-				Physics::getSingleton().addThing(ai);
-
-				Physics::getSingleton().newTeam(ai->getUID());
-			}
-		}
+	Game::getSingleton().startGame();
 
 	mMapLoaded = true;
 }
