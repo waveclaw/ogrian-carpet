@@ -129,7 +129,7 @@ public:
 		}
 
 		
-		else if (e->getType() == CASTLEKEEPTHING && e->getTeamNum() == getTeamNum())
+		else if (e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
 		{
 			Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addMana(mAmount);
 			destroy();
@@ -143,7 +143,10 @@ public:
 		if (team && team->hasCastle())
 		{
 			Vector3 vel = team->getCastle()->getPosition() - getPosition();
-			vel.y = 0;
+
+			if (cylinderDistance(team->getCastle()) > CONR("MANA_RISE_RANGE"))
+				vel.y = 0;
+
 			vel.normalise();
 			vel *= CONR("MANA_MOVE_SPEED");
 			setVelocity(vel);

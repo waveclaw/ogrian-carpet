@@ -74,7 +74,7 @@ public:
 	// ignore external changes in up/down velocity
 	virtual void setVelocity(Vector3 vel)
 	{
-		vel.y = getVelY();
+		//vel.y = getVelY();
 		Thing::setVelocity(vel);
 	}
 
