@@ -42,7 +42,7 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 
 BaloonThing::BaloonThing(int team, Vector3 pos, int amount) 
-	: Thing("Ogrian/Baloon", SPRITE, "ManaThing", true, CONR("BALOON_SCALE"), pos, SPHERE)
+	: Thing("Ogrian/Baloon", SPRITE, "ManaThing", false, CONR("BALOON_SCALE"), pos, SPHERE)
 {
 	mState = -1;
 	setTeamNum(team);

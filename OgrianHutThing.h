@@ -49,16 +49,16 @@ class HutBall : public Thing
 {
 public:
 	HutBall()
-		: Thing("Ogrian/HutBall", SPRITE, "HutBall", true, CONR("HUT_BALL_WIDTH"), Vector3(0,0,0), SPHERE)
+		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_WIDTH"), Vector3(0,0,0), SPHERE)
 	{
 	}
 
 	virtual void setColour(ColourValue& colour)
 	{
 		if (colour == ColourValue::White)
-			setScale(0);
+			setMaterial("Ogrian/Clear");
 		else
-			setScale(CONR("HUT_BALL_WIDTH"));
+			setMaterial("Ogrian/HutBall");
 
 		Thing::setColour(colour);
 	}

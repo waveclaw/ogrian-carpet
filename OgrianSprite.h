@@ -104,6 +104,8 @@ private:
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
+
+	void makeDot();
 };
 }
 #endif

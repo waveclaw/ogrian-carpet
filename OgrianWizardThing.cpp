@@ -360,11 +360,13 @@ Real WizardThing::getGroundHeight()
 	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
 	Real ground10 = getGroundY(pos + Vector3( w,0,-w));
 	Real ground11 = getGroundY(pos + Vector3( w,0, w));
+	Real groundc  = getGroundY(pos + Vector3( 0,0, 0));
 
 	Real ground = ground00;
 	if (ground01 > ground) ground = ground01;
 	if (ground10 > ground) ground = ground10;
 	if (ground11 > ground) ground = ground11;
+	if (groundc > ground)  ground = groundc;
 
 	// check the building ramp height
 	Real ramp = mRamp->getGroundHeight();
