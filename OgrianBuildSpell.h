@@ -48,7 +48,9 @@ public:
 		dir.normalise();
 		dir *= CONR("BUILDSPELL_SPEED");
 	
-		BuildSpellThing* thing = new BuildSpellThing(0, pos,dir);
+		Thing* cam = Renderer::getSingleton().getCameraThing();
+
+		BuildSpellThing* thing = new BuildSpellThing(cam->getTeamNum(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 

@@ -60,7 +60,9 @@ public:
 		dir.normalise();
 		dir *= CONR("FIREBALL_SPEED");
 	
-		FireballThing* thing = new FireballThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		Thing* cam = Renderer::getSingleton().getCameraThing();
+
+		FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 
 		mLastSide = !mLastSide;

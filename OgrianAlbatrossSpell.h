@@ -51,7 +51,9 @@ public:
 		dir.normalise();
 		dir *= CONR("ALBATROSS_SPEED");
 
-		AlbatrossThing* thing = new AlbatrossThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos, dir);
+		Thing* cam = Renderer::getSingleton().getCameraThing();
+
+		AlbatrossThing* thing = new AlbatrossThing(cam->getTeamNum(), cam->getColour(), pos, dir);
 		Physics::getSingleton().addThing(thing);
 	}
 

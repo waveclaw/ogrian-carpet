@@ -48,7 +48,9 @@ public:
 		dir.normalise();
 		dir *= CONR("SUMMONSPELL_SPEED");
 	
-		GnomeSummonSpellThing* thing = new GnomeSummonSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		Thing* cam = Renderer::getSingleton().getCameraThing();
+
+		GnomeSummonSpellThing* thing = new GnomeSummonSpellThing(cam->getTeamNum(), cam->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 

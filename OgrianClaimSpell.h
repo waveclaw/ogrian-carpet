@@ -49,7 +49,9 @@ public:
 		dir.normalise();
 		dir *= CONR("CLAIMSPELL_SPEED");
 	
-		ClaimSpellThing* thing = new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
+		Thing* cam = Renderer::getSingleton().getCameraThing();
+
+		ClaimSpellThing* thing = new ClaimSpellThing(cam->getTeamNum(), cam->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 
