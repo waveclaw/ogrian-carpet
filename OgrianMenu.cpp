@@ -27,6 +27,7 @@ Description: The Menu
 /*------------------------------------*/
 
 #include "OgrianMenu.h"
+#include "OgrianPlayerList.h"
 #include "OgrianRenderer.h"
 #include "OgrianMultiplayer.h"
 
@@ -129,14 +130,21 @@ bool Menu::processKeyInput(InputReader* input)
         return false;
     }
 
+	// Tab shows players //////////////////////////////
+    if ( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
+    {           
+		PlayerList::getSingleton().toggle();
+        mTimeUntilNextToggle = KEY_DELAY; 
+    }
+
 	// ESC goes back to the game //////////////////////////////
-    if ( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
+    if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
         hideMenu();
     }
 
 	// Y toggles the inversion of the mouse Y axis //////////////////////////////
-    if ( input->isKeyDown( KC_Y)  && mTimeUntilNextToggle <= 0)
+    if ( input->isKeyDown( KC_Y) && mTimeUntilNextToggle <= 0)
     {            
 		button_invertMouseToggle();
         mTimeUntilNextToggle = KEY_DELAY;

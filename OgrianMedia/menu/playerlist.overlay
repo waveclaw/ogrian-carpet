@@ -1,0 +1,51 @@
+// Ogre overlay scripts
+#include <BasicOgreGuiTemplates.inc>
+
+
+Ogrian/PlayerList/Overlay
+{
+	zorder 500
+	// Stats block
+	container BorderPanel(Ogrian/PlayerList/BackPanel) : SS/Templates/BasicBorderPanel
+	{
+		left .25
+		top 0.1
+		width .5
+		height .8
+
+		container BorderPanel(Ogrian/PlayerList/ListPanel) : SS/Templates/BasicBorderPanel
+		{
+			left 0
+			top 0
+			width 0.5
+			height 0.6
+			material Core/StatsBlockCenter
+
+			container List(Ogrian/PlayerList/List)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0
+				top 0.1
+				width 0.5
+				height 0.7
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+
+		}
+
+		container TextBox(Ogrian/PlayerList/Text) : SS/Templates/BasicTextBox
+		{
+			left 0
+			top 0
+			width 1
+   			caption PlaYerS:
+		}
+
+	}
+	
+}
+

@@ -30,6 +30,7 @@ Description: Handle game input, as opposed to menu input.
 #include "OgrianPhysics.h"
 #include "OgrianAudio.h"
 #include "OgrianMenu.h"
+#include "OgrianPlayerList.h"
 #include "OgrianManaThing.h"
 #include "OgrianRenderer.h"
 
@@ -61,6 +62,13 @@ bool Input::processKeyInput(InputReader* input)
     if( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
     {            
 		Menu::getSingleton().showMenu();
+        mTimeUntilNextToggle = KEY_DELAY;
+    }
+
+	// show the PlayerList
+    if( input->isKeyDown( KC_TAB) && mTimeUntilNextToggle <= 0)
+    {            
+		PlayerList::getSingleton().toggle();
         mTimeUntilNextToggle = KEY_DELAY;
     }
 

@@ -130,6 +130,9 @@
 				RelativePath="OgrianPhysics.cpp">
 			</File>
 			<File
+				RelativePath="OgrianPlayerList.cpp">
+			</File>
+			<File
 				RelativePath="OgrianRenderer.cpp">
 			</File>
 			<File
@@ -189,6 +192,9 @@
 			</File>
 			<File
 				RelativePath="OgrianPhysics.h">
+			</File>
+			<File
+				RelativePath="OgrianPlayerList.h">
 			</File>
 			<File
 				RelativePath="OgrianRenderer.h">
