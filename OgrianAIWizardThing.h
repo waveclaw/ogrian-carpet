@@ -49,7 +49,13 @@ public:
 		mNextTime = 0;
 
 		setPosition(pos);
-		setColour(ColourValue::Red);
+
+		ColourValue colour;
+		colour.r = Math::RangeRandom(0,1);
+		colour.g = Math::RangeRandom(0,1);
+		colour.b = Math::RangeRandom(0,1);
+		setColour(colour
+			);
 		setHealth(CONR("WIZARD_HEALTH"));
 
 		Vector3 offset;
