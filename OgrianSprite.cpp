@@ -52,7 +52,7 @@ Sprite::Sprite(String name, bool fixed_y)
 
 	mWidth = 1;
 	mHeight = 1;
-	mColour = ColourValue::Red;
+	mColour = ColourValue::White;
 
 	mInRenderer = false;
 

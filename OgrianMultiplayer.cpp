@@ -493,7 +493,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
 			// oddly, nothing is done here
-			Menu::getSingleton().setMessage("Connection Accepted");
+			Menu::getSingleton().setMessage("Connected, Loading...");
 			return true;
 		}
 

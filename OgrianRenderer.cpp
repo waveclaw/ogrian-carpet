@@ -328,17 +328,6 @@ void Renderer::loadMap(String configfile, bool server)
 	offset.x = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
 	offset.z = Math::RangeRandom(-WIZARD_DEATH_OFFSET, WIZARD_DEATH_OFFSET);
 	mCameraThing->setPosition(mCameraThing->getPosition() + offset);
-	//mCameraThing->setPosition(Vector3(0,0,0));
-
-	// create the billboardset
-	/*SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
-	BillboardSet* bbset = sceneMgr->createBillboardSet("Tester",1);
-	Billboard* billboard = bbset->createBillboard(Vector3(5,5,0), ColourValue::Blue);
-	sceneMgr->getRootSceneNode()->attachObject(bbset);
-
-	billboard->setDimensions(5,5);
-	billboard->setColour(ColourValue::Red);
-	bbset->setMaterialName("Ogrian/Mana");&*/
 
 	// start the game
 	Audio::getSingleton().start();
