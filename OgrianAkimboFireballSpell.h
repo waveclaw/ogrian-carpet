@@ -66,11 +66,11 @@ public:
 		mLastSide = !mLastSide;
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Fireball/Ready"); }; 
+	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/AkimboFireball/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Enabled"); }; 
+	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/AkimboFireball/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Fireball/Disabled"); }; 
+	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/AkimboFireball/Disabled"); }; 
 
 	virtual Real getCastPeriod() { return CONR("FIREBALL_CAST_PERIOD")/2; }
 
