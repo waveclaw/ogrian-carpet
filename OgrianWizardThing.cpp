@@ -479,6 +479,9 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(skin);
 
 	setSkin(skin);
+
+	//if (Multiplayer::getSingleton().isClient() && getType() != CAMERATHING)
+	//	reset();
 }
 
 //----------------------------------------------------------------------------

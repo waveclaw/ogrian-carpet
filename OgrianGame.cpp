@@ -197,7 +197,7 @@ void Game::startGame(ConfigFile config)
 	// start the frame listener
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
 
-	// reset our wizard's health
+	// reset our wizard
 	Renderer::getSingleton().getCameraThing()->setHealth(CONR("WIZARD_HEALTH"));
 
 	// start the audio
@@ -236,7 +236,6 @@ void Game::startServerGame()
 {
 	Hud::getSingleton().reinit();
 	SpellManager::getSingleton().setLevel(-2);
-	Renderer::getSingleton().getCameraThing()->reset();
 
 	// activate pregame mode
 	mPreGame = true;

@@ -105,6 +105,7 @@ void SentinelThing::think()
 				pos, vel, CONI("SENTINEL_DAMAGE"), true));
 		}
 	}
+	setUpdateFlag();
 }
 	
 //----------------------------------------------------------------------------

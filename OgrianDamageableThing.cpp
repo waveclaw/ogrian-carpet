@@ -103,6 +103,9 @@ void DamageableThing::damage(int amount, int sourceTeamNum)
 
 	setHealth(mHealth - amount);
 	if (mHealth <= 0) die();
+
+	if (mHasBar)
+		setUpdateFlag();
 }
 
 //----------------------------------------------------------------------------
@@ -150,12 +153,18 @@ void DamageableThing::destroy()
 
 //----------------------------------------------------------------------------
 
+bool DamageableThing::hasHealthBar()
+{
+	return mHasBar;
+}
+
+//----------------------------------------------------------------------------
+
 void DamageableThing::generateBitStream(BitStream& bitstream, int pid)
 {
 	Thing::generateBitStream(bitstream,pid);
 
-	if (mBar)
-		bitstream.Write(mBar->getWidth());
+	bitstream.Write(mHealth);
 }
 
 //----------------------------------------------------------------------------
@@ -164,12 +173,13 @@ void DamageableThing::interpretBitStream(BitStream& bitstream)
 {
 	Thing::interpretBitStream(bitstream);
 
-	int width;
+	int health;
 
-	bitstream.Read(width);
+	bitstream.Read(health);
 
-	if (mBar)
-		mBar->setWidth(width);
+	// servers tell teh clients what the health is, not the other way around
+	if (!Multiplayer::getSingleton().isServer())
+		mHealth = health;
 }
 
 //----------------------------------------------------------------------------

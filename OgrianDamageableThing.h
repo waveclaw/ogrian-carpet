@@ -86,6 +86,7 @@ public:
 	virtual void reset();
 	virtual void setColour(ColourValue& colour);
 	virtual void move(Real time);
+	virtual bool hasHealthBar();
 
 	// to update the health bar
 	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);

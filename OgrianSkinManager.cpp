@@ -99,6 +99,8 @@ void SkinManager::loadSkins()
 
 String SkinManager::getSkin(int skin)
 {
+	if (skin >= (int)mSkins.size()) skin = 0;
+
 	return String("Ogrian/") + mSkins[skin] + "/";
 }
 
