@@ -44,7 +44,6 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "CraneThing", false, CONR("CRANE_SCALE"), orbitPos, SPHERE)
 {
 	mOrbitPos = orbitPos;
-	mTarget = 0;
 	mLastFlapTime = 0;
 	mLastFlap = false;
 
@@ -105,9 +104,8 @@ void CraneThing::think()
 			setStateFlyOut();
 		
 		// look for enemies
-		mTarget = 
-			Physics::getSingleton().getTeam(getTeamNum())->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE"));
-		if (mTarget)
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		if (team && team->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE")))
 			setStateAttack();
 	}
 	else if (mState == CRANE_STATE_FLY_OUT)
@@ -117,26 +115,13 @@ void CraneThing::think()
 			setStateFlyIn();
 		
 		// look for enemies
-		mTarget = 
-			Physics::getSingleton().getTeam(getTeamNum())->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE"));
-		if (mTarget)
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		if (team && team->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE")))
 			setStateAttack();
 	}
 	else if (mState == CRANE_STATE_ATTACK)
 	{
-		if (mTarget && mTarget->isAlive())
-		{
-			// kamakazi!!!
-			Vector3 dir = mTarget->getPosition() - getPosition();
-			dir.normalise();
-			setVelocity(dir * CONR("CRANE_SPEED"));
-		}
-		else
-		{
-			// return to base
-			mTarget = 0;
-			setStateFlyIn();
-		}
+		setStateAttack();
 	}
 
 	setUpdateFlag();
@@ -196,10 +181,23 @@ void CraneThing::setStateAttack()
 {
 	mState = CRANE_STATE_ATTACK;
 	
-	// kamakazi!!!
-	Vector3 dir = mTarget->getPosition() - getPosition();
-	dir.normalise();
-	setVelocity(dir * CONR("CRANE_SPEED"));
+	// look for enemies
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+
+	Thing* target = team->getNearestEnemy(this, CONR("CRANE_SIGHT_RANGE"));
+	
+	if (target)
+	{
+		// kamakazi!!!
+		Vector3 dir = target->getPosition() - getPosition();
+		dir.normalise();
+		setVelocity(dir * CONR("CRANE_SPEED"));
+	}
+	else
+	{
+		// return to base
+		setStateFlyIn();
+	}
 }
 
 //----------------------------------------------------------------------------

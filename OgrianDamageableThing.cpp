@@ -71,16 +71,16 @@ void DamageableThing::setTeamNum(int teamNum)
 
 	Thing::setTeamNum(teamNum);
 
+	if (Multiplayer::getSingleton().isClient()) return;
+
 	// remove it from the teams enemy lists
 	if (oldTeamNum >= 0)
 		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
-			if (i != getTeamNum())
-				Physics::getSingleton().getTeam(i)->removeEnemy(this);
+			Physics::getSingleton().getTeam(i)->removeEnemy(this);
 
 	// add it to the teams enemy lists
 	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
-		if (i != teamNum)
-			Physics::getSingleton().getTeam(i)->addEnemy(this);
+		Physics::getSingleton().getTeam(i)->addEnemy(this);
 }
 
 void DamageableThing::destroy()

@@ -89,7 +89,7 @@ public:
 private:
 	Vector3 mOrbitPos;
 	int mState;
-	Thing* mTarget;
+	//Thing* mTarget;
 	unsigned long mLastFlapTime;
 	bool mLastFlap;
 

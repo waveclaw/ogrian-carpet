@@ -73,6 +73,7 @@ public:
 	DamageableThing* getNearestEnemy(Thing* thing, Real range);
 
 private:
+	int mTeamNum;
 	int mScore;
 	int mWizardUID;
 	ColourValue mColour;
