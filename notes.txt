@@ -18,7 +18,7 @@ Monsters
 -Albatross! - cruise missile
 -Spider - follows the wizard around by jumping to a random spot near him, summoned with egg
 -spikeflower - shoots spikes, summoned with seed
--Imp - island natives that guard huts and have some kind of group ritual spell.
+-Imp - mobile archers that follow the wizard around
 
 Spells 
 =========
@@ -32,12 +32,11 @@ Spells
 -unsummon (monster, mana, hut, etc)
 -jump
 -speed
--meteor
+-meteor - launched from own castle to wizard location, large area of effect
 
 
 need new art for:
 =========
-claim spell - from particle demo
 spider - make new model from pipe cleaners?
 spikeflower - make model from real flower
 imp - hand drawn with pencil
@@ -53,4 +52,3 @@ for the tutorial, have TextBoxThing that pops up a textbox when teh camera touch
 
 performance, tweaks:
 ========
-do something about coastal fireball accumulation
