@@ -34,7 +34,6 @@ It is a Singleton.
 
 
 #include <OgreSingleton.h>
-//#include <OgreTerrainSceneManager.h>
 
 using namespace Ogre;
 
@@ -69,7 +68,7 @@ private:
 	Real mScalex, mScaley, mScalez;
 	const uchar* mData;
 
-	Image mImage;
+	Image* mImage;
 
 	// do an array lookup
 	inline int _worldheight( int x, int z );

@@ -49,6 +49,7 @@ namespace Ogrian
 HeightMap::HeightMap()
 {
 	mData = 0;
+	mImage = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -56,7 +57,8 @@ HeightMap::HeightMap()
 // clean up
 HeightMap::~HeightMap()
 {
-	// mImage is not a pointer, so it is cleaned up automatically
+	if (mImage) delete mImage;
+
 	// mData is a pointer into mImage
 }
 
@@ -145,9 +147,12 @@ Real HeightMap::getZSlopeAt(Real x, Real z)
 // load the array from the image file
 void HeightMap::loadTerrain( const String& filename )
 {
+	// make the image
+	if (mImage) delete mImage;
+	mImage = new Image();
+
 	/* Set up the options */
 	ConfigFile config;
-
 	config.load( filename );
 
 	mScalex = atof( config.getSetting( "Scale.x" ) );
@@ -158,17 +163,16 @@ void HeightMap::loadTerrain( const String& filename )
 
 	mScale = Vector3( mScalex, mScaley, mScalez );
 
-	mImage.load( terrain_filename );
+	mImage->load( terrain_filename );
 
-	if ( mImage.getFormat() != PF_L8 )
+	if ( mImage->getFormat() != PF_L8 )
 	{
 		Except( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
 				"HeightMap::loadTerrain" );
 	}
 
-	mData = mImage. getData();
-
-	mSize = mImage.getWidth();
+	mData = mImage->getData();
+	mSize = mImage->getWidth();
 }
 
 //----------------------------------------------------------------------------

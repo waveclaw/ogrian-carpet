@@ -21,3 +21,7 @@ Spells
 Ideas:
 =========
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses that link together, walking the player through the rules of the game. 
+
+bugs:
+=========
+Memory leak when changing levels - must be in Nature somewhere
