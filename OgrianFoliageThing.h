@@ -38,6 +38,22 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+/////////////////////////////////////////////////////////////////////////////
+
+class FoliageCorpse : public Thing
+{
+public:
+	FoliageCorpse(Vector3 pos, Real scale) 
+		: Thing("Ogrian/PalmTreeDead", SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
+	{
+
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
 class FoliageThing : public Thing
 {
 public:
@@ -56,7 +72,9 @@ public:
 
 	virtual void destroy()
 	{
-		setMaterial("Ogrian/PalmTreeDead");
+		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth()));
+
+		Thing::destroy();
 	}
 };
 

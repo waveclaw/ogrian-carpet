@@ -120,7 +120,7 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// get points for killing wizards
-		if (e->getType() == FOLIAGETHING) Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
+		if (e->getType() == WIZARDTHING) Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
 
 		// destroy it
 		e->destroy();
@@ -133,8 +133,9 @@ public:
 	virtual void destroy()
 	{
 		// make a blast
-		if (isAlive())
-			Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
+		if (!isAlive()) return;
+
+		Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
 
 		// clean up the smoke
 		for (int i=0; i<(int)mSmokeList.size(); i++)
