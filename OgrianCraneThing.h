@@ -77,11 +77,9 @@ public:
 	virtual ThingType getType() { return CRANETHING; }
 
 	virtual void move(Real time);
-
 	virtual void think();
-
+	virtual void setVelocity(Vector3 vel);
 	virtual void collided(Thing* e);
-
 	virtual void die();
 
 	virtual void setStateFlyIn();

@@ -58,6 +58,17 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	setStateFlyOut();
 }
 
+void CraneThing::setVelocity(Vector3 vel)
+{
+	DamageableThing::setVelocity(vel);
+
+	vel.y = 0;
+	vel.normalise();
+
+	Radian orientation = Math::ATan2(vel.x, vel.z);
+	getVisRep()->setOrientation(orientation);
+}
+
 void CraneThing::move(Real time)
 {
 	DamageableThing::move(time);

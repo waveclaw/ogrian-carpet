@@ -42,7 +42,7 @@ namespace Ogrian
 	
 WizardThing::WizardThing(bool visible, int skin) 
 	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
-	visible?"WizardThing":"CameraThing", true, CONR("CAMERA_HEIGHT"))
+	visible?"WizardThing":"CameraThing", true, CONR("WIZARD_SCALE"))
 {
 	mBar = 0;
 	mTeam = 0;
