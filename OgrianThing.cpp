@@ -66,6 +66,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mUpdateRequested = false;
 	mTeamNum = -1;
 	mPos = Vector3(0,0,0);
+	mThinkPeriod = 0;
 	
 	// name it
 	std::ostringstream num("");
@@ -120,6 +121,20 @@ Thing::~Thing()
 
 		delete mVisRep;
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::setThinkPeriod(Real time)
+{
+	mThinkPeriod = time;
+}
+
+//----------------------------------------------------------------------------
+
+Real Thing::getThinkPeriod()
+{
+	return mThinkPeriod;
 }
 
 //----------------------------------------------------------------------------
@@ -329,18 +344,21 @@ void Thing::move(Real time)
 		if (mGroundScan && getGroundY() > getPosition().y && isAlive()) 
 			collidedGround();
 
-	// see if it's time to think yet
-	Time now = Clock::getSingleton().getTime();
-	Time period = CONT("THING_THINK_PERIOD");
-
-	if (mLastThinkTime + period < now)
+	if (mThinkPeriod > 0)
 	{
-		if (!Multiplayer::getSingleton().isClient())
-			think();
-		else
-			clientThink();
+		// see if it's time to think yet
+		Time now = Clock::getSingleton().getTime();
+		Time period = mThinkPeriod*1000;
 
-		mLastThinkTime = now + period * Math::RangeRandom(0,.1);
+		if (mLastThinkTime + period < now)
+		{
+			if (!Multiplayer::getSingleton().isClient())
+				think();
+			else
+				clientThink();
+
+			mLastThinkTime = now + period * Math::RangeRandom(0,.1);
+		}
 	}
 }
 

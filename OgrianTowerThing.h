@@ -78,6 +78,7 @@ public:
 		bpos.y += CONR("TOWER_BEACON_ALTITUDE");
 		mBeacon->setPosition(bpos);
 
+		setThinkPeriod(CONR("TOWER_THINK_PERIOD"));
 
 		if (!Multiplayer::getSingleton().isClient())
 		{
@@ -224,62 +225,57 @@ public:
 
 	virtual void think()
 	{
-		// if its time, claim a nearby mana or hut
-		if (Clock::getSingleton().getTime() > mLastCastTime + CONT("TOWER_CAST_PERIOD"))
+		if (mUnbuildMode)
 		{
-			mLastCastTime = Clock::getSingleton().getTime();
-
-			if (mUnbuildMode)
-			{
-				// un-regenerate
-				int health = getHealth();
-				setHealth(health - CONI("TOWER_DEGEN"));
-
-				return;
-			}
-
-			// regenerate
+			// un-regenerate
 			int health = getHealth();
-			if (health < CONI("TOWER_HEALTH"))
-				setHealth(health + CONI("TOWER_REGEN"));
-			if (health > CONI("TOWER_HEALTH"))
-				setHealth(CONI("TOWER_HEALTH"));
+			setHealth(health - CONI("TOWER_DEGEN"));
 
-			// cast a mana at the nearest mana or hutin range
-			Thing* target = 0;
-			Real bestDist = CONR("TOWER_RANGE");
-			for (int i=0; i<Physics::getSingleton().numThings(); i++)
+			return;
+		}
+
+		// regenerate
+		int health = getHealth();
+		if (health < CONI("TOWER_HEALTH"))
+			setHealth(health + CONI("TOWER_REGEN"));
+		if (health > CONI("TOWER_HEALTH"))
+			setHealth(CONI("TOWER_HEALTH"));
+
+		// cast a mana at the nearest mana or hutin range
+		Thing* target = 0;
+		Real bestDist = CONR("TOWER_RANGE");
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* candidate = Physics::getSingleton().getThingByIndex(i);
+			if (candidate 
+				&& (candidate->getType() == MANATHING || candidate->getType() == HUTTHING)
+				&& cylinderDistance(candidate) < bestDist
+				&& candidate->getTeamNum() != getTeamNum()
+				&& candidate->isAlive() )
 			{
-				Thing* candidate = Physics::getSingleton().getThingByIndex(i);
-				if (candidate 
-					&& (candidate->getType() == MANATHING || candidate->getType() == HUTTHING)
-					&& cylinderDistance(candidate) < bestDist
-					&& candidate->getTeamNum() != getTeamNum()
-					&& candidate->isAlive() )
-				{
-					target = candidate;
-					bestDist = cylinderDistance(candidate);
-				}
-			}
-
-			if (target) 
-			{
-				Vector3 startPos = getPosition();
-				startPos.y += getHeight()/2 - CONR("TOWER_OFFSET");
-
-				// account for target movement
-				Real claimTravelTime = sphereDistance(target) / CONR("CLAIMSPELL_SPEED");
-				Vector3 targetOffset = target->getVelocity()*claimTravelTime;
-
-				Vector3 vel = (target->getPosition() + targetOffset) - startPos;
-				vel.normalise();
-				vel *= CONR("CLAIMSPELL_SPEED");
-
-				Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), mColour , startPos, 
-					vel, CONR("TOWER_CLAIM_LIFETIME")));
+				target = candidate;
+				bestDist = cylinderDistance(candidate);
 			}
 		}
+
+		if (target) 
+		{
+			Vector3 startPos = getPosition();
+			startPos.y += getHeight()/2 - CONR("TOWER_OFFSET");
+
+			// account for target movement
+			Real claimTravelTime = sphereDistance(target) / CONR("CLAIMSPELL_SPEED");
+			Vector3 targetOffset = target->getVelocity()*claimTravelTime;
+
+			Vector3 vel = (target->getPosition() + targetOffset) - startPos;
+			vel.normalise();
+			vel *= CONR("CLAIMSPELL_SPEED");
+
+			Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), mColour , startPos, 
+				vel, CONR("TOWER_CLAIM_LIFETIME")));
+		}
 	}
+	
 
 	// set the percentage to match the health
 	virtual void setHealth(int health)

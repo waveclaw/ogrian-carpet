@@ -232,6 +232,12 @@ public:
 	// get the team number
 	virtual int getTeamNum();
 
+	// set the think period
+	virtual void setThinkPeriod(Real time);
+
+	// get the think period
+	virtual Real getThinkPeriod();
+
 	// set update type
 	virtual void setUpdateType(ThingUpdateType type);
 
@@ -260,6 +266,7 @@ private:
 	Vector3 mVel;
 	Real mOrientation;
 	int mTeamNum;
+	Real mThinkPeriod;
 
 	// this flag must be set to true before deleting
 	bool mDeleteFlag;

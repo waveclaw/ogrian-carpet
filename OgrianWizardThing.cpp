@@ -391,7 +391,6 @@ void WizardThing::move(Real time)
 		&& !mRamp->isOnBuilding()
 		&& getVelY() > -CONR("CAMERA_FALL_MAX")
 		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)
-		//&& !(Multiplayer::getSingleton().isClient() && getType() == WIZARDTHING)
 		)
 	{
 		if (getVelY() > CONR("CAMERA_RISE_MAX")) 

@@ -49,6 +49,7 @@ CraneThing::CraneThing(int teamNum, Vector3 orbitPos)
 	mUnIdleTime = 0;
 
 	setTeamNum(teamNum);
+	setThinkPeriod(CONR("CRANE_THINK_PERIOD"));
 	
 	if (!Multiplayer::getSingleton().isClient())
 		setColour(Physics::getSingleton().getTeam(teamNum)->getColour());

@@ -48,6 +48,8 @@ BaloonThing::BaloonThing(int team, Vector3 pos, int amount)
 	setTeamNum(team);
 	setTarget(0);
 	setUpdateType(CONTINUOUS);
+	setThinkPeriod(CONR("BALOON_THINK_PERIOD"));
+
 	unload();
 
 	lastPos = pos;

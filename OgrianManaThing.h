@@ -55,6 +55,7 @@ public:
 		setAmount(amount);
 		setColour(ColourValue(.9,.9,.9));
 		setUpdateType(PERIODIC);
+		setThinkPeriod(CONR("MANA_THINK_PERIOD"));
 	}
 
 	// change the colour to reflect team ownership
