@@ -40,6 +40,7 @@ It is a Singleton.
 #include "OgrianRenderer.h"
 #include "OgrianFoliageThing.h"
 #include "OgrianMenu.h"
+#include "OgrianHud.h"
 
 using namespace Ogre;
 
@@ -344,7 +345,8 @@ void Renderer::createScene(void)
 	Menu::getSingleton().show();
 
 	// show the hud
-	((Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay"))->show();
+	Hud::getSingleton().show();
+	Hud::getSingleton().setScore(0);
 }
 
 //----------------------------------------------------------------------------
