@@ -40,6 +40,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianConstants.h"
 #include "OgrianTime.h"
 
+#include "OgrianFireballThing.h"
 #include "OgrianManaThing.h"
 #include "OgrianCameraThing.h"
 
@@ -268,6 +269,8 @@ Thing* Physics::newThing(ThingType type)
 	switch(type)
 	{
 		case MANATHING:	return new ManaThing();
+
+		case FIREBALLTHING:	return new FireballThing();
 
 		case CAMERATHING: return new WizardThing();
 

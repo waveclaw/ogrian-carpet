@@ -72,7 +72,7 @@ public:
 class FireballThing : public Thing
 {
 public:
-	FireballThing(Vector3 pos, Vector3 vel) 
+	FireballThing(Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: Thing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
 	{
 		setVelocity(vel);

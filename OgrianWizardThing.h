@@ -83,6 +83,11 @@ public:
 		setVelocity(originalVel);
 	}
 
+	virtual void destroy()
+	{
+		// DONT
+	}
+
 private:
 	Vector3 mInterpVel;
 };
