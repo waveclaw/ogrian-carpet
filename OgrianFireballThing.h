@@ -41,6 +41,21 @@ namespace Ogrian
 {
 
 /////////////////////////////////////////////////////////////////////////////
+
+class FireballSmokeEffect : public Thing
+{
+public:
+	FireballSmokeEffect(Vector3 pos) 
+		: Thing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, FIREBALL_SCALE*.8, pos, SPHERE)
+	{
+		setVelocity(Vector3(0,1,0));
+	}
+
+	virtual ThingType getType()	{ return EFFECT; }
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
 class FireballBlastEffect : public TimedThing
 {
 public:
@@ -67,7 +82,16 @@ public:
 		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
 		setRelativeExpirationTime(FIREBALL_LIFETIME);
 
-		mEmitter = Renderer::getSingleton().newSmokeEmitter();
+		// init the smoke
+		mLastSmokeTime = 0;
+		mLastSmokeIndex = 0;
+		
+		for (int i=0; i<FIREBALL_SMOKE_NUM; i++)
+		{
+			FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0));
+			mSmokeList.push_back(fse);
+			Physics::getSingleton().addEffect(fse);
+		}
 	}
 
 	virtual ThingType getType()	{ return FIREBALLTHING; }	
@@ -78,9 +102,13 @@ public:
 		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
 		TimedThing::move(time);
 
-		// smoke
-		if (isAlive())
-			mEmitter->setPosition(getPosition());
+		// emit smoke
+		if (isAlive() && mLastSmokeTime + FIREBALL_SMOKE_PERIOD*1000 < Time::getSingleton().getTime())
+		{
+			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
+			mSmokeList[mLastSmokeIndex++]->setPosition(getPosition());
+			mLastSmokeTime = Time::getSingleton().getTime();
+		}
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
@@ -98,16 +126,22 @@ public:
 	// go boom when destroyed
 	virtual void destroy()
 	{
+		// make a blast
 		if (isAlive())
 			Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
 
-		Renderer::getSingleton().deleteSmokeEmitter(mEmitter);
+		// clean up the smoke
+		for (int i=0; i<(int)mSmokeList.size(); i++)
+			mSmokeList[i]->destroy();
 
 		Thing::destroy();
 	}
 
 private:
-	ParticleEmitter* mEmitter;
+	unsigned long mLastSmokeTime;
+	int mLastSmokeIndex;
+	std::vector<FireballSmokeEffect*> mSmokeList;
+
 };
 
 }
