@@ -70,6 +70,9 @@ class WizardThing : public DamageableThing
 public:
 	WizardThing(bool visible=true, int skin=0);
 
+	// reset the wizard
+	virtual void reset();
+
 	virtual ThingType getType()	{ return WIZARDTHING; }
 
 	// ignore external up/down velocity changes
@@ -119,10 +122,13 @@ public:
 
 	virtual void setLava(bool lava);
 
+	virtual void placedInPhysics(int uid);
+
 private:
 	HealthBarEffect* mBar;
 	Team* mTeam;
 	int mSkin;
+	bool mVisible;
 	bool mGhost;
 	bool mSpeeding;
 	bool mLava; 

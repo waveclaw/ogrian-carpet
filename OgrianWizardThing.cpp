@@ -58,24 +58,51 @@ WizardThing::WizardThing(bool visible, int skin)
 	mSkin = -1;
 	mGhost = false;
 	mLava = false;
+	mVisible = visible;
 
 	setSkin(skin);
 
-	if (visible)
+	if (mVisible)
 	{
 		mBar = new HealthBarEffect(getPosition(), getHeight());
 		Physics::getSingleton().addEffect(mBar);
 	}
+
+	setUpdateType(CONTINUOUS);
+
+	reset();
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::reset()
+{
+	if (mTeam)
+		delete mTeam;
+
+	mNextRegenTime = 0;
+	mLastSetPosTime = 0;
+	mSpeeding = false;
+	mStopSpeedTime = 0;
+	mActiveMana = 0;
+	mBaseMana = 0;
+	mNumHuts = 0;
+	mBar = 0;
+	mTeam = 0;
+	mSkin = -1;
+	mGhost = false;
+	mLava = false;
+
 
 	// make a team for this wizard'
 	if (Multiplayer::getSingleton().isServer())
 	{		
 		int teamNum;
 
-		if (!visible) 
+		if (!mVisible) 
 			teamNum = 0;
 		else 
-			teamNum = Physics::getSingleton().newTeam(getUID(), getColour());
+			teamNum = Physics::getSingleton().newTeam(getColour());
 
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
@@ -87,7 +114,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	}
 	else if (!Multiplayer::getSingleton().isClient()) // skirmish mode
 	{
-		int teamNum = Physics::getSingleton().newTeam(0, getColour());
+		int teamNum = Physics::getSingleton().newTeam(getColour());
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
 		mTeam->setScore(0);
@@ -96,8 +123,6 @@ WizardThing::WizardThing(bool visible, int skin)
 		num << teamNum;
 		LogManager::getSingleton().logMessage("Making Team: " + num.str());
 	}
-
-	setUpdateType(CONTINUOUS);
 }
 
 //----------------------------------------------------------------------------
@@ -484,6 +509,15 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 	if (Multiplayer::getSingleton().isClient()) setHealth(health);
 	setSkin(skin);
 }
+
+//----------------------------------------------------------------------------
+
+void WizardThing::placedInPhysics(int uid)
+{
+	DamageableThing::placedInPhysics(uid);
+	mTeam->setWizardUID(uid);
+}
+
 //----------------------------------------------------------------------------
 
 }

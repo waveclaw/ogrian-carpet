@@ -199,13 +199,18 @@ bool Game::isPreGame()
 
 void Game::startClientGame()
 {
-
+	Hud::getSingleton().reinit();
+	SpellManager::getSingleton().disableAllSpells();
+	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 }
 
 //----------------------------------------------------------------------------
 
 void Game::startServerGame()
 {
+	Hud::getSingleton().reinit();
+	SpellManager::getSingleton().disableAllSpells();
+	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 
 	// activate pregame mode
 	mPreGame = true;
@@ -395,10 +400,8 @@ void Game::startSkirmishGame()
 
 	int numSkins = SkinManager::getSingleton().numSkins();
 
-	// use an AI wizard to set up a team automatically
-	AIWizardThing* ai = new AIWizardThing(Vector3(0,0,0), int(Math::RangeRandom(0.8,numSkins+0.5)));
-	Physics::getSingleton().addThing(ai);
-	ai->destroy();
+	// set up a team 
+	int teamNum = Physics::getSingleton().newTeam(ColourValue::Green);
 
 	// set up some enemy towers
 	Real numTowers = atoi(mConfig.getSetting( "NUM_TOWERS" ).c_str());
@@ -416,7 +419,7 @@ void Game::startSkirmishGame()
 			Vector3 pos = Vector3(x,0,z);
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			TowerThing* tower = new TowerThing(ai->getTeamNum(),pos);
+			TowerThing* tower = new TowerThing(teamNum,pos);
 			Physics::getSingleton().addThing(tower);
 		}
 	}
@@ -436,7 +439,7 @@ void Game::startSkirmishGame()
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 
-			TickThing* tick = new TickThing(ai->getTeamNum(),pos);
+			TickThing* tick = new TickThing(teamNum,pos);
 			Physics::getSingleton().addThing(tick);
 		}
 	}
@@ -456,7 +459,7 @@ void Game::startSkirmishGame()
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 
-			SentinelThing* sentinel = new SentinelThing(ai->getTeamNum(),pos);
+			SentinelThing* sentinel = new SentinelThing(teamNum,pos);
 			Physics::getSingleton().addThing(sentinel);
 		}
 	}

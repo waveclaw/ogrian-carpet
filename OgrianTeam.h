@@ -44,30 +44,29 @@ namespace Ogrian
 class Team
 {
 public:
-	Team(int teamNum, int wizardUID, ColourValue colour);
+	Team(int teamNum, ColourValue colour);
 
+	// the team's wizard
 	int getWizardUID();
-
 	void setWizardUID(int uid);
+	bool hasWizard();
 
+	// the team's score
 	void setScore(int score);
-
 	int getScore();
-
 	void incrementScore();
 
+	// the team's castle
 	void setCastle(Castle* castle);
-
 	Castle* getCastle();
-
 	bool hasCastle();
 
+	// the team's colour
 	ColourValue getColour();
-
 	void setColour(ColourValue& colour);
 
+	// the team's enemies
 	void addEnemy(DamageableThing* enemy);
-
 	void removeEnemy(DamageableThing* enemy);
 
 	DamageableThing* getNearestEnemy(Thing* thing, Real range);

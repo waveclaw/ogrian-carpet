@@ -171,8 +171,8 @@ void Menu::button_quit()
 //----------------------------------------------------------------------------
 void Menu::button_load()
 {
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
 
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 }
@@ -216,8 +216,9 @@ void Menu::button_disconnect()
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();

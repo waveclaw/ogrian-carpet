@@ -38,10 +38,10 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-Team::Team(int teamNum, int wizardUID, ColourValue colour)
+Team::Team(int teamNum, ColourValue colour)
 {
 	mColour = colour;
-	mWizardUID = wizardUID;
+	mWizardUID = -1;
 	mCastle = 0;
 	mScore = 0;
 	mTeamNum = teamNum;
@@ -71,6 +71,13 @@ int Team::getWizardUID()
 void Team::setWizardUID(int uid)
 {
 	mWizardUID = uid;
+}
+
+//----------------------------------------------------------------------------
+
+bool Team::hasWizard()
+{
+	return (mWizardUID != -1);
 }
 
 //----------------------------------------------------------------------------

@@ -34,8 +34,6 @@ In simple=false mode, they fly in an arc, leave a smoke trail, and hurt teammate
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
-#include "OgrianRenderer.h"
-#include "OgrianPhysics.h"
 
 using namespace Ogre;
 
@@ -62,21 +60,9 @@ public:
 class FireballBlastEffect : public TimedThing
 {
 public:
-	FireballBlastEffect(Vector3 pos) 
-		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_BLAST_SCALE"), pos, SPHERE)
-	{
-		playSound(Game::getSingleton().SOUND_BANG);
-		setRelativeExpirationTime(CONR("FIREBALL_BLAST_LIFETIME"));
-		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
-		setColour(ColourValue(1,0,0));
-	}
+	FireballBlastEffect(Vector3 pos);
 
-	virtual void move(Real time)
-	{
-		TimedThing::move(time);
-
-		setScale(getWidth() + CONR("FIREBALL_BLAST_EXPANSION_SPEED") * time);
-	}
+	virtual void move(Real time);
 
 	virtual ThingType getType()	{ return EFFECT; }
 };
@@ -85,114 +71,26 @@ public:
 class FireballThing : public TimedThing
 {
 public:
-	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0),
-		int damage=CONR("FIREBALL_DAMAGE"), bool simple=false) 
-		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
-	{
-		mSimple = simple;
-		mDamage = damage;
-
-		setTeamNum(teamNum);
-		mColour = colour;
-		setColour(mColour);
-		setGroundScan(true);
-
-		setVelocity(vel);
-		playSound(Game::getSingleton().SOUND_WHOOSH);
-		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
-		setRelativeExpirationTime(CONR("FIREBALL_LIFETIME"));
-
-		// init the smoke
-		mLastSmokeTime = 0;
-		mLastSmokeIndex = 0;
-		mLastPos = getPosition();
-	}
+	FireballThing(int teamNum, ColourValue colour=ColourValue::White, 
+		Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0),
+		int damage=CONR("FIREBALL_DAMAGE"), bool simple=false);
 
 	virtual ThingType getType()	{ return FIREBALLTHING; }	
 
-	virtual void move(Real time)
-	{
-		// fall
-		if (!mSimple)
-			setVelocity(getVelocity() + Vector3(0, -CONR("FIREBALL_FALL_RATE") * time, 0));
-	
-		TimedThing::move(time);
+	virtual void move(Real time);
 
-		// emit smoke
-		if (isAlive() && !mSimple && mSmokeList.size() == 0)
-		{
-			for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
-			{
-				FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0), getColour());
-				mSmokeList.push_back(fse);
-				Physics::getSingleton().addEffect(fse);
-			}
-		}
-		if (isAlive() && mLastSmokeTime + CONT("FIREBALL_SMOKE_PERIOD") < Clock::getSingleton().getTime() 
-			&& mSmokeList.size() > 0)
-		{
-			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
-			mSmokeList[mLastSmokeIndex++]->setPosition(mLastPos);
-			mLastSmokeTime = Clock::getSingleton().getTime();
-		}
+	virtual void collided(Thing* e);
 
-		mLastPos = getPosition();
-	}
-
-	virtual void collided(Thing* e)
-	{
-		// damage it
-		if (e->isDamageable() 
-			&& (!mSimple || getTeamNum() != e->getTeamNum()) // dont let simple fireballs hurt allies
-			&& !((e->getType() == CAMERATHING || e->getType() == WIZARDTHING) && getTeamNum() == e->getTeamNum())) // dont let any fireballs hurt allied wizards
-		{
-			e->damage(mDamage, getTeamNum());
-
-			// self destruct
-			destroy();
-		}
-	}
-
-	virtual void collidedGround()
-	{
-		destroy();
-	}
+	virtual void collidedGround();
 
 	// go boom when destroyed
-	virtual void destroy()
-	{
-		// make a blast
-		if (!isAlive()) return;
-
-		Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
-
-		// clean up the smoke
-		for (int i=0; i<(int)mSmokeList.size(); i++)
-			mSmokeList[i]->destroy();
-
-		Thing::destroy();
-	}
+	virtual void destroy();
 
 	// generate a bitstream from this thing
-	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING)
-	{
-		TimedThing::generateBitStream(bitstream, pid);
-		
-		// include mSimple
-		bitstream.Write(mSimple);
-	}
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
 
 	// interpret a bitstream for this thing
-	virtual void interpretBitStream(BitStream& bitstream)
-	{
-		TimedThing::interpretBitStream(bitstream);
-		
-		// read mSimple
-		bool simple;
-		bitstream.Read(simple);
-
-		mSimple = simple;
-	}
+	virtual void interpretBitStream(BitStream& bitstream);
 
 private:
 	bool mSimple;

@@ -186,7 +186,10 @@ void Renderer::createCamera(void)
 void Renderer::createCameraThing()
 {
 	// make the camera thing
-	mCameraThing = new CameraThing(mCamera);
+	if (!mCameraThing)
+		mCameraThing = new CameraThing(mCamera);
+
+	mCameraThing->reset();
 	Physics::getSingleton().addThing(mCameraThing);
 	mCameraThing->setPosition(Vector3(mCamera->getPosition()));
 }

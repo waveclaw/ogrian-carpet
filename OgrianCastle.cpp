@@ -51,6 +51,146 @@ CastleFlagThing::CastleFlagThing()
 
 //----------------------------------------------------------------------------
 
+CastleBlockThing::CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height) 
+	: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE)
+{
+	setHeight(height);
+
+	mCastle = castle;
+
+	// find the ground	
+	Real w = width/2;
+	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
+	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
+	Real ground10 = getGroundY(pos + Vector3( w,0,-w));
+	Real ground11 = getGroundY(pos + Vector3( w,0, w));
+	Real groundc  = getGroundY(pos + Vector3( 0,0, 0));
+
+	Real ground = ground00;
+	if (ground01 < ground) ground = ground01;
+	if (ground10 < ground) ground = ground10;
+	if (ground11 < ground) ground = ground11;
+	if (groundc < ground)  ground = groundc;
+
+	mGroundY = ground - CONR("CASTLE_OFFSET") - height/2;
+
+	// start at zero
+	setPosY(0.1 + mGroundY);
+	mTargetY = getPosY();
+	setPercentage(0.5);
+
+	// set the team
+	if (castle)
+		setTeamNum(castle->getTeamNum());
+	
+	BuildingHeightMap::getSingleton().moldLandscape(this);
+}
+
+//----------------------------------------------------------------------------
+
+// set how far up this block should go to
+void CastleBlockThing::setPercentage(Real per)
+{
+	if (per >= 1) per = 1;
+	if (per <= 0) per = -0.1;
+
+	Real newTargetY = mGroundY + getHeight()*per;
+
+	if (newTargetY == mTargetY) return;
+
+	mTargetY = newTargetY;
+
+	if (mTargetY > getPosY())
+		setVelY(CONR("CASTLE_RISE_SPEED"));
+	else
+		setVelY(0-CONR("CASTLE_RISE_SPEED"));
+
+	mPercentage = per;
+	setUpdateFlag();
+}
+
+//----------------------------------------------------------------------------
+
+// rise smoothly
+void CastleBlockThing::move(Real time)
+{
+	// if it has reached its target pos.y, stop
+	if (!Multiplayer::getSingleton().isClient() && (
+		(getVelY() < -CONR("CASTLE_RISE_SPEED")/2 && mTargetY > getPosY()) ||
+		(getVelY() > CONR("CASTLE_RISE_SPEED")/2 && mTargetY < getPosY())))
+	{
+		setPosY(mTargetY);
+		setVelY(0);
+		setUpdateFlag();
+	}
+
+	DamageableThing::move(time);
+}
+
+//----------------------------------------------------------------------------
+
+// send damage to our host castle
+void CastleBlockThing::damage(int amount, int sourceTeamNum)
+{
+	if (mCastle)
+		mCastle->damage(amount, sourceTeamNum);
+}
+
+//----------------------------------------------------------------------------
+
+Real CastleBlockThing::getCurrentLevel()
+{
+	return getPosY() - mGroundY - .1;
+}
+
+//----------------------------------------------------------------------------
+
+CastleTurretThing::CastleTurretThing(DamageableThing* castle, Vector3 pos) 
+	: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"), CONR("CASTLETURRET_HEIGHT"))
+{
+	mCrane = 0;
+
+	static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
+		CONR("CASTLETURRET_MESH_SCALE"), CONR("CASTLETURRET_MESH_RATIO"));
+}
+
+//----------------------------------------------------------------------------
+
+void CastleTurretThing::destroy() 
+{ 
+	if (mCrane)
+		mCrane->destroy();
+
+	mCrane = 0;
+
+	CastleBlockThing::destroy();
+}
+
+//----------------------------------------------------------------------------
+
+CastleKeepThing::CastleKeepThing(DamageableThing* castle, Vector3 pos) 
+	: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"), CONR("CASTLEKEEP_HEIGHT"))
+{
+	mCrane = 0;
+
+	static_cast<Model*>(getVisRep())->setMesh("keep.mesh",
+		CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
+}
+
+//----------------------------------------------------------------------------
+
+void CastleKeepThing::destroy() 
+{ 
+	if (mCrane)
+		mCrane->destroy();
+
+	mCrane = 0;
+
+	CastleBlockThing::destroy();
+}
+
+//----------------------------------------------------------------------------
+
 Castle::Castle(int teamNum, Vector3 pos) 
 	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE)
 {
@@ -76,7 +216,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	//mBaloons[3] = 0; 
 	//mBaloons[4] = 0;
 
-	mNumBaloons = 0;
+	//mNumBaloons = 0;
 	mRubble = false;
 	mLevel = -1;
 
@@ -108,6 +248,33 @@ Castle::Castle(int teamNum, Vector3 pos)
 	ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
 	mPortal = new PortalThing(this, ppos);
 	Physics::getSingleton().addThing(mPortal);
+}
+
+//----------------------------------------------------------------------------
+
+Castle::~Castle()
+{
+	mPortal = 0;
+	mBeacon = 0;
+
+	for (int i=1; i<NUM_BLOCKS; i++)
+		mBlocks[i] = 0;
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::destroy()
+{
+	// destroy the portal
+	mPortal->destroy();
+
+	// destroy the beacon
+	mBeacon = 0;
+
+	// destroy the blocks
+	for (int i=1; i<NUM_BLOCKS; i++)
+		if(mBlocks[i])
+			mBlocks[i]->destroy();
 }
 
 //----------------------------------------------------------------------------

@@ -40,7 +40,7 @@ Description: This is a castle
 #include "OgrianCraneThing.h"
 #include "OgrianPortalThing.h"
 
-#define NUM_BALOONS 0
+//#define NUM_BALOONS 0
 #define NUM_BLOCKS 9
 
 using namespace Ogre;
@@ -52,92 +52,19 @@ namespace Ogrian
 class CastleBlockThing : public DamageableThing
 {
 public:
-	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height) 
-		: DamageableThing("Ogrian/Tower", MODEL, "CastleBlock", false, width, pos, CUBE)
-	{
-		setHeight(height);
-
-		mCastle = castle;
-
-		// find the ground	
-		Real w = width/2;
-		Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
-		Real ground01 = getGroundY(pos + Vector3(-w,0, w));
-		Real ground10 = getGroundY(pos + Vector3( w,0,-w));
-		Real ground11 = getGroundY(pos + Vector3( w,0, w));
-		Real groundc  = getGroundY(pos + Vector3( 0,0, 0));
-
-		Real ground = ground00;
-		if (ground01 < ground) ground = ground01;
-		if (ground10 < ground) ground = ground10;
-		if (ground11 < ground) ground = ground11;
-		if (groundc < ground)  ground = groundc;
-
-		mGroundY = ground - CONR("CASTLE_OFFSET") - height/2;
-
-		// start at zero
-		setPosY(0.1 + mGroundY);
-		mTargetY = getPosY();
-		setPercentage(0.5);
-
-		// set the team
-		if (castle)
-			setTeamNum(castle->getTeamNum());
-		
-		BuildingHeightMap::getSingleton().moldLandscape(this);
-	}
+	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height);
 
 	// set how far up this block should go to
-	virtual void setPercentage(Real per)
-	{
-		if (per >= 1) per = 1;
-		if (per <= 0) per = -0.1;
-		//else if (per <= CONR("CASTLETURRET_MIN_PER")) per = CONR("CASTLETURRET_MIN_PER");
+	virtual void setPercentage(Real per);
 
-		Real newTargetY = mGroundY + getHeight()*per;
+	// rise smoothly
+	virtual void move(Real time);
 
-		if (newTargetY == mTargetY) return;
+	// send damage to our host castle
+	virtual void damage(int amount, int sourceTeamNum);
 
-		mTargetY = newTargetY;
-
-		if (mTargetY > getPosY())
-		{
-			setVelY(CONR("CASTLE_RISE_SPEED"));
-		}
-		else
-		{
-			setVelY(0-CONR("CASTLE_RISE_SPEED"));
-		}
-
-		mPercentage = per;
-		setUpdateFlag();
-	}
-
-	virtual void move(Real time)
-	{
-		// if it has reached its target pos.y, stop
-		if (!Multiplayer::getSingleton().isClient() && (
-			(getVelY() < -CONR("CASTLE_RISE_SPEED")/2 && mTargetY > getPosY()) ||
-			(getVelY() > CONR("CASTLE_RISE_SPEED")/2 && mTargetY < getPosY())))
-		{
-			setPosY(mTargetY);
-			setVelY(0);
-			setUpdateFlag();
-		}
-
-		DamageableThing::move(time);
-	}
-
-	virtual void damage(int amount, int sourceTeamNum)
-	{
-		if (mCastle)
-			mCastle->damage(amount, sourceTeamNum);
-	}
-
-	virtual Real getCurrentLevel()
-	{
-		return getPosY() - mGroundY - .1;
-	}
+	// get how far up we are
+	virtual Real getCurrentLevel();
 
 	virtual ThingType getType()	{ return CASTLETURRETTHING; }
 	
@@ -145,11 +72,8 @@ public:
 	
 private:
 	DamageableThing* mCastle;
-
 	Real mTargetY;
-
 	Real mGroundY;
-
 	Real mPercentage;
 };
 
@@ -157,27 +81,13 @@ private:
 class CastleTurretThing : public CastleBlockThing
 {
 public:
-	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"), CONR("CASTLETURRET_HEIGHT"))
-	{
-		mCrane = 0;
+	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0));
 
-		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
-			CONR("CASTLETURRET_MESH_SCALE"), CONR("CASTLETURRET_MESH_RATIO"));
-	}
-
-	virtual void destroy() 
-	{ 
-		if (mCrane)
-			mCrane->destroy();
-
-		mCrane = 0;
-
-		CastleBlockThing::destroy();
-	}
+	virtual void destroy();
 
 	virtual ThingType getType()	{ return CASTLETURRETTHING; }
 	
+	// set how far up we are
 	virtual void setPercentage(Real per);
 
 private:
@@ -189,17 +99,13 @@ private:
 class CastleKeepThing : public CastleBlockThing
 {
 public:
-	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
-		: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"), CONR("CASTLEKEEP_HEIGHT"))
-	{
-		mCrane = 0;
+	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0));
 
-		static_cast<Model*>(getVisRep())->setMesh("keep.mesh",
-			CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
-	}
+	virtual void destroy();
 
 	virtual ThingType getType()	{ return CASTLEKEEPTHING; }
 	
+	// set how far up we are
 	virtual void setPercentage(Real per);
 
 private:
@@ -253,6 +159,7 @@ class Castle : public DamageableThing
 {
 public:
 	Castle(int teamNum, Vector3 pos);
+	virtual ~Castle();
 
 	// set the amount of mana this castle contains
 	virtual void setMana(int amount);
@@ -278,8 +185,8 @@ public:
 	// set the health
 	virtual void setHealth(int health);
 
-	// ignore  destruction
-	virtual void destroy() {}
+	// destruction
+	virtual void destroy();
 
 	// is this castle rubble yet. If the wizard dies while his castle is rubble, he is ghosted 
 	virtual bool isRubble();
@@ -291,26 +198,24 @@ public:
 
 private:
 	int mMana;
-
 	Real mLevel;
-
 	bool mRubble;
-
-	CastleBeaconThing* mBeacon;
-
-	PortalThing* mPortal;
-
-	// a vector holding all the claimed manathings
-	std::vector<Thing*> mManaThings;
-
-	// an array of the baloons
-//	BaloonThing* mBaloons[NUM_BALOONS];
 
 	// an array of all the turrets and the keep
 	CastleBlockThing* mBlocks[NUM_BLOCKS];
 
+	CastleBeaconThing* mBeacon;
+	PortalThing* mPortal;
+
+	// a vector holding all the claimed manathings
+	// std::vector<Thing*> mManaThings;
+
+	// an array of the baloons
+	// BaloonThing* mBaloons[NUM_BALOONS];
+
 	// the current number of baloons
-	int mNumBaloons;
+	// int mNumBaloons;
+
 
 	// set the castle level
 	void setLevel(Real level);

@@ -219,6 +219,9 @@
 			Name="Things"
 			Filter="">
 			<File
+				RelativePath="OgrianAIWizardThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianAIWizardThing.h">
 			</File>
 			<File
@@ -265,6 +268,9 @@
 			</File>
 			<File
 				RelativePath="OgrianDamageableThing.h">
+			</File>
+			<File
+				RelativePath="OgrianFireballThing.cpp">
 			</File>
 			<File
 				RelativePath="OgrianFireballThing.h">

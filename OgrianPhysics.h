@@ -97,7 +97,7 @@ public:
 	void syncClient(PlayerInfo player);
 
 	// make a new team
-	int newTeam(int wizardUID, ColourValue colour);
+	int newTeam(ColourValue colour, int wizardUID=-1);
 
 	// remove a team
 	void removeTeam(int teamNum);
