@@ -62,7 +62,7 @@ public:
 		if (e->getType() == MANATHING)
 		{
 			setMaterial("Ogrian/PalmTreeDead");
-			playSound("OgrianMedia/sounds/treedeath.wav");
+			playSound("OgrianMedia/sounds/boom1.wav");
 			e->destroy();
 		}
 	}	

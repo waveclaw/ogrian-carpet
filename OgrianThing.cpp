@@ -43,6 +43,8 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	// initialize the mvars
 	mAlive = true;
 	mInPhysics = false;
+	mPlayingSound = false;
+	mCurrentSound = 0;
 
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
@@ -64,6 +66,8 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 Thing::~Thing()
 {
 	_removeFromRenderer();
+
+	stopSound();
 
 	if (mSprite)
 		delete mSprite;
@@ -113,6 +117,10 @@ void Thing::setPosition(Vector3 pos)
 	// update physics
 	if (mInPhysics && pos != mPos)
 		Physics::getSingleton().updateThing(this, mPos, pos);
+
+	// update the sound
+	if (mPlayingSound)
+		Audio::getSingleton().setSoundPosition(mCurrentSound, pos);
 
 	// update mPos
 	mPos = pos;
@@ -264,9 +272,19 @@ Real Thing::getGroundY(Vector3 pos)
 	return HeightMap::getSingleton().getHeightAt(pos.x,pos.z);
 }
 
-void Thing::playSound(String filename)
+void Thing::playSound(String filename, bool loop)
 {
-	Audio::getSingleton().playSound(filename, getPosition());
+	mCurrentSound = Audio::getSingleton().playSound(filename, getPosition(), loop);
+	mPlayingSound = true;
+}
+
+void Thing::stopSound()
+{
+	if (!mPlayingSound) return;
+
+	Audio::getSingleton().stopSound(mCurrentSound);
+
+	mPlayingSound = false;
 }
 
 }

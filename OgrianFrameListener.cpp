@@ -180,6 +180,29 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
         mTimeUntilNextToggle = .5;
     }
 
+	// play song 1
+    if (mInputDevice->isKeyDown(KC_N) && mTimeUntilNextToggle <= 0)
+    {
+		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
+
+        mTimeUntilNextToggle = .5;
+    }
+	
+	// play song 2
+    if (mInputDevice->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
+    {
+		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
+
+        mTimeUntilNextToggle = .5;
+    }
+
+	// drop a manathing
+    if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
+    {
+		Physics::getSingleton().addThing(new ManaThing(1, mCamera->getPosition()));
+
+        mTimeUntilNextToggle = .5;
+    }
     if( mInputDevice->isKeyDown( KC_ESCAPE) )
     {            
         return false;

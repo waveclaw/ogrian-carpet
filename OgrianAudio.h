@@ -40,8 +40,22 @@ namespace Ogrian
 class Audio : public Singleton< Audio >
 {
 public:
-	virtual void playSound(String filename, Vector3 pos);
+	// start playing a sound. Returns the channel of the sound.
+	virtual int playSound(String filename, Vector3 pos, bool loop=false);
+	
+	// set the position of a sound
+	virtual void setSoundPosition(int channel, Vector3 pos);
 
+	// stop a sound
+	virtual void stopSound(int channel);
+
+	// start playing a song. 
+	virtual void playSong(String filename);
+
+	// stop playing the song
+	virtual void stopSong();
+
+	// update the 3d audio engine
 	virtual void frame(Real time);
 
 	static Audio& getSingleton(void);
@@ -50,6 +64,8 @@ private:
 	Audio();
 	virtual ~Audio();
     float listenerpos[3]; 
+	FSOUND_STREAM* mSongStream;
+	int mSongChannel;
 };
 
 }

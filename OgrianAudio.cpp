@@ -38,23 +38,62 @@ namespace Ogrian
 Audio::Audio()
 {
 	FSOUND_Init(44100, 32, 0);
+	mSongStream = 0;
+	mSongChannel = -1;
 }
 
 Audio::~Audio()
 {
-
+	if (mSongStream != 0) FSOUND_Stream_Stop(mSongStream);
 }
 
-void Audio::playSound(String filename, Vector3 pos)
+void Audio::playSong(String filename)
+{
+	stopSong();
+
+	// load teh new song
+	mSongStream = FSOUND_Stream_Open(filename, FSOUND_LOOP_NORMAL, 0, 0);
+	
+	// error if not found
+	if (mSongStream == 0) 
+	{
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") << filename,
+				"Audio::playSong" );	
+	}
+
+	// play the new song
+	mSongChannel = FSOUND_Stream_Play(FSOUND_FREE, mSongStream);
+
+	// set the volume
+	FSOUND_SetVolume(mSongChannel, MUSIC_VOLUME);
+}
+
+int Audio::playSound(String filename, Vector3 pos, bool loop)
 {
 	// load the sound
-	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename, FSOUND_LOOP_NORMAL, 0, 0);
+	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename, 
+		loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF,
+		0, 0);
 
 	// error if not found
-	if (sound == 0) return;
+	if (sound == 0) 
+	{
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") << filename,
+				"Audio::playSound" );	
+	}
 
 	// play the sound
 	int channel = FSOUND_PlaySound(FSOUND_FREE, sound);
+
+	// set the position
+	setSoundPosition(channel, pos);
+
+	return channel;
+}
+
+void Audio::setSoundPosition(int channel, Vector3 pos)
+{
+	if (channel < 0) return;
 
 	// set the position
 	float posv[3];
@@ -64,6 +103,22 @@ void Audio::playSound(String filename, Vector3 pos)
 	FSOUND_3D_SetAttributes(channel, &posv[0], 0);
 }
 
+void Audio::stopSound(int channel)
+{
+	if (channel >= 0)
+		FSOUND_StopSound(channel);
+}
+
+void Audio::stopSong()
+{
+	// stop the current song
+	if (mSongStream != 0) 
+	{
+		FSOUND_Stream_Stop(mSongStream);
+		mSongStream = 0;
+		mSongChannel = -1;
+	}
+}
 void Audio::frame(Real time)
 {
 	Vector3 campos = Renderer::getSingleton().getCameraThing()->getPosition();
@@ -74,6 +129,10 @@ void Audio::frame(Real time)
 	listenerpos[2] = -campos.z;
 
 	FSOUND_3D_Listener_SetAttributes(&listenerpos[0], 0, f.x, f.y, -f.z, 0, 1, 0); // update 'ears'
+
+	if (mSongStream != 0)
+		FSOUND_3D_SetAttributes(mSongChannel, &listenerpos[0], 0); // keep the music between the ears
+	
 	FSOUND_Update(); // needed to update 3d engine, once per frame
 }
 

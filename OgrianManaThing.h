@@ -50,6 +50,7 @@ public:
 		: FloatingThing("Ogrian/Mana", "Mana", false, 1, pos)
 	{
 		setAmount(amount);
+		playSound("OgrianMedia/sounds/hum1.wav", true);
 	}
 
 	// setting the amount automatically sets the scale

@@ -64,5 +64,7 @@ const Real FLOAT_FALL_MAX = 2;
 
 const int PHYSICS_GRID_SIZE = 100;
 
+const int MUSIC_VOLUME = 64;
+
 }
 #endif

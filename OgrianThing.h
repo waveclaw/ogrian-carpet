@@ -126,7 +126,8 @@ public:
 	virtual Real getGroundY(Vector3 pos);
 
 	// play a sound
-	virtual void playSound(String filename);
+	virtual void playSound(String filename, bool loop=false);
+	virtual void stopSound();
 
 	
 private:
@@ -145,6 +146,9 @@ private:
 	bool mAlive;
 
 	bool mInPhysics; // wether or not its in the physics engine yet
+
+	bool mPlayingSound;
+	int mCurrentSound;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;
