@@ -14,7 +14,7 @@ namespace Ogrian
 class Thing
 {
 public:
-	Vector3 pos;
+	Vector3 mPos;
 
 	Thing(String material, String prefix="thing", bool fixed_y=false, Real scale=1, Real x=0, Real y=0, Real z=0);
 
@@ -27,6 +27,8 @@ public:
 	virtual void setVelocity(Real x, Real y, Real z);
 
 	virtual void setScale(Real scale);
+
+	virtual void setMaterial(String material);
 
 	virtual void move(Real time);
 
@@ -41,15 +43,15 @@ public:
 
 	
 private:
-	Vector3 vel;
+	Vector3 mVel;
 
-	BillboardSet* bbset;
-	Billboard* billboard;
+	BillboardSet* mBbset;
+	Billboard* mBillboard;
 
-	SceneNode* node;
+	SceneNode* mNode;
 
-	Real radius;
-	Real height;
+	Real mRadius;
+	Real mHeight;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;

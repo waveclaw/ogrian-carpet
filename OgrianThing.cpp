@@ -9,74 +9,79 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Real x, R
 	String name = prefix << "_" << msNextGeneratedNameExt++;
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 
-	bbset = sceneMgr->createBillboardSet(name,1);
-	billboard = bbset->createBillboard(0, 0, 0);
-	bbset->setMaterialName(material);
+	mBbset = sceneMgr->createBillboardSet(name,1);
+	mBillboard = mBbset->createBillboard(0, 0, 0);
 
 	if (fixed_y)
 	{
 		// it doesn't really matter if its common or self, since there's only one per set
-		bbset->setBillboardType(BBT_ORIENTED_SELF);
-		billboard->mDirection = Vector3::UNIT_Y;
+		mBbset->setBillboardType(BBT_ORIENTED_SELF);
+		mBillboard->mDirection = Vector3::UNIT_Y;
 	}
 
-	node = sceneMgr->getRootSceneNode()->createChildSceneNode();
-	node->attachObject(bbset);
+	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
+	mNode->attachObject(mBbset);
 
+	setMaterial(material);
 	setPosition(x, y, z);
 	setScale(scale);
 }
 
-void Thing::setVelocity(Vector3 vel)
+void Thing::setVelocity(Vector3 mVel)
 {
-	setVelocity(vel.x, vel.y, vel.z);
+	setVelocity(mVel.x, mVel.y, mVel.z);
 }
-void Thing::setPosition(Vector3 pos)
+void Thing::setPosition(Vector3 mPos)
 {
-	setPosition(pos.x, pos.y, pos.z);
+	setPosition(mPos.x, mPos.y, mPos.z);
 }
 
 void Thing::setPosition(Real x, Real y, Real z)
 {
-	pos.x = x;
-	pos.y = y;
-	pos.z = z;
+	mPos.x = x;
+	mPos.y = y;
+	mPos.z = z;
 
-	node->setPosition(x,y,z);
+	mNode->setPosition(x,y,z);
 }
 
 
 void Thing::setVelocity(Real x, Real y, Real z)
 {
-	vel.x = x;
-	vel.y = y;
-	vel.z = z;
+	mVel.x = x;
+	mVel.y = y;
+	mVel.z = z;
 }
 
 void Thing::setScale(Real scale)
 {
-	billboard->setDimensions(scale,scale);
+	mBillboard->setDimensions(scale,scale);
 
-	radius = scale/2;
+	mRadius = scale/2;
+}
+
+void Thing::setMaterial(String material)
+{
+	mBbset->setMaterialName(material);
 }
 
 void Thing::move(Real time)
 {
 	setPosition(
-		pos.x + vel.x * time,
-		pos.y + vel.y * time,
-		pos.z + vel.z * time);
+		mPos.x + mVel.x * time,
+		mPos.y + mVel.y * time,
+		mPos.z + mVel.z * time);
 }
 
 Real Thing::distance(Thing* e)
 {
-	return sqrt((pos.x - e->pos.x)*(pos.x - e->pos.x) 
-			    + (pos.z - e->pos.z)*(pos.z - e->pos.z));
+	return sqrt((mPos.x - e->mPos.x)*(mPos.x - e->mPos.x) 
+			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
 }
 
 Real Thing::getRadius()
 {
-	return radius;
+	return mRadius;
 }
 
 void Thing::collided(Thing* e)
@@ -88,7 +93,7 @@ void Thing::collided(Thing* e)
 // they are ordered by x location
 bool Thing::operator<(Thing* other)
 {
-	return (pos.x < other->pos.x);
+	return (mPos.x < other->mPos.x);
 }
 
 }

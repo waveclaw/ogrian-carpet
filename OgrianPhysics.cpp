@@ -82,7 +82,7 @@ void Physics::collisionCheck()
 		for (unsigned int j=i+1; j<things.size(); j++)
 		{
 			b = things[j];
-			Real dist = b->pos.x - a->pos.x;
+			Real dist = b->mPos.x - a->mPos.x;
 
 			// if they are too far apart, stop
 			if (dist > MAX_THING_RADIUS + a->getRadius()) break;
@@ -92,8 +92,8 @@ void Physics::collisionCheck()
 			// if they are close enough, they collide
 			if (a->distance(b) < maxdist)
 			{
-				Real ay = a->pos.y;
-				Real by = b->pos.y;
+				Real ay = a->mPos.y;
+				Real by = b->mPos.y;
 
 				// if they are close enough in altitude
 				if (ay-by < maxdist && by-ay < maxdist)
