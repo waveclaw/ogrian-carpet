@@ -34,9 +34,9 @@ p4startX=800
 p4startZ=168
 
 # the number of starting stuff in skirmish mode
-NUM_TOWERS=6
-NUM_TICKS=30
-NUM_SENTINELS=30
+NUM_TOWERS=3
+NUM_TICKS=60
+NUM_SENTINELS=60
 
 # the number of huts
 NUM_HUTS=10
