@@ -636,7 +636,6 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.id = packet->playerId;
 			player.name = playerName;
 			player.wizardUID = wuid;
-			//player.teamNum = Physics::getSingleton().newTeam(player.wizardUID, wt->getColour());
 			player.teamNum = wt->getTeamNum();
 			mPlayers.push_back(player);
 

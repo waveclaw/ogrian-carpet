@@ -62,6 +62,8 @@ public:
 		setColour(team->getColour());
 
 		FloatingThing::setTeamNum(teamNum);
+
+		requestUpdate();
 	}
 
 	// setting the amount automatically sets the scale
