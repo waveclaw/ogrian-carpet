@@ -137,7 +137,12 @@ bool HeightmapLoader::initialise(const String& filename)
     String texture = config.getSetting("WorldTexture");
     if (texture != "")
     {
-		mMaterial = mSceneRoot->getCreator()->createMaterial("NaturePatchMaterial");
+		// get material
+		mMaterial = mSceneRoot->getCreator()->getMaterial("NaturePatchMaterial");
+
+		if (mMaterial == 0) mMaterial = mSceneRoot->getCreator()->createMaterial("NaturePatchMaterial");
+
+		//mMaterial->removeAllTechniques();
 	    
 		TextureUnitState *layer;
 		layer = mMaterial->getTechnique(0)->getPass(0)->createTextureUnitState(texture, 1);
