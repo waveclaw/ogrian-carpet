@@ -43,6 +43,8 @@ template<> Ogrian::Menu * Singleton< Ogrian::Menu >::ms_Singleton = 0;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 Menu::Menu()
 {
 	mActive = false;
@@ -55,26 +57,30 @@ Menu::Menu()
 	list->addListItem(new StringResource("2: ISLANDS"));
 }
 
+//----------------------------------------------------------------------------
+
 Menu::~Menu()
 {
 	if (mActive) hideMenu();
 }
 
+//----------------------------------------------------------------------------
+
 bool Menu::processKeyInput(InputReader* input)
 {
-	// Q Quits
+	// Q Quits //////////////////////////////
     if ( input->isKeyDown( KC_Q) )
     {            
         return false;
     }
 
-	// ESC goes back to the game
+	// ESC goes back to the game //////////////////////////////
     if ( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
     {            
         hideMenu();
     }
 
-	// Y toggles the inversion of the mouse Y axis
+	// Y toggles the inversion of the mouse Y axis //////////////////////////////
     if ( input->isKeyDown( KC_Y)  && mTimeUntilNextToggle <= 0)
     {            
 		OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
@@ -97,42 +103,42 @@ bool Menu::processKeyInput(InputReader* input)
         mTimeUntilNextToggle = KEY_DELAY;
     }
 
-	// 1 loads crescent
+	// 1 loads crescent //////////////////////////////
     if ( input->isKeyDown( KC_1)  && mTimeUntilNextToggle <= 0)
     {
-		// Loading...
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-			->setParameter("caption", "LOADING...");
-		
-		Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
-		// stop the game
-		Audio::getSingleton().stop();
-		Renderer::getSingleton().getFrameListener()->setGameRunning(false);
-
-		// load the map
-		mMapName = "crescent.cfg";
-		mLoadMap = true;
+		loadMap("crescent.cfg");
 	}
 
-	// 2 loads islands
+	// 2 loads islands //////////////////////////////
     if ( input->isKeyDown( KC_2)  && mTimeUntilNextToggle <= 0)
     {
-		// Loading...
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-			->setParameter("caption", "LOADING...");
-
-		Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
-		// stop the game
-		Audio::getSingleton().stop();
-		Renderer::getSingleton().getFrameListener()->setGameRunning(false);
-
-		// load the map
-		mMapName = "islands.cfg";
-		mLoadMap = true;
+		loadMap("islands.cfg");
 	}
 
 	return true;
 }
+
+//----------------------------------------------------------------------------
+
+void Menu::loadMap(String mapname)
+{
+	// Loading...
+	GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+		->setParameter("caption", "LOADING...");
+
+	// move the camera so the terrain will reload properly
+	Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
+
+	// stop the game
+	Audio::getSingleton().stop();
+	Renderer::getSingleton().getFrameListener()->setGameRunning(false);
+
+	// load the map
+	mMapName = mapname;
+	mLoadMap = true;
+}
+
+//----------------------------------------------------------------------------
 
 void Menu::frame(Real time)
 {
@@ -157,6 +163,8 @@ void Menu::frame(Real time)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 void Menu::showMenu()
 {
 	if (mActive == true) return;
@@ -168,6 +176,8 @@ void Menu::showMenu()
 
 	mActive = true;
 }
+
+//----------------------------------------------------------------------------
 
 void Menu::hideMenu()
 {
@@ -181,10 +191,14 @@ void Menu::hideMenu()
 	mActive = false;
 }
 
+//----------------------------------------------------------------------------
+
 bool Menu::isActive()
 {
 	return mActive;
 }
+
+//----------------------------------------------------------------------------
 
 Menu& Menu::getSingleton(void)
 {

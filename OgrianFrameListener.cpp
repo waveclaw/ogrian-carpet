@@ -42,6 +42,8 @@ See OgrianFrameListener.h for command listings
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::updateStats(void)
 {
     static String currFps = "Current FPS: ";
@@ -71,6 +73,8 @@ void OgrianFrameListener::updateStats(void)
     GuiElement* guiDbg = GuiManager::getSingleton().getGuiElement("Core/DebugText");
     guiDbg->setCaption(mWindow->getDebugText());
 }
+
+//----------------------------------------------------------------------------
 
 // Constructor takes a RenderWindow because it uses that to determine input context
 OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool useBufferedInputKeys, bool useBufferedInputMouse)
@@ -111,6 +115,9 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	mGameRunning = false;
 	mYinvert = true;
 }
+
+//----------------------------------------------------------------------------
+
 OgrianFrameListener::~OgrianFrameListener()
 {
 	if (mInputTypeSwitchingOn)
@@ -122,6 +129,8 @@ OgrianFrameListener::~OgrianFrameListener()
         PlatformManager::getSingleton().destroyInputReader( mInputDevice );
     }
 }
+
+//----------------------------------------------------------------------------
 
 bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 {
@@ -228,15 +237,21 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::setInvertY(bool yinv)
 {
 	mYinvert = yinv;
 }
 
+//----------------------------------------------------------------------------
+
 bool OgrianFrameListener::getInvertY()
 {
 	return mYinvert;
 }
+
+//----------------------------------------------------------------------------
 
 bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 {
@@ -260,11 +275,15 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 	return true;
 }
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::moveCamera()
 {
 	if (mGameRunning)
 		Renderer::getSingleton().getCameraThing()->moveCamera(mCamera, mRotX, mRotY, mTranslateVector);
 }
+
+//----------------------------------------------------------------------------
 
 void OgrianFrameListener::showDebugOverlay(bool show)
 {
@@ -281,6 +300,8 @@ void OgrianFrameListener::showDebugOverlay(bool show)
         o->hide();
     }
 }
+
+//----------------------------------------------------------------------------
 
 // Override frameStarted event to process that (don't care about frameEnded)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
@@ -361,15 +382,21 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 	return true;
 }
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::setGameRunning(bool running)
 {
 	mGameRunning = running;
 }
 
+//----------------------------------------------------------------------------
+
 bool OgrianFrameListener::getGameRunning()
 {
 	return mGameRunning;
 }
+
+//----------------------------------------------------------------------------
 
 bool OgrianFrameListener::frameEnded(const FrameEvent& evt)
 {
@@ -377,20 +404,29 @@ bool OgrianFrameListener::frameEnded(const FrameEvent& evt)
     return true;
 }
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::switchMouseMode() 
 {
     mUseBufferedInputMouse = !mUseBufferedInputMouse;
 	mInputDevice->setBufferedInput(mUseBufferedInputKeys, mUseBufferedInputMouse);
 }
+
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::switchKeyMode() 
 {
     mUseBufferedInputKeys = !mUseBufferedInputKeys;
 	mInputDevice->setBufferedInput(mUseBufferedInputKeys, mUseBufferedInputMouse);
 }
 
+//----------------------------------------------------------------------------
+
 void OgrianFrameListener::keyClicked(KeyEvent* e) 
 {
 
 }
+
+//----------------------------------------------------------------------------
 
 }

@@ -46,16 +46,22 @@ namespace Ogrian
 {
 
 
+//----------------------------------------------------------------------------
+
 Physics::Physics()
 {
 	mWorldSize = -1;
 }
+
+//----------------------------------------------------------------------------
 
 void Physics::frame(Real time)
 {
 	moveAll(time);
 	collisionCheck();
 }
+
+//----------------------------------------------------------------------------
 
 // checks to see if a thing is in the list mAllThings
 bool Physics::containsThing(Thing* thing)
@@ -65,6 +71,8 @@ bool Physics::containsThing(Thing* thing)
 
 	return false;
 }
+
+//----------------------------------------------------------------------------
 
 // add a Thing to the world
 void Physics::addThing(Thing* thing)
@@ -87,6 +95,8 @@ void Physics::addThing(Thing* thing)
 	thing->placedInPhysics();
 }
 
+//----------------------------------------------------------------------------
+
 // add a Thing to the grid
 void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 {
@@ -107,6 +117,8 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 		mOtherThings.push_back(thing);
 	}
 }
+
+//----------------------------------------------------------------------------
 
 // remove a thing from the grid
 void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
@@ -151,6 +163,8 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 // remove a thing from the world
 void Physics::deleteThing(Thing* thing)
 {
@@ -177,6 +191,8 @@ void Physics::deleteThing(Thing* thing)
 	delete thing;
 }
 
+//----------------------------------------------------------------------------
+
 void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 {
 	int from_u = getGridU(oldPos.x);
@@ -192,15 +208,21 @@ void Physics::updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 int Physics::getGridU(Real x)
 {
 	return (x/mWorldSize) * PHYSICS_GRID_SIZE;
 }
 
+//----------------------------------------------------------------------------
+
 int Physics::getGridV(Real z)
 {
 	return (z/mWorldSize) * PHYSICS_GRID_SIZE;
 }
+
+//----------------------------------------------------------------------------
 
 // remove and delete all things
 void Physics::clear()
@@ -219,6 +241,8 @@ void Physics::clear()
 	}
 }
 
+//----------------------------------------------------------------------------
+
 // move all things, delete the ones not alive
 void Physics::moveAll(Real time)
 {
@@ -236,11 +260,15 @@ void Physics::moveAll(Real time)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 // the number of things in the list
 int Physics::numThings()
 {
 	return int(mAllThings.size());
 }
+
+//----------------------------------------------------------------------------
 
 /* this method works by keeping all of the things in a grid. 
 Every frame, each grid cell checks its things against each other
@@ -351,6 +379,8 @@ void Physics::collisionCheck()
 	}
 }
 
+//----------------------------------------------------------------------------
+
 void Physics::pairCollisionCheck(Thing* a, Thing* b)
 {
 	Real maxdist = (a->getWidth() + b->getWidth())/2;
@@ -393,9 +423,9 @@ void Physics::pairCollisionCheck(Thing* a, Thing* b)
 		// otherwise collide
 		collide(a,b);
 	}
-
-
 }
+
+//----------------------------------------------------------------------------
 
 void Physics::collide(Thing* a, Thing* b)
 {
@@ -404,11 +434,14 @@ void Physics::collide(Thing* a, Thing* b)
 	b->collided(a);
 }
 
+//----------------------------------------------------------------------------
+
 void Physics::setWorldSize(int size)
 {
 	mWorldSize = size;
 }
 
+//----------------------------------------------------------------------------
 
 Physics& Physics::getSingleton(void)
 {
@@ -419,10 +452,13 @@ Physics& Physics::getSingleton(void)
     return Singleton<Physics>::getSingleton();
 }
 
+//----------------------------------------------------------------------------
 
 Physics::~Physics()
 {
 	clear();
 }
+
+//----------------------------------------------------------------------------
 
 }

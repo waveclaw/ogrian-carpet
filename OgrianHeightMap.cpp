@@ -43,11 +43,15 @@ template<> Ogrian::HeightMap * Singleton< Ogrian::HeightMap >::ms_Singleton = 0;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 // null the data pointer
 HeightMap::HeightMap()
 {
 	mData = 0;
 }
+
+//----------------------------------------------------------------------------
 
 // clean up
 HeightMap::~HeightMap()
@@ -56,10 +60,14 @@ HeightMap::~HeightMap()
 	// mData is a pointer into mImage
 }
 
+//----------------------------------------------------------------------------
+
 int HeightMap::getWorldSize()
 {
 	return mSize;
 }
+
+//----------------------------------------------------------------------------
 
 // do a lookup in the array to find the height at a grid point
 int HeightMap::_worldheight( int x, int z )
@@ -76,6 +84,8 @@ int HeightMap::_worldheight( int x, int z )
 	if (height < HEIGTHMAP_MIN_HEIGHT) return HEIGTHMAP_MIN_HEIGHT;
 	return height;
 };
+
+//----------------------------------------------------------------------------
 
 // get the height at any point
 Real HeightMap::getHeightAt(Real x, Real z)
@@ -112,17 +122,23 @@ Real HeightMap::getHeightAt(Real x, Real z)
 	return height;
 }
 
+//----------------------------------------------------------------------------
+
 // return the height difference between this point and a close other point
 Real HeightMap::getXSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x+HEIGTHMAP_SLOPE_DIFF,z);
 }
 
+//----------------------------------------------------------------------------
+
 // return the height difference between this point and a close other point
 Real HeightMap::getZSlopeAt(Real x, Real z)
 {
 	return getHeightAt(x,z) - getHeightAt(x,z+HEIGTHMAP_SLOPE_DIFF);
 }
+
+//----------------------------------------------------------------------------
 
 // load the array from the image file
 void HeightMap::loadTerrain( const String& filename )
@@ -153,6 +169,8 @@ void HeightMap::loadTerrain( const String& filename )
 	mSize = mImage.getWidth();
 }
 
+//----------------------------------------------------------------------------
+
 HeightMap& HeightMap::getSingleton(void)
 {
 	if (!ms_Singleton) 
@@ -161,5 +179,7 @@ HeightMap& HeightMap::getSingleton(void)
 	}
     return Singleton<HeightMap>::getSingleton();
 }
+
+//----------------------------------------------------------------------------
 
 }

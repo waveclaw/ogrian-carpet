@@ -36,6 +36,8 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 Sprite::Sprite(String name, bool fixed_y)
 {
 	mBbset = 0;
@@ -49,6 +51,9 @@ Sprite::Sprite(String name, bool fixed_y)
 
 	mInRenderer = false;
 }
+
+//----------------------------------------------------------------------------
+
 Sprite::~Sprite()
 {
 	removeFromRenderer();
@@ -60,6 +65,8 @@ bool Sprite::inRenderer()
 	return mInRenderer;
 }
 
+//----------------------------------------------------------------------------
+
 // set the position
 void Sprite::setPosition(Vector3 pos)
 {
@@ -69,6 +76,8 @@ void Sprite::setPosition(Vector3 pos)
 		mNode->setPosition(pos);
 }
 
+//----------------------------------------------------------------------------
+
 void Sprite::setWidth(Real width)
 {
 	mWidth = width;
@@ -76,6 +85,8 @@ void Sprite::setWidth(Real width)
 	if (mInRenderer)
 		mBillboard->setDimensions(mWidth,mHeight);
 }
+
+//----------------------------------------------------------------------------
 
 void Sprite::setHeight(Real height)
 {
@@ -85,6 +96,8 @@ void Sprite::setHeight(Real height)
 		mBillboard->setDimensions(mWidth,mHeight);
 }
 
+//----------------------------------------------------------------------------
+
 void Sprite::setMaterial(String material)
 {
 	mMaterial = material;
@@ -92,6 +105,8 @@ void Sprite::setMaterial(String material)
 	if (mInRenderer)
 		mBbset->setMaterialName(material);
 }
+
+//----------------------------------------------------------------------------
 
 void Sprite::addToRenderer()
 {
@@ -122,6 +137,8 @@ void Sprite::addToRenderer()
 	setWidth(mWidth);
 }
 
+//----------------------------------------------------------------------------
+
 void Sprite::removeFromRenderer()
 {
 	// dont do this twice!
@@ -137,5 +154,7 @@ void Sprite::removeFromRenderer()
 
 	mInRenderer = false;
 }
+
+//----------------------------------------------------------------------------
 
 }

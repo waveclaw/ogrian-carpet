@@ -64,6 +64,9 @@ public:
 private:
 	Menu();
 
+	// load a map
+	virtual void loadMap(String mapname);
+
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling
 	Overlay* mOverlay; // the menu overlay

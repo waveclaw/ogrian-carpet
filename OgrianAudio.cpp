@@ -35,6 +35,8 @@ template<> Ogrian::Audio * Singleton< Ogrian::Audio >::ms_Singleton = 0;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 Audio::Audio()
 {
 	FSOUND_Init(44100, 32, 0);
@@ -43,10 +45,14 @@ Audio::Audio()
 	mRunning = false;
 }
 
+//----------------------------------------------------------------------------
+
 Audio::~Audio()
 {
 	if (mSongStream != 0) FSOUND_Stream_Stop(mSongStream);
 }
+
+//----------------------------------------------------------------------------
 
 void Audio::playSong(String filename)
 {
@@ -70,6 +76,8 @@ void Audio::playSong(String filename)
 	// set the volume
 	FSOUND_SetVolume(mSongChannel, MUSIC_VOLUME);
 }
+
+//----------------------------------------------------------------------------
 
 int Audio::playSound(String filename, Vector3 pos, bool loop)
 {
@@ -96,6 +104,8 @@ int Audio::playSound(String filename, Vector3 pos, bool loop)
 	return channel;
 }
 
+//----------------------------------------------------------------------------
+
 void Audio::setSoundPosition(int channel, Vector3 pos)
 {
 	if (!mRunning) return;
@@ -109,6 +119,8 @@ void Audio::setSoundPosition(int channel, Vector3 pos)
 	FSOUND_3D_SetAttributes(channel, &posv[0], 0);
 }
 
+//----------------------------------------------------------------------------
+
 void Audio::stopSound(int channel)
 {
 	if (!mRunning) return;
@@ -116,6 +128,8 @@ void Audio::stopSound(int channel)
 	if (channel >= 0)
 		FSOUND_StopSound(channel);
 }
+
+//----------------------------------------------------------------------------
 
 void Audio::stopSong()
 {
@@ -129,6 +143,8 @@ void Audio::stopSong()
 		mSongChannel = -1;
 	}
 }
+
+//----------------------------------------------------------------------------
 
 void Audio::frame(Real time)
 {
@@ -149,15 +165,21 @@ void Audio::frame(Real time)
 	FSOUND_Update(); // update 3d engine
 }
 
+//----------------------------------------------------------------------------
+
 void Audio::start()
 {
 	mRunning = true;
 }
 
+//----------------------------------------------------------------------------
+
 void Audio::stop()
 {
 	mRunning = false;
 }
+
+//----------------------------------------------------------------------------
 
 Audio& Audio::getSingleton(void)
 {
@@ -167,5 +189,7 @@ Audio& Audio::getSingleton(void)
 	}
 	return Singleton<Audio>::getSingleton();
 }
+
+//----------------------------------------------------------------------------
 
 }

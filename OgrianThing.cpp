@@ -38,6 +38,8 @@ namespace Ogrian
 
 unsigned long Thing::msNextGeneratedNameExt = 1;
 
+//----------------------------------------------------------------------------
+
 Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 pos, ThingShape shape)
 {
 	// initialize the mvars
@@ -64,6 +66,8 @@ Thing::Thing(String material, String prefix, bool fixed_y, Real scale, Vector3 p
 	_addToRenderer();
 }
 
+//----------------------------------------------------------------------------
+
 Thing::~Thing()
 {
 	_removeFromRenderer();
@@ -74,10 +78,14 @@ Thing::~Thing()
 		delete mSprite;
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::placedInPhysics()
 {
 	mInPhysics = true;
 }
+
+//----------------------------------------------------------------------------
 
 // start rendering this thing
 void Thing::_addToRenderer()
@@ -85,31 +93,44 @@ void Thing::_addToRenderer()
 	mSprite->addToRenderer();
 }
 
+//----------------------------------------------------------------------------
+
 // stop rendering this thing
 void Thing::_removeFromRenderer()
 {
 	mSprite->removeFromRenderer();
 }
 
+//----------------------------------------------------------------------------
+
 bool Thing::isAlive()
 {
 	return mAlive;
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::setShape(ThingShape shape)
 {
 	mShape = shape;
 }
 
+//----------------------------------------------------------------------------
+
 ThingShape Thing::getShape()
 {
 	return mShape;
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::setVelocity(Vector3 vel)
 {
 	mVel = vel;
 }
+
+//----------------------------------------------------------------------------
+
 void Thing::setPosition(Vector3 pos)
 {
 	// update the sprite
@@ -127,11 +148,15 @@ void Thing::setPosition(Vector3 pos)
 	mPos = pos;
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::setScale(Real scale)
 {
 	setHeight(scale);
 	setWidth(scale);
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::setHeight(Real height)
 {
@@ -140,6 +165,8 @@ void Thing::setHeight(Real height)
 	mSprite->setHeight(height);
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::setWidth(Real width)
 {
 	mWidth = width;
@@ -147,30 +174,42 @@ void Thing::setWidth(Real width)
 	mSprite->setWidth(width);
 }
 
+//----------------------------------------------------------------------------
+
 Vector3 Thing::getPosition()
 {
 	return mPos;
 }
+
+//----------------------------------------------------------------------------
 
 Vector3 Thing::getVelocity()
 {
 	return mVel;
 }
 
+//----------------------------------------------------------------------------
+
 Real Thing::getWidth()
 {
 	return mWidth;
 }
+
+//----------------------------------------------------------------------------
 
 Real Thing::getHeight()
 {
 	return mHeight;
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::setMaterial(String material)
 {
 	mSprite->setMaterial(material);
 }
+
+//----------------------------------------------------------------------------
 
 // increment the position by the velocity times time
 void Thing::move(Real time)
@@ -180,6 +219,8 @@ void Thing::move(Real time)
 	_updateVisibility();
 	_updateAudibility();
 }
+
+//----------------------------------------------------------------------------
 
 // only render things that are close to the camera
 void Thing::_updateVisibility()
@@ -200,12 +241,16 @@ void Thing::_updateVisibility()
 	}
 }
 
+//----------------------------------------------------------------------------
+
 // calculate the distance, neglecting the difference in altitude: sqrt(x^2+y^2)
 Real Thing::cylinderDistance(Thing* e)
 {
 	return sqrt((mPos.x - e->mPos.x)*(mPos.x - e->mPos.x) 
 			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
 }
+
+//----------------------------------------------------------------------------
 
 // calculate the distance: sqrt(x^2+y^2+z^2)
 Real Thing::sphereDistance(Thing* e)
@@ -214,6 +259,8 @@ Real Thing::sphereDistance(Thing* e)
 				+ (mPos.y - e->mPos.y)*(mPos.z - e->mPos.y)
 			    + (mPos.z - e->mPos.z)*(mPos.z - e->mPos.z));
 }
+
+//----------------------------------------------------------------------------
 
 // calculate axis distance
 Real Thing::axisDistance(Thing* e)
@@ -226,10 +273,14 @@ Real Thing::axisDistance(Thing* e)
 	return (xdist > zdist) ? xdist : zdist;
 }
 
+//----------------------------------------------------------------------------
+
 ThingType Thing::getType()
 {
 	return THING;
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::collided(Thing* e)
 {
@@ -237,11 +288,15 @@ void Thing::collided(Thing* e)
 	
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::destroy()
 {
 	// mark it to be deleted
 	mAlive = false;
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::setPosY(Real y)
 {
@@ -249,30 +304,42 @@ void Thing::setPosY(Real y)
 	setPosition(mPos);
 }
 
+//----------------------------------------------------------------------------
+
 Real Thing::getPosY()
 {
 	return mPos.y;
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::setVelY(Real y)
 {
 	mVel.y = y;
 }
 
+//----------------------------------------------------------------------------
+
 Real Thing::getVelY()
 {
 	return mVel.y;
 }
+
+//----------------------------------------------------------------------------
 
 Real Thing::getGroundY()
 {
 	return getGroundY(mPos);
 }
 
+//----------------------------------------------------------------------------
+
 Real Thing::getGroundY(Vector3 pos)
 {
 	return HeightMap::getSingleton().getHeightAt(pos.x,pos.z);
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::playSound(String filename, bool loop)
 {
@@ -284,6 +351,8 @@ void Thing::playSound(String filename, bool loop)
 		mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
 }
 
+//----------------------------------------------------------------------------
+
 void Thing::stopSound()
 {
 	if (!mPlayingSound) return;
@@ -293,6 +362,8 @@ void Thing::stopSound()
 	if (mInEarshot)
 		Audio::getSingleton().stopSound(mCurrentSound);
 }
+
+//----------------------------------------------------------------------------
 
 void Thing::_updateAudibility()
 {
@@ -313,5 +384,7 @@ void Thing::_updateAudibility()
 			mCurrentSound = Audio::getSingleton().playSound(mSoundFilename, getPosition(), mSoundLoop);
 	}
 }
+
+//----------------------------------------------------------------------------
 
 }

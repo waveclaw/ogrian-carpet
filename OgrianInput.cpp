@@ -38,16 +38,22 @@ template<> Ogrian::Input * Singleton< Ogrian::Input >::ms_Singleton = 0;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 Input::Input()
 {
 
 }
+
+//----------------------------------------------------------------------------
 
 Input::~Input()
 {
 
 }
 
+
+//----------------------------------------------------------------------------
 
 bool Input::processKeyInput(InputReader* input)
 {
@@ -83,16 +89,22 @@ bool Input::processKeyInput(InputReader* input)
 	return true;
 }
 
+//----------------------------------------------------------------------------
+
 void Input::frame(Real time)
 {
 	if (mTimeUntilNextToggle >= 0) 
 		mTimeUntilNextToggle -= time;
 }
 
+//----------------------------------------------------------------------------
+
 void Input::delay(Real time)
 {
 	mTimeUntilNextToggle = time;
 }
+
+//----------------------------------------------------------------------------
 
 Input& Input::getSingleton(void)
 {
@@ -102,4 +114,7 @@ Input& Input::getSingleton(void)
 	}
 	return Singleton<Input>::getSingleton();
 }
+
+//----------------------------------------------------------------------------
+
 }
