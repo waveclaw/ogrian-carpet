@@ -476,16 +476,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 	{
 		case ID_SET_WIZUID://////////////////////////////////////////////////////
 		{
-			int id, uid;
-			BitStream bs;
-			bs.Read(id);
+			int pid, uid;
+
+			BitStream bs(packet->data, packet->length, false);
+			bs.Read(pid);
 			bs.Read(uid);
 
 			// set the camera UID
 			Renderer::getSingleton().getCameraThing()->_setUID(uid);
 
-			LogManager::getSingleton().logMessage(String("Setting wizUID: ") 
-				<< Renderer::getSingleton().getCameraThing()->getUID());
+			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") << uid);
 
 			return true;
 		}
@@ -493,6 +493,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
 			// oddly, nothing is done here
+			Menu::getSingleton().setMessage("Connection Accepted");
 			return true;
 		}
 
@@ -597,24 +598,23 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			String playerName;
 			packetToString(packet,playerName);
 
+			// get a new wizard
+			WizardThing* wt = new WizardThing();
+			Physics::getSingleton().addThing(wt);
+			int wuid = wt->getUID();
+
 			// update the player list
 			PlayerInfo player;
 			player.id = packet->playerId;
 			player.name = playerName;
-
-			WizardThing* wt = new WizardThing();
-			Physics::getSingleton().addThing(wt);
-			player.wizardUID = wt->getUID();
-
+			player.wizardUID = wuid;
 			player.teamNum = Physics::getSingleton().addTeam(player.wizardUID);
 			mPlayers.push_back(player);
-
-			LogManager::getSingleton().logMessage(String("Client Wizard UID: ") << player.wizardUID);
 
 			// send a message to the client telling it what its wizardUID is
 			BitStream bs;
 			bs.Write(ID_SET_WIZUID);
-			bs.Write(player.wizardUID);
+			bs.Write(wuid);
 			serverSend(&bs, player.id);
 
 			// set the health of the new wizard
