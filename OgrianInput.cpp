@@ -109,6 +109,10 @@ bool Input::processKeyInput(InputReader* input)
 		}
 	}
 
+	// move forward
+	if (input->getMouseButton(1))
+		Renderer::getSingleton().getCameraThing()->moveForward();
+
 	return true;
 }
 
