@@ -212,9 +212,9 @@ Thing* Physics::getThing(int uid)
 {
 	if (mAllThings.size() == 0) return 0;
 
-	/*// binary search
+	// binary search
 	int left = 0;
-	int right = (int)mAllThings.size();
+	int right = (int)mAllThings.size()-1;
 	int mid, cuid;
 
 	while (left <= right)
@@ -224,13 +224,6 @@ Thing* Physics::getThing(int uid)
 		if (cuid == uid) return mAllThings[mid];
 		else if (uid < cuid) right = mid-1;
 		else if (uid > cuid) left = mid+1;
-	}
-	*/
-
-	// linear search
-	for (int i=0; i<(int)mAllThings.size(); i++)
-	{
-		if (mAllThings[i]->getUID() == uid) return mAllThings[i];
 	}
 
 	return 0;

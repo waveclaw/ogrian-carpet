@@ -52,34 +52,34 @@ public:
 	virtual ~Physics();
 
 	// add a thing to the world 
-	virtual void addThing(Thing* thing);
+	void addThing(Thing* thing);
 
 	// this should be called by Thing::setPosition();
-	virtual void updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos);
+	void updateThing(Thing* thing, Vector3 oldPos, Vector3 newPos);
 
 	// return the number of entities in the world
-	virtual int numThings();
+	int numThings();
 
 	// returns true if the thing is in the physics engine
-	virtual bool containsThing(Thing* thing);
+	bool containsThing(Thing* thing);
 
 	// get the thing with the specified uid
-	virtual Thing* getThing(int uid);
+	Thing* getThing(int uid);
 
 	// remove and delete all things in the world
-	virtual void clear();
+	void clear();
 
 	// call this every frame
-	virtual void frame(Real time);
+	void frame(Real time);
 
 	// this must be called before adding things
-	virtual void setWorldSize(int size);
+	void setWorldSize(int size);
 
 	// handle server packet, return true if handled
-	virtual bool handleServerPacket(Packet* p, PacketID pid);
+	bool handleServerPacket(Packet* p, PacketID pid);
 
 	// handle client packet, return true if handled
-	virtual bool handleClientPacket(Packet* p, PacketID pid);
+	bool handleClientPacket(Packet* p, PacketID pid);
 
     static Physics& getSingleton(void);
 
