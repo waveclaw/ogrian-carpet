@@ -52,9 +52,10 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mCurrentSound = 0;
 	mUID = -1;
 	mLastUpdateTime = 0;
+	mFlickerPeriod = 0;
 	mLastRotTime = 0;
 	mLastRotDir = false;
-
+	
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
 
