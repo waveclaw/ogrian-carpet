@@ -185,6 +185,7 @@ void CraneThing::setStateFlyIn()
 	// randomize the direction by a little bit
 	Vector3 odir;
 	odir.x = Math::RangeRandom(-1,1);
+	odir.y = Math::RangeRandom(-1,1);
 	odir.z = Math::RangeRandom(-1,1);
 	odir.normalise();
 
