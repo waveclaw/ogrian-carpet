@@ -74,6 +74,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	setPosition(pos);
 	setScale(scale);
 	setShape(shape);
+	setOrientation(0);
 
 	// add it to the renderer
 	mVisRep->addToRenderer();
@@ -418,6 +419,21 @@ void Thing::_updateAudibility()
 
 //----------------------------------------------------------------------------
 
+void Thing::setOrientation(Real direction)
+{
+	mOrientation = direction;
+	mVisRep->setOrientation(direction);
+}
+
+//----------------------------------------------------------------------------
+
+Real Thing::getOrientation()
+{
+	return mOrientation;
+}
+
+//----------------------------------------------------------------------------
+
 bool Thing::isMoving()
 {
 	return (mPos == Vector3(0,0,0));
@@ -439,6 +455,7 @@ void Thing::generateBitStream(BitStream& bitstream)
 	bitstream.Write(mVel.x);
 	bitstream.Write(mVel.y);
 	bitstream.Write(mVel.z);
+	bitstream.Write(mOrientation);
 }
 
 //----------------------------------------------------------------------------
@@ -447,6 +464,7 @@ void Thing::interpretBitStream(BitStream& bitstream)
 {
 	Vector3 pos,vel;
 	int pid,uid,type;
+	Real orientation;
 
 	bitstream.Read(pid);
 	bitstream.Read(uid);
@@ -458,11 +476,13 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	bitstream.Read(vel.x);
 	bitstream.Read(vel.y);
 	bitstream.Read(vel.z);
+	bitstream.Read(orientation);
 
 	assert(type == getType());
 
 	setPosition(pos);
 	setVelocity(vel);
+	setOrientation(orientation);
 }
 //----------------------------------------------------------------------------
 

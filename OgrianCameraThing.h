@@ -46,7 +46,7 @@ class CameraThing : public WizardThing
 {
 public:
 	CameraThing(Camera* camera)
-		: WizardThing("Ogrian/Clear")
+		: WizardThing(false)
 	{
 		mCamera = camera;
 	}

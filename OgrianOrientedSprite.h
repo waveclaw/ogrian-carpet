@@ -127,6 +127,7 @@ public:
 	virtual void setPose(int index);
 
 	// set the orientation from -Math::PI to Math::PI 
+	// note, call this through Thing::setOrientation for best behavior
 	virtual void setOrientation(Real orientation);
 	
 	// unused

@@ -77,20 +77,37 @@ public:
 		Real scale=1, Vector3 pos=Vector3(0,0,0), ThingShape shape=SPHERE);
 	virtual ~Thing();
 
+	// set the velocity
 	virtual void setVelocity(Vector3 vel);
 
 	// set the position
 	virtual void setPosition(Vector3 pos);
 
+	// set the orientation
+	virtual void setOrientation(Real direction);
+
+	// get the orientation
+	virtual Real getOrientation();
+
+	// set the scale (width and height)
 	virtual void setScale(Real scale);
+
+	// set the width
 	virtual void setWidth(Real width);
+
+	// set the height
 	virtual void setHeight(Real height);
 
+	// set the material
 	virtual void setMaterial(String material);
 
+	// get the visual representation (sprite, orientedsprite, or mesh)
 	virtual VisRep* getVisRep();
 
+	// set the shape used for collision detection
 	virtual inline void setShape(ThingShape);
+
+	// get the shape used for collision detection
 	virtual inline ThingShape getShape();
 
 	// applies the velocity to the position
@@ -168,6 +185,7 @@ public:
 private:
 	Vector3 mPos;
 	Vector3 mVel;
+	Real mOrientation;
 
 	// graphical rendering stuff
 	VisRep* mVisRep; // the visual representation

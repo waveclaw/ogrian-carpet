@@ -161,11 +161,8 @@ void OrientedSprite::frame()
 	Sprite* newSprite = mCurrentPose->getSprite(
 		Renderer::getSingleton().getCamera()->getPosition(), mPos, mOrientation);
 
-	LogManager::getSingleton().logMessage(String("Using Sprite: ") << newSprite->getMaterial());
-
 	if (mCurrentSprite != newSprite)
 	{
-		LogManager::getSingleton().logMessage(String("Setting Sprite: ") << newSprite->getMaterial());
 		if (mInRenderer)
 		{
 			if (mCurrentSprite != 0) mCurrentSprite->removeFromRenderer(); 

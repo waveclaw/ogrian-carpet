@@ -44,9 +44,14 @@ namespace Ogrian
 class WizardThing : public Thing
 {
 public:
-	WizardThing(String material="Ogrian/Wizard") 
-		: Thing(material, SPRITE, "WizardThing", true, CAMERA_HEIGHT)
+	WizardThing(bool visible=true) 
+		: Thing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, "WizardThing", true, CAMERA_HEIGHT)
 	{
+		if (visible)
+		{
+			getVisRep()->addPose("Ogrian/Wizard/");
+			getVisRep()->setPose(0);
+		}
 	}
 
 	virtual ThingType getType()
