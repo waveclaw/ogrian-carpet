@@ -48,6 +48,7 @@ namespace Ogrian
 Menu::Menu()
 {
 	mActive = false;
+	mLoadMap = false;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("SS/Setup/HostScreen/Overlay");
 	
