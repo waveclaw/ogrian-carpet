@@ -19,55 +19,44 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianConstants.h
+OgrianInput.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This holds all the global constants
-
+Description: Handle game input
 /*------------------------------------*/
 
-#ifndef __OgrianConstants_H__
-#define __OgrianConstants_H__
+#ifndef __OgrianInput_H__
+#define __OgrianInput_H__
+
+#include <Ogre.h>
+#include "OgreKeyEvent.h"
+#include "OgreEventListeners.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-const Real CAMERA_MOVE_SPEED = 15;
-const Real CAMERA_FOV = 80;
-const Real CAMERA_NEAR_CLIP = 1;
-const Real CAMERA_HEIGHT = 3;
-const Real CAMERA_GRAV = 3;
-const Real CAMERA_FALL_MAX = 10;
+class Input : public Singleton< Input >
+{
+public:
+	virtual ~Input();
 
-const Real THING_CULL_DIST = 300;
-const Real FOG_DENSITY = 0.008;
+	virtual bool processKeyInput(InputReader* input);
 
-const Real SKYPLANE_DISTANCE = 75;
-const Real SKYPLANE_BOW = .75;
+	// ignore keypresses for this amount of time
+	virtual void delay(Real time);
 
-const Real FOLIAGE_NUM = 1000;
-const Real FOLIAGE_SCALE = 10;
-const Real FOLIAGE_SCALE_VAR = 3;
-const int FOLIAGE_LINE_MIN = 5;
-const int FOLIAGE_LINE_MAX = 50;
+	virtual void frame(Real time);
 
-const Real HEIGTHMAP_SLOPE_DIFF = 2;
-const Real HEIGTHMAP_MIN_HEIGHT = 3;
-const int HEIGHTMAP_SMOOTHING = 4;
+	static Input& getSingleton(void);
 
-const Real MANA_DRIFT_SPEED = 1;
-const Real FLOAT_GRAV = .3;
-const Real FLOAT_FALL_MAX = 2;
-
-const int PHYSICS_GRID_SIZE = 100;
-
-const int MUSIC_VOLUME = 64;
-const int THING_EARSHOT = 300;
-
-const Real KEY_DELAY = .4;
+private:
+	Input();
+    Real mTimeUntilNextToggle ;
+};
 
 }
+
 #endif

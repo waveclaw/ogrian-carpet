@@ -118,6 +118,9 @@
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File
+				RelativePath="OgrianInput.cpp">
+			</File>
+			<File
 				RelativePath="OgrianMenu.cpp">
 			</File>
 			<File
@@ -162,6 +165,9 @@
 			</File>
 			<File
 				RelativePath="OgrianHeightMap.h">
+			</File>
+			<File
+				RelativePath="OgrianInput.h">
 			</File>
 			<File
 				RelativePath="OgrianManaThing.h">

@@ -34,7 +34,7 @@ See OgrianFrameListener.h for command listings
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
 #include "OgrianAudio.h"
-#include "OgrianManaThing.h"
+#include "OgrianInput.h"
 #include "OgrianCameraThing.h"
 #include "OgrianRenderer.h"
 #include "OgrianMenu.h"
@@ -83,11 +83,12 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	{
         mEventProcessor = new EventProcessor();
 		mEventProcessor->initialise(win);
-        OverlayManager::getSingleton().createCursorOverlay();
+        //OverlayManager::getSingleton().createCursorOverlay();
 		mEventProcessor->startProcessingEvents();
 		mEventProcessor->addKeyListener(this);
 		mInputDevice = mEventProcessor->getInputReader();
 
+		Menu::getSingleton().showMenu();
 	}
     else
     {
@@ -106,8 +107,6 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	mTranslateVector = Vector3::ZERO;
     mAniso = 1;
     mFiltering = TFO_BILINEAR;
-
-    //showDebugOverlay(true);
 }
 OgrianFrameListener::~OgrianFrameListener()
 {
@@ -123,121 +122,29 @@ OgrianFrameListener::~OgrianFrameListener()
 
 bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 {
-    if (mInputDevice->isKeyDown(KC_A))
-    {
-        // Move camera left
-        mTranslateVector.x = -mMoveScale;
-    }
-
-    if (mInputDevice->isKeyDown(KC_D))
-    {
-        // Move camera RIGHT
-        mTranslateVector.x = mMoveScale;
-    }
-
-    /* Move camera forward by keypress. */
-    if (mInputDevice->isKeyDown(KC_UP) || mInputDevice->isKeyDown(KC_W) )
-    {
-        mTranslateVector.z = -mMoveScale;
-    }
-    /* Move camera forward fast by keypress. */
-    if (mInputDevice->isKeyDown(KC_LSHIFT) )
-    {
-        mTranslateVector.z = -mMoveScale * 10;
-    }
-    /* Move camera forward by mousewheel. */
-    if( mInputDevice->getMouseRelativeZ() > 0 )
-    {
-        mTranslateVector.z = -mMoveScale * 8.0;
-    }
-
-    /* Move camera backward by keypress. */
-    if (mInputDevice->isKeyDown(KC_DOWN) || mInputDevice->isKeyDown(KC_S) )
-    {
-        mTranslateVector.z = mMoveScale;
-    }
-
-    /* Move camera backward by mouse wheel. */
-    if( mInputDevice->getMouseRelativeZ() < 0 )
-    {
-        mTranslateVector.z = mMoveScale * 8.0;
-    }
-
-    if (mInputDevice->isKeyDown(KC_RIGHT))
-    {
-        mCamera->yaw(-mRotScale);
-    }
-	
-    if (mInputDevice->isKeyDown(KC_LEFT))
-    {
-        mCamera->yaw(mRotScale);
-    }
-
-	// drop a manathing
-    if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
-    {
-		Physics::getSingleton().addThing(new ManaThing(1, mCamera->getPosition()));
-
-        mTimeUntilNextToggle = .5;
-    }
-
-	// play song 1
-    if (mInputDevice->isKeyDown(KC_N) && mTimeUntilNextToggle <= 0)
-    {
-		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
-
-        mTimeUntilNextToggle = .5;
-    }
-	
-	// play song 2
-    if (mInputDevice->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
-    {
-		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
-
-        mTimeUntilNextToggle = .5;
-    }
-
-	// show the menu
-    if (mInputDevice->isKeyDown(KC_O) && mTimeUntilNextToggle <= 0)
-    {
-		Menu::getSingleton().showMenu();
-
-        mTimeUntilNextToggle = .5;
-    }
-
-	// drop a manathing
-    if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
-    {
-		Physics::getSingleton().addThing(new ManaThing(1, mCamera->getPosition()));
-
-        mTimeUntilNextToggle = .5;
-    }
-    if( mInputDevice->isKeyDown( KC_ESCAPE) )
-    {            
-        return false;
-    }
+	// handle universal keypresses //
 
 	// see if switching is on, and you want to toggle 
-    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
+    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F5) && mTimeUntilNextToggle <= 0)
     {
 		switchMouseMode();
-        mTimeUntilNextToggle = 1;
+        mTimeUntilNextToggle = KEY_DELAY;
     }
 
-    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_K) && mTimeUntilNextToggle <= 0)
+    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F6) && mTimeUntilNextToggle <= 0)
     {
 		// must be going from immediate keyboard to buffered keyboard
 		switchKeyMode();
-        mTimeUntilNextToggle = 1;
+        mTimeUntilNextToggle = KEY_DELAY;
     }
-    if (mInputDevice->isKeyDown(KC_F) && mTimeUntilNextToggle <= 0)
+    if (mInputDevice->isKeyDown(KC_F1) && mTimeUntilNextToggle <= 0)
     {
         mStatsOn = !mStatsOn;
         showDebugOverlay(mStatsOn);
 
-        mTimeUntilNextToggle = 1;
+        mTimeUntilNextToggle = KEY_DELAY;
     }
-    if (mInputDevice->isKeyDown(KC_T) && mTimeUntilNextToggle <= 0)
+    if (mInputDevice->isKeyDown(KC_F2) && mTimeUntilNextToggle <= 0)
     {
         switch(mFiltering)
         {
@@ -260,7 +167,7 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 
         showDebugOverlay(mStatsOn);
 
-        mTimeUntilNextToggle = 1;
+        mTimeUntilNextToggle = KEY_DELAY;
     }
 
     if (mInputDevice->isKeyDown(KC_SYSRQ) && mTimeUntilNextToggle <= 0)
@@ -268,11 +175,11 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 		char tmp[20];
 		sprintf(tmp, "screenshot_%d.png", ++mNumScreenShots);
         mWindow->writeContentsToFile(tmp);
-        mTimeUntilNextToggle = 0.5;
+        mTimeUntilNextToggle = KEY_DELAY;
 		mWindow->setDebugText(String("Wrote ") + tmp);
     }
 	
-	if (mInputDevice->isKeyDown(KC_R) && mTimeUntilNextToggle <=0)
+	if (mInputDevice->isKeyDown(KC_F3) && mTimeUntilNextToggle <=0)
 	{
 		mSceneDetailIndex = (mSceneDetailIndex+1)%3 ;
 		switch(mSceneDetailIndex) {
@@ -280,13 +187,42 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 			case 1 : mCamera->setDetailLevel(SDL_WIREFRAME) ; break ;
 			case 2 : mCamera->setDetailLevel(SDL_POINTS) ; break ;
 		}
-		mTimeUntilNextToggle = 0.5;
+		mTimeUntilNextToggle = KEY_DELAY;
 	}
 
+	// handle menu or game keypresses
+	if (Menu::getSingleton().isActive()) 
+	{
+		return Menu::getSingleton().processKeyInput(mInputDevice);
+	}
+	else
+	{
+		// handle camera stuff //
 
+		// Move camera left
+		if (mInputDevice->isKeyDown(KC_A)) mTranslateVector.x = -mMoveScale;
 
-    // Return true to continue rendering
-    return true;
+		// Move camera RIGHT
+		if (mInputDevice->isKeyDown(KC_D)) mTranslateVector.x = mMoveScale;
+
+		// Move camera forward
+		if (mInputDevice->isKeyDown(KC_UP) || mInputDevice->isKeyDown(KC_W) ) mTranslateVector.z = -mMoveScale;
+		
+		// Move camera backward
+		if (mInputDevice->isKeyDown(KC_DOWN) || mInputDevice->isKeyDown(KC_S) ) mTranslateVector.z = mMoveScale;
+
+		// Move camera forward fast
+		if (mInputDevice->isKeyDown(KC_LSHIFT) ) mTranslateVector.z = -mMoveScale * 10;
+					
+		// Turn Camera Right
+		if (mInputDevice->isKeyDown(KC_RIGHT)) mCamera->yaw(-mRotScale);
+				
+		// Turn Camera Left
+		if (mInputDevice->isKeyDown(KC_LEFT)) mCamera->yaw(mRotScale);	
+
+		// handle game input //
+		return Input::getSingleton().processKeyInput(mInputDevice);
+	}
 }
 
 bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
@@ -339,6 +275,10 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 
 	// tick the audio
 	Audio::getSingleton().frame(evt.timeSinceLastFrame);
+
+	// tick the input
+	Menu::getSingleton().frame(evt.timeSinceLastFrame);
+	Input::getSingleton().frame(evt.timeSinceLastFrame);
 
 	// handle input //
     if (!mInputTypeSwitchingOn)
@@ -400,9 +340,7 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 	if ( !mUseBufferedInputMouse || !mUseBufferedInputKeys)
 	{
 		// one of the input modes is immediate, so update the movement vector
-
 		moveCamera();
-
 	}
 
 	return true;
@@ -427,15 +365,6 @@ void OgrianFrameListener::switchKeyMode()
 
 void OgrianFrameListener::keyClicked(KeyEvent* e) 
 {
-	if (e->getKeyChar() == 'm')
-	{
-		switchMouseMode();
-	}
-	else if (e->getKeyChar() == 'k')
-	{
-
-		switchKeyMode();
-	}
 
 }
 

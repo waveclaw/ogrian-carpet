@@ -45,53 +45,69 @@ namespace Ogrian
 
 Menu::Menu()
 {
+	mActive = false;
 
+	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("SS/Setup/HostScreen/Overlay");
+	
+	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
+
+	list->addListItem(new StringResource("1: map 1"));
+	list->addListItem(new StringResource("2: map 2"));
+	list->addListItem(new StringResource("3: map 3"));
+	list->addListItem(new StringResource("4: map 4"));
 }
 
 Menu::~Menu()
 {
+	if (mActive) hideMenu();
+}
 
+bool Menu::processKeyInput(InputReader* input)
+{
+    if( input->isKeyDown( KC_Q) )
+    {            
+        return false;
+    }
+
+    if( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
+    {            
+        hideMenu();
+    }
+
+	return true;
+}
+
+void Menu::frame(Real time)
+{
+	if (mTimeUntilNextToggle >= 0) 
+	mTimeUntilNextToggle -= time;
 }
 
 void Menu::showMenu()
 {
-	// A bit of a hacky test
-	Overlay* o = (Overlay*)OverlayManager::getSingleton().getByName("SS/Setup/HostScreen/Overlay");
-	ActionTarget* at = static_cast<BorderButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Join"));
-	at->addActionListener(this);
-	at = static_cast<BorderButtonGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Exit"));
-	at->addActionListener(this);
-	o->show();
-	
-	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
+	if (mActive == true) return;
 
-	list->addListItem(new StringResource("test1"));
-	list->addListItem(new StringResource("test2"));
-	list->addListItem(new StringResource("test3"));
-	list->addListItem(new StringResource("test4"));
-	list->addListItem(new StringResource("test5"));
-	list->addListItem(new StringResource("test6"));
-	list->addListItem(new StringResource("test7"));
-	list->addListItem(new StringResource("test8"));
+	mOverlay->show();
 
-	(GuiManager::getSingleton().getGuiElement("Core/CurrFps"))->addMouseListener(this);
+	mActive = true;
 
-	GuiContainer* pCursorGui = OverlayManager::getSingleton().getCursorGui();
-	pCursorGui->setMaterialName("Cursor/default");
-	pCursorGui->setDimensions(32.0/640.0, 32.0/480.0);
+    mTimeUntilNextToggle = KEY_DELAY;
 }
 
-void Menu::actionPerformed(ActionEvent* e) 
+void Menu::hideMenu()
 {
-    // Think about doing something here
-    std::string action = e->getActionCommand();
-    LogManager::getSingleton().logMessage("Got event: " + action);
+	if (mOverlay == false) return;
 
-    if (action == "SS/Setup/HostScreen/Exit")
-    {
-        // Queue a shutdown
-        //static_cast<GuiFrameListener*>(mFrameListener)->requestShutdown();
-    }
+	mOverlay->hide();
+
+	Input::getSingleton().delay(KEY_DELAY);
+
+	mActive = false;
+}
+
+bool Menu::isActive()
+{
+	return mActive;
 }
 
 Menu& Menu::getSingleton(void)

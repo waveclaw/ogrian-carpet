@@ -30,35 +30,38 @@ Description: The Menu
 #define __OgrianMenu_H__
 
 #include <Ogre.h>
+#include "OgreKeyEvent.h"
+#include "OgreEventListeners.h"
+#include "OgrianInput.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-class Menu : public Singleton< Menu >, public ActionListener, public MouseListener
+class Menu : public Singleton< Menu >
 {
 public:
 	virtual ~Menu();
 
 	virtual void showMenu();
 
-	void actionPerformed(ActionEvent* e);
-	void mouseClicked(MouseEvent* e) {}
-	void mouseEntered(MouseEvent* e) 
-	{
-		int i =5;
+	virtual void hideMenu();
 
-	
-	}
-	void mouseExited(MouseEvent* e) {}
-	void mousePressed(MouseEvent* e) {}
-	void mouseReleased(MouseEvent* e) {}
+	virtual bool processKeyInput(InputReader* input);
+
+	virtual bool isActive();
+
+	virtual void frame(Real time);
 
 	static Menu& getSingleton(void);
 
 private:
 	Menu();
+
+	bool mActive;
+    Real mTimeUntilNextToggle ;
+	Overlay* mOverlay;
 };
 
 }
