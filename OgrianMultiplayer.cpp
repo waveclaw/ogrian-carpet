@@ -49,6 +49,7 @@ namespace Ogrian
 Multiplayer::Multiplayer()
 {
 	mActive = false;
+	mClientReady = false;
 
 	loadConfig();
 }
@@ -96,6 +97,9 @@ void Multiplayer::clientStart()
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger, and false for low priority threads
 	bool b = mClient->Connect(cn, PORT, PORT-1, 0, true);
+
+	// get the map name
+	clientSendText(" ", ID_GET_MAP_NAME);
 
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
@@ -252,7 +256,7 @@ void Multiplayer::clientRecieve()
 		// handle the packet
 		if      (clientHandlePacket(packet, packetId)) {}
 		else if (handleRakPacket(packet, packetId)) {}
-		else if (Physics::getSingleton().handleClientPacket(packet, packetId)) {}
+		else if (mClientReady && Physics::getSingleton().handleClientPacket(packet, packetId)) {}
 
 		mClient->DeallocatePacket(packet);
 		packet = mClient->Receive();
@@ -401,14 +405,21 @@ void Multiplayer::updateScores()
 {
 	if (!isServer()) return;
 
+	LogManager::getSingleton().logMessage("Updating Scores");
+
 	// update the server's scores
 	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
 
 	// send each client its score
 	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		LogManager::getSingleton().logMessage(String("Player: ") << i << ", Team: " << mPlayers[i].teamNum
+			<< ", Score: " << Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore());
+
 		serverSendText(String("Score: ") << 
 			Physics::getSingleton().getTeam(mPlayers[i].teamNum)->getScore(),
 			ID_SETSCORE, mPlayers[i].id);
+	}
 
 	// clear all the scoreboards
 	serverSendAllText(" ", ID_CLEAR_SCOREBOARD);
@@ -458,30 +469,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Renderer::getSingleton().getCameraThing()->_setUID(uid);
 		}
 
-		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
-		{
-			// get the name
-			String name;
-			packetToString(packet,name);
-
-			// update the player list
-			PlayerList::getSingleton().addPlayer(name);
-
-			return true;
-		}
-
-		case ID_REMOVE_PLAYER: //////////////////////////////////////////////////////
-		{
-			// get the name
-			String name;
-			packetToString(packet,name);
-
-			// update the player list
-			PlayerList::getSingleton().removePlayer(name);
-
-			return true;
-		}
-
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
 			// oddly, nothing is done here
@@ -513,6 +500,9 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// hide the menu
 			Menu::getSingleton().hide();
+
+			// the client is now Ready
+			mClientReady = true;
 			return true;
 		}
 
@@ -567,13 +557,6 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			String playerName;
 			packetToString(packet,playerName);
 
-			// forward the new player name to all clients
-			serverSendAllText(playerName,ID_ADD_PLAYER);
-
-			// send the names of the existing players to the one that connected
-			for (int i=0; i<(int)mPlayers.size(); i++)
-				serverSendText( mPlayers[i].name,ID_ADD_PLAYER,packet->playerId);
-
 			// update the player list
 			PlayerInfo player;
 			player.id = packet->playerId;
@@ -589,10 +572,19 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			bs.Write(player.wizardUID);
 			serverSend(&bs, player.id);
 
+			// update everyone's scoreboard
+			updateScores();
+
 			return true;
 		}
 
 		case ID_NEW_INCOMING_CONNECTION: //////////////////////////////////////////////////////
+		{
+			// do nothing
+			return true;
+		}
+
+		case ID_GET_MAP_NAME: //////////////////////////////////////////////////////
 		{
 			// send the name of the map
 			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
@@ -607,14 +599,11 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			{
 				if (mPlayers[i].id == packet->playerId)
 				{
-                    // remove their name from the server list
-					PlayerList::getSingleton().removePlayer(mPlayers[i].name);
-
-					// remove their name from the clients lists
-					serverSendAllText(mPlayers[i].name,ID_REMOVE_PLAYER);
-
 					// remove their ip from the list
 					mPlayers.erase(mPlayers.begin()+i);
+
+					// update the scoreboards
+					updateScores();
 				}
 			}
 

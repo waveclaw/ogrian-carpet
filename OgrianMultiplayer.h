@@ -116,6 +116,7 @@ private:
 	Multiplayer();
 	bool mIsServer;
 	bool mActive;
+	bool mClientReady;
 	String mPlayerName;
 	String mServerName;
 

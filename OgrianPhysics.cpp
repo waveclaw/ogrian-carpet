@@ -149,8 +149,6 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		bitstream.Read(type);
 		bitstream.ResetReadPointer();
 
-		if (type == CAMERATHING) LogManager::getSingleton().logMessage(String("Got Camera: ") << uid);
-
 		// find the thing
 		Thing* thing = getThing(uid);
 
@@ -268,6 +266,8 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 Thing* Physics::newThing(ThingType type, int teamNum)
 {
+	//LogManager::getSingleton().logMessage(String("Making Thing: ") << type << " on team #" << teamNum);
+
 	switch(type)
 	{
 		case MANATHING:	return new ManaThing();
