@@ -30,6 +30,7 @@ Description: The wizard thing is the superclass of the CameraThing
 
 #include "OgrianWizardThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianHud.h"
 #include "OgrianBuildingHeightmap.h"
@@ -93,17 +94,10 @@ void WizardThing::reset()
 	mGhost = false;
 	mLava = false;
 
-
 	// make a team for this wizard'
-	if (Multiplayer::getSingleton().isServer())
+	if (!Multiplayer::getSingleton().isClient())
 	{		
-		int teamNum;
-
-		if (!mVisible) 
-			teamNum = 0;
-		else 
-			teamNum = Physics::getSingleton().newTeam(getColour());
-
+		int teamNum = Physics::getSingleton().newTeam(getColour());
 		setTeamNum(teamNum);
 		mTeam = Physics::getSingleton().getTeam(teamNum);
 		mTeam->setScore(0);
@@ -111,17 +105,6 @@ void WizardThing::reset()
 		std::ostringstream num("");
 		num << teamNum;
 		LogManager::getSingleton().logMessage("Making server Team: " + num.str());
-	}
-	else if (!Multiplayer::getSingleton().isClient()) // skirmish mode
-	{
-		int teamNum = Physics::getSingleton().newTeam(getColour());
-		setTeamNum(teamNum);
-		mTeam = Physics::getSingleton().getTeam(teamNum);
-		mTeam->setScore(0);
-
-		std::ostringstream num("");
-		num << teamNum;
-		LogManager::getSingleton().logMessage("Making Team: " + num.str());
 	}
 }
 
