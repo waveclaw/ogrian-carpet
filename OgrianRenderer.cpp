@@ -147,12 +147,14 @@ void Renderer::createCamera(void)
     mCamera->lookAt(Vector3(300,0,300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
 	mCamera->setFOVy(CAMERA_FOV);
+}
 
+void Renderer::createCameraThing()
+{
 	// make the camera thing
 	mCameraThing = new CameraThing(mCamera);
 	Physics::getSingleton().addThing(mCameraThing);
-	mCameraThing->setPosition(Vector3(100,0,100));
-
+	mCameraThing->setPosition(Vector3(mCamera->getPosition()));
 }
 void Renderer::createFrameListener(void)
 {
@@ -246,9 +248,11 @@ void Renderer::createScene(void)
     mSceneMgr->setWorldGeometry( filename );
 	HeightMap::getSingleton().loadTerrain(filename);
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
+
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 	createFoliage(foliageMaterial, FOLIAGE_NUM);
+	createCameraThing();
 
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));

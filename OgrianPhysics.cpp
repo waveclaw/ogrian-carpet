@@ -89,33 +89,41 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 	assert(thing != NULL);
 	assert(mWorldSize > 0);
 
-	std::vector<Thing*> vec;
-
 	if (grid_u >= 0 && 
 		grid_v >= 0 && 
 		grid_u < PHYSICS_GRID_SIZE && 
 		grid_v < PHYSICS_GRID_SIZE)
 	{
-		// it is in the grid
-		vec = mThingGrid[grid_u][grid_v];
+		// find the thing from the grid
+		size_t s = mThingGrid[grid_u][grid_v].size();
+		for (unsigned int i=0; i<mThingGrid[grid_u][grid_v].size(); i++)
+		{
+			if (mThingGrid[grid_u][grid_v][i] == thing)
+			{
+				// erase it
+				mThingGrid[grid_u][grid_v].erase(mThingGrid[grid_u][grid_v].begin()+i);
+				break;
+			}
+		}
+		// assert that one was removed
+		assert(mThingGrid[grid_u][grid_v].size() == s-1);
 	}
 	else
 	{
-		// it is in the others
-		vec = mOtherThings;
-	}
-
-	// find the thing from the selected vector
-	for (unsigned int i=0; i<vec.size(); i++)
-	{
-		if (vec[i] == thing)
+		// find the thing from the other things
+		size_t s = mOtherThings.size();
+		for (unsigned int i=0; i<mOtherThings.size(); i++)
 		{
-			// erase it
-			vec.erase(vec.begin()+i);
-			break;
+			if (mOtherThings[i] == thing)
+			{
+				// erase it
+				mOtherThings.erase(mOtherThings.begin()+i);
+				break;
+			}
 		}
+		// assert that one was removed
+		assert(mOtherThings.size() == s-1);
 	}
-	assert(i<vec.size());
 }
 
 // remove a thing from the world
@@ -126,6 +134,7 @@ void Physics::deleteThing(Thing* thing)
 	_removeThing(thing, getGridU(pos.x), getGridV(pos.z));
 
 	// remove it from allThings
+	size_t s = mAllThings.size();
 	for (unsigned int i=0; i<mAllThings.size(); i++)
 	{
 		if (mAllThings[i] == thing)
@@ -136,7 +145,8 @@ void Physics::deleteThing(Thing* thing)
 		}
 	}
 
-	assert(i<mAllThings.size());
+	// assert that one was removed
+	assert(mAllThings.size() == s-1);
 
 	// delete it
 	delete thing;
@@ -304,7 +314,7 @@ Physics& Physics::getSingleton(void)
 
 Physics::~Physics()
 {
-	clear();
+	//clear();
 }
 
 }

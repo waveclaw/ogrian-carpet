@@ -84,6 +84,7 @@ protected:
 
     virtual void chooseSceneManager(void);
     virtual void createCamera(void);
+	virtual void createCameraThing(void);
     virtual void createFrameListener(void);
 
 	// Create a sky using the specified material
