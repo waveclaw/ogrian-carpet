@@ -71,6 +71,11 @@ void Renderer::go(void)
     mRoot->startRendering();
 }
 
+OgrianFrameListener* Renderer::getFrameListener()
+{
+	return mFrameListener;
+}
+
 Renderer& Renderer::getSingleton(void)
 {
 	if (!ms_Singleton) 

@@ -62,6 +62,8 @@ public:
 
 	CameraThing* getCameraThing();
 
+	OgrianFrameListener* getFrameListener();
+
 	static Renderer& getSingleton(void);
 
 protected:

@@ -225,6 +225,16 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 	}
 }
 
+void OgrianFrameListener::setInvertY(bool yinv)
+{
+	mYinvert = yinv;
+}
+
+bool OgrianFrameListener::getInvertY()
+{
+	return mYinvert;
+}
+
 bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 {
     /* Rotation factors, may not be used if the second mouse button is pressed. */
@@ -239,7 +249,7 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
     else
     {
         mRotX = -mInputDevice->getMouseRelativeX() * 0.13;
-        mRotY =  mInputDevice->getMouseRelativeY() * 0.13;
+		mRotY =  mInputDevice->getMouseRelativeY() * 0.13 * (mYinvert ? 1 : -1);
     }
 
 

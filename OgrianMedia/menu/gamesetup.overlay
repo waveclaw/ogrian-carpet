@@ -36,31 +36,43 @@ SS/Setup/HostScreen/Overlay
 
 		}
 		    
-		container BorderButton(SS/Setup/HostScreen/Host) : SS/Templates/BasicButton
+		container BorderButton(SS/Setup/HostScreen/Yinvert) : SS/Templates/BasicButton
 		{
-			left 0.82
+			left 0.7
+			top 0.15
+			width 0.3 
+			caption SS/Templates/BasicText y: INV (ON)
+		}
+
+		container BorderButton(SS/Setup/HostScreen/Play) : SS/Templates/BasicButton
+		{
+			left 0.7
 			top 0.45
-			caption SS/Templates/BasicText HOST
+			width 0.3 
+			caption SS/Templates/BasicText P: PLAY
 		}
 
 
 		container BorderButton(SS/Setup/HostScreen/Join) : SS/Templates/BasicButton
 		{
-			left 0.82
+			left 0.7
 			top 0.60
-			caption SS/Templates/BasicText JOIN
+			width 0.3 
+			caption SS/Templates/BasicText J: JOIN
 		}
 
 		container BorderButton(SS/Setup/HostScreen/Exit) : SS/Templates/BasicButton
 		{
-			left 0.82
+			left 0.7
 			top 0.75
-			caption SS/Templates/BasicText EXIT
+			width 0.3 
+			caption SS/Templates/BasicText Q: QUIT
 		}
 				
 
 		container TextBox(SS/Setup/HostScreen/Text) : SS/Templates/BasicTextBox
 		{
+   			caption MAP:
 		}
 
 	}

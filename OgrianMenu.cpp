@@ -51,10 +51,10 @@ Menu::Menu()
 	
 	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
 
-	list->addListItem(new StringResource("1: map 1"));
-	list->addListItem(new StringResource("2: map 2"));
-	list->addListItem(new StringResource("3: map 3"));
-	list->addListItem(new StringResource("4: map 4"));
+	list->addListItem(new StringResource("1: Map 1"));
+	list->addListItem(new StringResource("2: Map 2"));
+	list->addListItem(new StringResource("3: Map 3"));
+	list->addListItem(new StringResource("4: Map 4"));
 }
 
 Menu::~Menu()
@@ -64,14 +64,37 @@ Menu::~Menu()
 
 bool Menu::processKeyInput(InputReader* input)
 {
-    if( input->isKeyDown( KC_Q) )
+    if ( input->isKeyDown( KC_Q) )
     {            
         return false;
     }
 
-    if( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
+    if ( input->isKeyDown( KC_ESCAPE)  && mTimeUntilNextToggle <= 0)
     {            
         hideMenu();
+    }
+
+	// Y toggles the inversion of the mouse Y axis
+    if ( input->isKeyDown( KC_Y)  && mTimeUntilNextToggle <= 0)
+    {            
+		OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
+
+		if (ofl->getInvertY())  // uninvert the mouse y axis
+		{
+			GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+				->setParameter("caption", "SS/Templates/BasicText y: INV (OFF)");
+
+			ofl->setInvertY(false);
+		}
+		else // invert the mouse y axis
+		{
+			GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Yinvert")
+				->setParameter("caption", "SS/Templates/BasicText y: INV (ON)");
+
+			ofl->setInvertY(true);
+		}
+
+        mTimeUntilNextToggle = KEY_DELAY;
     }
 
 	return true;
@@ -89,9 +112,9 @@ void Menu::showMenu()
 
 	mOverlay->show();
 
-	mActive = true;
-
     mTimeUntilNextToggle = KEY_DELAY;
+
+	mActive = true;
 }
 
 void Menu::hideMenu()

@@ -83,6 +83,9 @@ public:
 
 	void switchKeyMode() ;
 
+	void setInvertY(bool yinv);
+	bool getInvertY();
+
 	void keyClicked(KeyEvent* e) ;
 	void keyPressed(KeyEvent* e) {}
 	void keyReleased(KeyEvent* e) {}
@@ -94,6 +97,7 @@ protected:
 
     Vector3 mTranslateVector;
     RenderWindow* mWindow;
+	bool mYinvert;
     bool mStatsOn;
     bool mUseBufferedInputKeys, mUseBufferedInputMouse, mInputTypeSwitchingOn;
 	unsigned int mNumScreenShots;
