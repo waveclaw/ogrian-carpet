@@ -45,7 +45,7 @@ namespace Ogrian
 
 Input::Input()
 {
-	mTimeUntilNextToggle = 0;
+	mTimeUntilNextToggle = -1;
 	mTimeUntilNextCast = 0;
 }
 
@@ -118,11 +118,8 @@ bool Input::processKeyInput(InputReader* input)
 
 void Input::frame(Real time)
 {
-	if (mTimeUntilNextToggle >= 0) 
-		mTimeUntilNextToggle -= time;
-
-	if (mTimeUntilNextCast >= 0) 
-		mTimeUntilNextCast -= time;
+	mTimeUntilNextToggle -= time;
+	mTimeUntilNextCast -= time;
 }
 
 //----------------------------------------------------------------------------

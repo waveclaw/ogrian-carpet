@@ -102,7 +102,7 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 
     mCamera = cam;
     mWindow = win;
-    mStatsOn = true;
+    mStatsOn = false;
 	mNumScreenShots = 0;
 	mTimeUntilNextToggle = 0;
     mSceneDetailIndex = 0;
