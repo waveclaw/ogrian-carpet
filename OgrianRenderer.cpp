@@ -133,9 +133,23 @@ bool Renderer::setup(void)
 
     createFrameListener();
 
+	readConfig();
+
     return true;
 
 }
+
+//----------------------------------------------------------------------------
+
+void Renderer::readConfig()
+{
+	// invert the mouse according to the config file
+	ConfigFile config;
+	config.load( "config.cfg" );
+	if (config.getSetting( "mouse_y_inv" ) == "true");
+	else Menu::getSingleton().button_invertMouseToggle();
+}
+
 //----------------------------------------------------------------------------
 
 /** Configures the application - returns false if the user chooses to abandon configuration. */

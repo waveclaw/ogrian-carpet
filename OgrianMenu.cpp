@@ -81,8 +81,6 @@ Menu::~Menu()
 //----------------------------------------------------------------------------
 void Menu::button_invertMouseToggle()
 {
-	setMessage("toggled");
-
 	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
 
 	if (ofl->getInvertY())  // uninvert the mouse y axis

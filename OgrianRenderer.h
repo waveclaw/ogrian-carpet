@@ -57,7 +57,7 @@ public:
     void go(void);
 
 	// create random foilage using the specified material
-	virtual void createFoliage(const String& material, int num);
+	void createFoliage(const String& material, int num);
 
 	// get the SceneManager
 	SceneManager* getSceneManager(void);
@@ -101,28 +101,31 @@ protected:
 
     // These internal methods package up the stages in the startup process
     /** Sets up the application - returns false if the user chooses to abandon configuration. */
-    virtual bool setup(void);
+    bool setup(void);
     /** Configures the application - returns false if the user chooses to abandon configuration. */
-    virtual bool configure(void);
+    bool configure(void);
 
-    virtual void chooseSceneManager(void);
-    virtual void createCamera(void);
-	virtual void createCameraThing(void);
-    virtual void createFrameListener(void);
+    void chooseSceneManager(void);
+    void createCamera(void);
+	void createCameraThing(void);
+    void createFrameListener(void);
 
 	// Create a sky using the specified material
-	virtual void createSky(const String& material);
+	void createSky(const String& material);
 
 	// create an ocean using the specified material
-	virtual void createOcean(const String& material);
+	void createOcean(const String& material);
 
     // Just override the mandatory create scene method
     void createScene(void);
 
-    virtual void createViewports(void);
+    void createViewports(void);
 
     /// Method which will define the source of resources (other than current folder)
-    virtual void setupResources(void);
+    void setupResources(void);
+
+	// read in the game configuration
+	void readConfig(void);
 };
 
 }

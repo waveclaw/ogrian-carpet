@@ -29,6 +29,8 @@ See OgrianFrameListener.h for command listings
 /*------------------------------------*/
 
 
+#include "OgreConfigFile.h"
+
 #include "OgrianFrameListener.h"
 #include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
