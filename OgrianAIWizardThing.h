@@ -89,11 +89,18 @@ public:
 			if (wuid != getUID()) // if its not me
 			{
 				enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(wuid));
-				Real dist = axisDistance(enemy);
-				if (dist < bestDist || bestWuid == -1) // if its the closest so far, or the first
+				if (enemy == 0)
 				{
-					bestDist = dist; // its the new closest 
-					bestWuid = wuid;
+					LogManager::getSingleton().logMessage(String("ERROR, wuid not found for AI:") << wuid);
+				}
+				else
+				{
+					Real dist = axisDistance(enemy);
+					if (dist < bestDist || bestWuid == -1) // if its the closest so far, or the first
+					{
+						bestDist = dist; // its the new closest 
+						bestWuid = wuid;
+					}
 				}
 			}
 		}

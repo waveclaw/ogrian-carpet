@@ -676,7 +676,6 @@ void Physics::clear()
 		delete mEffects[mEffects.size()-1];
 		mEffects.pop_back();
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -914,6 +913,7 @@ int Physics::numTeams()
 Team* Physics::getTeam(int index)
 {
 	if (index < 0) return 0;
+	if (index >= (int)mTeams.size()) return 0;
 	return mTeams[index];
 }
 
@@ -924,7 +924,7 @@ void Physics::clearTeams()
 	while (mTeams.size() > 0)
 	{
 		delete mTeams[mTeams.size()-1];
-		mTeams.erase(mTeams.end());
+		mTeams.pop_back();
 	}
 }
 

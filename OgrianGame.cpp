@@ -73,6 +73,8 @@ void Game::startGame()
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
 	Renderer::getSingleton().getCameraThing()->setHealth(CONR("WIZARD_HEALTH"));
 
+	Physics::getSingleton().clearTeams();
+
 	if (Multiplayer::getSingleton().wasClient()) startClientGame();
 	else if (Multiplayer::getSingleton().isServer()) startServerGame();
 	else startSkirmishGame();
@@ -97,7 +99,7 @@ void Game::startServerGame()
 void Game::startSkirmishGame()
 {
 	// make a team for the player
-	Physics::getSingleton().newTeam(0); 
+	Physics::getSingleton().newTeam(Renderer::getSingleton().getCameraThing()->getUID()); 
 
 	// load AI Wizards
 	for (int i=0; i<CONI("NUM_BOTS"); i++)
