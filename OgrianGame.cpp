@@ -139,7 +139,7 @@ void Game::serverVictoryCheck()
 
 void Game::loadSounds()
 {
-	SOUND_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3");
+	SOUND_WHOOSH = Audio::getSingleton().loadSound("Media/sounds/whoosh2.mp3", true);
 	SOUND_BANG = Audio::getSingleton().loadSound("Media/sounds/boom2.mp3");
 	SOUND_HISS = Audio::getSingleton().loadSound("Media/sounds/hiss1.wav");
 	SOUND_CHIRP = Audio::getSingleton().loadSound("Media/sounds/zap1.wav");

@@ -562,8 +562,8 @@ void Thing::_updateAudibility()
 		if (wasInEarshot && !mInEarshot)
 			Audio::getSingleton().stopSound(mCurrentSound);
 
-		// start the sound again when it comes in range
-		if (!wasInEarshot && mInEarshot)
+		// start the sound again when it comes in range, if it is a "long" sound
+		if (!wasInEarshot && mInEarshot && Audio::getSingleton().isLong(mSoundId))
 			mCurrentSound = Audio::getSingleton().playSound(mSoundId, getPosition());
 	}
 }

@@ -43,10 +43,13 @@ public:
 	virtual ~Audio();
 
 	// load a sound. returns the id number of the sound
-	int loadSound(String filename, bool loop=false);
+	int loadSound(String filename, bool isLong=false, bool loop=false);
 
 	// start playing a sound. Returns the channel of the sound.
 	int playSound(int id, Vector3 pos);
+
+	// returns true if the sound is considered "long"
+	bool isLong(int id);
 	
 	// set the position of a sound
 	void setSoundPosition(int channel, Vector3 pos);
@@ -80,6 +83,7 @@ private:
 	Real mScale; // a scalar applied to 3d positioning
 
 	std::vector<FSOUND_SAMPLE*> mSamples;
+	std::vector<bool> mIsLong;
 };
 
 }

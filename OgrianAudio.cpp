@@ -78,7 +78,7 @@ void Audio::playSong(String filename)
 
 //----------------------------------------------------------------------------
 
-int Audio::loadSound(String filename, bool loop)
+int Audio::loadSound(String filename, bool isLong, bool loop)
 {
 	// load the sound
 	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename.c_str(), 
@@ -93,8 +93,17 @@ int Audio::loadSound(String filename, bool loop)
 	}
 
 	mSamples.push_back(sound);
+	mIsLong.push_back(isLong);
 
 	return (int)mSamples.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+
+bool Audio::isLong(int id)
+{
+	return mIsLong[id];
 }
 
 //----------------------------------------------------------------------------
