@@ -69,6 +69,8 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 
 	int skin = atoi(config.getSetting( "skin" ).c_str());
 	setSkin(skin);
+
+	setLava(true);
 }
 
 //----------------------------------------------------------------------------

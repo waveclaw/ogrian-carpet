@@ -170,7 +170,7 @@ void HeightMap::loadTerrain(const String& filename)
 	mScale.x = mScale.z = atof( config.getSetting( "Scale.xz" ).c_str() );
 	mScale.y = atof( config.getSetting( "Scale.y" ).c_str() );
 
-	String terrain_filename = config.getSetting( "HeightMap" );
+	String terrain_filename = config.getSetting( "Heightmap.image" );
 
 	mImage->load( terrain_filename );
 

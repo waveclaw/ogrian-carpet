@@ -21,7 +21,6 @@ PageSource=Heightmap
 
 # Heightmap-source specific settings
 Heightmap.image=h_cliffs.png
-HeightMap=h_cliffs.png
 
 # If you use RAW, fill in the below too
 # RAW-specific setting - size (horizontal/vertical)

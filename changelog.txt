@@ -1,3 +1,14 @@
+
+0.7.1:
+-some new sprites
+-removed baloons, mana go to castles on their own
+-nerfed ticks
+-improved gnomes
+-added a map option to make lava deadly
+
+
+
+
 0.7:
 -new castle model and behavior
 -spell selection system
@@ -16,8 +27,4 @@
 -added gnomes
 -added albatross!es
 
-0.7.1
--some new sprites
--removed baloons, mana go to castles on their own
--nerfed ticks
--improved gnomes
+

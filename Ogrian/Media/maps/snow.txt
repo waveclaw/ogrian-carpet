@@ -6,6 +6,8 @@ SkyMaterial=Ogrian/CloudySky
 FoliageMaterial=Ogrian/PineTree
 FoliageAmount=300
 
+Lava=1
+
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_snow.jpg
@@ -21,7 +23,6 @@ PageSource=Heightmap
 
 # Heightmap-source specific settings
 Heightmap.image=h_crescent.png
-HeightMap=h_crescent.png
 
 # If you use RAW, fill in the below too
 # RAW-specific setting - size (horizontal/vertical)

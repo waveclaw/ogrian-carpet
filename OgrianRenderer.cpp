@@ -293,6 +293,7 @@ void Renderer::loadMap(String configfile, bool server)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" ).c_str();
 	int foliageNum = atoi(config.getSetting( "FoliageAmount" ).c_str());
+	int lava = atoi(config.getSetting( "Lava" ).c_str());
 
 	// set the fog
 	mSceneMgr->setFog(FOG_NONE);
@@ -313,6 +314,9 @@ void Renderer::loadMap(String configfile, bool server)
 
 	createCameraThing();
 	
+	// set the lava
+	mCameraThing->setLava(lava > 0);
+
 	// dont make foliage for a client
 	if (server)	createFoliage(foliageNum);
 

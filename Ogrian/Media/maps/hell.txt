@@ -7,6 +7,8 @@ Scale.y=.5
 FoliageMaterial=Ogrian/PineTree
 FoliageAmount=300
 
+Lava=1
+
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_hell.jpg
@@ -22,7 +24,6 @@ PageSource=Heightmap
 
 # Heightmap-source specific settings
 Heightmap.image=h_islands.png
-HeightMap=h_islands.png
 
 # If you use RAW, fill in the below too
 # RAW-specific setting - size (horizontal/vertical)
