@@ -51,6 +51,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mStopSpeedTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
+	mNumHuts = 0;
 	mBar = 0;
 	mTeam = 0;
 	mSkin = -1;
@@ -330,10 +331,24 @@ void WizardThing::setVelocity(Vector3 vel)
 void WizardThing::collided(Thing* e)
 {
 	// if its your castle
-	if(!mGhost && e->getType() == CASTLEFLAG && e->getTeamNum() == getTeamNum())
+	if(!mGhost && e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
 		setHealth(CONI("WIZARD_HEALTH"));
 }
 
+//----------------------------------------------------------------------------
+
+void WizardThing::addHut()
+{
+	mNumHuts++;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeHut()
+{
+	mNumHuts--;
+}
+	
 //----------------------------------------------------------------------------
 	
 void WizardThing::move(Real time)
@@ -348,7 +363,7 @@ void WizardThing::move(Real time)
 		if (Clock::getSingleton().getTime() > mNextRegenTime)
 		{
 			mNextRegenTime = Clock::getSingleton().getTime() + CONT("WIZARD_MANA_REGEN_PERIOD");
-			mActiveMana += CONI("WIZARD_MANA_REGEN");
+			mActiveMana += CONI("WIZARD_MANA_REGEN") + mNumHuts*CONI("WIZARD_MANA_REGEN_BONUS");
 			if (mActiveMana > mBaseMana)
 				mActiveMana = mBaseMana;
 

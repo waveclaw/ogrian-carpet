@@ -95,7 +95,7 @@ void BuildSpellThing::collided(Thing* e)
 {
 	if (!isAlive()) return;
 
-	if (e->getType() == TOWER && e->getTeamNum() == getTeamNum())
+	if (e->getType() == TOWERTHING && e->getTeamNum() == getTeamNum())
 	{
 		// unbuild the tower
 		((TowerThing*)e)->unbuild();

@@ -146,6 +146,10 @@ public:
 	virtual void speed(Real duration);
 	virtual bool isSpeeding();
 
+	// each hut adds a point to regeneration
+	virtual void addHut();
+	virtual void removeHut();
+
 private:
 	RampThing* mRamp;
 	HealthBarEffect* mBar;
@@ -158,6 +162,8 @@ private:
 
 	int mActiveMana;
 	int mBaseMana;
+
+	int mNumHuts;
 
 	Time mNextRegenTime;
 	Time mLastSetPosTime;

@@ -298,7 +298,7 @@ public:
 
 	virtual bool isBuilding() { return true; }
 	
-	virtual ThingType getType()	{ return TOWER; }
+	virtual ThingType getType()	{ return TOWERTHING; }
 	
 private:
 	Real mTargetY;

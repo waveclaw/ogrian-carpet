@@ -45,6 +45,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianCameraThing.h"
 #include "OgrianFoliageThing.h"
 #include "OgrianTowerThing.h"
+#include "OgrianHutThing.h"
 
 #include "OgreLogManager.h"
 
@@ -371,13 +372,15 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case WIZARDTHING: 
 		case CAMERATHING: return new WizardThing();
 
-		case TOWER: return new TowerThing(0);
+		case HUTTHING: return new HutThing();
 
-		case CASTLEKEEP: return new CastleKeepThing(0);
+		case TOWERTHING: return new TowerThing(0);
 
-		case CASTLETURRET: return new CastleTurretThing(0);
+		case CASTLEKEEPTHING: return new CastleKeepThing(0);
 
-		case CASTLEFLAG: return new CastleFlagThing();
+		case CASTLETURRETTHING: return new CastleTurretThing(0);
+
+		case CASTLEFLAGTHING: return new CastleFlagThing();
 
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 

@@ -35,6 +35,7 @@ starting games and detecting victory.
 #include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 #include "OgrianTowerThing.h"
+#include "OgrianHutThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
@@ -274,6 +275,10 @@ void Game::startSkirmishGame()
 
 			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
 			Physics::getSingleton().addThing(mana);
+
+			HutThing* hut = new HutThing(pos);
+			Physics::getSingleton().addThing(hut);
+
 		}
 	}
 

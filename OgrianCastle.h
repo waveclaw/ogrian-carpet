@@ -134,7 +134,7 @@ public:
 		return getPosY() - mGroundY;
 	}
 
-	virtual ThingType getType()	{ return CASTLETURRET; }
+	virtual ThingType getType()	{ return CASTLETURRETTHING; }
 	
 	virtual bool isBuilding() { return true; }
 	
@@ -167,7 +167,7 @@ public:
 		mCrane = 0;
 	}
 
-	virtual ThingType getType()	{ return CASTLETURRET; }
+	virtual ThingType getType()	{ return CASTLETURRETTHING; }
 	
 	virtual void setPercentage(Real per);
 
@@ -189,7 +189,7 @@ public:
 			CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
 	}
 
-	virtual ThingType getType()	{ return CASTLEKEEP; }
+	virtual ThingType getType()	{ return CASTLEKEEPTHING; }
 	
 	virtual void setPercentage(Real per);
 
@@ -278,7 +278,7 @@ public:
 	// the castle doesn't move, but it does do stuff every frame
 	virtual void move(Real time);
 
-	virtual ThingType getType()	{ return CASTLEFLAG; }
+	virtual ThingType getType()	{ return CASTLEFLAGTHING; }
 
 private:
 	int mMana;

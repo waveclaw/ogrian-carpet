@@ -12,6 +12,25 @@ material 1 - Default
 	}
 }
 
+material Ogrian/HutBall
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{	
+
+				texture halo.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/CastleBeacon
 {
 	technique

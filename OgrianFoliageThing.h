@@ -91,7 +91,7 @@ public:
 
 	virtual void collided(Thing* e)
 	{
-		if (e->getType() == CASTLETURRET || e->getType() == CASTLEKEEP)
+		if (e->getType() == CASTLETURRETTHING || e->getType() == CASTLEKEEPTHING)
 			destroy();
 	}
 };

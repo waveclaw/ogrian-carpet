@@ -90,7 +90,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	Physics::getSingleton().addThing(mBlocks[0]);
 
 	// start at level 0
-	setMana(600);
+	setMana(50);
 
 	setHealth(CONI("CASTLE_HEALTH"));
 

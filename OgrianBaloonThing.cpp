@@ -165,7 +165,7 @@ void BaloonThing::collided(Thing* thing)
 		mTarget->destroy();
 	}
 
-	if (thing->getType() ==	CASTLEFLAG && thing == mTarget)
+	if (thing->getType() ==	CASTLEFLAGTHING && thing == mTarget)
 	{
 		// drop off our mana
 		((Castle*)mTarget)->addMana(unload());
