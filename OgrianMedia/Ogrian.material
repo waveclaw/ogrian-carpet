@@ -4,8 +4,8 @@ material Ogrian/Ocean
 	{
 		pass
 		{
-			ambient 0.3 0.3 0.3
-			scene_blend modulate
+			ambient 1 1 1
+			scene_blend add
 			cull_hardware none
 			cull_software none
 

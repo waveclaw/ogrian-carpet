@@ -132,50 +132,6 @@ Vector3 Renderer::getCameraPos(void)
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
-	      Entity *waterEntity;
-        Plane waterPlane;
-
-        // Set ambient light
-        mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-        // create a water plane/scene node
-        waterPlane.normal = Vector3::UNIT_Y; 
-        waterPlane.d = -30; 
-        MeshManager::getSingleton().createPlane(
-            "WaterPlane",
-            waterPlane,
-            2800, 2800,
-            20, 20,
-            true, 1, 
-            10, 10,
-            Vector3::UNIT_Z
-        );
-
-        waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
-        waterEntity->setMaterialName("Ogrian/OceanBed"); 
-
-        SceneNode *waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
-        waterNode->attachObject(waterEntity); 
-        waterNode->translate(1000, 0, 1000);
-
-        mSceneMgr->setWorldGeometry( "world.cfg" );
-
-
-	// Define the required skyplane
-    Plane plane;
-    // num of world units from the camera
-    plane.d = SKYPLANE_DISTANCE;
-    // Above the camera, facing down
-    plane.normal = -Vector3::UNIT_Y;
-    // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, false, 0.5f);
-
-       mCamera->setPosition(0,100,0);
-
-
-
-	/*
-	//Physics::getSingleton().test();
-
     Entity *waterEntity;
     Plane waterPlane;
     
@@ -227,15 +183,9 @@ void Renderer::createScene(void)
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
 
-    // Create a light
-    Light* l = mSceneMgr->createLight("MainLight");
-    l->setPosition(20,80,50);
-
 	// set up the terrain
-    //mSceneMgr -> setWorldGeometry( "terrain.cfg" );
-	//HeightMap::getSingleton().loadTerrain("terrain.cfg");
-    mSceneMgr -> setWorldGeometry( "world.cfg" );
-	//HeightMap::getSingleton().loadTerrain("world.cfg");
+    mSceneMgr->setWorldGeometry( "world.cfg" );
+	HeightMap::getSingleton().loadTerrain("world.cfg");
 
 	// Define the required skyplane
     Plane plane;
@@ -244,12 +194,12 @@ void Renderer::createScene(void)
     // Above the camera, facing down
     plane.normal = -Vector3::UNIT_Y;
     // Create the plane 1000 units wide, tile the texture 3 times
-    mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, false, 0.5f);
+    mSceneMgr->setSkyPlane(true, plane, "Ogrian/CloudySky",1000,300, true, SKYPLANE_BOW);
 
     mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
 
 	// set up some foliage
-	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
+	/*SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 	BillboardSet* grassSet = sceneMgr->createBillboardSet("Foliage",1);
 	grassSet->setBillboardType(BBT_ORIENTED_COMMON);
 	grassSet->setCommonDirection(Vector3::UNIT_Y);

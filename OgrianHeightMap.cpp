@@ -65,13 +65,13 @@ void HeightMap::loadTerrain( const String& filename )
 
 	config.load( filename );
 
-	mScalex = atof( config.getSetting( "ScaleX" ) );
+	mScalex = atof( config.getSetting( "Scale.x" ) );
 
-	mScaley = atof( config.getSetting( "ScaleY" ) );
+	mScaley = atof( config.getSetting( "Scale.y" ) );
 
-	mScalez = atof( config.getSetting( "ScaleZ" ) );
+	mScalez = atof( config.getSetting( "Scale.z" ) );
 
-	String terrain_filename = config.getSetting( "Terrain" );
+	String terrain_filename = config.getSetting( "HeightMap" );
 
 	mScale = Vector3( mScalex, mScaley, mScalez );
 
