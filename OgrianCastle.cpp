@@ -153,8 +153,12 @@ void Castle::move(Real time)
 
 void Castle::setHealth(int health)
 {
+	if (health < 0) health = 0;
+
 	DamageableThing::setHealth(health);
-	mBlocks[0]->setPercentage(health/CONR("CASTLE_HEALTH"));
+	mBlocks[0]->setPercentage(
+		(health + CONR("CASTLE_RUBBLE"))
+		/ (CONR("CASTLE_HEALTH") + CONR("CASTLE_RUBBLE")));
 
 	if (health == 0)
 		mRubble = true;
