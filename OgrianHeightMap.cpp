@@ -81,20 +81,29 @@ int HeightMap::_worldheight( int x, int z )
 Real HeightMap::getHeightAt(Real x, Real z)
 {
 	// This interpolates between the four corners
-	// It seems to be a bit jagged, but it won't be noticable with floaty things
+
+	// scale the coordinates
 	x /= mScalex;
 	z /= mScalez;
 
-	Real modx = x - int(x);
-	Real modz = z - int(z);
-	int fx = int(x);
-	int fz = int(z);
+	// a smoothing constant
+	float c = 4;
 
-	Real height00 = _worldheight(fx  ,fz)   * mScaley;
-	Real height01 = _worldheight(fx  ,fz+1) * mScaley;
-	Real height10 = _worldheight(fx+1,fz)   * mScaley;
-	Real height11 = _worldheight(fx+1,fz+1) * mScaley;
+	// calculate the matrix indeces for the grid cell
+	int fx = int(x/c)*c;
+	int fz = int(z/c)*c;
 
+	// calculate the relative location within the cell
+	Real modx = (x - fx)/c;
+	Real modz = (z - fz)/c;
+
+	// calculate the height at each corner of the cell
+	Real height00 = Real(_worldheight(fx  ,fz))   * mScaley;
+	Real height01 = Real(_worldheight(fx  ,fz+c)) * mScaley;
+	Real height10 = Real(_worldheight(fx+c,fz))   * mScaley;
+	Real height11 = Real(_worldheight(fx+c,fz+c)) * mScaley;
+
+	// calculate the weighted average
 	Real height = height00*(1-modx)*(1-modz) 
 					+ height01*(1-modx)*(modz) 
 					+ height10*(modx)*(1-modz) 
