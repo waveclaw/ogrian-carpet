@@ -44,14 +44,13 @@ class ClaimSpell : public Spell
 public:
 
 	// make an instance of this spell
-	virtual int makeThing(Vector3 pos, Vector3 dir)
+	virtual void makeThing(Vector3 pos, Vector3 dir)
 	{
 		dir.normalise();
 		dir *= CONR("CLAIMSPELL_SPEED");
 	
 		ClaimSpellThing* thing = new ClaimSpellThing(0, Renderer::getSingleton().getCameraThing()->getColour(), pos,dir);
 		Physics::getSingleton().addThing(thing);
-		return thing->getUID();
 	}
 
 	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/ClaimSpell/Ready"); }; 

@@ -28,7 +28,9 @@ Description: This is a castle
 /*------------------------------------*/
 
 #include "OgrianCastle.h"
+#include "OgrianRenderer.h"
 #include "OgrianPhysics.h"
+#include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
 
 namespace Ogrian
@@ -449,6 +451,43 @@ void Castle::setLevel(Real level)
 
 	// set the number of baloons equal to the level+1
 	setNumBaloons(level+1);
+
+	// set the spells
+	setSpells(level);
+}
+
+//----------------------------------------------------------------------------
+
+void Castle::setSpells(int level)
+{
+	if (Multiplayer::getSingleton().isClient()) return;
+
+	// get our wizard
+	int wuid = Physics::getSingleton().getTeam(getTeamNum())->getWizardUID();
+	//WizardThing* wizard = Physics::getSingleton().getThing(wuid);
+
+	// set the spells
+	int cuid = Renderer::getSingleton().getCameraThing()->getUID();
+	if (wuid == cuid)
+	{
+		SpellManager::getSingleton().enableSpell(SPELL_BUILD);
+		SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
+		SpellManager::getSingleton().enableSpell(SPELL_FIREBALL);
+	}
+	else if (Multiplayer::getSingleton().isServer())
+	{
+		// find the right player
+		for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
+		{
+			PlayerInfo player = Multiplayer::getSingleton().getClient(i);
+			if (wuid == player.wizardUID)
+			{
+				Multiplayer::getSingleton().serverSendInt(SPELL_BUILD,ID_ENABLESPELL,player.id);
+				Multiplayer::getSingleton().serverSendInt(SPELL_CLAIM,ID_ENABLESPELL,player.id);
+				Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_ENABLESPELL,player.id);
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------

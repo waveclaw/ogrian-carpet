@@ -43,14 +43,13 @@ class BuildSpell : public Spell
 {
 public:
 	// make an instance of this spell
-	virtual int makeThing(Vector3 pos, Vector3 dir)
+	virtual void makeThing(Vector3 pos, Vector3 dir)
 	{
 		dir.normalise();
 		dir *= CONR("BUILDSPELL_SPEED");
 	
 		BuildSpellThing* thing = new BuildSpellThing(0, pos,dir);
 		Physics::getSingleton().addThing(thing);
-		return thing->getUID();
 	}
 
 	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Ready"); }; 

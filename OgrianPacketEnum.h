@@ -108,6 +108,8 @@ enum PacketID
 	ID_DIE,
 	ID_GHOST,
 	ID_MESSAGE,
+	ID_ENABLESPELL,
+	ID_DISABLESPELL,
 };
 
 #endif

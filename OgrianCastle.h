@@ -339,6 +339,9 @@ private:
 	// set the number of baloons
 	void setNumBaloons(int num);
 
+	// set the spells for this castle's wizard
+	void setSpells(int level);
+
 	// genearate a target for a baloon
 	Thing* generateTarget(BaloonThing* baloon);
 };

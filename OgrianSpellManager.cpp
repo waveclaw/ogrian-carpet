@@ -44,6 +44,8 @@ namespace Ogrian
 
 SpellManager::SpellManager()
 {
+	mCurrentSpell = 0;
+
 	mSpells[SPELL_BUILD] = new BuildSpell();
 	mSpells[SPELL_CLAIM] = new ClaimSpell();
 	mSpells[SPELL_FIREBALL] = new FireballSpell();
@@ -51,7 +53,7 @@ SpellManager::SpellManager()
 	disableAllSpells();
 	enableSpell(SPELL_BUILD);
 	enableSpell(SPELL_CLAIM);
-	enableSpell(SPELL_FIREBALL);
+	//enableSpell(SPELL_FIREBALL);
 
 	readyDefaultSpell();
 }
@@ -81,6 +83,8 @@ void SpellManager::disableAllSpells()
 {
 	for (int i=0; i<NUM_SPELLS; i++)
 		disableSpell(i);
+	
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -89,7 +93,12 @@ void SpellManager::disableSpell(int spell)
 {
 	if (spell >= NUM_SPELLS) return;
 
+	if (!mSpells[spell]->getEnabled())
+		return;
+
 	mSpells[spell]->setEnabled(false);
+	
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -98,7 +107,12 @@ void SpellManager::enableSpell(int spell)
 {
 	if (spell >= NUM_SPELLS) return;
 
+	if (mSpells[spell]->getEnabled())
+		return;
+
 	mSpells[spell]->setEnabled(true);
+	
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -106,7 +120,7 @@ void SpellManager::enableSpell(int spell)
 void SpellManager::readyDefaultSpell()
 {
 	mCurrentSpell = 0;
-	readySpell(mCurrentSpell);
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -130,7 +144,7 @@ void SpellManager::readyNextSpell()
 		}
 	}
 	
-	readySpell(mCurrentSpell);
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
@@ -154,20 +168,13 @@ void SpellManager::readyPrevSpell()
 		}
 	}
 
-	readySpell(mCurrentSpell);
+	readyCurrentSpell();
 }
 
 //----------------------------------------------------------------------------
 
-void SpellManager::readySpell(int spell)
+void SpellManager::readyCurrentSpell()
 {
-	// ignore invalid spells
-	if (spell >= NUM_SPELLS) return;
-	if (spell < 0) return;
-
-	// dont ready disabled spells
-	if (!mSpells[spell]->getEnabled()) return;
-
 	// show the right icons
 	for (int i=0; i<NUM_SPELLS; i++)
 	{
@@ -185,7 +192,7 @@ void SpellManager::readySpell(int spell)
 	}
 
 	// show the name
-	Hud::getSingleton().setSpellName(mSpells[spell]->getString());
+	Hud::getSingleton().setSpellName(mSpells[mCurrentSpell]->getString());
 }
 
 //----------------------------------------------------------------------------

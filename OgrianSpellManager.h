@@ -65,7 +65,7 @@ public:
 
 private:
 	SpellManager();
-	virtual void readySpell(int spell);
+	virtual void readyCurrentSpell();
 
 	int mCurrentSpell;
 	Spell* mSpells[NUM_SPELLS];

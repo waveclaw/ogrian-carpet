@@ -670,6 +670,30 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				PlayerList::getSingleton().addPlayer(player);
 			return true;
 		}
+		case ID_ENABLESPELL: //////////////////////////////////////////////////////
+		{
+			// get the new score
+			int pid, spell;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(spell);
+
+			// set it
+			SpellManager::getSingleton().enableSpell(spell);
+			return true;
+		}
+		case ID_DISABLESPELL: //////////////////////////////////////////////////////
+		{
+			// get the new score
+			int pid, spell;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(spell);
+
+			// set it
+			SpellManager::getSingleton().disableSpell(spell);
+			return true;
+		}
 	}
 	return false;
 }
