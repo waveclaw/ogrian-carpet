@@ -112,20 +112,6 @@ bool Input::processKeyInput(InputReader* input)
         mTimeUntilNextCast = CONR("CLAIMSPELL_CAST_PERIOD");
 	}
 
-	// play song 1
-    if (input->isKeyDown(KC_N) && mTimeUntilNextToggle <= 0)
-    {
-		Audio::getSingleton().playSong("OgrianMedia/music/Bulerias.ogg");
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
-	
-	// play song 2
-    if (input->isKeyDown(KC_M) && mTimeUntilNextToggle <= 0)
-    {
-		Audio::getSingleton().playSong("OgrianMedia/music/Verdiales.ogg");
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
-
 	return true;
 }
 
