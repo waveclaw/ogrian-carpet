@@ -53,7 +53,7 @@ public:
 
 	virtual ~Team()
 	{
-		if (mCastle) delete mCastle;
+
 	}
 
 	int getWizardUID()

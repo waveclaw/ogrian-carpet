@@ -44,9 +44,11 @@ namespace Ogrian
 class CastleTowerThing : public DamageableThing
 {
 public:
-	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
+	CastleTowerThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
+		mCastle = castle;
+
 		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
 			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
 
@@ -60,19 +62,29 @@ public:
 		setPosY(getGroundY()+getHeight()*CONR("CASTLETOWER_OFFSET")*per);
 	}
 
+	virtual void damage(int amount, int sourceTeamNum)
+	{
+		mCastle->damage(amount, sourceTeamNum);
+	}
+
 	virtual ThingType getType()
 	{
 		return CASTLETOWER;
 	}
+	
+private:
+	DamageableThing* mCastle;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 class CastleWallThing : public DamageableThing
 {
 public:
-	CastleWallThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
+	CastleWallThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Wall", MODEL, "CastleWall", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
+		mCastle = castle;
+
 		static_cast<Model*>(getVisRep())->setMesh("wall.mesh",
 			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
 
@@ -86,14 +98,22 @@ public:
 		setPosY(getGroundY()+getHeight()*CONR("CASTLEWALL_OFFSET")*per);
 	}
 
+	virtual void damage(int amount, int sourceTeamNum)
+	{
+		mCastle->damage(amount, sourceTeamNum);
+	}
+
 	virtual ThingType getType()
 	{
 		return CASTLEWALL;
 	}
+
+private:
+	DamageableThing* mCastle;
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class Castle
+class Castle : public DamageableThing
 {
 public:
 	Castle(int teamNum, Vector3 pos);

@@ -38,6 +38,25 @@ material Ogrian/Wall
 		}
 	}
 }
+material Ogrian/Flag
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{	
+
+				texture flag.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Material/SOLID/
 {
 	technique

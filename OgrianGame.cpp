@@ -67,14 +67,6 @@ void Game::frame(Real time)
 	// tick the input
 	Menu::getSingleton().frame(time);
 	Input::getSingleton().frame(time);
-
-	// tick the castles
-	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
-	{
-		Castle* castle = Physics::getSingleton().getTeam(i)->getCastle();
-		if (castle) 
-			castle->frame(time);
-	}
 }
 
 //----------------------------------------------------------------------------
