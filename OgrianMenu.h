@@ -67,6 +67,9 @@ private:
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling
 	Overlay* mOverlay; // the menu overlay
+
+	bool mLoadMap; // true when a map is ready to be loaded
+	String mMapName; // the name of the map
 };
 
 }

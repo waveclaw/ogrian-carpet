@@ -47,12 +47,18 @@ template<> Ogrian::Renderer * Singleton< Ogrian::Renderer >::ms_Singleton = 0;
 namespace Ogrian
 {
 
+//----------------------------------------------------------------------------
+
 /// Standard constructor
 Renderer::Renderer()
 {
     mFrameListener = 0;
     mRoot = 0;
+
+	mMapLoaded = false;
 }
+//----------------------------------------------------------------------------
+
 /// Standard destructor
 Renderer::~Renderer()
 {
@@ -61,6 +67,8 @@ Renderer::~Renderer()
     if (mRoot)
         delete mRoot;
 }
+
+//----------------------------------------------------------------------------
 
 /// Start the example
 void Renderer::go(void)
@@ -71,10 +79,14 @@ void Renderer::go(void)
     mRoot->startRendering();
 }
 
+//----------------------------------------------------------------------------
+
 OgrianFrameListener* Renderer::getFrameListener()
 {
 	return mFrameListener;
 }
+
+//----------------------------------------------------------------------------
 
 Renderer& Renderer::getSingleton(void)
 {
@@ -85,11 +97,15 @@ Renderer& Renderer::getSingleton(void)
 	return Singleton<Renderer>::getSingleton();
 }
 
+//----------------------------------------------------------------------------
+
 SceneManager* Renderer::getSceneManager(void)
 {
 	return mSceneMgr;
 }
 
+
+//----------------------------------------------------------------------------
 
 // These internal methods package up the stages in the startup process
 /** Sets up the application - returns false if the user chooses to abandon configuration. */
@@ -117,6 +133,8 @@ bool Renderer::setup(void)
     return true;
 
 }
+//----------------------------------------------------------------------------
+
 /** Configures the application - returns false if the user chooses to abandon configuration. */
 bool Renderer::configure(void)
 {
@@ -136,23 +154,25 @@ bool Renderer::configure(void)
     }
 }
 
+//----------------------------------------------------------------------------
+
 void Renderer::chooseSceneManager(void)
 {
     // Get the SceneManager, in this case a generic one
     mSceneMgr = mRoot->getSceneManager(ST_EXTERIOR_FAR);
 }
+//----------------------------------------------------------------------------
+
 void Renderer::createCamera(void)
 {
     // Create the camera
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
-    // Position it 
-    mCamera->setPosition(Vector3(100,0,100));
-    // Look back along -Z
-    mCamera->lookAt(Vector3(300,0,300));
     mCamera->setNearClipDistance(CAMERA_NEAR_CLIP);
 	mCamera->setFOVy(CAMERA_FOV);
 }
+
+//----------------------------------------------------------------------------
 
 void Renderer::createCameraThing()
 {
@@ -161,17 +181,23 @@ void Renderer::createCameraThing()
 	Physics::getSingleton().addThing(mCameraThing);
 	mCameraThing->setPosition(Vector3(mCamera->getPosition()));
 }
+//----------------------------------------------------------------------------
+
 void Renderer::createFrameListener(void)
 {
     mFrameListener = new OgrianFrameListener(mWindow, mCamera);
     mFrameListener->showDebugOverlay(true);
     mRoot->addFrameListener(mFrameListener);
 }
+
+//----------------------------------------------------------------------------
 	
 CameraThing* Renderer::getCameraThing(void)
 {
 	return mCameraThing;
 }
+
+//----------------------------------------------------------------------------
 
 void Renderer::createSky(const String& material)
 {
@@ -184,6 +210,8 @@ void Renderer::createSky(const String& material)
     // Create the plane 1000 units wide, tile the texture 3 times
     mSceneMgr->setSkyPlane(true, plane, material,1000,300, true, SKYPLANE_BOW);
 }
+
+//----------------------------------------------------------------------------
 
 void Renderer::createOcean(const String& material)
 {
@@ -203,14 +231,21 @@ void Renderer::createOcean(const String& material)
         Vector3::UNIT_Z
     );
 
-    waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
-    waterEntity->setMaterialName(material); 
+	waterEntity = mSceneMgr->getEntity("water");
+    if (waterEntity == 0)
+	{
+		waterEntity = mSceneMgr->createEntity("water", "WaterPlane"); 
 
-    SceneNode *waterNode = 
-        mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
-    waterNode->attachObject(waterEntity); 
-    waterNode->translate(0, 0, 0);
+		waterEntity->setMaterialName(material); 
+	}
+
+
+	SceneNode *waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("WaterNode"); 
+	waterNode->attachObject(waterEntity); 
+	waterNode->translate(0, 0, 0);
 }
+
+//----------------------------------------------------------------------------
 
 void Renderer::createFoliage(const String& material, int num)
 {
@@ -236,8 +271,12 @@ void Renderer::createFoliage(const String& material, int num)
 	}
 }
 
+//----------------------------------------------------------------------------
+
 void Renderer::loadMap(String configfile)
 {
+	unloadMap();
+
 	/* Set up the options */
 	ConfigFile config;
 	config.load( configfile );
@@ -245,21 +284,53 @@ void Renderer::loadMap(String configfile)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	String foliageMaterial = config.getSetting( "FoliageMaterial" );
 
+	mCamera->setPosition(-10000,0,-10000);
+
 	// set up the terrain
     mSceneMgr->setWorldGeometry( configfile );
 	HeightMap::getSingleton().loadTerrain(configfile);
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 
 	createSky(skyMaterial);
-	createOcean(oceanMaterial);
+	//createOcean(oceanMaterial);
+
 	createFoliage(foliageMaterial, FOLIAGE_NUM);
 
+    // Position the camera
+    mCamera->setPosition(Vector3(100,0,100));
+    mCamera->lookAt(Vector3(300,0,300));
 	createCameraThing();
 
 	// start the game
 	Audio::getSingleton().start();
 	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
+
+	mMapLoaded = true;
 }
+
+//----------------------------------------------------------------------------
+
+void Renderer::unloadMap()
+{
+	if (!mMapLoaded) return;
+	
+	// stop the game
+	Audio::getSingleton().stop();
+	Renderer::getSingleton().getFrameListener()->setGameRunning(false);
+
+	// remove the parts of the scene // 
+
+	// remove the ocean
+	//mSceneMgr->getRootSceneNode()->removeChild("WaterNode");
+	//mSceneMgr->removeEntity("WaterEntity");
+
+	// remove all Things
+	Physics::getSingleton().clear();
+
+	mMapLoaded = false;
+}
+
+//----------------------------------------------------------------------------
 
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
@@ -274,12 +345,16 @@ void Renderer::createScene(void)
 	Menu::getSingleton().showMenu();
 }
 
+//----------------------------------------------------------------------------
+
 void Renderer::createViewports(void)
 {
     // Create one viewport, entire window
     Viewport* vp = mWindow->addViewport(mCamera);
     vp->setBackgroundColour(ColourValue(0,0,0));
 }
+
+//----------------------------------------------------------------------------
 
 /// Method which will define the source of resources (other than current folder)
 void Renderer::setupResources(void)
@@ -299,5 +374,7 @@ void Renderer::setupResources(void)
         ResourceManager::addCommonArchiveEx( archName, typeName );
     }
 }
+
+//----------------------------------------------------------------------------
 
 }

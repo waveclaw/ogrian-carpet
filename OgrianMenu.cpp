@@ -105,14 +105,8 @@ bool Menu::processKeyInput(InputReader* input)
 			->setParameter("caption", "LOADING...");
 
 		// load the map
-		//Renderer::getSingleton().loadMap("crescent.cfg");
-		
-		// Menu
-		//GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-			//->setParameter("caption", "MENU");
-
-		// hide the menu
-		hideMenu();
+		mMapName = "crescent.cfg";
+		mLoadMap = true;
 	}
 
 	// 2 loads islands
@@ -123,14 +117,8 @@ bool Menu::processKeyInput(InputReader* input)
 			->setParameter("caption", "LOADING...");
 
 		// load the map
-		Renderer::getSingleton().loadMap("islands.cfg");
-		
-		// Menu
-		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
-			->setParameter("caption", "MENU");
-		
-		// hide the menu
-		hideMenu();
+		mMapName = "islands.cfg";
+		mLoadMap = true;
 	}
 
 	return true;
@@ -141,6 +129,22 @@ void Menu::frame(Real time)
 	// decrement mTimeUntilNextToggle
 	if (mTimeUntilNextToggle >= 0) 
 		mTimeUntilNextToggle -= time;
+
+	// load a map if theres one ready
+	if (mLoadMap)
+	{
+		// load the map
+		Renderer::getSingleton().loadMap(mMapName);
+		
+		// Menu
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+			->setParameter("caption", "MENU");
+		
+		// hide the menu
+		hideMenu();
+
+		mLoadMap = false;
+	}
 }
 
 void Menu::showMenu()
