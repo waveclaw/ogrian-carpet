@@ -91,8 +91,8 @@ private:
     ///	Clears the vertex lookup table
     inline void clearVertexLookup()
     {
-	memset(mVertexLookup, 0xffffffff, 
-	       sizeof(ushort) * QUADTREE_SIZE * QUADTREE_SIZE);
+		memset(mVertexLookup, 0xffffffff, 
+			sizeof(ushort) * QUADTREE_SIZE * QUADTREE_SIZE);
     }
 
 

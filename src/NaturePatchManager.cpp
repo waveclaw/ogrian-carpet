@@ -5,6 +5,7 @@
 	Date: 2003/02/22
 
 	Author: Martin Persson
+	Modified by Mike Prosser
 
 *****************************************************************************/
 
@@ -50,18 +51,20 @@ NaturePatchManager::~NaturePatchManager()
     // delete shared buffers
     freeSharedBuffers();
 
+	// delete patches
     for (int i = 0; i < 324; i++)
     {
-	if (mPatches[i] != 0)
-	{
-	    mMapLoader->releaseData(mPatches[i]->mData);
-	    delete mPatches[i];
-	}
+		if (mPatches[i] != 0)
+		{
+			mMapLoader->releaseData(mPatches[i]->mData);
+			delete mPatches[i];
+		}
     }
 }
 
 //----------------------------------------------------------------------------
 
+// for testing only 
 Material *NaturePatchManager::createTerrainMaterial()
 {
 #if 0
@@ -85,24 +88,12 @@ Material *NaturePatchManager::createTerrainMaterial()
     layer = mMaterial->addTextureLayer("lightmap_test.jpg", 1);
     layer->setColourOperationEx(LBX_MODULATE, LBS_TEXTURE, LBS_CURRENT);
 
-/*  // test...
-    layer = mMaterial->addTextureLayer("grass_1024.jpg", 0);
-
-    layer = mMaterial->addTextureLayer("grass_blend.png", 0);
-    layer->setColourOperationEx(LBX_BLEND_TEXTURE_ALPHA, LBS_TEXTURE, LBS_CURRENT);
-
-    layer = mMaterial->addTextureLayer("terr_rock6.jpg", 0);
-    layer->setColourOperationEx(LBX_BLEND_CURRENT_ALPHA, LBS_TEXTURE, LBS_CURRENT);
-*/
 #endif
 #if USE_NORMALS
     mMaterial->setLightingEnabled(true);
-//  mMaterial->setShadingMode(SO_PHONG);
 #else
     mMaterial->setLightingEnabled(false);
 #endif
-    
-//	mMaterial->setTextureFiltering(TFO_NONE);
 
     return mMaterial;
 #endif
@@ -116,29 +107,29 @@ bool NaturePatchManager::initialise(SceneNode *sceneRoot,
 {
     if (!mInited)
     {
-	mSceneRoot  = sceneRoot;
-	mMapLoader = loader;
+		mSceneRoot  = sceneRoot;
+		mMapLoader = loader;
 
-	if (!initLookupTables())
-	    return false;
-    
-	if (!initSharedBuffers())
-	{
-	    freeLookupTables();
-	    return false;
-	}
+		if (!initLookupTables())
+			return false;
+	    
+		if (!initSharedBuffers())
+		{
+			freeLookupTables();
+			return false;
+		}
 
-	// get the map and zone size
-	mMapSize  = loader->getMapSize();
-	mZoneSize = loader->getZoneSize();
+		// get the map and zone size
+		mMapSize  = loader->getMapSize();
+		mZoneSize = loader->getZoneSize();
 
-	mPageSize = 17;	// get this from loader
+		mPageSize = 17;	// get this from loader
 
-	// set to some some large value will force reload of all patches
-	mCenterPatchX = -10000000;
-	mCenterPatchY = -10000000;
-	
-	mInited = true;
+		// set to some some large value will force reload of all patches
+		mCenterPatchX = -10000000;
+		mCenterPatchY = -10000000;
+		
+		mInited = true;
     }
 
     return true;
@@ -200,13 +191,13 @@ bool NaturePatchManager::initLookupTables()
     mEastEdgeQuad   = new short[QUADTREE_NODES];
 
     if (mQuadNodeLookup == 0 || mNorthNeighbor == 0 ||
-	mSouthNeighbor  == 0 || mWestNeighbor  == 0 ||
-	mEastNeighbor   == 0 || mNorthEdgeQuad == 0 || 
-	mSouthEdgeQuad  == 0 || mWestEdgeQuad  == 0 ||
-	mEastEdgeQuad   == 0)
+		mSouthNeighbor  == 0 || mWestNeighbor  == 0 ||
+		mEastNeighbor   == 0 || mNorthEdgeQuad == 0 || 
+		mSouthEdgeQuad  == 0 || mWestEdgeQuad  == 0 ||
+		mEastEdgeQuad   == 0)
     {
-	freeLookupTables();
-	return false;
+		freeLookupTables();
+		return false;
     }
 
     // clear the quad node lookup table
@@ -237,7 +228,7 @@ void NaturePatchManager::freeSharedBuffers()
 
     // clear the pointers
     mDataBuffer = 0;
-    mIndexBuffer  = mVertexLookup   = 0;
+    mIndexBuffer = mVertexLookup = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -295,9 +286,9 @@ void NaturePatchManager::computeNeighborLookup(int cx,int cz,int node,int level)
 
     if (nz < 0)
     {
-	nIdx += EDGE_LENGTH * QUADTREE_SIZE;
-	mNorthNeighbor[node] = -mQuadNodeLookup[nIdx];
-	mNorthEdgeQuad[cx]   = node;
+		nIdx += EDGE_LENGTH * QUADTREE_SIZE;
+		mNorthNeighbor[node] = -mQuadNodeLookup[nIdx];
+		mNorthEdgeQuad[cx]   = node;
     }
     else
 	mNorthNeighbor[node] = mQuadNodeLookup[nIdx];
@@ -309,12 +300,12 @@ void NaturePatchManager::computeNeighborLookup(int cx,int cz,int node,int level)
 
     if (nz > EDGE_LENGTH)
     {
-	nIdx -= EDGE_LENGTH * QUADTREE_SIZE;
-	mSouthNeighbor[node] = -mQuadNodeLookup[nIdx];
-	mSouthEdgeQuad[cx]   = node;
+		nIdx -= EDGE_LENGTH * QUADTREE_SIZE;
+		mSouthNeighbor[node] = -mQuadNodeLookup[nIdx];
+		mSouthEdgeQuad[cx]   = node;
     }
     else
-	mSouthNeighbor[node] = mQuadNodeLookup[nIdx];
+		mSouthNeighbor[node] = mQuadNodeLookup[nIdx];
 
     // calculate index of west neighbor
     nx = cx - width;
@@ -323,12 +314,12 @@ void NaturePatchManager::computeNeighborLookup(int cx,int cz,int node,int level)
 
     if (nx < 0)
     {
-	nIdx += EDGE_LENGTH;
-	mWestNeighbor[node] = -mQuadNodeLookup[nIdx];
-	mWestEdgeQuad[cz]   = node;
+		nIdx += EDGE_LENGTH;
+		mWestNeighbor[node] = -mQuadNodeLookup[nIdx];
+		mWestEdgeQuad[cz]   = node;
     }
     else
-	mWestNeighbor[node] = mQuadNodeLookup[nIdx];
+		mWestNeighbor[node] = mQuadNodeLookup[nIdx];
 
     // calculate index of east neighbor
     nx = cx + width;
@@ -337,26 +328,26 @@ void NaturePatchManager::computeNeighborLookup(int cx,int cz,int node,int level)
 
     if (nx > EDGE_LENGTH)
     {
-	nIdx -= EDGE_LENGTH;
-	mEastNeighbor[node] = -mQuadNodeLookup[nIdx];
-	mEastEdgeQuad[cz]   = node;
+		nIdx -= EDGE_LENGTH;
+		mEastNeighbor[node] = -mQuadNodeLookup[nIdx];
+		mEastEdgeQuad[cz]   = node;
     }
     else
-	mEastNeighbor[node] = mQuadNodeLookup[nIdx];
+		mEastNeighbor[node] = mQuadNodeLookup[nIdx];
 
     // if not at lowest level, descend into children
     if (level < (QUADTREE_DEPTH - 1))
     {
-	int w4 = EDGE_LENGTH >> (level + 2);
+		int w4 = EDGE_LENGTH >> (level + 2);
 
-	// northwest child
-	computeNeighborLookup(cx - w4, cz - w4, (node<<2)+1, level+1);
-	// northeast child
-	computeNeighborLookup(cx + w4, cz - w4, (node<<2)+2, level+1);
-	// southwest child
-	computeNeighborLookup(cx - w4, cz + w4, (node<<2)+3, level+1);
-	// southeast child
-	computeNeighborLookup(cx + w4, cz + w4, (node<<2)+4, level+1);
+		// northwest child
+		computeNeighborLookup(cx - w4, cz - w4, (node<<2)+1, level+1);
+		// northeast child
+		computeNeighborLookup(cx + w4, cz - w4, (node<<2)+2, level+1);
+		// southwest child
+		computeNeighborLookup(cx - w4, cz + w4, (node<<2)+3, level+1);
+		// southeast child
+		computeNeighborLookup(cx + w4, cz + w4, (node<<2)+4, level+1);
     }
 }
 
@@ -368,8 +359,8 @@ void NaturePatchManager::setTargetQuality(Real quality)
 
     for (int i = 0; i < 324; i++)
     {
-	if (mPatches[i] != 0)
-	    addToRenderQueue(mPatches[i]);
+		if (mPatches[i] != 0)
+			addToRenderQueue(mPatches[i]);
     }
 }
 
@@ -381,8 +372,8 @@ void NaturePatchManager::setMinimumQuality(Real quality)
 
     for (int i = 0; i < 324; i++)
     {
-  	if (mPatches[i] != 0)
-	    addToRenderQueue(mPatches[i]);
+  		if (mPatches[i] != 0)
+			addToRenderQueue(mPatches[i]);
     }
 }
 
@@ -395,40 +386,35 @@ void NaturePatchManager::renderPatches()
 
     while (!mRenderQueue.empty())
     {
-	NaturePatch *patch = mRenderQueue.front();
-	mRenderQueue.pop();
+		NaturePatch *patch = mRenderQueue.front();
+		mRenderQueue.pop();
 
-	// rebuild mesh
-	patch->mNeedRendering = false;
-	patch->prepareMesh();
+		// rebuild mesh
+		patch->mNeedRendering = false;
+		patch->prepareMesh();
 
-/*	if (patch->mNorthNeighbor != 0) patch->mNorthNeighbor->prepareMesh();
-	if (patch->mSouthNeighbor != 0) patch->mSouthNeighbor->prepareMesh();
-	if (patch->mWestNeighbor  != 0) patch->mWestNeighbor->prepareMesh();
-	if (patch->mEastNeighbor  != 0) patch->mEastNeighbor->prepareMesh();
-*/
-	if (patch->mNorthNeighbor != 0) patch->mNorthNeighbor->mNeedRendering = true;
-	if (patch->mSouthNeighbor != 0) patch->mSouthNeighbor->mNeedRendering = true;
-	if (patch->mWestNeighbor  != 0) patch->mWestNeighbor->mNeedRendering = true;
-	if (patch->mEastNeighbor  != 0) patch->mEastNeighbor->mNeedRendering = true;
+		if (patch->mNorthNeighbor != 0) patch->mNorthNeighbor->mNeedRendering = true;
+		if (patch->mSouthNeighbor != 0) patch->mSouthNeighbor->mNeedRendering = true;
+		if (patch->mWestNeighbor  != 0) patch->mWestNeighbor->mNeedRendering = true;
+		if (patch->mEastNeighbor  != 0) patch->mEastNeighbor->mNeedRendering = true;
 
-	// add to regen queue
-	regenQueue.push(patch);
+		// add to regen queue
+		regenQueue.push(patch);
     }
 
     while (!regenQueue.empty())
     {
-	NaturePatch *patch = regenQueue.front();
-	regenQueue.pop();
+		NaturePatch *patch = regenQueue.front();
+		regenQueue.pop();
 
-	// regenerate the mesh
-	patch->generateMesh();
+		// regenerate the mesh
+		patch->generateMesh();
 
-	// regenerate neighbors (to keep edges up to date)
-	if (patch->mNorthNeighbor != 0) patch->mNorthNeighbor->generateMesh();
-	if (patch->mSouthNeighbor != 0) patch->mSouthNeighbor->generateMesh();
-	if (patch->mWestNeighbor  != 0) patch->mWestNeighbor->generateMesh();
-	if (patch->mEastNeighbor  != 0) patch->mEastNeighbor->generateMesh();
+		// regenerate neighbors (to keep edges up to date)
+		if (patch->mNorthNeighbor != 0) patch->mNorthNeighbor->generateMesh();
+		if (patch->mSouthNeighbor != 0) patch->mSouthNeighbor->generateMesh();
+		if (patch->mWestNeighbor  != 0) patch->mWestNeighbor->generateMesh();
+		if (patch->mEastNeighbor  != 0) patch->mEastNeighbor->generateMesh();
     }
 }
 
@@ -463,66 +449,64 @@ bool NaturePatchManager::loadPatch(int x, int y, int edge)
         {
             switch (data->type)
             {
-            case NaturePatch::TYPE_TERRAIN:
-                mPatches[idx] = new NatureTerrainPatch();
-                break;
-	    
-            // INFO: ADD MORE PATCH TYPES HERE
+				case NaturePatch::TYPE_TERRAIN:
+					mPatches[idx] = new NatureTerrainPatch();
+					break;
+		    
+				// INFO: ADD MORE PATCH TYPES HERE
 
-            default:
-                std::cout << "ERROR: Unsupported patch type!!!\n";
+				default:
+					std::cout << "ERROR: Unsupported patch type!!!\n";
             }
 
-	    if (mPatches[idx] != 0)
-	    {
-		mPatches[idx]->initialise(world, zone, scale, data);
+			if (mPatches[idx] != 0)
+			{
+				mPatches[idx]->initialise(world, zone, scale, data);
 
-		addToRenderQueue(mPatches[idx]);
+				addToRenderQueue(mPatches[idx]);
 
-		String name = "NaturePatch["+toString(x)+","+toString(y)+"]";
-		SceneNode *sn = mSceneRoot->createChildSceneNode(name);
-		sn->attachObject(mPatches[idx]);
+				String name = "NaturePatch["+toString(x)+","+toString(y)+"]";
+				SceneNode *sn = mSceneRoot->createChildSceneNode(name);
+				sn->attachObject(mPatches[idx]);
 
-//		std::cout << "ADDING: " << name << std::endl;
+				// setup neighbor pointers
+				NaturePatch *n = 0, *s = 0, *w = 0, *e = 0;
+				int maxIdx = mPageSize * mPageSize;
 
-		// setup neighbor pointers
-	    NaturePatch *n = 0, *s = 0, *w = 0, *e = 0;
-		int maxIdx = mPageSize * mPageSize;
+				if ((edge & 0x01) == 0)
+				{
+					// link north neighbor
+					if (idx >= mPageSize) n = mPatches[idx - mPageSize];
+					else n = mPatches[maxIdx + (idx - mPageSize)];
+				}
 
-	        if ((edge & 0x01) == 0)
-		{
-		    // link north neighbor
-		    if (idx >= mPageSize) n = mPatches[idx - mPageSize];
-		    else n = mPatches[maxIdx + (idx - mPageSize)];
+				if ((edge & 0x02) == 0)
+				{
+					// link south neighbor
+					if (idx < (maxIdx - mPageSize)) s = mPatches[idx + mPageSize];
+					else s = mPatches[(idx + mPageSize) - maxIdx];
+				}
+
+				if ((edge & 0x04) == 0)
+				{
+					// link west neighbor
+					if ((idx % mPageSize) > 0) w = mPatches[idx - 1];
+					else w = mPatches[idx + (mPageSize - 1)];
+				}
+
+				if ((edge & 0x08) == 0)
+				{
+					// link east neighbor
+					if ((idx % mPageSize) < (mPageSize - 1)) e = mPatches[idx + 1];
+					else e = mPatches[idx - (mPageSize - 1)];
+				}
+
+				// attach patch to its neighbors
+				mPatches[idx]->attach(n, s, w, e);
+			    
+				loaded = true;
+			}
 		}
-
-		if ((edge & 0x02) == 0)
-		{
-		    // link south neighbor
-		    if (idx < (maxIdx - mPageSize)) s = mPatches[idx + mPageSize];
-		    else s = mPatches[(idx + mPageSize) - maxIdx];
-		}
-
-		if ((edge & 0x04) == 0)
-		{
-		    // link west neighbor
-		    if ((idx % mPageSize) > 0) w = mPatches[idx - 1];
-		    else w = mPatches[idx + (mPageSize - 1)];
-		}
-
-		if ((edge & 0x08) == 0)
-		{
-		    // link east neighbor
-		    if ((idx % mPageSize) < (mPageSize - 1)) e = mPatches[idx + 1];
-		    else e = mPatches[idx - (mPageSize - 1)];
-		}
-
-		// attach patch to its neighbors
-		mPatches[idx]->attach(n, s, w, e);
-	    
-		loaded = true;
-	    }
-	}
     }
 
     return loaded;
@@ -538,25 +522,21 @@ void NaturePatchManager::unloadPatch(int x, int y)
 
     int idx = ay * mPageSize + ax;
 
-//    std::cout << "UNLOADING: " << ax << ", " << x << "  idx: " << idx << std::endl;
-
     if (mPatches[idx] != 0)
     {
-	// unlink neighbors
-	mPatches[idx]->detach();
+		// unlink neighbors
+		mPatches[idx]->detach();
 
-	// remove patch from the scene
-	String name = "NaturePatch[" + toString(x) + "," + toString(y) + "]";
-	mSceneRoot->removeAndDestroyChild(name);
+		// remove patch from the scene
+		String name = "NaturePatch[" + toString(x) + "," + toString(y) + "]";
+		mSceneRoot->removeAndDestroyChild(name);
 
-//	std::cout << "REMOVING: " << name << std::endl;
+		// inform the patchloader that we no longer need this data
+		mMapLoader->releaseData(mPatches[idx]->mData);
 
-	// inform the patchloader that we no longer need this data
-	mMapLoader->releaseData(mPatches[idx]->mData);
-
-	// delete patch
-	delete mPatches[idx];
-	mPatches[idx] = 0;
+		// delete patch
+		delete mPatches[idx];
+		mPatches[idx] = 0;
     }
 }
 
@@ -567,70 +547,70 @@ void NaturePatchManager::updatePatches(Camera *cam)
     int cx, cy;
     mMapLoader->getPatchAtPosition(cam->getPosition(), &cx, &cy);
 
-
     int diffx = cx - mCenterPatchX;
     int diffy = cy - mCenterPatchY;
-    int ps2 = mPageSize / 2, x, y;
+    int ps2 = mPageSize / 2;
+	int x, y;
 
     // load in new patches
     for (y = -ps2; y <= ps2; y++)
     {
-	for (x = -ps2; x <= ps2; x++)
-	{
-	    int edge = 0;
+		for (x = -ps2; x <= ps2; x++)
+		{
+			int edge = 0;
 
-	    if (y == -ps2)     edge |= 0x01;
-	    else if (y == ps2) edge |= 0x02;
-	    if (x == -ps2)     edge |= 0x04;
-	    else if (x == ps2) edge |= 0x08;
+			if (y == -ps2)     edge |= 0x01;
+			else if (y == ps2) edge |= 0x02;
+			if (x == -ps2)     edge |= 0x04;
+			else if (x == ps2) edge |= 0x08;
 
-	    // TODO: move patch loading to separate thread?
-	    if (loadPatch(x + mCenterPatchX, y + mCenterPatchY, edge))
-		return;
-	}
+			// TODO: move patch loading to separate thread?
+			if (loadPatch(x + mCenterPatchX, y + mCenterPatchY, edge))
+			return;
+		}
     }
 
     if (diffy != 0 || diffx != 0)
     {
-	// unload patches on x axis
-	if (diffy > 0)
-	{
-	    if (diffy > mPageSize) diffy = mPageSize;
+		// unload patches on x axis
+		if (diffy > 0)
+		{
+			if (diffy > mPageSize) diffy = mPageSize;
 
-	    for (y = -ps2; y < (-ps2 + diffy); y++)
-		for (x = -ps2; x <= ps2; x++)
-		    unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
-	}
-	else if (diffy < 0)
-	{
-	    if (diffy < -mPageSize) diffy = -mPageSize;
-	    
-	    for (y = ps2; y > (ps2 + diffy); y--)
-		for (x = -ps2; x <= ps2; x++)
-		    unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
-	}
+			for (y = -ps2; y < (-ps2 + diffy); y++)
+				for (x = -ps2; x <= ps2; x++)
+					unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
+		}
+		else if (diffy < 0)
+		{
+			if (diffy < -mPageSize) diffy = -mPageSize;
+		    
+			for (y = ps2; y > (ps2 + diffy); y--)
+				for (x = -ps2; x <= ps2; x++)
+					unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
+		}
 
-	// unload patches on y axis
-	if (diffx > 0)
-	{
-	    if (diffx > mPageSize) diffx = mPageSize;
-	    
-	    for (x = -ps2; x < -ps2 + diffx; x++)
-		for (y = -ps2; y <= ps2; y++)
-		    unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
-	}
-	else if (diffx < 0)
-	{
-	    if (diffx < -mPageSize) diffx = -mPageSize;
-	    
-	    for (x = ps2; x > (ps2 + diffx); x--)
-		for (y = -ps2; y <= ps2; y++)
-		    unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
-	}
+		// unload patches on y axis
+		if (diffx > 0)
+		{
+			if (diffx > mPageSize) diffx = mPageSize;
+		    
+			for (x = -ps2; x < -ps2 + diffx; x++)
+				for (y = -ps2; y <= ps2; y++)
+					unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
+		}
+		else if (diffx < 0)
+		{
+			if (diffx < -mPageSize) diffx = -mPageSize;
+		    
+			for (x = ps2; x > (ps2 + diffx); x--)
+				for (y = -ps2; y <= ps2; y++)
+					unloadPatch(x + mCenterPatchX, y + mCenterPatchY);
+		}
 
-	// update center position
-	mCenterPatchX = cx;
-	mCenterPatchY = cy;
+		// update center position
+		mCenterPatchX = cx;
+		mCenterPatchY = cy;
     }
 }
 
@@ -644,7 +624,6 @@ NaturePatch* NaturePatchManager::getPatchAtPosition(const Vector3& pos)
     int idx = y * mPageSize + x;
 
     return mPatches[idx];
-
 }
 
 void NaturePatchManager::getPatchRenderOpsInBox(const AxisAlignedBox& box, std::list<RenderOperation>& opList)
@@ -667,8 +646,6 @@ void NaturePatchManager::getPatchRenderOpsInBox(const AxisAlignedBox& box, std::
 		(*i)->getRenderOperation(op);
         opList.push_back(op);
     }
-
-
 }
 
 

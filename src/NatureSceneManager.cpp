@@ -5,6 +5,7 @@
 	Date: 2003/02/23
 
 	Author: Martin Persson
+	Modified by Mike Prosser
 
 *****************************************************************************/
 
@@ -69,28 +70,28 @@ bool NatureSceneManager::setOption(const String& strKey, const void *pValue)
 {
     if (strKey == "TARGET_QUALITY")
     {
-	Real value = *(reinterpret_cast<const Real *>(pValue));
+		Real value = *(reinterpret_cast<const Real *>(pValue));
 
-	printf("setOption(\"%s\"): ", strKey.c_str());
-	printf("%f\n", value);
+		printf("setOption(\"%s\"): ", strKey.c_str());
+		printf("%f\n", value);
 
-	if (mNaturePatchManager != 0)
-	    mNaturePatchManager->setTargetQuality(value);
+		if (mNaturePatchManager != 0)
+			mNaturePatchManager->setTargetQuality(value);
 
-	return true;
+		return true;
     }
 
     if (strKey == "MINIMUM_QUALITY")
     {
-	Real value = *(reinterpret_cast<const Real *>(pValue));
+		Real value = *(reinterpret_cast<const Real *>(pValue));
 
-	printf("setOption(\"%s\"): ", strKey.c_str());
-	printf("%f\n", value);
+		printf("setOption(\"%s\"): ", strKey.c_str());
+		printf("%f\n", value);
 
-	if (mNaturePatchManager != 0)
-	    mNaturePatchManager->setMinimumQuality(value);
+		if (mNaturePatchManager != 0)
+			mNaturePatchManager->setMinimumQuality(value);
 
-	return true;
+		return true;
     }
 
     return false;
@@ -125,7 +126,7 @@ void NatureSceneManager::flushWorldGeometry()
 void NatureSceneManager::_renderVisibleObjects()
 {
     if (mNaturePatchManager != 0)
-	mNaturePatchManager->renderPatches();
+		mNaturePatchManager->renderPatches();
 
     // Run the overloaded method
     SceneManager::_renderVisibleObjects();
@@ -181,7 +182,6 @@ void NatureIntersectionSceneQuery::execute(IntersectionSceneQueryListener* liste
                 listener->queryResult(a->second, &frag);
             }
         }
-
     }
 }
 

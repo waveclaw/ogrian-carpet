@@ -5,6 +5,7 @@
 	Date: 2003/02/22
 
 	Author: Martin Persson
+	Modified by Mike Prosser
 
 *****************************************************************************/
 
@@ -29,46 +30,46 @@ class NatureTerrainPatch : public NaturePatch
 {
     class QuadTreeNode
     {
-    public:
-	enum
-	{
-	    QUAD_ENABLED = 0x80,
-	    ERROR_MASK   = 0x7f
-	};
+	public:
+		enum
+		{
+			QUAD_ENABLED = 0x80,
+			ERROR_MASK   = 0x7f
+		};
 
-	/// sets errorvalue (0..127)
-	inline void setError(unsigned char err)
-	{
-	    if ((err = err & ERROR_MASK) > (mData & ERROR_MASK))	
-		mData = mData | err;
-	}
+		/// sets errorvalue (0..127)
+		inline void setError(unsigned char err)
+		{
+			if ((err = err & ERROR_MASK) > (mData & ERROR_MASK))	
+			mData = mData | err;
+		}
 
-	/// returns the errorvalue (0..127)
-	inline unsigned char getError()
-	{
-	    return (mData & ERROR_MASK);
-	}
+		/// returns the errorvalue (0..127)
+		inline unsigned char getError()
+		{
+			return (mData & ERROR_MASK);
+		}
 
-	/// returns true if this node is enabled
-	inline bool isEnabled()
-	{
-	    return ((mData & QUAD_ENABLED) == QUAD_ENABLED);
-	}
+		/// returns true if this node is enabled
+		inline bool isEnabled()
+		{
+			return ((mData & QUAD_ENABLED) == QUAD_ENABLED);
+		}
 
-	/// marks this node as enabled
-	inline void enable()
-	{
-	    mData = mData | QUAD_ENABLED;
-	}
+		/// marks this node as enabled
+		inline void enable()
+		{
+			mData = mData | QUAD_ENABLED;
+		}
 
-	/// marks this node as disabled
-	inline void disable()
-	{
-	    mData = mData & (~QUAD_ENABLED);
-	}
+		/// marks this node as disabled
+		inline void disable()
+		{
+			mData = mData & (~QUAD_ENABLED);
+		}
 
-    private:
-	unsigned char mData;
+		private:
+		unsigned char mData;
     };
 
 public:
@@ -82,10 +83,10 @@ public:
 
     /// Select which vertices to render
     void prepareMesh();
+
     /// Creates vertex/index/colour... buffers for mesh
     void generateMesh();
     
-   
     void getRenderOperation(RenderOperation& op);
     
     void _notifyCurrentCamera(Camera *cam);
@@ -93,33 +94,34 @@ public:
     /// Returns height in world units for given position (x/z unscaled)
     Real getHeightAt(int x, int z) const
     {
-	return mHeight[z * mData->terrain.heightMapWidth + x]
+		return mHeight[z * mData->terrain.heightMapWidth + x]
 	       * mScale.y + mWorld.y;
     }
 
     /// Returns true if a vertex on the north edge is enabled
     bool isNorthEdgeVertexEnabled(int vertexPos)
     {
-	return mQuadTree[mManager->mNorthEdgeQuad[vertexPos]].isEnabled();
+		return mQuadTree[mManager->mNorthEdgeQuad[vertexPos]].isEnabled();
     }
 
     /// Returns true if a vertex on the south edge is enabled
     bool isSouthEdgeVertexEnabled(int vertexPos)
     {
-	return mQuadTree[mManager->mSouthEdgeQuad[vertexPos]].isEnabled();
+		return mQuadTree[mManager->mSouthEdgeQuad[vertexPos]].isEnabled();
     }
 
     /// Returns true if a vertex on the west edge is enabled
     bool isWestEdgeVertexEnabled(int vertexPos)
     {
-	return mQuadTree[mManager->mWestEdgeQuad[vertexPos]].isEnabled();
+		return mQuadTree[mManager->mWestEdgeQuad[vertexPos]].isEnabled();
     }
 
     /// Returns true if a vertex on the east edge is enabled
     bool isEastEdgeVertexEnabled(int vertexPos)
     {
-	return mQuadTree[mManager->mEastEdgeQuad[vertexPos]].isEnabled();
+		return mQuadTree[mManager->mEastEdgeQuad[vertexPos]].isEnabled();
     }
+
     /** Overridden from MovableObject */
     Real getBoundingRadius(void) const { return 0; /* not needed */ }
 

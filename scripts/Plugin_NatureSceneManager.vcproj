@@ -170,9 +170,6 @@
 				RelativePath="..\include\NatureConfig.h">
 			</File>
 			<File
-				RelativePath="..\include\NatureCustomPatch.h">
-			</File>
-			<File
 				RelativePath="..\include\NaturePatch.h">
 			</File>
 			<File
