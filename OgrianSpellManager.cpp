@@ -29,6 +29,7 @@ Description: This manages the spells for the HUD, etc
 
 #include "OgrianSpellManager.h"
 #include "OgrianHud.h"
+#include "OgrianFirestormSpell.h"
 #include "OgrianAkimboFireballSpell.h"
 #include "OgrianFireballSpell.h"
 #include "OgrianClaimSpell.h"
@@ -51,6 +52,7 @@ SpellManager::SpellManager()
 	mSpells[SPELL_CLAIM] = new ClaimSpell();
 	mSpells[SPELL_FIREBALL] = new FireballSpell();
 	mSpells[SPELL_AKIMBO_FIREBALL] = new AkimboFireballSpell();
+	mSpells[SPELL_FIRESTORM] = new FirestormSpell();
 
 	disableAllSpells();
 	enableSpell(SPELL_CLAIM);

@@ -461,6 +461,7 @@ void Castle::setSpells(int level)
 
 		if (level >= 0) SpellManager::getSingleton().enableSpell(SPELL_FIREBALL);
 		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
+		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_FIRESTORM);
 	}
 	else if (Multiplayer::getSingleton().isServer())
 	{
@@ -475,6 +476,7 @@ void Castle::setSpells(int level)
 
 				if (level >= 0) Multiplayer::getSingleton().serverSendInt(SPELL_FIREBALL,ID_ENABLESPELL,player.id);
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
+				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_FIRESTORM,ID_ENABLESPELL,player.id);
 			}
 		}
 	}

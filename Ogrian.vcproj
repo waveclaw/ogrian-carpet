@@ -363,6 +363,9 @@
 				RelativePath="OgrianFireballSpell.h">
 			</File>
 			<File
+				RelativePath="OgrianFirestormSpell.h">
+			</File>
+			<File
 				RelativePath="OgrianSpell.h">
 			</File>
 		</Filter>

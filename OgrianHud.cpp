@@ -46,10 +46,13 @@ Hud::Hud()
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
-	mSpellIcons[0] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/0");
-	mSpellIcons[1] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/1");
-	mSpellIcons[2] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/2");
-	mSpellIcons[3] = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellIcon/3");
+	for (int i=0; i<NUM_SPELLS; i++)
+	{
+		std::ostringstream num("");
+		num << i;
+		mSpellIcons[i] = GuiManager::getSingleton().getGuiElement(String("Ogrian/HUD/SpellIcon/") + num.str());
+	}
+
 	setMessage("");
 
 	mBaseMana = 0;
