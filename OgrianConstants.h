@@ -48,7 +48,7 @@ const Real FOG_DENSITY = 0.008;
 const Real SKYPLANE_DISTANCE = 75;
 const Real SKYPLANE_BOW = .75;
 
-const Real FOLIAGE_NUM = 1000;
+const Real FOLIAGE_NUM = 500;
 const Real FOLIAGE_SCALE = 10;
 const Real FOLIAGE_SCALE_VAR = 3;
 const int FOLIAGE_LINE_MIN = 5;

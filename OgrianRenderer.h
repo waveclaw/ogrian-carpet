@@ -64,6 +64,9 @@ public:
 
 	OgrianFrameListener* getFrameListener();
 
+	// load a map
+	virtual void loadMap(String configfile);
+
 	static Renderer& getSingleton(void);
 
 protected:

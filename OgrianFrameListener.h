@@ -86,6 +86,9 @@ public:
 	void setInvertY(bool yinv);
 	bool getInvertY();
 
+	void setGameRunning(bool running);
+	bool getGameRunning();
+
 	void keyClicked(KeyEvent* e) ;
 	void keyPressed(KeyEvent* e) {}
 	void keyReleased(KeyEvent* e) {}
@@ -108,6 +111,8 @@ protected:
     float mRotX, mRotY;
     TextureFilterOptions mFiltering;
     int mAniso;
+
+	bool mGameRunning;
 
 };
 

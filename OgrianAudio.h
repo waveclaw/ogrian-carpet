@@ -60,6 +60,12 @@ public:
 	// update the 3d audio engine
 	virtual void frame(Real time);
 
+	// start the Audio engine
+	virtual void start();
+
+	// stop the Audio engine
+	virtual void stop();
+
 	static Audio& getSingleton(void);
 
 private:
@@ -67,6 +73,7 @@ private:
     float listenerpos[3]; 
 	FSOUND_STREAM* mSongStream;
 	int mSongChannel;
+	bool mRunning; // wether or not the engine is running
 };
 
 }

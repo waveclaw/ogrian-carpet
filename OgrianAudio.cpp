@@ -40,6 +40,7 @@ Audio::Audio()
 	FSOUND_Init(44100, 32, 0);
 	mSongStream = 0;
 	mSongChannel = -1;
+	mRunning = false;
 }
 
 Audio::~Audio()
@@ -49,6 +50,8 @@ Audio::~Audio()
 
 void Audio::playSong(String filename)
 {
+	if (!mRunning) return;
+
 	stopSong();
 
 	// load teh new song
@@ -70,6 +73,8 @@ void Audio::playSong(String filename)
 
 int Audio::playSound(String filename, Vector3 pos, bool loop)
 {
+	if (!mRunning) return -1;
+
 	// load the sound
 	FSOUND_SAMPLE* sound = FSOUND_Sample_Load(FSOUND_FREE, filename, 
 		loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF,
@@ -93,6 +98,7 @@ int Audio::playSound(String filename, Vector3 pos, bool loop)
 
 void Audio::setSoundPosition(int channel, Vector3 pos)
 {
+	if (!mRunning) return;
 	if (channel < 0) return;
 
 	// set the position
@@ -105,12 +111,16 @@ void Audio::setSoundPosition(int channel, Vector3 pos)
 
 void Audio::stopSound(int channel)
 {
+	if (!mRunning) return;
+
 	if (channel >= 0)
 		FSOUND_StopSound(channel);
 }
 
 void Audio::stopSong()
 {
+	if (!mRunning) return;
+
 	// stop the current song
 	if (mSongStream != 0) 
 	{
@@ -122,6 +132,8 @@ void Audio::stopSong()
 
 void Audio::frame(Real time)
 {
+	if (!mRunning) return;
+
 	Vector3 campos = Renderer::getSingleton().getCameraThing()->getPosition();
 	Vector3 f = Renderer::getSingleton().getCameraThing()->getDirection();
 
@@ -135,6 +147,16 @@ void Audio::frame(Real time)
 		FSOUND_3D_SetAttributes(mSongChannel, &listenerpos[0], 0); // keep the music between the ears
 	
 	FSOUND_Update(); // update 3d engine
+}
+
+void Audio::start()
+{
+	mRunning = true;
+}
+
+void Audio::stop()
+{
+	mRunning = false;
 }
 
 Audio& Audio::getSingleton(void)

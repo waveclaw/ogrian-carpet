@@ -107,6 +107,9 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	mTranslateVector = Vector3::ZERO;
     mAniso = 1;
     mFiltering = TFO_BILINEAR;
+
+	mGameRunning = false;
+	mYinvert = true;
 }
 OgrianFrameListener::~OgrianFrameListener()
 {
@@ -259,7 +262,8 @@ bool OgrianFrameListener::processUnbufferedMouseInput(const FrameEvent& evt)
 
 void OgrianFrameListener::moveCamera()
 {
-	Renderer::getSingleton().getCameraThing()->moveCamera(mCamera, mRotX, mRotY, mTranslateVector);
+	if (mGameRunning)
+		Renderer::getSingleton().getCameraThing()->moveCamera(mCamera, mRotX, mRotY, mTranslateVector);
 }
 
 void OgrianFrameListener::showDebugOverlay(bool show)
@@ -355,6 +359,16 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 	}
 
 	return true;
+}
+
+void OgrianFrameListener::setGameRunning(bool running)
+{
+	mGameRunning = running;
+}
+
+bool OgrianFrameListener::getGameRunning()
+{
+	return mGameRunning;
 }
 
 bool OgrianFrameListener::frameEnded(const FrameEvent& evt)

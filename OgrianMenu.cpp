@@ -51,10 +51,8 @@ Menu::Menu()
 	
 	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
 
-	list->addListItem(new StringResource("1: Map 1"));
-	list->addListItem(new StringResource("2: Map 2"));
-	list->addListItem(new StringResource("3: Map 3"));
-	list->addListItem(new StringResource("4: Map 4"));
+	list->addListItem(new StringResource("1: CRESCENT"));
+	list->addListItem(new StringResource("2: ISLANDS"));
 }
 
 Menu::~Menu()
@@ -98,6 +96,42 @@ bool Menu::processKeyInput(InputReader* input)
 
         mTimeUntilNextToggle = KEY_DELAY;
     }
+
+	// 1 loads crescent
+    if ( input->isKeyDown( KC_1)  && mTimeUntilNextToggle <= 0)
+    {
+		// Loading...
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+			->setParameter("caption", "LOADING...");
+
+		// load the map
+		//Renderer::getSingleton().loadMap("crescent.cfg");
+		
+		// Menu
+		//GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+			//->setParameter("caption", "MENU");
+
+		// hide the menu
+		hideMenu();
+	}
+
+	// 2 loads islands
+    if ( input->isKeyDown( KC_2)  && mTimeUntilNextToggle <= 0)
+    {
+		// Loading...
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+			->setParameter("caption", "LOADING...");
+
+		// load the map
+		Renderer::getSingleton().loadMap("islands.cfg");
+		
+		// Menu
+		GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/Text")
+			->setParameter("caption", "MENU");
+		
+		// hide the menu
+		hideMenu();
+	}
 
 	return true;
 }

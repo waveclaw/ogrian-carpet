@@ -86,7 +86,7 @@ bool Input::processKeyInput(InputReader* input)
 void Input::frame(Real time)
 {
 	if (mTimeUntilNextToggle >= 0) 
-	mTimeUntilNextToggle -= time;
+		mTimeUntilNextToggle -= time;
 }
 
 void Input::delay(Real time)

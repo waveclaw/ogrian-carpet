@@ -39,7 +39,7 @@ It is a Singleton.
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
 #include "OgrianFoliageThing.h"
-#include "OgrianManaThing.h"
+#include "OgrianMenu.h"
 
 using namespace Ogre;
 
@@ -234,47 +234,44 @@ void Renderer::createFoliage(const String& material, int num)
 			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
 		}
 	}
-
 }
 
-// Just override the mandatory create scene method
-void Renderer::createScene(void)
+void Renderer::loadMap(String configfile)
 {
-	String filename = "world.cfg";
-
 	/* Set up the options */
 	ConfigFile config;
-	config.load( filename );
+	config.load( configfile );
 	String skyMaterial = config.getSetting( "SkyMaterial" );
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	String foliageMaterial = config.getSetting( "FoliageMaterial" );
 
 	// set up the terrain
-    mSceneMgr->setWorldGeometry( filename );
-	HeightMap::getSingleton().loadTerrain(filename);
+    mSceneMgr->setWorldGeometry( configfile );
+	HeightMap::getSingleton().loadTerrain(configfile);
 	Physics::getSingleton().setWorldSize(HeightMap::getSingleton().getWorldSize());
 
 	createSky(skyMaterial);
 	createOcean(oceanMaterial);
 	createFoliage(foliageMaterial, FOLIAGE_NUM);
+
 	createCameraThing();
 
+	// start the game
+	Audio::getSingleton().start();
+	Renderer::getSingleton().getFrameListener()->setGameRunning(true);
+}
+
+// Just override the mandatory create scene method
+void Renderer::createScene(void)
+{
     // Set ambient light
     mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
+
 	// set the fog
     mSceneMgr->setFog( FOG_EXP2, ColourValue::White, FOG_DENSITY, 2500,  5500 );
 
-	// toss in some smoke
-	// Create shared node for 2 fountains
-    mFountainNode = static_cast<SceneNode*>(mSceneMgr->getRootSceneNode()->createChild());
-
-    // smoke
-    ParticleSystem* pSys2 = ParticleSystemManager::getSingleton().createSystem("fountain1", 
-        "Examples/Smoke");
-    // Point the fountain at an angle
-    SceneNode* fNode = static_cast<SceneNode*>(mFountainNode->createChild());
-    fNode->attachObject(pSys2);
-	fNode->setPosition(315,50,862);
+	// show the menu
+	Menu::getSingleton().showMenu();
 }
 
 void Renderer::createViewports(void)
