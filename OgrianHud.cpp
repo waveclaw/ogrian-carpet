@@ -83,6 +83,20 @@ void Hud::hide()
 
 //----------------------------------------------------------------------------
 
+void Hud::reinit()
+{
+	mMana->show();
+	mHealth->show();
+	mSpellName->show();
+
+	for (int i=0; i<NUM_SPELLS; i++)
+		mSpellIcons[i]->show();
+
+	setMessage("");
+}
+
+//----------------------------------------------------------------------------
+
 void Hud::makeGhost()
 {
 	mMana->hide();

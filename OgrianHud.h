@@ -55,6 +55,9 @@ public:
 	// change the HUD to ghost mode
 	void makeGhost();
 
+	// change the HUD back to normal mode
+	void reinit();
+
 	// set the base Mana
 	void setBaseMana(int baseMana);
 

@@ -167,9 +167,25 @@ void BaloonThing::collided(Thing* thing)
 {
 	if (thing->getType() == MANATHING && thing->getUID() == mTarget)
 	{
-		// pick up the mana
-		load(((ManaThing*)thing)->getAmount());
-		thing->destroy();
+		int freespace = CONI("BALOON_CAPACITY") - mAmount;
+		if (freespace > 0)
+		{
+			// pick up the mana
+			int amount = ((ManaThing*)thing)->getAmount();
+			if (amount <= freespace)
+			{
+				// take all of it
+				load(amount);
+				thing->destroy();
+			}
+			else 
+			{
+				// take as much as we can carry
+				load(freespace);
+				((ManaThing*)thing)->setAmount(amount - freespace);
+				setTarget(0);
+			}
+		}
 	}
 
 	if (thing->getType() ==	CASTLEFLAGTHING && thing->getUID() == mTarget)

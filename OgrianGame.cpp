@@ -391,8 +391,9 @@ void Game::startSkirmishGame()
 	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
 
-	// kill the player
+	// reset the player
 	Renderer::getSingleton().getCameraThing()->die();
+	Hud::getSingleton().reinit();
 }
 
 //----------------------------------------------------------------------------
