@@ -36,6 +36,7 @@ It is rendered as a Billboard.
 
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
+#include "OgrianPacketEnum.h"
 
 #include "BitStream.h"
 
@@ -62,6 +63,12 @@ enum ThingVisRep
 	SPRITE,
 	ORIENTEDSPRITE,
 	MESH,
+};
+
+enum ThingUpdateType
+{
+	PERIODIC,
+	CONTINUOUS,
 };
 
 // this is used for collision detection
@@ -145,9 +152,6 @@ public:
 	// each thing has a type so things can tell what they've collided with
 	virtual ThingType getType(); 
 
-	// returns false if the velocity has been 0,0,0 for a while
-	virtual bool isMoving();
-
 	// override this for interesting behaviors
 	virtual void collided(Thing* e) { }
 
@@ -184,7 +188,7 @@ public:
 	virtual void stopSound();
 
 	// generate a bitstream from this thing
-	virtual void generateBitStream(BitStream& bitstream);
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
 
 	// interpret a bitstream for this thing
 	virtual void interpretBitStream(BitStream& bitstream);
@@ -194,6 +198,18 @@ public:
 
 	// get a String description
 	virtual String getString();
+
+	// set update type
+	virtual void setUpdateType(ThingUpdateType type);
+
+	// get update type
+	virtual ThingUpdateType getUpdateType();
+
+	// request an update
+	virtual void requestUpdate();
+
+	// returns true when an update has been requested
+	virtual bool updateRequested();
 
 	// get the last time a bitstream was generated for this thing
 	virtual unsigned long lastUpdateTime();
@@ -214,9 +230,6 @@ private:
 	Real mWidth;
 	Real mHeight; 
 
-	unsigned long mStopTime;
-	bool mStopped;
-
 	// for flickering
 	unsigned long mFlickerPeriod;
 	unsigned long mLastRotTime;
@@ -233,6 +246,12 @@ private:
 	int mCurrentSound; // the index of the current sound
 	String mSoundFilename; // the filename of the sound
 	bool mSoundLoop;
+
+	// the update type
+	ThingUpdateType mUpdateType;
+
+	// set to true to request an update
+	bool mUpdateRequested;
 
 	// Incremented count for next name extension
     static unsigned long msNextGeneratedNameExt;

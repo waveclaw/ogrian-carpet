@@ -90,6 +90,9 @@ public:
 	// handle client packet, return true if handled
 	bool handleClientPacket(Packet* p, PacketID pid);
 
+	// sync a new client
+	void syncClient(PlayerInfo player);
+
 	// add a new team
 	int addTeam(int wizardUID);
 

@@ -107,6 +107,18 @@ void Physics::clientFrame(Real time)
 		cthing->generateBitStream(bs);
 		Multiplayer::getSingleton().clientSend(&bs, false);
 	}
+
+	// halt all things that cannot be seen
+	for (int i=0; i<(int)mAllThings.size(); i++)
+	{
+		Thing* thing = mAllThings[i];
+
+		if (thing->axisDistance(cthing) > CONR("THING_CULL_DIST")
+			&& thing->getUpdateType() == CONTINUOUS)
+		{
+			thing->setVelocity(Vector3(0,0,0));
+		}		
+	}
 }
 //----------------------------------------------------------------------------
 
@@ -116,24 +128,52 @@ void Physics::serverFrame(Real time)
 	for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
 	{
 		PlayerInfo player = Multiplayer::getSingleton().getClient(i);
+		WizardThing* wiz = static_cast<WizardThing*>(getThing(player.wizardUID));
 
 		// notify clients of all things
 		for (int i=0; i<(int)mAllThings.size(); i++)
 		{
 			Thing* thing = mAllThings[i];
-			WizardThing* wiz = static_cast<WizardThing*>(getThing(player.wizardUID));
 
-			if (thing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD"))
-					< Time::getSingleton().getTime() // only send periodically
-				&& thing->getUID() != player.wizardUID // dont send their own wizard to them
-				&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
-				&& thing->isMoving() // dont send things that aren't moving
-				)
+			if (thing->getUpdateType() == CONTINUOUS)
 			{
-				BitStream bs;
-				thing->generateBitStream(bs);
-				Multiplayer::getSingleton().serverSend(&bs, player.id, false); // send unreliably
+				if (thing->lastUpdateTime() + unsigned long(CONR("THING_UPDATE_PERIOD"))
+						< Time::getSingleton().getTime() // only send periodically
+					&& thing->getUID() != player.wizardUID // dont send their own wizard to them
+					&& thing->axisDistance(wiz) < CONR("THING_CULL_DIST") // dont send things they cant see
+					)
+				{
+					BitStream bs;
+					thing->generateBitStream(bs);
+					Multiplayer::getSingleton().serverSend(&bs, player.id, false); // send unreliably
+				}
 			}
+			else
+			{
+				if (thing->updateRequested())
+				{
+					BitStream bs;
+					thing->generateBitStream(bs);
+					Multiplayer::getSingleton().serverSend(&bs, player.id);
+				}
+			}
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Physics::syncClient(PlayerInfo player)
+{
+	for (int i=0; i<(int)mAllThings.size(); i++)
+	{
+		Thing* thing = mAllThings[i];
+
+		if (thing->getUpdateType() == PERIODIC)
+		{
+			BitStream bs;
+			thing->generateBitStream(bs);
+			Multiplayer::getSingleton().serverSend(&bs, player.id);
 		}
 	}
 }
@@ -200,9 +240,12 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		Thing* thing = getThing(uid);
 
-		// destroy it
 		if (thing != 0)
 		{
+			// update it
+			thing->interpretBitStream(bitstream);
+
+			// destroy it
 			thing->destroy();
 		}
 		else 
@@ -525,8 +568,7 @@ void Physics::deleteThing(Thing* thing)
 	{
 		int uid = thing->getUID();
 		BitStream bs;
-		bs.Write(ID_REMOVE_THING);
-		bs.Write(uid);
+		thing->generateBitStream(bs,ID_REMOVE_THING);
 
 		if (thing->getType() == WIZARDTHING)
 		{

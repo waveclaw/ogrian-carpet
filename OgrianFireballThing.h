@@ -115,7 +115,9 @@ public:
 		}
 
 		// die when it hits the ground
-		if (getGroundY() > getPosition().y) destroy();
+		if (!Multiplayer::getSingleton().isClient())
+			if (getGroundY() > getPosition().y) 
+				destroy();
 
 		mLastPos = getPosition();
 	}

@@ -55,6 +55,8 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mFlickerPeriod = 0;
 	mLastRotTime = 0;
 	mLastRotDir = false;
+	mUpdateType = PERIODIC;
+	mUpdateRequested = false;
 	
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
@@ -81,6 +83,9 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 
 	// add it to the renderer
 	mVisRep->addToRenderer();
+
+	// request an update
+	requestUpdate();
 }
 
 //----------------------------------------------------------------------------
@@ -174,13 +179,6 @@ void Thing::setFlickerPeriod(Real time)
 void Thing::setVelocity(Vector3 vel)
 {
 	mVel = vel;
-
-	if (vel == Vector3(0,0,0))
-	{
-		mStopTime = Time::getSingleton().getTime();
-		mStopped = true;
-	}
-	else mStopped = false;
 }
 
 //----------------------------------------------------------------------------
@@ -468,25 +466,12 @@ Real Thing::getOrientation()
 
 //----------------------------------------------------------------------------
 
-bool Thing::isMoving()
-{
-	if (mStopped)
-		if (mStopTime > Time::getSingleton().getTime() + 
-			unsigned long(CONR("THING_STOP_DELAY")*1000))
-		{
-			return false;
-		}
-
-	return true;
-}
-
-//----------------------------------------------------------------------------
-
-void Thing::generateBitStream(BitStream& bitstream)
+void Thing::generateBitStream(BitStream& bitstream, int pid)
 {
 	mLastUpdateTime = Time::getSingleton().getTime();
+	mUpdateRequested = false;
 
-	bitstream.Write(ID_UPDATE_THING);
+	bitstream.Write(pid);
 	bitstream.Write(mUID);
 	bitstream.Write(getType());
 
@@ -544,12 +529,42 @@ void Thing::interpretBitStream(BitStream& bitstream)
 	setWidth(width);
 	setColour(colour);
 }
+
 //----------------------------------------------------------------------------
 
 unsigned long Thing::lastUpdateTime()
 {
 	return mLastUpdateTime;
 }
+
+//----------------------------------------------------------------------------
+
+void Thing::setUpdateType(ThingUpdateType type)
+{
+	mUpdateType = type;
+}
+
+//----------------------------------------------------------------------------
+
+ThingUpdateType Thing::getUpdateType()
+{
+	return mUpdateType;
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::requestUpdate()
+{
+	mUpdateRequested = true;
+}
+
+//----------------------------------------------------------------------------
+
+bool Thing::updateRequested()
+{
+	return mUpdateRequested;
+}
+
 //----------------------------------------------------------------------------
 
 }

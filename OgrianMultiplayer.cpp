@@ -634,6 +634,9 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			// update everyone's scoreboard
 			updateScores();
 
+			// sync the new client
+			Physics::getSingleton().syncClient(player);
+
 			return true;
 		}
 
