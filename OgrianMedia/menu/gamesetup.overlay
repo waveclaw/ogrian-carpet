@@ -90,7 +90,7 @@ Ogrian/Menu/Overlay
 		}
 				
 
-		container TextBox(Ogrian/Menu/Text) : SS/Templates/BasicTextBox
+		container TextArea(Ogrian/Menu/Text) : SS/Templates/BasicText
 		{
 			left 0.0
 			top 0.0

@@ -45,7 +45,6 @@ PlayerList::PlayerList()
 	mActive = false;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/PlayerList/Overlay");
-	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("Ogrian/PlayerList/List"));
 }
 
 //----------------------------------------------------------------------------
@@ -59,31 +58,55 @@ PlayerList::~PlayerList()
 
 void PlayerList::addPlayer(String name)
 {
-	// ensure the player is not already on the list
-	for (int i=0; i < int(mPlayers.size()); i++)
+	mPlayers.push_back(name);
+	updateList();
+}
+
+//----------------------------------------------------------------------------
+
+void PlayerList::removePlayer(String name)
+{
+	for (int i=0; i<(int)mPlayers.size(); i++)
 	{
 		if (mPlayers[i] == name)
 		{
-			// add a unique suffix
-			name << (int)mPlayers.size();
+			mPlayers.erase(mPlayers.begin()+i);
+			break;
 		}
 	}
-
-	mList->addListItem(new StringResource(name));
-	mPlayers.push_back(name);
+	updateList();
 }
 
 //----------------------------------------------------------------------------
 
 void PlayerList::clear()
 {
-	// remove each name
-	for (int i=0; i < int(mPlayers.size()); i++)
+	mPlayers.clear();
+	updateList();
+}
+
+//----------------------------------------------------------------------------
+
+void PlayerList::updateList()
+{
+	// for each element
+	int i=0;
+	for (; i<MAX_PLAYERS && i<(int)mPlayers.size(); i++)
 	{
-		mList->removeListItem(mList->getSelectedItem());
+		// update the caption
+		String player = "Ogrian/PlayerList/Player";
+		GuiManager::getSingleton().getGuiElement(player << i)
+			->setCaption(mPlayers[i]);
 	}
 
-	mPlayers.clear();
+	// clear the unused slots
+	for (; i<MAX_PLAYERS; i++)
+	{
+		// update the caption
+		String player = "Ogrian/PlayerList/Player";
+		GuiManager::getSingleton().getGuiElement(player << i)
+			->setCaption("");
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -101,7 +124,7 @@ void PlayerList::show()
 
 void PlayerList::hide()
 {
-	if (mOverlay == false) return;
+	if (mActive == false) return;
 
 	mOverlay->hide();
 

@@ -30,8 +30,7 @@ Description: The Player List
 #define __OgrianPlayerList_H__
 
 #include <Ogre.h>
-#include "OgreListGuiElement.h"
-#include "OgreListChanger.h"
+#include "OgrianConstants.h"
 
 using namespace Ogre;
 
@@ -58,6 +57,9 @@ public:
 	// add a player to the list
 	void addPlayer(String name);
 
+	// add a player to the list
+	void removePlayer(String name);
+
 	// clear the list
 	void clear();
 
@@ -69,8 +71,10 @@ private:
 	bool mActive; // wether or not the PlayerList mode is active
 	Overlay* mOverlay; // the PlayerList overlay
 
-	ListGuiElement* mList; // the GUI List
+	GuiElement* mList[MAX_PLAYERS]; // the GUI List
 	std::vector<String> mPlayers; // a vector of the players names
+
+	void updateList(); // make the gui match the vector
 };
 
 }

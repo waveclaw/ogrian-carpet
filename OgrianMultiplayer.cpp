@@ -390,6 +390,33 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
+			return true;
+		}
+
+		case ID_MAP_NAME:
+		{
+			// get the name
+			char mname[MAP_NAME_MAX_LENGTH];
+			int mlen, UID;
+
+			BitStream mbs(packet->data,packet->length,false);
+			mbs.Read(UID);
+			mbs.Read(mlen);
+			mbs.Read(mname,mlen);	
+
+			// if the map is different from the one we have loaded
+			if (mname != Renderer::getSingleton().getMapName())
+			{
+				// disconnect
+				clientDisconnect();
+
+				// load the new map
+				Renderer::getSingleton().loadMap(mname);
+
+				// reconnect
+				clientStart();
+			}
+
 			// send our name to the server
 			char name[PLAYER_NAME_MAX_LENGTH];
 			strcpy(name, mPlayerName);
@@ -402,31 +429,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			clientSend(&bs);
 			return true;
-		}
 
-		case ID_MAP_NAME:
-		{
-			// get the name
-			char name[MAP_NAME_MAX_LENGTH];
-			int len, UID;
-
-			BitStream bs(packet->data,packet->length,false);
-			bs.Read(UID);
-			bs.Read(len);
-			bs.Read(name,len);	
-
-			// if the map is different from the one we have loaded
-			if (name != Renderer::getSingleton().getMapName())
-			{
-				// disconnect
-				clientDisconnect();
-
-				// load the new map
-				Renderer::getSingleton().loadMap(name);
-
-				// reconnect
-				clientStart();
-			}
 		}
 
 		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
@@ -500,14 +503,18 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 
 			return true;
 		}
+		case ID_DISCONNECTION_NOTIFICATION: //////////////////////////////////////////////////////
+		case ID_CONNECTION_LOST: 
+		{
+			// client no longer connected
 
-		case ID_CONNECTION_LOST: //////////////////////////////////////////////////////
-			// Couldn't deliver a reliable packet - i.e. the other system was abnormally
-			// terminated
+			// remove their name from the list
 
-			// Do something here
+			// remove their ip from the list
+
 			
 			return true;
+		}
 	}
 	return false;
 }
