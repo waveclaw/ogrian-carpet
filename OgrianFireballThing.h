@@ -34,6 +34,7 @@ They self destruct when they hit the ground or another thing.
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
 #include "OgrianRenderer.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 
@@ -74,9 +75,11 @@ public:
 class FireballThing : public TimedThing
 {
 public:
-	FireballThing(Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+	FireballThing(int playerNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
 	{
+		mPlayerNum = playerNum;
+
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
 		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
@@ -116,6 +119,13 @@ public:
 
 	virtual void collided(Thing* e)
 	{
+		// get points for killing wizards
+		if (e->getType() == WIZARDTHING)
+		{
+			Multiplayer::getSingleton().getPlayerByNum(mPlayerNum)->score++;
+			Multiplayer::getSingleton().updateScores();
+		}
+
 		// destroy it
 		e->destroy();
 
@@ -138,6 +148,7 @@ public:
 	}
 
 private:
+	int mPlayerNum;
 	unsigned long mLastSmokeTime;
 	int mLastSmokeIndex;
 	std::vector<FireballSmokeEffect*> mSmokeList;

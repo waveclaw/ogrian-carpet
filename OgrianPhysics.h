@@ -40,6 +40,7 @@ It is a Singleton.
 #include "OgrianWizardThing.h"
 #include "OgrianConstants.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianTeam.h"
 
 using namespace Ogre;
 
@@ -150,7 +151,7 @@ private:
 	void listThings();
 
 	// make a new thing of the specified type
-	Thing* newThing(ThingType type);
+	Thing* newThing(ThingType type, int teamNum);
 };
 
 }

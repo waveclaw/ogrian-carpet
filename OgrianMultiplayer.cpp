@@ -381,6 +381,59 @@ int Multiplayer::getWizardUID(PlayerID pid)
 
 //----------------------------------------------------------------------------
 
+PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
+{
+	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		if (mPlayers[i].id == pid) return &mPlayers[i];
+	}
+
+	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
+	return 0;
+}
+
+//----------------------------------------------------------------------------
+
+PlayerInfo* Multiplayer::getPlayerInfo(int wizardUID)
+{
+	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		if (mPlayers[i].wizardUID == wizardUID) return &mPlayers[i];
+	}
+
+	LogManager::getSingleton().logMessage(String("wizard not found: #") << wizardUID);
+	return 0;
+}
+
+//----------------------------------------------------------------------------
+
+int Multiplayer::getPlayerNum(PlayerID pid)
+{
+	for (int i=0; i<(int)mPlayers.size(); i++)
+	{
+		if (mPlayers[i].id == pid) return i;
+	}
+
+	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
+	return -1;
+}
+
+//----------------------------------------------------------------------------
+
+PlayerInfo* Multiplayer::getPlayerByNum(int i)
+{
+	return &mPlayers[i];
+}
+
+//----------------------------------------------------------------------------
+
+void Multiplayer::updateScores()
+{
+
+}
+
+//----------------------------------------------------------------------------
+
 int Multiplayer::numClients()
 {
 	return (int)mPlayers.size()-1;

@@ -156,7 +156,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		if (thing == 0) // we need to make a new one if we dont have it
 		{
 			// make a new thing
-			thing = newThing((ThingType)type);
+			thing = newThing((ThingType)type, Multiplayer::getSingleton().getPlayerNum(packet->playerId));
 
 			// log it
 			LogManager::getSingleton().logMessage(String("Making New Thing for client: #") << uid);
@@ -243,7 +243,7 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 		else // otherwise, its a new thing
 		{
 			// make a new thing
-			Thing* thing = newThing((ThingType)type);
+			Thing* thing = newThing((ThingType)type, Multiplayer::getSingleton().getPlayerNum(packet->playerId));
 
 			// send the bitstream to the thing
 			thing->interpretBitStream(bitstream);
@@ -264,13 +264,13 @@ bool Physics::handleServerPacket(Packet* packet, PacketID pid)
 
 //----------------------------------------------------------------------------
 
-Thing* Physics::newThing(ThingType type)
+Thing* Physics::newThing(ThingType type, int playerNum)
 {
 	switch(type)
 	{
 		case MANATHING:	return new ManaThing();
 
-		case FIREBALLTHING:	return new FireballThing();
+		case FIREBALLTHING:	return new FireballThing(playerNum);
 
 		case CAMERATHING: return new WizardThing();
 
@@ -364,6 +364,7 @@ void Physics::addThing(Thing* thing)
 			Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
 					"Physics::addThing" );
 		}
+
 
 		// add to grid
 		Vector3 pos = thing->getPosition();
