@@ -51,8 +51,7 @@ class Physics : public Singleton< Physics >
 public:
 	virtual ~Physics();
 
-	// add a thing to the world in the specified grid location
-	// -1 for grid_u or grid_v puts it outside the grid
+	// add a thing to the world 
 	virtual void addThing(Thing* thing);
 
 	// this should be called by Thing::setPosition();
@@ -64,6 +63,9 @@ public:
 	// returns true if the thing is in the physics engine
 	virtual bool containsThing(Thing* thing);
 
+	// get the thing with the specified uid
+	virtual Thing* getThing(int uid);
+
 	// remove and delete all things in the world
 	virtual void clear();
 
@@ -74,10 +76,10 @@ public:
 	virtual void setWorldSize(int size);
 
 	// handle server packet
-	virtual void handleServerPacket(Packet* p);
+	virtual void handleServerPacket(Packet* p, PacketID pid);
 
 	// handle client packet
-	virtual void handleClientPacket(Packet* p);
+	virtual void handleClientPacket(Packet* p, PacketID pid);
 
     static Physics& getSingleton(void);
 
@@ -117,6 +119,9 @@ private:
 
 	// remove a thing from the world
 	virtual void deleteThing(Thing* thing);
+
+	// add a thing as a client
+	virtual void clientAddThing(Thing* thing, int uid);
 };
 
 }

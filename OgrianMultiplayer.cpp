@@ -210,26 +210,44 @@ void Multiplayer::frame()
 
 void Multiplayer::clientRecieve()
 {
-	Packet* p = mClient->Receive();
+	Packet* packet = mClient->Receive();
 
-	// do stuff here
-	if (p != 0)
-		Physics::getSingleton().handleClientPacket(p);
+	while (packet != 0)
+	{
+		// We got a packet, get the identifier with our handy function
+		PacketID packetId = getPacketIdentifier(packet);
 
-	mClient->DeallocatePacket(p);
+		if(handleOtherPacket(packet, packetId))
+		{
+			Physics::getSingleton().handleClientPacket(packet, packetId);
+		}
+		
+		Packet* packet = mClient->Receive();
+	}
+
+	mClient->DeallocatePacket(packet);
 }
 
 //----------------------------------------------------------------------------
 
 void Multiplayer::serverRecieve()
 {
-	Packet* p = mServer->Receive();
+	Packet* packet = mServer->Receive();
 
-	// do stuff here
-	if (p != 0)
-		Physics::getSingleton().handleServerPacket(p);
+	while (packet != 0)
+	{
+		// We got a packet, get the identifier with our handy function
+		PacketID packetId = getPacketIdentifier(packet);
 
-	mServer->DeallocatePacket(p);
+		if(handleOtherPacket(packet, packetId))
+		{
+			Physics::getSingleton().handleServerPacket(packet, packetId);
+		}
+		
+		Packet* packet = mServer->Receive();
+	}
+
+	mServer->DeallocatePacket(packet);
 }
 
 //----------------------------------------------------------------------------
@@ -297,6 +315,90 @@ bool Multiplayer::isConnected()
 		return mClient->IsConnected();
 }
 
+//----------------------------------------------------------------------------
+
+// Copied from Multiplayer.cpp (from RakNet)
+// If the first byte is ID_TIMESTAMP, then we want the 5th byte
+// Otherwise we want the 1st byte
+PacketID Multiplayer::getPacketIdentifier(Packet* p)
+{
+	if (p==0)
+		return (PacketID)255;
+
+	if ((unsigned char)p->data[0] == ID_TIMESTAMP)
+	{
+		assert(p->length > sizeof(unsigned char) + sizeof(unsigned long));
+		return (PacketID) p->data[sizeof(unsigned char) + sizeof(unsigned long)];
+	}
+	else
+		return (PacketID) p->data[0];
+}
+
+//----------------------------------------------------------------------------
+
+bool Multiplayer::handleOtherPacket(Packet* p, PacketID pid)
+{
+	// Check if this is a network message packet
+	switch (pid)
+	{
+		case ID_DISCONNECTION_NOTIFICATION:
+				// Connection lost normally
+			break;
+
+		case ID_REMOTE_DISCONNECTION_NOTIFICATION: // Server telling the clients of another client disconnecting gracefully.  You can manually broadcast this in a peer to peer enviroment if you want.
+			
+			break;
+		case ID_REMOTE_CONNECTION_LOST: // Server telling the clients of another client disconnecting forcefully.  You can manually broadcast this in a peer to peer enviroment if you want.
+			
+			break;
+		case ID_REMOTE_NEW_INCOMING_CONNECTION: // Server telling the clients of another client connecting.  You can manually broadcast this in a peer to peer enviroment if you want.
+			
+			break;
+		case ID_REMOTE_EXISTING_CONNECTION: // Server telling you of an existing connection that was there before you connected
+			
+			break;
+		case ID_NEW_INCOMING_CONNECTION:
+				// Somebody connected.  We have their IP now
+			
+			break;
+
+		case ID_RECEIVED_STATIC_DATA:
+				// Got static data
+		
+			break;
+
+
+		case ID_NO_FREE_INCOMING_CONNECTIONS:
+			// Sorry, the server is full.  I don't do anything here but
+			// A real app should tell the user
+			
+			break;
+		case ID_MODIFIED_PACKET:
+			// Cheater!
+			
+			break;
+
+		case ID_CONNECTION_LOST:
+			// Couldn't deliver a reliable packet - i.e. the other system was abnormally
+			// terminated
+			
+			break;
+
+		case ID_CONNECTION_REQUEST_ACCEPTED:
+			// This tells the client they have connected
+			
+			break;
+
+		case ID_CONNECTION_RESUMPTION:
+			// Client reconnected before getting disconnected
+			
+			break;
+
+		default:
+			return true;
+	}
+	return false;
+}
 //----------------------------------------------------------------------------
 
 Multiplayer& Multiplayer::getSingleton(void)

@@ -185,6 +185,9 @@
 				RelativePath="OgrianMultiplayer.h">
 			</File>
 			<File
+				RelativePath="OgrianPacketEnum.h">
+			</File>
+			<File
 				RelativePath="OgrianPhysics.h">
 			</File>
 			<File

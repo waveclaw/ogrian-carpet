@@ -46,7 +46,7 @@ namespace Ogrian
 class ManaThing : public FloatingThing
 {
 public:
-	ManaThing(unsigned int amount, Vector3 pos = Vector3(0,0,0)) 
+	ManaThing(unsigned int amount=1, Vector3 pos = Vector3(0,0,0)) 
 		: FloatingThing("Ogrian/Mana", "Mana", false, 1, pos)
 	{
 		setAmount(amount);

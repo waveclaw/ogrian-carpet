@@ -36,7 +36,7 @@ This will be changed to a quadtree or something for performance.
 
 
 #include "OgrianPhysics.h"
-#include "OgrianRollingThing.h"
+#include "OgrianManaThing.h"
 #include "OgrianConstants.h"
 
 using namespace Ogre;
@@ -69,30 +69,95 @@ void Physics::frame(Real time)
 
 //----------------------------------------------------------------------------
 
-void Physics::handleClientPacket(Packet* p)
+void Physics::handleClientPacket(Packet* packet, PacketID pid)
 {
-	// get the packet type
+	if (packet == 0) return;
 
-	// if its a thing update, find the thing
+	BitStream bitstream(packet->data, packet->length, false);
+	int uid, type;
 
-	// send the bitstream to the thing
+	bitstream.Read(uid);
+	bitstream.Read(type);
+
+	// if its a thing creation
+	if (pid == ID_MAKE_THING)
+	{
+		// make a new thing
+		Thing* thing;
+		switch(type)
+		{
+			case MANATHING:
+				thing = new ManaThing();
+				break;
+		}
+
+		// add it to the physics
+		clientAddThing(thing, uid);
+
+		// send the bitstream to the thing
+		thing->interpretBitStream(bitstream);
+	}
+	// if its a thing update
+	else if (pid == ID_UPDATE_THING)
+	{
+		// find the thing
+		
+		// send the bitstream to the thing
+
+	}
+	// if its a thing deletion
+	else if (pid == ID_REMOVE_THING)
+	{
+		// find the thing
+
+		// destroy it
+
+	}
 }
 
 //----------------------------------------------------------------------------
 
-void Physics::handleServerPacket(Packet* p)
+void Physics::handleServerPacket(Packet* p, PacketID pid)
 {
-	// get the packet type
-
 	// if its a thing creation
+	if (pid == ID_MAKE_THING)
+	{
+		// make a new thing
 
-	// create the thing
+		// send the bitstream to the thing
 
+		// add it to the physics
+	}
 	// if its a camera thing update
+	else if (pid == ID_UPDATE_CAMERA_THING)
+	{
+		// find the thing
+		
+		// send the bitstream to the thing
 
-	// udpate the camerathing
+	}
 }
 
+//----------------------------------------------------------------------------
+
+Thing* Physics::getThing(int uid)
+{
+	// binary search
+	int left = 0;
+	int right = (int)mAllThings.size();
+	int mid, cuid;
+
+	while (left <= right)
+	{
+		mid = (left+right)/2;
+		cuid = mAllThings[mid]->getUID();
+		if (cuid == uid) return mAllThings[mid];
+		else if (uid < cuid) right = mid-1;
+		else if (uid > cuid) left = mid+1;
+	}
+
+	return 0;
+}
 //----------------------------------------------------------------------------
 
 // checks to see if a thing is in the list mAllThings
@@ -135,6 +200,18 @@ void Physics::addThing(Thing* thing)
 		// notify the thing
 		thing->placedInPhysics(mCurrentUID++);
 	}
+}
+
+//----------------------------------------------------------------------------
+
+// add a Thing to the world
+void Physics::clientAddThing(Thing* thing, int uid)
+{
+	// add to full list
+	mAllThings.push_back(thing);
+
+	// notify the thing
+	thing->placedInPhysics(uid);
 }
 
 //----------------------------------------------------------------------------

@@ -33,8 +33,8 @@ Description: This handles all of the multiplayer networking code.
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianConstants.h"
+#include "OgrianPacketEnum.h"
 
-#include "PacketEnumerations.h"
 #include "RakNetworkFactory.h"
 #include "RakClientInterface.h"
 #include "RakServerInterface.h"
@@ -104,6 +104,12 @@ private:
 
 	// receive packets on the server
 	void serverRecieve();
+
+	// get the packet identifier
+	PacketID getPacketIdentifier(Packet* p);
+
+	// handle misc packets, returns true if its a game packet
+	bool handleOtherPacket(Packet* p, PacketID pid);
 
 };
 
