@@ -7,7 +7,14 @@ Hand Sprites - two frames, idle and casting, for each spell
 amry counters
 health/mana hud bars
 monster health bars
-building heightmap
+
+
+Sounds needed:
+=========
+claim ding
+tick jump
+crane chirp
+
 
 
 Monsters
@@ -52,4 +59,3 @@ performance, tweaks:
 known bugs:
 ========
 memory leak in making billboards
-height and/or width sometimes get fucked up - dont know why

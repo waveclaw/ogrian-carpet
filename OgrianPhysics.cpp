@@ -50,6 +50,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianSentinelThing.h"
 #include "OgrianTickThing.h"
 #include "OgrianGnomeThing.h"
+#include "OgrianAlbatrossThing.h"
 
 #include "OgreLogManager.h"
 
@@ -383,6 +384,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case BALOONTHING: return new BaloonThing(teamNum);
 
 		case CRANETHING: return new CraneThing(teamNum);
+		case ALBATROSSTHING: return new AlbatrossThing(teamNum);
 		case SENTINELTHING: return new SentinelThing(teamNum);
 		case TICKTHING: return new TickThing(teamNum);
 		case GNOMETHING: return new GnomeThing(teamNum);
