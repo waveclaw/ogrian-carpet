@@ -95,6 +95,8 @@ void WizardThing::setupSkins()
 	getVisRep()->addPose("Ogrian/Wizard/");
 	getVisRep()->addPose("Ogrian/Jeff/");
 	getVisRep()->addPose("Ogrian/Mike/");
+	getVisRep()->addPose("Ogrian/Rick/");
+	getVisRep()->addPose("Ogrian/Jess/");
 
 }
 
