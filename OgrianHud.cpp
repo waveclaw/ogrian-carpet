@@ -28,6 +28,7 @@ Description: The heads up display
 /*------------------------------------*/
 
 #include "OgrianHud.h"
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
@@ -46,11 +47,17 @@ Hud::Hud()
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
+	ColourValue colour;
+	colour.r = CONR("red")/255.0;
+	colour.g = CONR("green")/255.0;
+	colour.b = CONR("blue")/255.0;
+
 	for (int i=0; i<NUM_SPELLS; i++)
 	{
 		std::ostringstream num("");
 		num << i;
 		mSpellIcons[i] = GuiManager::getSingleton().getGuiElement(String("Ogrian/HUD/SpellIcon/") + num.str());
+		mSpellIcons[i]->setColour(colour);
 	}
 
 	setMessage("");

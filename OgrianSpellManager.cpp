@@ -229,8 +229,8 @@ void SpellManager::readyCurrentSpell()
 
 	// show the name
 	std::ostringstream cost("");
-	cost << "                cost: " << mSpells[mCurrentSpell]->getManaCost();
-	Hud::getSingleton().setSpellName(mSpells[mCurrentSpell]->getString() + cost.str());
+	cost << mSpells[mCurrentSpell]->getManaCost() << " : ";
+	Hud::getSingleton().setSpellName(cost.str() + mSpells[mCurrentSpell]->getString());
 }
 
 //----------------------------------------------------------------------------

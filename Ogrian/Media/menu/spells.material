@@ -5,6 +5,13 @@ material Ogrian/SpellIcon/Albatross/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -25,7 +32,7 @@ material Ogrian/SpellIcon/Albatross/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture crane/crane_u_r.png
 			}
 		}
 	}
@@ -53,6 +60,13 @@ material Ogrian/SpellIcon/Gnome/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -73,7 +87,7 @@ material Ogrian/SpellIcon/Gnome/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture gnome/gnome_s_f.png
 			}
 		}
 	}
@@ -101,6 +115,13 @@ material Ogrian/SpellIcon/Tick/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -121,7 +142,7 @@ material Ogrian/SpellIcon/Tick/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture tick/tick_s_f.png
 			}
 		}
 	}
@@ -149,6 +170,13 @@ material Ogrian/SpellIcon/Sentinel/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -169,7 +197,7 @@ material Ogrian/SpellIcon/Sentinel/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture sentinel/sentinel_f.png
 			}
 		}
 	}
@@ -197,6 +225,13 @@ material Ogrian/SpellIcon/Speed/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -217,7 +252,7 @@ material Ogrian/SpellIcon/Speed/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture  mike/mike_r.png
 			}
 		}
 	}
@@ -245,6 +280,13 @@ material Ogrian/SpellIcon/Firestorm/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -265,7 +307,7 @@ material Ogrian/SpellIcon/Firestorm/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture fireball.png
 			}
 		}
 	}
@@ -293,6 +335,13 @@ material Ogrian/SpellIcon/AkimboFireball/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -313,7 +362,7 @@ material Ogrian/SpellIcon/AkimboFireball/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture fireball.png
 			}
 		}
 	}
@@ -341,6 +390,14 @@ material Ogrian/SpellIcon/Fireball/Ready
 	{
 		pass
 		{
+			ambient 0.5 0.5 0.5
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -361,7 +418,7 @@ material Ogrian/SpellIcon/Fireball/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture fireball.png
 			}
 		}
 	}
@@ -389,7 +446,15 @@ material Ogrian/SpellIcon/ClaimSpell/Ready
 	{
 		pass
 		{
-			scene_blend alpha_blend
+			ambient 0.5 0.5 0.5
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
+			scene_blend add
 
 			texture_unit
 			{
@@ -405,11 +470,11 @@ material Ogrian/SpellIcon/ClaimSpell/Enabled
 	{
 		pass
 		{
-			scene_blend alpha_blend
+			scene_blend add
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture flare.png
 			}
 		}
 	}
@@ -437,6 +502,13 @@ material Ogrian/SpellIcon/BuildSpell/Ready
 	{
 		pass
 		{
+			texture_unit
+			{
+				texture select.png
+			}
+		}
+		pass
+		{
 			scene_blend alpha_blend
 
 			texture_unit
@@ -457,7 +529,7 @@ material Ogrian/SpellIcon/BuildSpell/Enabled
 
 			texture_unit
 			{
-				texture crosshair.png
+				texture rock.png
 			}
 		}
 	}
