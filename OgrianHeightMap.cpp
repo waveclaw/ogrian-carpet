@@ -76,10 +76,10 @@ int HeightMap::_worldheight( int x, int z )
 {
 	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
 
-	if (x < 0) return min;
-	if (z < 0) return min;
-	if (x > mSize) return min;
-	if (z > mSize) return min;
+	if (x <= 0) return min;
+	if (z <= 0) return min;
+	if (x >= mSize-1) return min;
+	if (z >= mSize-1) return min;
 
 	if (!mData) return min;
 
