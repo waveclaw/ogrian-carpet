@@ -62,6 +62,8 @@ public:
 			setMaterial("Ogrian/HutBall");
 
 		Thing::setColour(colour);
+
+		playSound(Game::getSingleton().SOUND_HUM);
 	}
 	
 	virtual ThingType getType()	{ return EFFECT; }

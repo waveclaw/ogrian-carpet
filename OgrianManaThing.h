@@ -77,6 +77,14 @@ public:
 		FloatingThing::setTeamNum(teamNum);
 	}
 
+	// play a sound when the colour changes
+	virtual void setColour(ColourValue& colour)
+	{
+		FloatingThing::setColour(colour);
+		
+		playSound(Game::getSingleton().SOUND_HUM);
+	}
+
 	// setting the amount automatically sets the scale
 	virtual void setAmount(int amount)
 	{

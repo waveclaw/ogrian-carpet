@@ -64,6 +64,9 @@ public:
 	// sound indexes
 	int SOUND_WHOOSH;
 	int SOUND_BANG;
+	int SOUND_HISS;
+	int SOUND_CHIRP;
+	int SOUND_HUM;
 private:
 	Game();
 

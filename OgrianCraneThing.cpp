@@ -223,6 +223,8 @@ void CraneThing::setStateAttack()
 		Vector3 dir = target->getPosition() - getPosition();
 		dir.normalise();
 		setVelocity(dir * CONR("CRANE_SPEED"));
+	
+		playSound(Game::getSingleton().SOUND_CHIRP);
 
 		setUpdateFlag();
 	}

@@ -70,6 +70,8 @@ AlbatrossThing::AlbatrossThing(int teamNum, Vector3 pos, Vector3 vel)
 
 	mLastFlap = false;
 	mDeathTime = Clock::getSingleton().getTime() + CONT("ALBATROSS_LIFETIME");
+
+	playSound(Game::getSingleton().SOUND_CHIRP);
 }
 
 //----------------------------------------------------------------------------
