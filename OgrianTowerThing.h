@@ -55,7 +55,10 @@ public:
 	{
 		mLastCastTime = 0;
 
-		mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
+		if (!Multiplayer::getSingleton().isClient())
+			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
+		else 
+			mColour = ColourValue::White;
 
 		// set the mesh
 		setMaterial("Ogrian/Tower");

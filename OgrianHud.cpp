@@ -45,7 +45,7 @@ Hud::Hud()
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 
-	setMessage("test message");
+	setMessage("");
 }
 
 //----------------------------------------------------------------------------

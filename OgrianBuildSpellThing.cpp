@@ -66,7 +66,7 @@ void BuildSpellThing::collidedGround()
 		team->setCastle(castle);
 	}
 	
-	else if (team && team->getCastle() && team->getCastle()->getMana() > CONI("TOWER_COST"))
+	else if (team && team->getCastle() && team->getCastle()->getMana() >= CONI("TOWER_COST"))
 	{
 		// make sure its not too close to other buildings
 		for (int i=0; i<Physics::getSingleton().numThings(); i++)
