@@ -114,7 +114,7 @@ void Multiplayer::clientStart()
 
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
-				"Multiplayer::startClient" );
+				"Multiplayer::clientStart" );
 }
 
 //----------------------------------------------------------------------------
@@ -135,7 +135,7 @@ void Multiplayer::serverStart()
 	
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
-				"Multiplayer::startServer" );
+				"Multiplayer::serverStart" );
 
 	PlayerInfo server;
 	server.id.binaryAddress = 0;

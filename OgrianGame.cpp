@@ -63,6 +63,8 @@ void Game::loadSounds()
 
 void Game::updateScores()
 {
+	if (Multiplayer::getSingleton().isClient()) return;
+
 	// update the scores
 	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
 
@@ -80,8 +82,6 @@ void Game::startGame()
 
 	// start the audio
 	Audio::getSingleton().start();
-
-	Physics::getSingleton().clearTeams();
 
 	if (Multiplayer::getSingleton().wasClient()) startClientGame();
 	else if (Multiplayer::getSingleton().isServer()) startServerGame();
@@ -106,6 +106,8 @@ void Game::startServerGame()
 
 void Game::startSkirmishGame()
 {
+	Physics::getSingleton().clearTeams();
+
 	// make a team for the player
 	Physics::getSingleton().newTeam(Renderer::getSingleton().getCameraThing()->getUID()); 
 
