@@ -115,7 +115,8 @@ bool Input::processKeyInput(InputReader* input)
 	}
 
 	// cast build
-	if (input->getMouseButton(2) && mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
+	if ((input->getMouseButton(2) || input->getMouseButton(3) || input->getMouseButton(4))
+		&& mTimeUntilNextCast <= 0 && !Renderer::getSingleton().getCameraThing()->isGhost()
 		&& !Game::getSingleton().isPreGame())
 	{
 		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();

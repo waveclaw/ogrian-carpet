@@ -577,8 +577,8 @@ void Physics::_addThing(Thing* thing, int grid_u, int grid_v)
 		Vector3 pos = thing->getPosition();
 		if (pos.x < -CONR("COASTLINE")) pos.x = -CONR("COASTLINE")+1;
 		if (pos.z < -CONR("COASTLINE")) pos.z = -CONR("COASTLINE")+1;
-		if (pos.x > mWorldSize + CONR("COASTLINE")) pos.x = 1026 + CONR("COASTLINE"-1);
-		if (pos.z > mWorldSize + CONR("COASTLINE")) pos.z = 1026 + CONR("COASTLINE"-1);
+		if (pos.x > mWorldSize + CONR("COASTLINE")) pos.x = 1026 + CONR("COASTLINE")-1;
+		if (pos.z > mWorldSize + CONR("COASTLINE")) pos.z = 1026 + CONR("COASTLINE")-1;
 		thing->setPosition(pos);
 	}
 }

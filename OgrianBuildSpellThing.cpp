@@ -19,20 +19,16 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianClaimSpellThing.h
+OgrianBuildSpellThing.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This claims a hut or mana
+Description: This makes a castle or a tower
 
 /*------------------------------------*/
 
-#ifndef __OgrianClaimSpellThing_H__
-#define __OgrianClaimSpellThing_H__
-
-#include <Ogre.h>
-#include "OgrianTimedThing.h"
-#include "OgrianCastle.h"
+#include "OgrianBuildSpellThing.h"
+#include "OgrianTowerThing.h"
 #include "OgrianPhysics.h"
 
 using namespace Ogre;
@@ -40,42 +36,47 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-/////////////////////////////////////////////////////////////////////////////
-class ClaimSpellThing : public TimedThing
+void BuildSpellThing::collidedGround()
 {
-public:
-	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: TimedThing("Ogrian/Rock", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
-	{
-		setTeamNum(teamNum);
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 
-		setVelocity(vel);
-		playSound(Game::getSingleton().SOUND_WHOOSH);
-		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
-		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
+	// make sure its not in water
+	if (getGroundY() < CONR("BUILDING_MIN_GROUNDY"))
+	{
+		destroy();
+		return;
 	}
-
-	virtual ThingType getType() { return CLAIMTHING; }
-
-	virtual void collided(Thing* e)
+	
+	// make sure its not too close to other buildings
+	for (int i=0; i<Physics::getSingleton().numThings(); i++)
 	{
-		// grow a castle (for testing)
-		if (e->getType() == CASTLEFLAG)
+		Thing* thing = Physics::getSingleton().getThingByIndex(i);
+		if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
 		{
-			Castle* castle = static_cast<Castle*>(e);
-			castle->setMana(castle->getMana()+1);
 			destroy();
-		}
-
-		// claim mana
-		if (e->getType() == MANATHING)
-		{
-			e->setTeamNum(getTeamNum());
-			destroy();
+			return;
 		}
 	}
-};
 
+	if (team && !team->hasCastle())
+	{
+		// make a castle
+		Castle* castle = new Castle(getTeamNum(), getPosition());
+		team->setCastle(castle);
+	}
+	
+	if (team && team->getCastle() && team->getCastle()->getMana() > CONI("TOWER_COST"))
+	{
+		// make a tower
+		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), getPosition()));
+
+		// remove the mana from the castle
+		Castle* castle = team->getCastle();
+		castle->setMana(castle->getMana() - CONI("TOWER_COST"));
+	}
+
+	// self destruct
+	destroy();
 }
 
-#endif
+}

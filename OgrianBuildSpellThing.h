@@ -19,61 +19,46 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianClaimSpellThing.h
+OgrianBuildSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This claims a hut or mana
+Description: This makes a castle or a tower
 
 /*------------------------------------*/
 
-#ifndef __OgrianClaimSpellThing_H__
-#define __OgrianClaimSpellThing_H__
+#ifndef __OgrianBuildSpellThing_H__
+#define __OgrianBuildSpellThing_H__
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
-#include "OgrianCastle.h"
-#include "OgrianPhysics.h"
+#include "OgrianGame.h"
+#include "OgrianConst.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
-/////////////////////////////////////////////////////////////////////////////
-class ClaimSpellThing : public TimedThing
+class BuildSpellThing : public TimedThing
 {
 public:
-	ClaimSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: TimedThing("Ogrian/Rock", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
+	BuildSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
+		: TimedThing("Ogrian/Rock", SPRITE, "BuildSpell", false, CONR("BUILDSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
-		setFlickerPeriod(CONR("CLAIMSPELL_FLICKER_PERIOD"));
-		setRelativeExpirationTime(CONR("CLAIMSPELL_LIFETIME"));
+		setFlickerPeriod(CONR("BUILDSPELL_FLICKER_PERIOD"));
+		setRelativeExpirationTime(CONR("BUILDSPELL_LIFETIME"));
+
+		setGroundScan(true);
 	}
 
-	virtual ThingType getType() { return CLAIMTHING; }
+	virtual ThingType getType() { return BUILDTHING; }
 
-	virtual void collided(Thing* e)
-	{
-		// grow a castle (for testing)
-		if (e->getType() == CASTLEFLAG)
-		{
-			Castle* castle = static_cast<Castle*>(e);
-			castle->setMana(castle->getMana()+1);
-			destroy();
-		}
-
-		// claim mana
-		if (e->getType() == MANATHING)
-		{
-			e->setTeamNum(getTeamNum());
-			destroy();
-		}
-	}
+	virtual void collidedGround();
 };
 
 }
