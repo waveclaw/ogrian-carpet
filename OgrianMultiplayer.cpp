@@ -71,7 +71,7 @@ void Multiplayer::loadConfig()
 {
 	/* Set up the options */
 	ConfigFile config;
-	config.load( "ogrian.cfg" );
+	config.load( "config.cfg" );
 	mPlayerName = config.getSetting( "name" );
 	mServerName = config.getSetting( "server" );
 
