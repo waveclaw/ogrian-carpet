@@ -361,7 +361,7 @@ void Castle::dropMana(int amount)
 	offset *= CONR("CASTLE_MANA_RADIUS");
 	ManaThing* mana = new ManaThing(amount, getPosition()+offset);
 	Physics::getSingleton().addThing(mana);
-	mana->setTeamNum(getTeamNum());
+	mana->setTeamNum(-1);
 	mana->setPosY(mana->getGroundY());
 }
 

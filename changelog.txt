@@ -15,3 +15,9 @@
 -added ticks
 -added gnomes
 -added albatross!es
+
+0.7.1
+-some new sprites
+-removed baloons, mana go to castles on their own
+-nerfed ticks
+-improved gnomes

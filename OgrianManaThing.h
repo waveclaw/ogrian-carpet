@@ -129,13 +129,10 @@ public:
 		}
 
 		
-		else if (e->getType() == CASTLEKEEPTHING || e->getType() == CASTLETURRETTHING)
+		else if (e->getType() == CASTLEKEEPTHING && e->getTeamNum() == getTeamNum())
 		{
-			if (e->getTeamNum() == getTeamNum())
-			{
-				Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addMana(mAmount);
-				destroy();
-			}
+			Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addMana(mAmount);
+			destroy();
 		}
 	}
 

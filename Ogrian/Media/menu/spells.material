@@ -454,11 +454,11 @@ material Ogrian/SpellIcon/ClaimSpell/Ready
 		}
 		pass
 		{
-			scene_blend add
+			scene_blend alpha_blend
 
 			texture_unit
 			{
-				texture flare.png
+				texture halo.png
 			}
 		}
 	}
@@ -470,11 +470,11 @@ material Ogrian/SpellIcon/ClaimSpell/Enabled
 	{
 		pass
 		{
-			scene_blend add
+			scene_blend alpha_blend
 
 			texture_unit
 			{
-				texture flare.png
+				texture halo.png
 			}
 		}
 	}

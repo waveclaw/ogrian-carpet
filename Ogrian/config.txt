@@ -37,9 +37,9 @@ MUSIC_VOLUME=128
 # 0  	128   	0 	= Dark Green
 # 0   	255  	128 	= Turquoise
 
-red=200
-green=200
-blue=200
+red=1
+green=1
+blue=1
 
 
 # Performance variables
