@@ -65,7 +65,7 @@ public:
 		: TimedThing("Ogrian/FireballBlast", SPRITE, "FireballBlast", false, CONR("FIREBALL_SCALE")*2, pos, SPHERE)
 	{
 		playSound(Game::getSingleton().SOUND_BANG);
-		setRelativeExpirationTime(1);
+		setRelativeExpirationTime(CONR("FIREBALL_BLAST_LIFETIME"));
 		setFlickerPeriod(CONR("FIREBALL_FLICKER_PERIOD"));
 	}
 
@@ -109,7 +109,8 @@ public:
 		TimedThing::move(time);
 
 		// emit smoke
-		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime())
+		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime() 
+			&& mSmokeList.size() > 0)
 		{
 			if (mLastSmokeIndex == mSmokeList.size()) mLastSmokeIndex = 0;
 			mSmokeList[mLastSmokeIndex++]->setPosition(mLastPos);

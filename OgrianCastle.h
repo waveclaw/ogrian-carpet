@@ -47,7 +47,8 @@ public:
 	CastleTowerThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Tower", MODEL, "CastleTower", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh");
+		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
+			CONR("CASTLETOWER_MESH_SCALE"), CONR("CASTLETOWER_MESH_RATIO"));
 
 		setHeight(CONR("CASTLETOWER_HEIGHT"));
 		setPercentage(1);
@@ -72,7 +73,8 @@ public:
 	CastleWallThing(int teamNum, Vector3 pos=Vector3(0,0,0)) 
 		: DamageableThing("Ogrian/Wall", MODEL, "CastleWall", false, CONR("CASTLE_WIDTH"), pos, CUBE)
 	{
-		static_cast<Model*>(getVisRep())->setMesh("wall.mesh");
+		static_cast<Model*>(getVisRep())->setMesh("wall.mesh",
+			CONR("CASTLEWALL_MESH_SCALE"), CONR("CASTLEWALL_MESH_RATIO"));
 
 		setHeight(CONR("CASTLEWALL_HEIGHT"));
 		setPercentage(1);

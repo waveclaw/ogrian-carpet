@@ -59,9 +59,11 @@ Model::~Model()
 
 //----------------------------------------------------------------------------
 
-void Model::setMesh(String mesh)
+void Model::setMesh(String mesh, Real scale, Real ratio)
 {
 	mMeshName = mesh;
+	mScale = scale;
+	mRatio = ratio;
 	
 	if (mInRenderer)
 	{
@@ -118,15 +120,11 @@ void Model::_updateScale()
 {
 	if (mInRenderer)
 	{
-		AxisAlignedBox box = mEntity->getMesh()->getBounds();
-
-		Real aawidth = box.getMaximum().x - box.getMinimum().x;
-		Real aaheight = box.getMaximum().y - box.getMinimum().y;
-
 		mNode->setScale(
-			mWidth*2/aawidth,
-			mHeight*2/aaheight,
-			mWidth*2/aawidth);
+			(mWidth/2)/mScale,
+			(mHeight/2)/(mScale*mRatio),
+			(mWidth/2)/mScale
+		);
 	}
 }
 
