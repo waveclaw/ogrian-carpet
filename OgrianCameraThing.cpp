@@ -177,10 +177,10 @@ void CameraThing::move(Real time)
 	}
 
 	mForce.normalise();
+	mForce *= CONR("CAMERA_MOVE_SPEED");
+
 	if (isSpeeding())
-		mForce *= CONR("SPEEDSPELL_SPEED");
-	else
-		mForce *= CONR("CAMERA_MOVE_SPEED");
+		mForce *= CONR("SPEEDSPELL_MULTIPLIER");
 
 	Vector3 vel = getVelocity();
 
@@ -191,7 +191,7 @@ void CameraThing::move(Real time)
 	{
 		vel = mDir;
 		vel.normalise();
-		vel *=CONR("SPEEDSPELL_SPEED");
+		vel *= CONR("CAMERA_MOVE_SPEED") * CONR("SPEEDSPELL_MULTIPLIER");
 	}
 
 	setVelocity(vel);

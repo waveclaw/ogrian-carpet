@@ -63,6 +63,10 @@ public:
 	// where all wizards should start
 	Vector3 getStartPos();
 
+	// wether or not the current map has lava
+	void setLava(bool lava);
+	bool getLava();
+
 	static Game& getSingleton(void);
 
 	// sound indexes
@@ -73,6 +77,7 @@ public:
 	int SOUND_HUM;
 
 private:
+	bool mLava;
 	Vector3 mStartPos;
 	ConfigFile mConfig;
 

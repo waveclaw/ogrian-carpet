@@ -52,6 +52,7 @@ namespace Ogrian
 Game::Game()
 {
 	mPreGame = false;
+	mLava = false;
 	mStartPos = Vector3(0,0,0);
 	loadSounds();
 }
@@ -61,6 +62,20 @@ Game::Game()
 Game::~Game()
 {
 
+}
+
+//----------------------------------------------------------------------------
+
+void Game::setLava(bool lava)
+{
+	mLava = lava;
+}
+
+//----------------------------------------------------------------------------
+
+bool Game::getLava()
+{
+	return mLava;
 }
 
 //----------------------------------------------------------------------------

@@ -58,7 +58,6 @@ WizardThing::WizardThing(bool visible, int skin)
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
-	mLava = false;
 	mVisible = visible;
 
 	setSkin(skin);
@@ -92,7 +91,6 @@ void WizardThing::reset()
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
-	mLava = false;
 
 	// make a team for this wizard'
 	if (!Multiplayer::getSingleton().isClient())
@@ -318,7 +316,7 @@ void WizardThing::die()
 // ignore external up/down velocity changes
 void WizardThing::setVelocity(Vector3 vel)
 {
-	if (!mSpeeding)
+	if (!mSpeeding || Game::getSingleton().getLava())
 		vel.y = getVelY();
 	
 	Thing::setVelocity(vel);
@@ -399,15 +397,27 @@ void WizardThing::move(Real time)
 	}
 
 	// float
-	if (!mSpeeding 
-		&& getVelY() > -CONR("CAMERA_FALL_MAX")
-		&& !(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)
-		)
+	if (!(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING)) // dont make remote wizards float
 	{
-		if (getVelY() > CONR("CAMERA_RISE_MAX")) 
-			setVelY(CONR("CAMERA_RISE_MAX"));
+		float fall_max = CONR("CAMERA_FALL_MAX");
+		float grav = CONR("CAMERA_GRAV");
 
-		setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
+		// fall faster when speeding on a lava map
+		if (mSpeeding && Game::getSingleton().getLava())
+		{
+			fall_max *= CONR("SPEEDSPELL_MULTIPLIER");
+			grav *= CONR("SPEEDSPELL_MULTIPLIER");
+		}
+
+		// accelerate downward until we reach terminal velocity
+		if (getVelY() > -fall_max)
+		{
+			setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
+		}
+		else if (getVelY() < -fall_max) 
+		{
+			setVelY(-fall_max);
+		}
 	}
 
 	DamageableThing::move(time);
@@ -415,15 +425,6 @@ void WizardThing::move(Real time)
 	// update health bar
 	if (mBar)
 		mBar->update(getPosition(), getHealth()/100.0*getWidth());
-}
-
-//----------------------------------------------------------------------------
-
-void WizardThing::setLava(bool lava)
-{
-	if (Multiplayer::getSingleton().isClient()) lava = false;
-
-	mLava = lava;
 }
 
 //----------------------------------------------------------------------------
@@ -449,8 +450,9 @@ void WizardThing::setPosition(Vector3 pos)
 	DamageableThing::setPosition(pos);
 
 	// check for lava
-	if (mLava && getPosY() <= CONR("HEIGTHMAP_MIN_HEIGHT") + CONR("CAMERA_HEIGHT") + .01)
-		die();
+	if (!Multiplayer::getSingleton().isClient())
+		if (Game::getSingleton().getLava() && getPosY() <= CONR("HEIGTHMAP_MIN_HEIGHT") + CONR("CAMERA_HEIGHT") + .01)
+			die();
 }
 
 //----------------------------------------------------------------------------

@@ -290,10 +290,9 @@ void Renderer::loadMap(String configfile, bool server)
 	createOcean(oceanMaterial);
 
 	Game::getSingleton().reset();
-	//createCameraThing();
 	
 	// set the lava
-	mCameraThing->setLava(lava > 0);
+	Game::getSingleton().setLava(lava > 0);
 
 	// start the game
 	Game::getSingleton().startGame(config);

@@ -120,8 +120,6 @@ public:
 
 	virtual Real getGroundY(Vector3 pos);
 
-	virtual void setLava(bool lava);
-
 	virtual void placedInPhysics(int uid);
 
 private:
@@ -131,7 +129,6 @@ private:
 	bool mVisible;
 	bool mGhost;
 	bool mSpeeding;
-	bool mLava; 
 	Time mStopSpeedTime;
 
 	int mActiveMana;

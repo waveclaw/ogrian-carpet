@@ -30,6 +30,7 @@ Description: This makes a castle or a tower
 #include "OgrianBuildSpellThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
 #include "OgrianHud.h"
 #include "OgrianBuildingHeightMap.h"
 
@@ -105,7 +106,7 @@ void BuildSpellThing::collidedGround()
 			if (thing->isBuilding() && axisDistance(thing) < 2*CONR("TOWER_WIDTH") + CONR("CASTLE_WIDTH"))
 			{
 				// report the problem
-				if (team->getWizardUID() == 0)
+				if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
 				{
 					// send it to the HUD
 					Hud::getSingleton().setMessage(CONS("BUILD_FAIL_PROXIMITY"), true);
@@ -113,8 +114,11 @@ void BuildSpellThing::collidedGround()
 				else
 				{
 					// send a message to the right player
-					PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
-					Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_PROXIMITY"), player);
+					if (Multiplayer::getSingleton().isServer())
+					{
+						PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+						Multiplayer::getSingleton().serverSendHudText(CONS("BUILD_FAIL_PROXIMITY"), player);
+					}
 				}
 
 				destroy();
