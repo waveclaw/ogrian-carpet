@@ -482,7 +482,8 @@ PlayerID Multiplayer::getPlayerID(int wizardUID)
 	std::ostringstream num("");
 	num << wizardUID;
 	LogManager::getSingleton().logMessage(String("Multiplayer::getPlayerID() failed, WizardUID not found: #") + num.str() );
-	return mPlayers[0].id;
+	PlayerID null;
+	return null;
 }
 
 //----------------------------------------------------------------------------

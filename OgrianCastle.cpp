@@ -294,6 +294,10 @@ Castle::~Castle()
 
 void Castle::destroy()
 {
+	// drop any remaining mana
+	ManaThing* mana = new ManaThing(getMana(), getPosition());
+	Physics::getSingleton().addThing(mana);
+
 	// destroy the portal
 	if (mPortal) mPortal->destroy();
 

@@ -11,7 +11,7 @@ SERVER_ADDRESS=Deatrix
 # 3: Jess
 # 4: Rick
 # 5: finger
-PLAYER_SKIN=1
+PLAYER_SKIN=5
 
 # set the RGB values of the colour you want your team to be
 # red	green	blue

@@ -290,17 +290,10 @@ void WizardThing::die()
 	{
 		setHealth(CONI("WIZARD_HEALTH"));
 
-		//if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
-		//{
-		//	// kill it
-		//	if (!getTeam()->hasCastle())
-		//	{
-		//		Multiplayer::getSingleton().ghostWizard(this);
-		//		return;
-		//	}
-		//	else
-		//		Multiplayer::getSingleton().killWizard(this);
-		//}		
+		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
+		{
+			Multiplayer::getSingleton().killWizard(this);
+		}		
 	}
 }
 
