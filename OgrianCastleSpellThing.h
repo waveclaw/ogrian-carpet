@@ -47,7 +47,7 @@ public:
 	CastleSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Rock", SPRITE, "CastleSpell", false, CONR("CASTLESPELL_SCALE"), pos, SPHERE)
 	{
-		mTeamNum = teamNum;
+		setTeamNum(teamNum);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
@@ -57,24 +57,21 @@ public:
 
 	virtual void collidedGround()
 	{
-		Team* team = Physics::getSingleton().getTeam(mTeamNum);
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
 		if (team && !team->hasCastle())
 		{
 			// make a castle
-			Castle* castle = new Castle(mTeamNum, getPosition());
+			Castle* castle = new Castle(getTeamNum(), getPosition());
 			team->setCastle(castle);
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(String("Team already has castle: ") << mTeamNum);
+			LogManager::getSingleton().logMessage(String("Team already has castle: ") << getTeamNum());
 		}
 
 		// self destruct
 		destroy();
 	}
-
-private:
-	int mTeamNum;
 };
 
 }

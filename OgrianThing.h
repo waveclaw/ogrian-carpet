@@ -203,6 +203,12 @@ public:
 	// get a String description
 	virtual String getString();
 
+	// set the team number
+	virtual void setTeamNum(int teamNum);
+
+	// get the team number
+	virtual int getTeamNum();
+
 	// set update type
 	virtual void setUpdateType(ThingUpdateType type);
 
@@ -226,6 +232,7 @@ private:
 	Vector3 mPos;
 	Vector3 mVel;
 	Real mOrientation;
+	int mTeamNum;
 
 	// graphical rendering stuff
 	VisRep* mVisRep; // the visual representation

@@ -79,7 +79,7 @@ public:
 	FireballThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
 		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, CONR("FIREBALL_SCALE"), pos, SPHERE)
 	{
-		mTeamNum = teamNum;
+		setTeamNum(teamNum);
 		mColour = colour;
 
 		setVelocity(vel);
@@ -122,7 +122,7 @@ public:
 	virtual void collided(Thing* e)
 	{
 		// damage it
-		if (e->isDamageable())	e->damage(CONR("FIREBALL_DAMAGE"), mTeamNum);
+		if (e->isDamageable())	e->damage(CONR("FIREBALL_DAMAGE"), getTeamNum());
 
 		// self destruct
 		destroy();
@@ -149,7 +149,6 @@ public:
 	}
 
 private:
-	int mTeamNum;
 	ColourValue mColour;
 	Vector3 mLastPos;
 	unsigned long mLastSmokeTime;

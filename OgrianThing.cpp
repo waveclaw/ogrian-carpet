@@ -58,6 +58,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mLastRotDir = false;
 	mUpdateType = PERIODIC;
 	mUpdateRequested = false;
+	mTeamNum = -1;
 	
 	// name it
 	mName = prefix << "_" << msNextGeneratedNameExt++;
@@ -471,6 +472,20 @@ void Thing::setOrientation(Real direction)
 Real Thing::getOrientation()
 {
 	return mOrientation;
+}
+
+//----------------------------------------------------------------------------
+
+void Thing::setTeamNum(int teamNum)
+{
+	mTeamNum = teamNum;
+}
+
+//----------------------------------------------------------------------------
+
+int Thing::getTeamNum()
+{
+	return mTeamNum;
 }
 
 //----------------------------------------------------------------------------
