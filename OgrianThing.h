@@ -148,6 +148,9 @@ public:
 	// get the last time a bitstream was generated for this thing
 	virtual unsigned long lastUpdateTime();
 
+	// BE VERY CAREFUL WITH THIS
+	virtual void _setUID(int uid);
+
 	
 private:
 	Vector3 mPos;

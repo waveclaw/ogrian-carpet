@@ -114,10 +114,14 @@ void Physics::serverFrame(Real time)
 		for (int i=0; i<(int)mAllThings.size(); i++)
 		{
 			Thing* thing = mAllThings[i];
+
+
 			if (thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime() &&
 				thing->getUID() != player.wizardUID // dont send their own wizard to them
 				)
 			{
+				if (thing->getType() == CAMERATHING) LogManager::getSingleton().logMessage("Sending CameraThing");
+
 				BitStream bs;
 				thing->generateBitStream(bs);
 				Multiplayer::getSingleton().serverSend(&bs, player.id, false);
@@ -135,7 +139,6 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 	// if its a thing update
 	if (pid == ID_UPDATE_THING)
 	{
-		// find the thing
 		BitStream bitstream(packet->data, packet->length, true);
 		int id, uid, type;
 
@@ -144,6 +147,9 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 		bitstream.Read(type);
 		bitstream.ResetReadPointer();
 
+		if (type == CAMERATHING) LogManager::getSingleton().logMessage(String("Got Camera: ") << uid);
+
+		// find the thing
 		Thing* thing = getThing(uid);
 
 		if (thing == 0) // we need to make a new one if we dont have it
@@ -262,8 +268,6 @@ Thing* Physics::newThing(ThingType type)
 	switch(type)
 	{
 		case MANATHING:	return new ManaThing();
-
-		case WIZARDTHING: return new WizardThing();
 
 		case CAMERATHING: return new WizardThing();
 

@@ -375,6 +375,7 @@ int Multiplayer::getWizardUID(PlayerID pid)
 		if (mPlayers[i].id == pid) return mPlayers[i].wizardUID;
 	}
 
+	LogManager::getSingleton().logMessage(String("PlayerID not found: #") << pid.binaryAddress);
 	return -1;
 }
 
@@ -399,6 +400,17 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 	// Check if this is a network message packet
 	switch (pid)
 	{
+		case ID_SET_WIZUID://////////////////////////////////////////////////////
+		{
+			int id, uid;
+			BitStream bs;
+			bs.Read(id);
+			bs.Read(uid);
+
+			// set the camera UID
+			Renderer::getSingleton().getCameraThing()->_setUID(uid);
+		}
+
 		case ID_ADD_PLAYER: //////////////////////////////////////////////////////
 		{
 			// get the name
@@ -499,6 +511,12 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			player.wizardUID = Physics::getSingleton().newWizardThing()->getUID();
 			mPlayers.push_back(player);
 			PlayerList::getSingleton().addPlayer(playerName);
+
+			// send a message to the client telling it what its wizardUID is
+			BitStream bs;
+			bs.Write(ID_SET_WIZUID);
+			bs.Write(player.wizardUID);
+			serverSend(&bs, player.id);
 
 			return true;
 		}
