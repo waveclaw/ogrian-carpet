@@ -4,6 +4,10 @@ Ogrian Carpet Notes
 to add:
 =========
 Hand Sprites - two frames, idle and casting, for each spell
+amry counters
+health/mana hud bars
+monster health bars
+building heightmap
 
 
 Monsters
@@ -48,3 +52,4 @@ performance, tweaks:
 known bugs:
 ========
 memory leak in making billboards
+height and/or width sometimes get fucked up - dont know why
