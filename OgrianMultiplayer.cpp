@@ -712,28 +712,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				PlayerList::getSingleton().addPlayer(player);
 			return true;
 		}
-		case ID_ENABLESPELL: //////////////////////////////////////////////////////
+		case ID_SETSPELLLEVEL: //////////////////////////////////////////////////////
 		{
-			// get the new score
-			int pid, spell;			
+			// get the new level
+			int pid, level;			
 			BitStream bs((const char*)packet->data, packet->length, false);
 			bs.Read(pid);
-			bs.Read(spell);
+			bs.Read(level);
 
 			// set it
-			SpellManager::getSingleton().enableSpell(spell);
-			return true;
-		}
-		case ID_DISABLESPELL: //////////////////////////////////////////////////////
-		{
-			// get the new score
-			int pid, spell;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(spell);
-
-			// set it
-			SpellManager::getSingleton().disableSpell(spell);
+			SpellManager::getSingleton().setLevel(level);
 			return true;
 		}
 

@@ -60,15 +60,14 @@ public:
 	virtual ~SpellManager();
     static SpellManager& getSingleton(void);
 
-	virtual void enableSpell(int spell);
-	virtual void disableSpell(int spell);
-
-	virtual void disableAllSpells();
-
 	virtual void readySpell(int num);
 	virtual void readyNextSpell();
 	virtual void readyPrevSpell();
 	virtual void readyDefaultSpell();
+
+	// determines which spells are enabled
+	// note: -3 clears all, -2 is claim and -1 is build; 0 is fireball
+	virtual void setLevel(int level);
 
 	virtual int getManaCost();
 
@@ -77,6 +76,11 @@ public:
 private:
 	SpellManager();
 	virtual void readyCurrentSpell();
+
+	virtual void enableSpell(int spell);
+	virtual void disableSpell(int spell);
+
+	virtual void disableAllSpells();
 
 	int mCurrentSpell;
 	Spell* mSpells[NUM_SPELLS];

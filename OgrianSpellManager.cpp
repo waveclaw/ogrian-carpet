@@ -79,6 +79,44 @@ SpellManager::~SpellManager()
 
 //----------------------------------------------------------------------------
 
+void SpellManager::setLevel(int level)
+{
+		if (level >= -2) enableSpell(SPELL_CLAIM);
+		else			disableSpell(SPELL_CLAIM);
+
+		if (level >= -1) enableSpell(SPELL_BUILD);
+		else			disableSpell(SPELL_BUILD);
+
+		if (level >= 0) enableSpell(SPELL_FIREBALL);
+		else			disableSpell(SPELL_FIREBALL);
+
+		if (level >= 1) enableSpell(SPELL_SENTINEL);
+		else			disableSpell(SPELL_SENTINEL);
+
+		if (level >= 2) enableSpell(SPELL_AKIMBO_FIREBALL);
+		else			disableSpell(SPELL_AKIMBO_FIREBALL);
+
+		if (level >= 3) enableSpell(SPELL_GNOME);
+		else			disableSpell(SPELL_GNOME);
+
+		if (level >= 4) enableSpell(SPELL_SPEED);
+		else			disableSpell(SPELL_SPEED);
+
+		if (level >= 5) enableSpell(SPELL_TICK);
+		else			disableSpell(SPELL_TICK);
+
+		if (level >= 6) enableSpell(SPELL_ALBATROSS);
+		else			disableSpell(SPELL_ALBATROSS);
+
+		if (level >= 7) enableSpell(SPELL_FIRESTORM);
+		else			disableSpell(SPELL_FIRESTORM);
+		
+		if (level >= 8) enableSpell(SPELL_METEOR);
+		else			disableSpell(SPELL_METEOR);
+}
+
+//----------------------------------------------------------------------------
+
 Real SpellManager::castSpell()
 {
 	Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();

@@ -227,8 +227,7 @@ bool Game::isPreGame()
 void Game::startClientGame()
 {
 	Hud::getSingleton().reinit();
-	SpellManager::getSingleton().disableAllSpells();
-	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
+	SpellManager::getSingleton().setLevel(-2);
 }
 
 //----------------------------------------------------------------------------
@@ -236,8 +235,7 @@ void Game::startClientGame()
 void Game::startServerGame()
 {
 	Hud::getSingleton().reinit();
-	SpellManager::getSingleton().disableAllSpells();
-	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
+	SpellManager::getSingleton().setLevel(-2);
 
 	// activate pregame mode
 	mPreGame = true;
@@ -340,7 +338,7 @@ void Game::serverEndPreGame()
 	Renderer::getSingleton().getCameraThing()->setPosition(sloc);
 
 	// enable the build spell
-	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
+	SpellManager::getSingleton().setLevel(-1);
 
 	// kill all wizards
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
@@ -368,7 +366,7 @@ void Game::serverEndPreGame()
 	for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
 	{
 		PlayerInfo player = Multiplayer::getSingleton().getClient(i);
-        Multiplayer::getSingleton().serverSendInt(SPELL_BUILD,ID_ENABLESPELL,player.id);
+        Multiplayer::getSingleton().serverSendInt(-1,ID_SETSPELLLEVEL,player.id);
 	}
 }
 
@@ -511,9 +509,7 @@ void Game::startSkirmishGame()
 
 	// enable the claim and build spells
 	Hud::getSingleton().reinit();
-	SpellManager::getSingleton().disableAllSpells();
-	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
-	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
+	SpellManager::getSingleton().setLevel(-1);
 }
 
 //----------------------------------------------------------------------------
