@@ -555,8 +555,8 @@ void CastleTurretThing::setPercentage(Real per)
 	{
 		Vector3 pos = getPosition();
 		pos.y = getGroundY() + getHeight();
-		//mCrane = new CraneThing(getTeamNum(), pos);
-		//Physics::getSingleton().addThing(mCrane);
+		mCrane = new CraneThing(getTeamNum(), pos);
+		Physics::getSingleton().addThing(mCrane);
 	}
 	else if (per <= 0 && mCrane)
 	{
@@ -575,8 +575,8 @@ void CastleKeepThing::setPercentage(Real per)
 	{
 		Vector3 pos = getPosition();
 		pos.y = getGroundY() + getHeight();
-		//mCrane = new CraneThing(getTeamNum(), pos);
-		//Physics::getSingleton().addThing(mCrane);
+		mCrane = new CraneThing(getTeamNum(), pos);
+		Physics::getSingleton().addThing(mCrane);
 	}
 	else if (per < 1 && mCrane)
 	{

@@ -84,9 +84,6 @@ public:
 			mColour = Physics::getSingleton().getTeam(teamNum)->getColour();
 			setColour(mColour);
 		}
-		//else 
-			//mColour = ColourValue::White;
-
 
 		// set the mesh
 		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
@@ -130,11 +127,6 @@ public:
 				Physics::getSingleton().addThing(crane);
 			}
 		}
-	}
-
-	virtual void generateBitStream(BitStream& bitstream, int pid)
-	{
-		DamageableThing::generateBitStream(bitstream, pid);
 	}
 
 	virtual void setColour(ColourValue& colour)

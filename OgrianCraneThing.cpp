@@ -107,7 +107,7 @@ void CraneThing::clientThink()
 void CraneThing::think()
 {
 	// flap
-	if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
+	//if (Clock::getSingleton().getTime() > mLastFlapTime + CONT("CRANE_FLAP_PERIOD"))
 	{
 		mLastFlap = !mLastFlap;
 		mLastFlapTime = Clock::getSingleton().getTime();
