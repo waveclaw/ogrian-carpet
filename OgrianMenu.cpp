@@ -169,10 +169,10 @@ void Menu::button_quit()
 	hide();
 }
 //----------------------------------------------------------------------------
-void Menu::button_load()
+void Menu::button_load() // aka skirmish
 {
-	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+	if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
+	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
 
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 }

@@ -88,6 +88,9 @@ public:
 	// request a kick (to disconnect cleanly)
 	void clientRequestKick();
 
+	// force disconnect from the server
+	void clientDisconnect();
+
 	// disconnect all clients from this server
 	void serverDisconnect();
 
@@ -161,9 +164,6 @@ private:
 
 	// receive packets on the server
 	void serverRecieve();
-
-	// disconnect from the server
-	void clientDisconnect();
 
 	// get the packet identifier
 	PacketID getPacketIdentifier(Packet* p);

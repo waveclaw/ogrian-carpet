@@ -318,6 +318,8 @@ void Multiplayer::frame(Real time)
 
 void Multiplayer::clientRecieve()
 {
+	if (!mActive) return;
+
 	Packet* packet = mClient->Receive();
 
 	while (packet != 0)
@@ -608,6 +610,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Menu::getSingleton().setMessage(msg);
 			Menu::getSingleton().show();
 			Menu::getSingleton().button_disconnect();
+
 			return true;
 		}
 

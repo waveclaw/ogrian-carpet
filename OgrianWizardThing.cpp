@@ -504,7 +504,9 @@ void WizardThing::interpretBitStream(BitStream& bitstream)
 void WizardThing::placedInPhysics(int uid)
 {
 	DamageableThing::placedInPhysics(uid);
-	mTeam->setWizardUID(uid);
+
+	if (!Multiplayer::getSingleton().isClient())
+		mTeam->setWizardUID(uid);
 }
 
 //----------------------------------------------------------------------------

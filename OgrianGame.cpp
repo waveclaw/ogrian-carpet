@@ -188,7 +188,7 @@ void Game::startGame(ConfigFile config)
 	// start the audio
 	Audio::getSingleton().start();
 
-	if (Multiplayer::getSingleton().wasClient()) startClientGame();
+	if (Multiplayer::getSingleton().isClient()) startClientGame();
 	else if (Multiplayer::getSingleton().isServer()) startServerGame();
 	else startSkirmishGame();
 }
@@ -481,10 +481,9 @@ void Game::startSkirmishGame()
 	Renderer::getSingleton().getCameraThing()->setBaseMana(0);
 	Renderer::getSingleton().getCameraThing()->setActiveMana(0);
 
-	// disable all spells
-	SpellManager::getSingleton().disableAllSpells();
-
 	// enable the claim and build spells
+	Hud::getSingleton().reinit();
+	SpellManager::getSingleton().disableAllSpells();
 	SpellManager::getSingleton().enableSpell(SPELL_CLAIM);
 	SpellManager::getSingleton().enableSpell(SPELL_BUILD);
 
