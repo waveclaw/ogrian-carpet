@@ -150,7 +150,7 @@ void Menu::button_disconnect()
 
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
+	//GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
 }
 
