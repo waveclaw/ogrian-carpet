@@ -53,12 +53,13 @@ material Ogrian/PalmTree
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write off
+			depth_write on
 
 			texture_unit
 			{
 				texture palmtree.png
 				tex_address_mode clamp
+				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -130,6 +131,8 @@ material Ogrian/Mana
 			{
 				texture mana.png
 				tex_address_mode clamp
+
+				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -141,6 +144,7 @@ material Ogrian/Smoke
 		pass
 		{
 			lighting off
+			fog_override true none
 			scene_blend alpha_blend
 			depth_write off
 

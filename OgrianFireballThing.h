@@ -33,25 +33,12 @@ They self destruct when they hit the ground or another thing.
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
+#include "OgrianRenderer.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
-
-/////////////////////////////////////////////////////////////////////////////
-class FireballSmokeEffect : public TimedThing
-{
-public:
-	FireballSmokeEffect(Vector3 pos) 
-		: TimedThing("Ogrian/Smoke", SPRITE, "FireballSmoke", false, FIREBALL_SCALE*.8, pos, SPHERE)
-	{
-		setRelativeExpirationTime(FIREBALL_SMOKE_LIFETIME);
-		setVelocity(Vector3(0,1,0));
-	}
-
-	virtual ThingType getType()	{ return EFFECT; }
-};
 
 /////////////////////////////////////////////////////////////////////////////
 class FireballBlastEffect : public TimedThing
@@ -69,17 +56,18 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class FireballThing : public Thing
+class FireballThing : public TimedThing
 {
 public:
 	FireballThing(Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0)) 
-		: Thing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
+		: TimedThing("Ogrian/Fireball", SPRITE, "Fireball", false, FIREBALL_SCALE, pos, SPHERE)
 	{
 		setVelocity(vel);
 		playSound("OgrianMedia/sounds/whoosh1.wav");
 		setFlickerPeriod(FIREBALL_FLICKER_PERIOD);
+		setRelativeExpirationTime(FIREBALL_LIFETIME);
 
-		mLastSmokeTime = 0;
+		mEmitter = Renderer::getSingleton().newSmokeEmitter();
 	}
 
 	virtual ThingType getType()	{ return FIREBALLTHING; }	
@@ -88,14 +76,11 @@ public:
 	{
 		// fall
 		setVelocity(getVelocity() + Vector3(0, -FIREBALL_FALL_RATE * time, 0));
-		Thing::move(time);
+		TimedThing::move(time);
 
-		// emit smoke
-		if (isAlive() && mLastSmokeTime + FIREBALL_SMOKE_PERIOD*1000 < Time::getSingleton().getTime())
-		{
-			Physics::getSingleton().addEffect(new FireballSmokeEffect(getPosition()));
-			mLastSmokeTime = Time::getSingleton().getTime();
-		}
+		// smoke
+		if (isAlive())
+			mEmitter->setPosition(getPosition());
 
 		// die when it hits the ground
 		if (getGroundY() > getPosition().y) destroy();
@@ -116,11 +101,13 @@ public:
 		if (isAlive())
 			Physics::getSingleton().addEffect(new FireballBlastEffect(getPosition()));
 
+		Renderer::getSingleton().deleteSmokeEmitter(mEmitter);
+
 		Thing::destroy();
 	}
 
 private:
-	unsigned long mLastSmokeTime;
+	ParticleEmitter* mEmitter;
 };
 
 }

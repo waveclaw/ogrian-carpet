@@ -44,7 +44,8 @@ namespace Ogrian
 
 Input::Input()
 {
-
+	mTimeUntilNextToggle = 0;
+	mTimeUntilNextCast = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -81,8 +82,8 @@ bool Input::processKeyInput(InputReader* input)
         mTimeUntilNextToggle = KEY_DELAY;
     }
 
-	// fire a fireball
-	if (input->getMouseButton(0) && mTimeUntilNextToggle <= 0)
+	// cast a fireball
+	if (input->getMouseButton(0) && mTimeUntilNextCast <= 0)
 	{
 		Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 		Vector3 vel = Renderer::getSingleton().getCamera()->getDirection();
@@ -92,7 +93,7 @@ bool Input::processKeyInput(InputReader* input)
 		vel *= FIREBALL_SPEED;
 	
 		Physics::getSingleton().addThing(new FireballThing(pos,vel));
-        mTimeUntilNextToggle = KEY_DELAY;
+        mTimeUntilNextCast = FIREBALL_CAST_PERIOD;
 	}
 
 	// play song 1
@@ -118,6 +119,9 @@ void Input::frame(Real time)
 {
 	if (mTimeUntilNextToggle >= 0) 
 		mTimeUntilNextToggle -= time;
+
+	if (mTimeUntilNextCast >= 0) 
+		mTimeUntilNextCast -= time;
 }
 
 //----------------------------------------------------------------------------

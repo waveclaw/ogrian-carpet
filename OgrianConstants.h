@@ -50,7 +50,7 @@ const Real FOG_DENSITY = 0.008;
 const Real SKYPLANE_DISTANCE = 75;
 const Real SKYPLANE_BOW = .75;
 
-const Real FOLIAGE_NUM = 50;
+const Real FOLIAGE_NUM = 500;
 const Real FOLIAGE_SCALE = 10;
 const Real FOLIAGE_SCALE_VAR = 3;
 const int FOLIAGE_LINE_MIN = 5;
@@ -79,12 +79,15 @@ const int STRING_MAX_LENGTH = 24;
 const unsigned long THING_UPDATE_PERIOD = 100;
 const unsigned long THING_STOP_DELAY = 300;
 
+const Real FIREBALL_CAST_PERIOD = 1;
 const Real FIREBALL_FALL_RATE = 3;
 const Real FIREBALL_SPEED = 40;
 const Real FIREBALL_SCALE = 2;
 const Real FIREBALL_FLICKER_PERIOD = .2;
-const Real FIREBALL_SMOKE_PERIOD = .2;
-const Real FIREBALL_SMOKE_LIFETIME = 1;
+const Real FIREBALL_LIFETIME = 5;
+
+const Real SMOKE_RATE = 10;
+const Real SMOKE_LIFETIME = 3;
 
 }
 #endif

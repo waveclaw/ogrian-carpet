@@ -57,6 +57,7 @@ public:
 private:
 	Input();
     Real mTimeUntilNextToggle; // prevents rapid toggling
+    Real mTimeUntilNextCast; // limits casting speed
 };
 
 }
