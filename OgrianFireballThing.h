@@ -81,6 +81,7 @@ public:
 	{
 		setTeamNum(teamNum);
 		mColour = colour;
+		setColour(mColour);
 
 		setVelocity(vel);
 		playSound(Game::getSingleton().SOUND_WHOOSH);
@@ -91,13 +92,6 @@ public:
 		mLastSmokeTime = 0;
 		mLastSmokeIndex = 0;
 		mLastPos = getPosition();
-		
-		for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
-		{
-			FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0), mColour);
-			mSmokeList.push_back(fse);
-			Physics::getSingleton().addEffect(fse);
-		}
 	}
 
 	virtual ThingType getType()	{ return FIREBALLTHING; }	
@@ -109,6 +103,15 @@ public:
 		TimedThing::move(time);
 
 		// emit smoke
+		if (isAlive() && mSmokeList.size() == 0)
+		{
+			for (int i=0; i<CONR("FIREBALL_SMOKE_NUM"); i++)
+			{
+				FireballSmokeEffect* fse = new FireballSmokeEffect(Vector3(0,-100,0), getColour());
+				mSmokeList.push_back(fse);
+				Physics::getSingleton().addEffect(fse);
+			}
+		}
 		if (isAlive() && mLastSmokeTime + CONR("FIREBALL_SMOKE_PERIOD")*1000 < Time::getSingleton().getTime() 
 			&& mSmokeList.size() > 0)
 		{

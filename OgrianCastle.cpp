@@ -191,11 +191,5 @@ void Castle::setLevel(Real level)
 }
 
 //----------------------------------------------------------------------------
-CastleFlagThing::CastleFlagThing() 
-	: Thing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), Vector3(0,0,0), SPHERE)
-{
-	setColour(Physics::getSingleton().getTeam(getTeamNum())->getColour());
-}
-//----------------------------------------------------------------------------
 
 }

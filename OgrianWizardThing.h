@@ -34,6 +34,7 @@ Description: The wizard thing is the superclass of the CameraThing
 #include <Ogre.h>
 #include "OgrianConst.h"
 #include "OgrianDamageableThing.h"
+#include "OgrianTeam.h"
 
 using namespace Ogre;
 
@@ -87,9 +88,12 @@ public:
 	virtual void WizardThing::generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
 	virtual void WizardThing::interpretBitStream(BitStream& bitstream);
 
+	virtual void _setUID(int uid);
+
 private:
 	HealthBarEffect* mBar;
 	bool mOnBuilding;
+	Team* mTeam;
 };
 
 }

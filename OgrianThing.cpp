@@ -154,7 +154,7 @@ void Thing::_setUID(int uid)
 
 void Thing::placedInPhysics(int uid)
 {
-	mUID = uid;
+	_setUID(uid);
 	mInPhysics = true;
 }
 

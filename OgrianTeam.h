@@ -61,6 +61,11 @@ public:
 		return mWizardUID;
 	}
 
+	void setWizardUID(int uid)
+	{
+		mWizardUID = uid;
+	}
+
 	void setScore(int score)
 	{
 		if (mScore == score) return;
@@ -100,6 +105,11 @@ public:
 	ColourValue getColour()
 	{
 		return mColour;
+	}
+
+	void setColour(ColourValue& colour)
+	{
+		mColour = colour;
 	}
 
 private:

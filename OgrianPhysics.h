@@ -96,14 +96,14 @@ public:
 	// make a new team
 	int newTeam(int wizardUID, ColourValue colour);
 
+	// remove a team
+	void removeTeam(int teamNum);
+
 	// the number of teams
 	int numTeams();
 
 	// get a team by number
 	Team* getTeam(int index);
-
-	// clear the teams
-	void clearTeams();
 
 	// send a list of all things to the log
 	void listThings();

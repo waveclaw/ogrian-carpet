@@ -361,7 +361,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case CASTLEWALL: return new CastleWallThing(0);
 
 		case CASTLEFLAG: return new CastleFlagThing();
-			
+
 		case CLAIMTHING: return new ClaimSpellThing(teamNum);
 
 		default:
@@ -703,9 +703,6 @@ void Physics::clear()
 					mThingGrid[i][j].pop_back();
 	}
 
-	// clear mOtherThings
-	mOtherThings.clear();
-
 	// delete each thing from mAllThings
 	while(!mAllThings.empty())
 	{
@@ -720,6 +717,13 @@ void Physics::clear()
 		delete mEffects[mEffects.size()-1];
 		mEffects.pop_back();
 	}
+
+	// clear mOtherThings
+	mOtherThings.clear();
+
+	// clear mTeams
+	mTeams.clear();
+
 }
 
 //----------------------------------------------------------------------------
@@ -969,12 +973,12 @@ Team* Physics::getTeam(int index)
 
 //----------------------------------------------------------------------------
 
-void Physics::clearTeams()
+void Physics::removeTeam(int teamNum)
 {
-	while (mTeams.size() > 0)
+	if (teamNum < 0 || teamNum >= (int)mTeams.size())
 	{
-		delete mTeams[mTeams.size()-1];
-		mTeams.pop_back();
+		delete mTeams[teamNum];
+		mTeams[teamNum] = 0;
 	}
 }
 
@@ -994,8 +998,6 @@ Physics& Physics::getSingleton(void)
 Physics::~Physics()
 {
 	clear();
-
-	clearTeams();
 }
 
 //----------------------------------------------------------------------------

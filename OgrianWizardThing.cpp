@@ -45,6 +45,7 @@ WizardThing::WizardThing(bool visible)
 	visible?"WizardThing":"CameraThing", true, CONR("CAMERA_HEIGHT"))
 {
 	mBar = 0;
+	mTeam = 0;
 
 	if (visible)
 	{
@@ -55,7 +56,27 @@ WizardThing::WizardThing(bool visible)
 		Physics::getSingleton().addEffect(mBar);
 	}
 
+	// make a team for this wizard'
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		int teamNum = Physics::getSingleton().newTeam(-1, getColour());
+		setTeamNum(teamNum);
+		mTeam = Physics::getSingleton().getTeam(teamNum);
+
+		std::ostringstream num("");
+		num << teamNum;
+		LogManager::getSingleton().logMessage("Making Team: " + num.str());
+	}
+
 	setUpdateType(CONTINUOUS);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::_setUID(int uid)
+{
+	DamageableThing::_setUID(uid);
+	if (mTeam) mTeam->setWizardUID(uid);
 }
 
 //----------------------------------------------------------------------------
@@ -64,6 +85,7 @@ void WizardThing::setColour(ColourValue& colour)
 {
 	DamageableThing::setColour(colour);
 	if (mBar) mBar->setColour(colour);
+	if (mTeam) mTeam->setColour(colour);
 }
 
 //----------------------------------------------------------------------------
@@ -181,6 +203,9 @@ void WizardThing::destroy()
 {
 	if (mBar) mBar->destroy();
 	mBar = 0;
+
+	if (mTeam) Physics::getSingleton().removeTeam(getTeamNum());
+	mTeam = 0;
 
 	DamageableThing::destroy();
 }
