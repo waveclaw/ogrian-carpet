@@ -127,7 +127,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 				default: return true;
 			}
 
-			// add it to the physics
+			// log it
 			LogManager::getSingleton().logMessage(String("Making New Thing for client: ") << uid);
 
 			// send the bitstream to the thing
@@ -135,6 +135,8 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 			// add it to physics
 			clientAddThing(thing, uid);
+
+			if (getThing(uid) == 0) LogManager::getSingleton().logMessage("Add Failure");
 		}
 		else // just send the update
 		{
@@ -160,6 +162,7 @@ bool Physics::handleClientPacket(Packet* packet, PacketID pid)
 
 		// destroy it
 		if (thing != 0) thing->destroy();
+		else LogManager::getSingleton().logMessage("Remove Failure");
 
 		return true;
 	}
@@ -349,6 +352,7 @@ void Physics::clientAddThing(Thing* thing, int uid)
 
 void Physics::_sortAllThings()
 {
+	/* 
 	// use insertion sort because it should already be sorted or nearly sorted
 	for (int i=1; i<(int)mAllThings.size(); i++)
 	{
@@ -361,6 +365,22 @@ void Physics::_sortAllThings()
 			j--;
 		}
 		mAllThings[j] = t;
+	}
+	*/
+
+	// bubble sort
+
+	for (int i=0; i<(int)mAllThings.size()-1; i++)
+	{
+		for (int j=i; j<(int)mAllThings.size()-1; j++)
+		{
+			if (mAllThings[j]->getUID() > mAllThings[j+1]->getUID())
+			{
+				Thing* t = mAllThings[j];
+				mAllThings[j] = mAllThings[j+1];
+				mAllThings[j+1] = t;
+			}
+		}
 	}
 }
 
@@ -437,6 +457,15 @@ void Physics::_removeThing(Thing* thing, int grid_u, int grid_v)
 // remove a thing from the world
 void Physics::deleteThing(Thing* thing)
 {
+	// if this is a server, propogate the deletion to clients
+	if (Multiplayer::getSingleton().isServer())
+	{
+		BitStream bs;
+		bs.Write(ID_REMOVE_THING);
+		bs.Write(thing->getUID());
+		Multiplayer::getSingleton().serverSendAll(&bs);
+	}
+
 	// remove it from the grid
 	Vector3 pos = thing->getPosition();
 	_removeThing(thing, getGridU(pos.x), getGridV(pos.z));
