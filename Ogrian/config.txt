@@ -1,8 +1,8 @@
 # Your Name Here
-PLAYER_NAME=Player
+PLAYER_NAME=Mike
 
 # set this to the computer name or IP address of whoever is hosting
-SERVER_ADDRESS=172.17.123.1
+SERVER_ADDRESS=Deatrix
 
 #choose your skin:
 # 0: Angry Face

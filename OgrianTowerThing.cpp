@@ -85,6 +85,8 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 	mLastCastTime = 0;
 	mUnbuildMode = false;
 	mBall = 0;
+	mPortal = 0;
+	mBeacon = 0;
 
 	// set up the beacon
 	mBeacon = new TowerBeaconThing();
@@ -226,9 +228,12 @@ void TowerThing::destroy()
 
 	mCranes.clear();
 
-	mBeacon->destroy();
-	mBall->destroy();
-	mPortal->destroy();
+	if (mBeacon)
+		mBeacon->destroy();
+	if (mBall)
+		mBall->destroy();
+	if (mPortal)
+		mPortal->destroy();
 
 	DamageableThing::destroy();
 }

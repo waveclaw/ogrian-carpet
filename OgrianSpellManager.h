@@ -45,10 +45,10 @@ namespace Ogrian
 #define SPELL_BUILD				1
 #define SPELL_FIREBALL			2
 #define SPELL_SENTINEL			3
-#define SPELL_TICK				4
+#define SPELL_AKIMBO_FIREBALL	4
 #define SPELL_GNOME				5
 #define SPELL_SPEED				6
-#define SPELL_AKIMBO_FIREBALL	7
+#define SPELL_TICK				7
 #define SPELL_ALBATROSS			8
 #define SPELL_FIRESTORM			9
 #define SPELL_METEOR			10

@@ -536,7 +536,7 @@ void Castle::dropMana(int amount)
 	offset *= CONR("CASTLE_MANA_RADIUS");
 	ManaThing* mana = new ManaThing(amount, getPosition()+offset);
 	Physics::getSingleton().addThing(mana);
-	mana->setTeamNum(-1);
+	mana->setTeamNum(getTeamNum());
 	mana->setPosY(mana->getGroundY());
 }
 
@@ -622,8 +622,8 @@ void Castle::setSpells(int level)
 		if (level >= 1) SpellManager::getSingleton().enableSpell(SPELL_SENTINEL);
 		else			SpellManager::getSingleton().disableSpell(SPELL_SENTINEL);
 
-		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_TICK);
-		else			SpellManager::getSingleton().disableSpell(SPELL_TICK);
+		if (level >= 2) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
+		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
 
 		if (level >= 3) SpellManager::getSingleton().enableSpell(SPELL_GNOME);
 		else			SpellManager::getSingleton().disableSpell(SPELL_GNOME);
@@ -631,8 +631,8 @@ void Castle::setSpells(int level)
 		if (level >= 4) SpellManager::getSingleton().enableSpell(SPELL_SPEED);
 		else			SpellManager::getSingleton().disableSpell(SPELL_SPEED);
 
-		if (level >= 5) SpellManager::getSingleton().enableSpell(SPELL_AKIMBO_FIREBALL);
-		else			SpellManager::getSingleton().disableSpell(SPELL_AKIMBO_FIREBALL);
+		if (level >= 5) SpellManager::getSingleton().enableSpell(SPELL_TICK);
+		else			SpellManager::getSingleton().disableSpell(SPELL_TICK);
 
 		if (level >= 6) SpellManager::getSingleton().enableSpell(SPELL_ALBATROSS);
 		else			SpellManager::getSingleton().disableSpell(SPELL_ALBATROSS);
@@ -660,8 +660,8 @@ void Castle::setSpells(int level)
 				if (level >= 1) Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_SENTINEL,ID_DISABLESPELL,player.id);
 
-				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_ENABLESPELL,player.id);
-				else			Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_DISABLESPELL,player.id);
+				if (level >= 2) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
 
 				if (level >= 3) Multiplayer::getSingleton().serverSendInt(SPELL_GNOME,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_GNOME,ID_DISABLESPELL,player.id);
@@ -669,8 +669,8 @@ void Castle::setSpells(int level)
 				if (level >= 4) Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_SPEED,ID_DISABLESPELL,player.id);
 
-				if (level >= 5) Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_ENABLESPELL,player.id);
-				else			Multiplayer::getSingleton().serverSendInt(SPELL_AKIMBO_FIREBALL,ID_DISABLESPELL,player.id);
+				if (level >= 5) Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_ENABLESPELL,player.id);
+				else			Multiplayer::getSingleton().serverSendInt(SPELL_TICK,ID_DISABLESPELL,player.id);
 
 				if (level >= 6) Multiplayer::getSingleton().serverSendInt(SPELL_ALBATROSS,ID_ENABLESPELL,player.id);
 				else			Multiplayer::getSingleton().serverSendInt(SPELL_ALBATROSS,ID_DISABLESPELL,player.id);
