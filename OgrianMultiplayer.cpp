@@ -399,7 +399,7 @@ PlayerInfo* Multiplayer::getPlayerInfo(PlayerID pid)
 
 void Multiplayer::updateScores()
 {
-	//Hud::getSingleton().setScore(getPlayerByNum(0)->score);
+	Hud::getSingleton().setScore(Physics::getSingleton().getTeam(0)->getScore());
 }
 
 //----------------------------------------------------------------------------

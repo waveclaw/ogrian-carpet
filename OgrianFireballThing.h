@@ -122,8 +122,8 @@ public:
 		// get points for killing wizards
 		if (e->getType() == FOLIAGETHING)
 		{
-			//Multiplayer::getSingleton().getPlayerByNum(mPlayerNum)->score++;
-			//Multiplayer::getSingleton().updateScores();
+			Physics::getSingleton().getTeam(mTeamNum)->incrementScore();
+			Multiplayer::getSingleton().updateScores();
 		}
 
 		// destroy it
