@@ -204,22 +204,22 @@ void CameraThing::die()
 	
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		makeGhost();
-		//Castle* castle = getTeam()->getCastle();
+		Castle* castle = getTeam()->getCastle();
 
-		//if (castle)
-		//{
-		//	setPosition(castle->getPosition());
-		//}
-		//else
-		//{
-		//	Vector3 offset;
-		//	Real wdo = CONR("WIZARD_DEATH_OFFSET");
-		//	offset.x = Math::RangeRandom(-wdo, wdo);
-		//	offset.y = 0;
-		//	offset.z = Math::RangeRandom(-wdo, wdo);
-		//	setPosition(getPosition() + offset);
-		//}
+		if (castle)
+		{
+			if (castle->isRubble()) makeGhost();
+			else setPosition(castle->getPosition());
+		}
+		else
+		{
+			Vector3 offset;
+			Real wdo = CONR("WIZARD_DEATH_OFFSET");
+			offset.x = Math::RangeRandom(-wdo, wdo);
+			offset.y = 0;
+			offset.z = Math::RangeRandom(-wdo, wdo);
+			setPosition(getPosition() + offset);
+		}
 	}
 }
 

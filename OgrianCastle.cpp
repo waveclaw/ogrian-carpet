@@ -53,6 +53,7 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mBaloons[4] = 0;
 
 	mNumBaloons = 0;
+	mRubble = false;
 
 	// build the castle
 	mBlocks[0] = mCenterTower = new CastleTowerThing(this, pos);
@@ -116,6 +117,8 @@ Castle::Castle(int teamNum, Vector3 pos)
 	// start at level 0
 	setMana(0);
 
+	setHealth(CONI("CASTLE_HEALTH"));
+
 	// add existing claimed mana to the list
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
 	{
@@ -148,6 +151,17 @@ void Castle::move(Real time)
 
 //----------------------------------------------------------------------------
 
+void Castle::setHealth(int health)
+{
+	DamageableThing::setHealth(health);
+	mBlocks[0]->setPercentage(health/CONR("CASTLE_HEALTH"));
+
+	if (health == 0)
+		mRubble = true;
+}
+
+//----------------------------------------------------------------------------
+
 void Castle::setMana(int amount)
 {
 	mMana = amount;
@@ -157,6 +171,8 @@ void Castle::setMana(int amount)
 		LogManager::getSingleton().logMessage("Castle setting mana: " + num.str());
 
 	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
+
+	if (amount > 0) setHealth(CONI("CASTLE_HEALTH"));
 }
 
 //----------------------------------------------------------------------------
@@ -181,8 +197,12 @@ void Castle::addMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	if (getTeamNum() != sourceTeamNum)
+	if (getTeamNum() == sourceTeamNum) return;
+
+	if (mMana > 0)
 		dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
+	else 
+		DamageableThing::damage(amount, sourceTeamNum);
 }
 
 //----------------------------------------------------------------------------
@@ -278,6 +298,13 @@ Thing* Castle::generateTarget(BaloonThing* baloon)
 	
 	// there is no mana, so wait at the castle
 	else return this;
+}
+
+//----------------------------------------------------------------------------
+
+bool Castle::isRubble()
+{
+	return mRubble;
 }
 
 //----------------------------------------------------------------------------

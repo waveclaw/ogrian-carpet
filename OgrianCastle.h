@@ -190,6 +190,15 @@ public:
 	// take damage
 	virtual void damage(int amount, int sourceTeamNum);
 
+	// set the health
+	virtual void setHealth(int health);
+
+	// ignore  destruction
+	virtual void destroy() {}
+
+	// is this castle rubble yet. If the wizard dies while his castle is rubble, he is ghosted 
+	virtual bool isRubble();
+
 	// the castle doesn't move, but it does do stuff every frame
 	virtual void move(Real time);
 
@@ -202,6 +211,8 @@ private:
 	int mMana;
 
 	Real mLevel;
+
+	bool mRubble;
 
 	// a vector holding all the claimed manathings
 	std::vector<Thing*> mManaThings;

@@ -33,7 +33,6 @@ Description: The wizard thing is the superclass of the CameraThing
 #include "OgrianMultiplayer.h"
 #include "OgrianSkinManager.h"
 
-
 using namespace Ogre;
 
 namespace Ogrian
@@ -188,8 +187,12 @@ void WizardThing::die()
 		if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING)
 		{
 			// kill it
-			//Multiplayer::getSingleton().killWizard(this);
-			Multiplayer::getSingleton().ghostWizard(this);
+			Castle* castle = getTeam()->getCastle();
+
+			if (castle && castle->isRubble())
+				Multiplayer::getSingleton().ghostWizard(this);
+			else
+				Multiplayer::getSingleton().killWizard(this);
 		}			
 	}
 	
