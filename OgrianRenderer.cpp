@@ -122,11 +122,16 @@ void Renderer::createFrameListener(void)
     mFrameListener->showDebugOverlay(true);
     mRoot->addFrameListener(mFrameListener);
 }
+	
+Vector3 Renderer::getCameraPos(void)
+{
+	return mCamera->getPosition();
+}
 
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
-	Physics::getSingleton().test();
+	//Physics::getSingleton().test();
 
     Entity *waterEntity;
     Plane waterPlane;

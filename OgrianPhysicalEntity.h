@@ -26,6 +26,15 @@ public:
 		setPosition(x, y, z);
 	}
 
+	virtual void setVelocity(Vector3 vel)
+	{
+		setVelocity(vel.x, vel.y, vel.z);
+	}
+	virtual void setPosition(Vector3 pos)
+	{
+		setPosition(pos.x, pos.y, pos.z);
+	}
+
 	virtual void setPosition(Real x, Real y, Real z)
 	{
 		pos.x = x;
@@ -34,6 +43,7 @@ public:
 
 		node->setPosition(x, y, z);
 	}
+
 
 	virtual void setVelocity(Real x, Real y, Real z)
 	{
@@ -50,6 +60,32 @@ public:
 		radius = s;
 	}
 
+	virtual setOrientation(Quaternion q)
+	{
+		node->setOrientation(q);
+	}
+
+	virtual lookAt(Vector3 destination)
+	{
+		Vector3 yaw; 
+		yaw.x=1;
+		Vector3 direction = destination - pos;
+        Vector3 zAdjustVector = -direction;
+        zAdjustVector.normalise();
+
+        Quaternion* r = new Quaternion(1,0,0,0);
+
+		Vector3 xVector = yaw.crossProduct( zAdjustVector );
+        xVector.normalise();
+
+        Vector3 yVector = zAdjustVector.crossProduct( xVector );
+        yVector.normalise();
+
+        r->FromAxes( xVector, yVector, zAdjustVector );
+
+		node->setOrientation(*r);
+	}
+
 	virtual void move(Real time)
 	{
 		setPosition(
@@ -61,7 +97,7 @@ public:
 	virtual Real distance(PhysicalEntity* e)
 	{
 		return sqrt((pos.x - e->pos.x)*(pos.x - e->pos.x) 
-			      + (pos.y - e->pos.y)*(pos.y - e->pos.y));
+			      + (pos.z - e->pos.z)*(pos.z - e->pos.z));
 	}
 
 	virtual Real getRadius()

@@ -26,6 +26,8 @@ public:
 
 	SceneManager* getSceneManager(void);
 
+	Vector3 getCameraPos(void);
+
 	static Renderer& getSingleton(void);
 
 protected:

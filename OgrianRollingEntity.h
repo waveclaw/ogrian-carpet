@@ -19,11 +19,22 @@ public:
 		
 	}
 
+	virtual void setPosition(Vector3 pos)
+	{
+		setPosition(pos.x, pos.y, pos.z);
+	}
+
 	virtual void setPosition(Real x, Real y, Real z)
 	{
 		PhysicalEntity::setPosition(x,
 			HeightMap::getSingleton().getHeightAt(x,z) + getRadius(),
 			z);
+	}
+
+	virtual void collided(PhysicalEntity* e)
+	{
+		// stop if you hit something
+		setVelocity(0,0,0);
 	}
 };
 

@@ -3,6 +3,7 @@
 #include "OgrianConstants.h"
 #include "OgrianHeightMap.h"
 #include "OgrianPhysics.h"
+#include "OgrianRollingEntity.h"
 
 namespace Ogrian
 {
@@ -143,6 +144,20 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
     if (mInputDevice->isKeyDown(KC_LEFT))
     {
         mCamera->yaw(mRotScale);
+    }
+
+    if (mInputDevice->isKeyDown(KC_SPACE) && mTimeUntilNextToggle <= 0)
+    {
+        RollingEntity* e = new RollingEntity("ogrehead.mesh");
+		e->setPosition(mCamera->getPosition()+mCamera->getDirection());
+		//e->lookAt(mCamera->getPosition());
+		e->setOrientation(mCamera->getOrientation());
+		e->setVelocity(mCamera->getDirection());
+		e->setScale(1);
+
+		Physics::getSingleton().addPhysicalEntity(e);
+
+        mTimeUntilNextToggle = 1;
     }
 
     if( mInputDevice->isKeyDown( KC_ESCAPE) )

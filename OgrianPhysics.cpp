@@ -90,12 +90,18 @@ void Physics::collisionCheck()
 			Real maxdist = a->getRadius() + b->getRadius();
 
 			// if they are close enough, they collide
-			if (a->distance(b) < maxdist && 
-				fabs(a->pos.y - b->pos.y) < maxdist)
+			if (a->distance(b) < maxdist)
 			{
-				// they collide
-				a->collided(b);
-				b->collided(a);
+				Real ay = a->pos.y;
+				Real by = b->pos.y;
+
+				// if they are close enough in altitude
+				if (ay-by < maxdist && by-ay < maxdist)
+				{
+					// they collide
+					a->collided(b);
+					b->collided(a);
+				}
 			}
 		}
 	}
