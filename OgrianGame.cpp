@@ -34,6 +34,9 @@ starting games and detecting victory.
 #include "OgrianSkinManager.h"
 #include "OgrianSpellManager.h"
 #include "OgrianManaThing.h"
+#include "OgrianGnomeThing.h"
+#include "OgrianTickThing.h"
+#include "OgrianSentinelThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianHutThing.h"
 
@@ -300,9 +303,13 @@ void Game::startSkirmishGame()
 
 	int numSkins = SkinManager::getSingleton().numSkins();
 
+	AIWizardThing* ai = new AIWizardThing(Vector3(0,0,0), int(Math::RangeRandom(0.8,numSkins+0.5)));
+	Physics::getSingleton().addThing(ai);
+	ai->destroy();
+
 	// set up some enemy towers
 	i=0;
-	while(i<CONI("NUM_BOTS"))
+	while(i<CONI("NUM_TOWERS"))
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -314,11 +321,26 @@ void Game::startSkirmishGame()
 			i++;
 			Vector3 pos = Vector3(x,0,z);
 
-			AIWizardThing* ai = new AIWizardThing(pos, int(Math::RangeRandom(0.8,numSkins+0.5)));
-			Physics::getSingleton().addThing(ai);
-
 			TowerThing* tower = new TowerThing(ai->getTeamNum(),pos);
 			Physics::getSingleton().addThing(tower);
+
+			// make sentinels for the towers
+			for (int j=0; j<CONI("NUM_SENTINELS"); j++)
+			{
+				Vector3 posb = pos;
+				posb.x += Math::RangeRandom(-1,1)*CONR("SENTINEL_SPREAD");
+				posb.z += Math::RangeRandom(-1,1)*CONR("SENTINEL_SPREAD");
+				Physics::getSingleton().addThing(new SentinelThing(ai->getTeamNum(), posb));
+			}
+
+			// make ticks for the towers
+			for (int j=0; j<CONI("NUM_TICKS"); j++)
+			{
+				Vector3 posb = pos;
+				posb.x += Math::RangeRandom(-1,1)*CONR("TICK_SPREAD");
+				posb.z += Math::RangeRandom(-1,1)*CONR("TICK_SPREAD");
+				Physics::getSingleton().addThing(new TickThing(ai->getTeamNum(), posb));
+			}
 		}
 	}
 
