@@ -61,8 +61,7 @@ public:
 			mColour = ColourValue::White;
 
 		// set the mesh
-		setMaterial("Ogrian/Tower");
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
+		static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
 			CONR("TOWER_MESH_SCALE"), CONR("TOWER_MESH_RATIO"));
 
 		// set the height

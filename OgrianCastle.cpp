@@ -59,7 +59,6 @@ Castle::Castle(int teamNum, Vector3 pos)
 	setTeamNum(teamNum);
 	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
 
-	setPosition(pos + Vector3(0, CONR("CASTLEKEEP_HEIGHT") + CONR("CASTLE_WIDTH")/2 - CONR("CASTLE_OFFSET"), 0));
 	Physics::getSingleton().addThing(this);
 
 	// set up the beacon
@@ -96,6 +95,8 @@ Castle::Castle(int teamNum, Vector3 pos)
 	setMana(0);
 
 	setHealth(CONI("CASTLE_HEALTH"));
+
+	setPosition(mBlocks[0]->getPosition() + Vector3(0, CONR("CASTLEKEEP_HEIGHT")*1.5 + CONR("CASTLE_WIDTH")/4, 0));
 
 	// add existing claimed mana to the list
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
