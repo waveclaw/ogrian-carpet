@@ -73,6 +73,11 @@ public:
 
 	virtual void die()
 	{
+		destroy();
+	}
+
+	virtual void destroy()
+	{
 		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth()));
 
 		DamageableThing::destroy();

@@ -279,7 +279,9 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 
 		case CAMERATHING: return new WizardThing();
 
-		default: return 0;
+		default:
+			LogManager::getSingleton().logMessage(String("ERROR: Thing Unknown: ") << type);
+			return 0;
 	}
 }
 
