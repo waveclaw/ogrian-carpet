@@ -222,13 +222,12 @@ void Multiplayer::clientRecieve()
 
 		if(handleOtherPacket(packet, packetId))
 		{
-			Physics::getSingleton().handleClientPacket(packet, packetId);
+			//Physics::getSingleton().handleClientPacket(packet, packetId);
 		}
-		
-		Packet* packet = mClient->Receive();
+			
+		mClient->DeallocatePacket(packet);
+		packet = mClient->Receive();
 	}
-
-	mClient->DeallocatePacket(packet);
 }
 
 //----------------------------------------------------------------------------
@@ -244,13 +243,12 @@ void Multiplayer::serverRecieve()
 
 		if(handleOtherPacket(packet, packetId))
 		{
-			Physics::getSingleton().handleServerPacket(packet, packetId);
+			//Physics::getSingleton().handleServerPacket(packet, packetId);
 		}
-		
-		Packet* packet = mServer->Receive();
+			
+		mServer->DeallocatePacket(packet);
+		packet = mServer->Receive();
 	}
-
-	mServer->DeallocatePacket(packet);
 }
 
 //----------------------------------------------------------------------------
