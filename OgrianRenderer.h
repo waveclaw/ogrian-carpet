@@ -35,6 +35,7 @@ It is a Singleton.
 
 #include "Ogre.h"
 #include "OgrianFrameListener.h"
+#include "OgrianMouseFrameListener.h"
 #include "OgrianCameraThing.h"
 
 using namespace Ogre;
@@ -84,6 +85,7 @@ protected:
     CameraThing* mCameraThing;
     SceneManager* mSceneMgr;
     OgrianFrameListener* mFrameListener;
+    OgrianMouseFrameListener* mMouseFrameListener;
     RenderWindow* mWindow;
     SceneNode* mFountainNode;
 	SceneNode* mWaterNode;

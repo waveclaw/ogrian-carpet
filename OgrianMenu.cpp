@@ -52,6 +52,12 @@ Menu::Menu()
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("SS/Setup/HostScreen/Overlay");
 	
+	// set up the cursor
+	mCursor = OverlayManager::getSingleton().getCursorGui();
+    mCursor->setMaterialName("Cursor/default");
+    mCursor->setDimensions(32.0/640.0, 32.0/480.0);
+
+	// build the list
 	ListChanger* list = static_cast<ListGuiElement*>(GuiManager::getSingleton().getGuiElement("SS/Setup/HostScreen/AvailableGamesList"));
 
 	list->addListItem(new StringResource("1: CRESCENT"));
@@ -175,6 +181,9 @@ void Menu::showMenu()
 	// to prevent immediately going back to the game
     mTimeUntilNextToggle = KEY_DELAY;
 
+	// show cursor
+    mCursor->show();
+
 	mActive = true;
 }
 
@@ -188,6 +197,9 @@ void Menu::hideMenu()
 
 	// to prevent immediately going back into the menu
 	Input::getSingleton().delay(KEY_DELAY);
+
+	// hide cursor
+    mCursor->hide();
 
 	mActive = false;
 }

@@ -176,6 +176,9 @@
 				RelativePath="OgrianMenu.h">
 			</File>
 			<File
+				RelativePath="OgrianMouseFrameListener.h">
+			</File>
+			<File
 				RelativePath="OgrianPhysics.h">
 			</File>
 			<File

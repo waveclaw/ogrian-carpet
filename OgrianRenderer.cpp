@@ -187,8 +187,10 @@ void Renderer::createCameraThing()
 void Renderer::createFrameListener(void)
 {
     mFrameListener = new OgrianFrameListener(mWindow, mCamera);
-    mFrameListener->showDebugOverlay(true);
     mRoot->addFrameListener(mFrameListener);
+	
+    mMouseFrameListener = new OgrianMouseFrameListener(mWindow, mCamera);
+    //mRoot->addFrameListener(mMouseFrameListener);
 }
 
 //----------------------------------------------------------------------------

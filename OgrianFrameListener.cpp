@@ -87,7 +87,6 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	{
         mEventProcessor = new EventProcessor();
 		mEventProcessor->initialise(win);
-        //OverlayManager::getSingleton().createCursorOverlay();
 		mEventProcessor->startProcessingEvents();
 		mEventProcessor->addKeyListener(this);
 		mInputDevice = mEventProcessor->getInputReader();
