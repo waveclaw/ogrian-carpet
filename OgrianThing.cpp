@@ -65,6 +65,7 @@ Thing::Thing(String material, ThingVisRep visrep, String prefix, bool fixed_y, R
 	mUpdateType = PERIODIC;
 	mUpdateRequested = false;
 	mTeamNum = -1;
+	mPos = Vector3(0,0,0);
 	
 	// name it
 	std::ostringstream num("");

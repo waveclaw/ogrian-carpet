@@ -46,6 +46,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	visible?"WizardThing":"CameraThing", true, CONR("WIZARD_SCALE"))
 {
 	mNextRegenTime = 0;
+	mLastSetPosTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
 	mBar = 0;
@@ -347,8 +348,22 @@ void WizardThing::move(Real time)
 
 	mOnBuilding = false;
 
+	DamageableThing::move(time);
+
+	// update health bar
+	if (mBar)
+		mBar->update(getPosition(), getHealth()/100.0*getWidth());
+
+	// update the ramp
+	if (mRamp)
+		mRamp->setPosition(getPosition());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setPosition(Vector3 pos)
+{
 	// follow the landscape
-	Vector3 pos = getPosition();
 	Real w = getWidth()/2;
 	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
 	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
@@ -368,25 +383,29 @@ void WizardThing::move(Real time)
 			setVelY(0);
 
 		pos.y = ground;
-		setPosition(pos);
 	}
 
-	DamageableThing::move(time);
+	Vector3 lastPos = getPosition();
 
-	// update health bar
-	if (mBar)
-		mBar->update(getPosition(), getHealth()/100.0*getWidth());
+	// if this is not a teleport
+	Vector3 diff = pos - lastPos;
+	Vector3 diffb = diff;
+	diffb.y = 0;
+	unsigned long time = Time::getSingleton().getTime();
+	Real dt = (time - mLastSetPosTime)/1000.0;
+	mLastSetPosTime = Time::getSingleton().getTime();
+	Real maxdist = CONR("CAMERA_MOVE_SPEED")*dt;
+	if (diffb.length() <= maxdist*1.1 && diff.length() > maxdist)
+	{
+		// constrain the speed
+		diff.normalise();
+		diff *= CONR("CAMERA_MOVE_SPEED")*dt;
+		pos = lastPos + diff;
+	}
 
-	// update the ramp
-	if (mRamp)
-		mRamp->setPosition(pos);
-}
 
-//----------------------------------------------------------------------------
-
-void WizardThing::setPosition(Vector3 pos)
-{
 	DamageableThing::setPosition(pos);
+
 }
 
 //----------------------------------------------------------------------------
