@@ -32,6 +32,7 @@ the eight cardinal directions and also from any of an arbitrary number of poses.
 #define __OgrianOrientedSprite_H__
 
 #include <Ogre.h>
+#include "Math.h"
 
 #include "OgrianSprite.h"
 
@@ -45,16 +46,14 @@ class Pose
 public:
 	Pose(String basename)
 	{
-		f  = new Sprite("auto", true);
-		fl = new Sprite("auto", true);
-		l  = new Sprite("auto", true);
-		bl = new Sprite("auto", true);
-		b  = new Sprite("auto", true);
-		br = new Sprite("auto", true);
-		r  = new Sprite("auto", true);
-		fr = new Sprite("auto", true);
-
-		// TODO: set the materials
+		f  = new Sprite("auto", true); f ->setMaterial(String(basename) << "f");
+		fl = new Sprite("auto", true); fl->setMaterial(String(basename) << "fl");
+		l  = new Sprite("auto", true); l ->setMaterial(String(basename) << "l");
+		bl = new Sprite("auto", true); bl->setMaterial(String(basename) << "bl");
+		b  = new Sprite("auto", true); b ->setMaterial(String(basename) << "b");
+		br = new Sprite("auto", true); br->setMaterial(String(basename) << "br");
+		r  = new Sprite("auto", true); r ->setMaterial(String(basename) << "r");
+		fr = new Sprite("auto", true); fr->setMaterial(String(basename) << "fr");
 	}
 	virtual ~Pose()
 	{
@@ -68,8 +67,21 @@ public:
 		delete fr;
 	}
 
-	Sprite* getSprite(Vector3 campos)
+	Sprite* getSprite(Vector3 campos, Vector3 pos, float offset)
 	{
+		float dir = atan2(campos.x - pos.x, campos.z - pos.z) + offset;
+
+		float pi = Math::PI;
+
+		if (dir < (-7/8)*pi) return b;
+		if (dir < (-5/8)*pi && dir > (-7/8)*pi) return bl;
+		if (dir < (-3/8)*pi && dir > (-5/8)*pi) return l;
+		if (dir < (-1/8)*pi && dir > (-3/8)*pi) return fl;
+		if (dir < (1/8)*pi && dir > (-1/8)*pi) return f;
+		if (dir < (3/8)*pi && dir > (1/8)*pi) return fr;
+		if (dir < (5/8)*pi && dir > (3/8)*pi) return r;
+		if (dir < (7/8)*pi && dir > (5/8)*pi) return br;
+		if (dir > (7/8)*pi) return b;
 
 		return 0;
 	}
@@ -106,6 +118,9 @@ public:
 	
 	// set which pose to use 
 	virtual void setPose(int index);
+
+	// set the orientation from -pi to pi 
+	virtual void setOrientation(Real orientation);
 	
 	// unused
 	virtual void setMaterial(String material) {}
@@ -131,6 +146,7 @@ private:
 	Real mHeight; 
 	Vector3 mPos;
 	bool mInRenderer;
+	Real mOrientation;
 };
 }
 #endif

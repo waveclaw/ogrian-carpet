@@ -33,6 +33,7 @@ It is rendered as a Billboard.
 #define __OgrianThing_H__
 
 #include <Ogre.h>
+
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
 

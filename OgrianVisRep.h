@@ -55,6 +55,9 @@ public:
 	// add a pose (only used by Oriented Sprites)
 	virtual void setPose(int index) = 0;
 
+	// set the orientation from -pi to pi (only used by Oriented Sprites)
+	virtual void setOrientation(Real orientation) = 0;
+
 	// set the material
 	virtual void setMaterial(String material) = 0;
 

@@ -62,7 +62,7 @@ public:
 	virtual int addPose(String basename) { return 0; }
 	virtual void setPose(int index) {}
 	virtual void frame() {}
-
+	virtual void setOrientation(Real orientation) {}
 
 	// add this sprite to the renderer
 	virtual void addToRenderer();

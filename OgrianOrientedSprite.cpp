@@ -140,9 +140,17 @@ void OrientedSprite::setPose(int index)
 
 //----------------------------------------------------------------------------
 
+void OrientedSprite::setOrientation(Real orientation)
+{
+	mOrientation = orientation;
+}
+
+//----------------------------------------------------------------------------
+
 void OrientedSprite::frame()
 {
-	Sprite* newSprite = mCurrentPose->getSprite(Renderer::getSingleton().getCamera()->getPosition());
+	Sprite* newSprite = mCurrentPose->getSprite(
+		Renderer::getSingleton().getCamera()->getPosition(), mPos, mOrientation);
 
 	if (mCurrentSprite != newSprite)
 	{
