@@ -170,6 +170,9 @@ void Menu::button_quit()
 //----------------------------------------------------------------------------
 void Menu::button_load()
 {
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
+
 	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
 }
 

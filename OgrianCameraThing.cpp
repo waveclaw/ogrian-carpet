@@ -204,7 +204,8 @@ void CameraThing::die()
 	
 	if (!Multiplayer::getSingleton().isClient())
 	{
-		Castle* castle = getTeam()->getCastle();
+		Castle* castle = 0;
+		if (getTeam()) castle = getTeam()->getCastle();
 
 		if (castle)
 		{

@@ -32,6 +32,7 @@ starting games and detecting victory.
 #include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianSkinManager.h"
+#include "OgrianManaThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
@@ -135,6 +136,25 @@ void Game::startServerGame()
 {
 	// activate pregame mode
 	mPreGame = true;
+
+	// set up some wild mana
+	int i=0;
+	while(i<CONI("MANA_START_NUM"))
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * 1000.0;
+        Real z = Math::SymmetricRandom() * 1000.0;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > CONR("FOLIAGE_LINE_MIN") && y < CONR("FOLIAGE_LINE_MAX"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			ManaThing* mana = new ManaThing(CONI("MANA_START_AMOUNT"),pos);
+			Physics::getSingleton().addThing(mana);
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
