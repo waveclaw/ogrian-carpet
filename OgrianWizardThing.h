@@ -49,6 +49,11 @@ public:
 	{
 	}
 
+	virtual ThingType getType()
+	{
+		return WIZARDTHING;
+	}
+
 
 private:
 };

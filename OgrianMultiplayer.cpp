@@ -380,6 +380,20 @@ int Multiplayer::getWizardUID(PlayerID pid)
 
 //----------------------------------------------------------------------------
 
+int Multiplayer::numClients()
+{
+	return (int)mPlayers.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+PlayerInfo Multiplayer::getClient(int i)
+{
+	return mPlayers[i+1];
+}
+
+//----------------------------------------------------------------------------
+
 bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 {
 	// Check if this is a network message packet

@@ -100,6 +100,11 @@ public:
 	// turn an player ID into a Thing UID for the associated WizardThing
 	int getWizardUID(PlayerID pid);
 
+	// the number of clients connected
+	int numClients();
+
+	PlayerInfo getClient(int i);
+
 private:
 	Multiplayer();
 	bool mIsServer;

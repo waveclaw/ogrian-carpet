@@ -105,16 +105,23 @@ void Physics::clientFrame(Real time)
 
 void Physics::serverFrame(Real time)
 {
-	// notify clients of all things
-	for (int i=0; i<(int)mAllThings.size(); i++)
+	// for each client
+	for (int i=0; i<Multiplayer::getSingleton().numClients(); i++)
 	{
-		Thing* thing = mAllThings[i];
-		if (thing->getType() == MANATHING // || CAMERATHING etc...
-			&& thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime())
+		PlayerInfo player = Multiplayer::getSingleton().getClient(i);
+
+		// notify clients of all things
+		for (int i=0; i<(int)mAllThings.size(); i++)
 		{
-			BitStream bs;
-			thing->generateBitStream(bs);
-			Multiplayer::getSingleton().serverSendAll(&bs, false);
+			Thing* thing = mAllThings[i];
+			if (thing->lastUpdateTime() + THING_UPDATE_PERIOD < Time::getSingleton().getTime() &&
+				thing->getUID() != player.wizardUID // dont send their own wizard to them
+				)
+			{
+				BitStream bs;
+				thing->generateBitStream(bs);
+				Multiplayer::getSingleton().serverSend(&bs, player.id, false);
+			}
 		}
 	}
 }
@@ -257,6 +264,8 @@ Thing* Physics::newThing(ThingType type)
 		case MANATHING:	return new ManaThing();
 
 		case WIZARDTHING: return new WizardThing();
+
+		case CAMERATHING: return new WizardThing();
 
 		default: return 0;
 	}
