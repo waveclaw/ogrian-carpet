@@ -8,7 +8,7 @@ Hand Sprites
 To consider:
 ==============
 skirmish button
-use a real flower for firestalk sprites
+use a real flower for firestalk sprites (fireblossom?)
 
 Spells:
 =============

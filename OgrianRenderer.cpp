@@ -266,7 +266,7 @@ void Renderer::createOcean(const String& material)
 
 //----------------------------------------------------------------------------
 
-void Renderer::createFoliage(const String& material, int num)
+void Renderer::createFoliage(int num)
 {
 	LogManager::getSingleton().logMessage("Making Foliage...");
 
@@ -305,7 +305,7 @@ void Renderer::loadMap(String configfile, bool server)
 	config.load( configfile );
 	String skyMaterial = config.getSetting( "SkyMaterial" );
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
-	String foliageMaterial = config.getSetting( "FoliageMaterial" );
+	mFoliageMaterial = config.getSetting( "FoliageMaterial" );
 
 	// set up the terrain
     mSceneMgr->setWorldGeometry( configfile );
@@ -316,7 +316,7 @@ void Renderer::loadMap(String configfile, bool server)
 	createOcean(oceanMaterial);
 
 	// dont make foliage for a client
-	if (server)	createFoliage(foliageMaterial, CONI("FOLIAGE_NUM"));
+	if (server)	createFoliage(CONI("FOLIAGE_NUM"));
 
     // Position the camera with an offset
     mCamera->setPosition(Vector3(CONR("START_X"),0,CONR("START_Z")));
@@ -342,6 +342,13 @@ void Renderer::loadMap(String configfile, bool server)
 String Renderer::getMapName()
 {
 	return mMapName;
+}
+
+//----------------------------------------------------------------------------
+
+String Renderer::getFoliageMaterial()
+{
+	return mFoliageMaterial;
 }
 
 //----------------------------------------------------------------------------

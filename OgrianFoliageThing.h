@@ -43,9 +43,10 @@ namespace Ogrian
 class FoliageCorpse : public Thing
 {
 public:
-	FoliageCorpse(Vector3 pos, Real scale) 
-		: Thing("Ogrian/PalmTreeDead", SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
+	FoliageCorpse(Vector3 pos, Real scale, String material) 
+		: Thing(material, SPRITE, "Foliagecorpse", true, scale, pos, CYLINDER)
 	{
+		setHeight(scale*1.5);
 	}
 
 	virtual ThingType getType()	{ return EFFECT; }
@@ -57,11 +58,12 @@ class FoliageThing : public DamageableThing
 {
 public:
 	FoliageThing(Real scale=1, Vector3 pos=Vector3(0,0,0)) 
-		: DamageableThing("Ogrian/PalmTree", SPRITE, "Foliage", true, scale, pos, CYLINDER)
+		: DamageableThing(Renderer::getSingleton().getFoliageMaterial(),
+			SPRITE, "Foliage", true, scale, pos, CYLINDER)
 	{
 		// place it slightly underground
-		setHeight(scale*1.5);
-		setPosY(getGroundY() + scale*.45);
+		setHeight(scale*CONR("FOLIAGE_SKEW"));
+		setPosY(getGroundY() + scale*CONR("FOLIAGE_HEIGHT_OFF"));
 		setHealth(CONI("FOLIAGE_HEALTH"));
 	}
 
@@ -77,7 +79,8 @@ public:
 
 	virtual void destroy()
 	{
-		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth()));
+		Physics::getSingleton().addEffect(new FoliageCorpse(getPosition(), getWidth(),
+			Renderer::getSingleton().getFoliageMaterial() << "Dead"));
 
 		DamageableThing::destroy();
 	}

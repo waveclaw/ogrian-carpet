@@ -44,7 +44,7 @@ It is a Singleton.
 
 using namespace Ogre;
 
-#define PHYSICS_GRID_SIZE 100
+#define PHYSICS_GRID_SIZE 50
 
 namespace Ogrian
 {

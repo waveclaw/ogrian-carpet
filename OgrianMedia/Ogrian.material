@@ -81,6 +81,41 @@ material Ogrian/PalmTreeDead
 		}
 	}
 }
+material Ogrian/PineTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture sprites/pine.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/PineTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/pine_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/Fireball
 {
 	technique

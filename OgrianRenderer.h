@@ -57,7 +57,7 @@ public:
     void go(void);
 
 	// create random foilage using the specified material
-	void createFoliage(const String& material, int num);
+	void createFoliage(int num);
 
 	// get the SceneManager
 	SceneManager* getSceneManager(void);
@@ -77,6 +77,9 @@ public:
 	// get the name of the current map
 	String getMapName();
 
+	// get the foliage name for the current map
+	String getFoliageMaterial();
+
 	// unload the map
 	void unloadMap();
 
@@ -95,6 +98,7 @@ protected:
 
 	bool mMapLoaded;
 	String mMapName;
+	String mFoliageMaterial;
 
     /// Standard constructor
     Renderer();
