@@ -172,16 +172,16 @@ void HeightMap::loadTerrain(const String& filename)
 
 	String terrain_filename = config.getSetting( "Heightmap.image" );
 
-	mImage->load( terrain_filename );
+	mImage->load( terrain_filename, "General" );
 
 	if ( mImage->getFormat() != PF_L8 )
 	{
-		Except( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
+		OGRE_EXCEPT( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
 				"HeightMap::loadTerrain" );
 	}
 
 	mData = mImage->getData();
-	mSize = mImage->getWidth();
+	mSize = (int)mImage->getWidth();
 
 	// cut mData in half to allow room for buildings
 	for (int i=0; i<mSize*mSize; i++)

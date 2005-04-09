@@ -76,7 +76,7 @@ Renderer::~Renderer()
 
 //----------------------------------------------------------------------------
 
-/// Start the example
+/// Start the renderer
 void Renderer::go(void)
 {
     if (!setup())
@@ -129,7 +129,7 @@ bool Renderer::setup(void)
     createViewports();
 
     // Set default mipmap level (NB some APIs ignore this)
-    TextureManager::getSingleton().setDefaultNumMipMaps(5);
+	TextureManager::getSingleton().setDefaultNumMipmaps(5);
 
     // Create the scene
     createScene();
@@ -242,6 +242,7 @@ void Renderer::createOcean(const String& material)
     waterPlane.d = -1.5; 
     MeshManager::getSingleton().createPlane(
         "WaterPlane",
+		"General",
         waterPlane,
         5000, 5000,
         20, 20,
@@ -364,15 +365,22 @@ void Renderer::setupResources(void)
     ConfigFile cf;
     cf.load("resources.cfg");
 
-    // Go through all settings in the file
-    ConfigFile::SettingsIterator i = cf.getSettingsIterator();
+    // Go through all sections & settings in the file
+    ConfigFile::SectionIterator seci = cf.getSectionIterator();
 
-    String typeName, archName;
-    while (i.hasMoreElements())
+    String secName, typeName, archName;
+    while (seci.hasMoreElements())
     {
-        typeName = i.peekNextKey();
-        archName = i.getNext();
-        ResourceManager::addCommonArchiveEx( archName, typeName );
+        secName = seci.peekNextKey();
+        ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        ConfigFile::SettingsMultiMap::iterator i;
+        for (i = settings->begin(); i != settings->end(); ++i)
+        {
+            typeName = i->first;
+            archName = i->second;
+            ResourceGroupManager::getSingleton().addResourceLocation(
+                archName, typeName, secName);
+        }
     }
 }
 

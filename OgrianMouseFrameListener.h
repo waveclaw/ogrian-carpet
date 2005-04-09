@@ -34,7 +34,7 @@ Description: this handles mouse input for the menu, including buttons.
 #include "Ogre.h"
 #include "OgreEventListeners.h"
 #include "OgreException.h"
-#include "OgreButtonGuiElement.h"
+//#include "OgreButtonGuiElement.h"
 
 #include "OgrianMenu.h"
 
@@ -43,7 +43,7 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class OgrianMouseFrameListener: public FrameListener, public ActionListener
+class OgrianMouseFrameListener: public FrameListener//, public ActionListener
 {
 public:
     // Constructor takes a RenderWindow because it uses that to determine input context
@@ -53,11 +53,11 @@ public:
 
         mEventProcessor = new EventProcessor();
 		mEventProcessor->initialise(win);
-        OverlayManager::getSingleton().createCursorOverlay();
+        //OverlayManager::getSingleton().createCursorOverlay();
 		mEventProcessor->startProcessingEvents();
 		mInputDevice = mEventProcessor->getInputReader();
 
-		registerButtons();
+		//registerButtons();
     }
     virtual ~OgrianMouseFrameListener()
     {
@@ -81,24 +81,24 @@ public:
         return true;
     }
 
-	void actionPerformed(ActionEvent* e) 
-	{
-		std::string action = e->getActionCommand();
+	//void actionPerformed(ActionEvent* e) 
+	//{
+	//	std::string action = e->getActionCommand();
 
-		// REMEMBER TO REGISTER THE BUTTON BELOW!
-		if (action == "Ogrian/Menu/Exit")
-		{
-			Menu::getSingleton().button_quit();
-			mQuit = true; 
-		}
-		else if (action == "Ogrian/Menu/Load") Menu::getSingleton().button_load();
-		else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
-		else if (action == "Ogrian/Menu/Music") Menu::getSingleton().button_musicToggle();
-		else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
-		else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
-		else if (action == "Ogrian/Menu/Disconnect") Menu::getSingleton().button_disconnect();
-		else if (action == "Ogrian/Menu/StartGame") Menu::getSingleton().button_startGame();
-    }
+	//	// REMEMBER TO REGISTER THE BUTTON BELOW!
+	//	if (action == "Ogrian/Menu/Exit")
+	//	{
+	//		Menu::getSingleton().button_quit();
+	//		mQuit = true; 
+	//	}
+	//	else if (action == "Ogrian/Menu/Load") Menu::getSingleton().button_load();
+	//	else if (action == "Ogrian/Menu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
+	//	else if (action == "Ogrian/Menu/Music") Menu::getSingleton().button_musicToggle();
+	//	else if (action == "Ogrian/Menu/Host") Menu::getSingleton().button_host();
+	//	else if (action == "Ogrian/Menu/Join") Menu::getSingleton().button_join();
+	//	else if (action == "Ogrian/Menu/Disconnect") Menu::getSingleton().button_disconnect();
+	//	else if (action == "Ogrian/Menu/StartGame") Menu::getSingleton().button_startGame();
+ //   }
 
 	bool isMulticaster() {}
 
@@ -108,42 +108,42 @@ protected:
 
 	bool mQuit; 
 	
-	void registerButtons()
-	{
-		// REMEMBER TO CALL THE MENU ABOVE!!
-		ActionTarget* button;
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit"));
-		button->addActionListener(this);
+	//void registerButtons()
+	//{
+	//	// REMEMBER TO CALL THE MENU ABOVE!!
+	//	ActionTarget* button;
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load"));
-		button->addActionListener(this);
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert"));
-		button->addActionListener(this);
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music"));
-		button->addActionListener(this);
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host"));
-		button->addActionListener(this);
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join"));
-		button->addActionListener(this);
-		
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect"));
-		button->addActionListener(this);
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join"));
+	//	button->addActionListener(this);
+	//	
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect"));
+	//	button->addActionListener(this);
 
-		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame"));
-		button->addActionListener(this);
-	}
+	//	button = static_cast<ButtonGuiElement*>
+	//		(GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame"));
+	//	button->addActionListener(this);
+	//}
 
 };
 

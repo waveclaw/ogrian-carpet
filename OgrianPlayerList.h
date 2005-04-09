@@ -72,7 +72,7 @@ private:
 	bool mActive; // wether or not the PlayerList mode is active
 	Overlay* mOverlay; // the PlayerList overlay
 
-	GuiElement* mList[MAX_PLAYERS]; // the GUI List
+//	GuiElement* mList[MAX_PLAYERS]; // the GUI List
 	std::vector<String> mPlayers; // a vector of the players names
 
 	void updateList(); // make the gui match the vector

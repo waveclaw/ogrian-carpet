@@ -93,13 +93,13 @@ private:
 
 	Time mMessageClearTime;
 
-	Overlay* mOverlay;
-	GuiElement* mMana;
-	GuiElement* mHealth;
-	GuiElement* mMessage;
-	GuiElement* mSpellName;
+	//Overlay* mOverlay;
+	//GuiElement* mMana;
+	//GuiElement* mHealth;
+	//GuiElement* mMessage;
+	//GuiElement* mSpellName;
 
-	GuiElement* mSpellIcons[NUM_SPELLS];
+//	GuiElement* mSpellIcons[NUM_SPELLS];
 };
 
 }

@@ -1,6 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 7.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ogrian", "Ogrian.vcproj", "{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo_Gui", "..\ogrenew\Samples\Gui\scripts\Demo_Gui.vcproj", "{0F83CA41-4364-49FF-A230-613B08B5CF82}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -13,6 +15,10 @@ Global
 		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Debug.Build.0 = Debug|Win32
 		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Release.ActiveCfg = Release|Win32
 		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Release.Build.0 = Release|Win32
+		{0F83CA41-4364-49FF-A230-613B08B5CF82}.Debug.ActiveCfg = Debug|Win32
+		{0F83CA41-4364-49FF-A230-613B08B5CF82}.Debug.Build.0 = Debug|Win32
+		{0F83CA41-4364-49FF-A230-613B08B5CF82}.Release.ActiveCfg = Release|Win32
+		{0F83CA41-4364-49FF-A230-613B08B5CF82}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

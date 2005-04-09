@@ -30,8 +30,8 @@ Description: The Player List
 #include "OgrianRenderer.h"
 
 #include "OgreOverlayManager.h"
-#include "OgreBorderButtonGuiElement.h"
-#include "OgreStringResource.h"
+//#include "OgreBorderButtonGuiElement.h"
+//#include "OgreStringResource.h"
 
 template<> Ogrian::PlayerList * Singleton< Ogrian::PlayerList >::ms_Singleton = 0;
 
@@ -97,7 +97,7 @@ void PlayerList::updateList()
 		String player = "Ogrian/PlayerList/Player";
 			std::ostringstream num("");
 			num << i;
-		GuiManager::getSingleton().getGuiElement(player += num.str())
+		OverlayManager::getSingleton().getOverlayElement(player += num.str())
 			->setCaption(mPlayers[i]);
 	}
 
@@ -108,7 +108,7 @@ void PlayerList::updateList()
 		String player = "Ogrian/PlayerList/Player";
 			std::ostringstream num("");
 			num << i;
-		GuiManager::getSingleton().getGuiElement(player + num.str())
+		OverlayManager::getSingleton().getOverlayElement(player + num.str())
 			->setCaption("");
 	}
 }

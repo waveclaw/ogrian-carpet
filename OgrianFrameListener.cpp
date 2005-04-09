@@ -54,10 +54,10 @@ void OgrianFrameListener::updateStats(void)
     static String tris = "Triangle Count: ";
 
     // update stats when necessary
-    GuiElement* guiAvg = GuiManager::getSingleton().getGuiElement("Core/AverageFps");
-    GuiElement* guiCurr = GuiManager::getSingleton().getGuiElement("Core/CurrFps");
-    GuiElement* guiBest = GuiManager::getSingleton().getGuiElement("Core/BestFps");
-    GuiElement* guiWorst = GuiManager::getSingleton().getGuiElement("Core/WorstFps");
+	OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
+    OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
+    OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
+    OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
 
     const RenderTarget::FrameStats& stats = mWindow->getStatistics();
 
@@ -68,10 +68,10 @@ void OgrianFrameListener::updateStats(void)
     guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
         +" "+StringConverter::toString(stats.worstFrameTime)+" ms");
 
-    GuiElement* guiTris = GuiManager::getSingleton().getGuiElement("Core/NumTris");
+    OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
     guiTris->setCaption(tris + StringConverter::toString(unsigned int(stats.triangleCount)));
 
-    GuiElement* guiDbg = GuiManager::getSingleton().getGuiElement("Core/DebugText");
+    OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
     guiDbg->setCaption(mWindow->getDebugText());
 }
 
@@ -292,7 +292,7 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 {
     Overlay* o = (Overlay*)OverlayManager::getSingleton().getByName("Core/DebugOverlay");
     if (!o)
-        Except( Exception::ERR_ITEM_NOT_FOUND, "Could not find overlay Core/DebugOverlay",
+        OGRE_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, "Could not find overlay Core/DebugOverlay",
             "showDebugOverlay" );
     if (show)
     {

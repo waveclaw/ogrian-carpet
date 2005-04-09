@@ -23,7 +23,7 @@ OgrianApplication.h
 Original Author: The OGRE Team
 Additional Authors: Mike Prosser
 
-Description: Initiates the renderer. 
+Description: Starts the clock and Initiates the renderer. 
 
 /*------------------------------------*/
 
@@ -32,6 +32,7 @@ Description: Initiates the renderer.
 #define __OgrianApplication_H__
 
 #include "Ogre.h"
+#include "OgrianClock.h"
 #include "OgrianRenderer.h"
 
 using namespace Ogre;
@@ -45,6 +46,10 @@ public:
     /// Start the application
     virtual void go(void)
     {
+		// start the clock
+		Clock::getSingleton().init();
+
+		// start the renderer
 		Renderer::getSingleton().go();
     }
 

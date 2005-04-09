@@ -41,11 +41,11 @@ namespace Ogrian
 
 Hud::Hud()
 {
-	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
-	mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
-	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
-	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
-	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
+	//mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
+	//mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
+	//mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
+	//mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
+	//mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
 	ColourValue colour;
 	colour.r = CONR("red")/255.0;
@@ -56,8 +56,8 @@ Hud::Hud()
 	{
 		std::ostringstream num("");
 		num << i;
-		mSpellIcons[i] = GuiManager::getSingleton().getGuiElement(String("Ogrian/HUD/SpellIcon/") + num.str());
-		mSpellIcons[i]->setColour(colour);
+		//mSpellIcons[i] = GuiManager::getSingleton().getGuiElement(String("Ogrian/HUD/SpellIcon/") + num.str());
+		//mSpellIcons[i]->setColour(colour);
 	}
 
 	setMessage("");
@@ -78,9 +78,9 @@ Hud::~Hud()
 
 void Hud::toggle()
 {
-	if (mOverlay->isVisible())
+	//if (mOverlay->isVisible())
 		hide();
-	else
+	//else
 		show();
 }
 
@@ -88,26 +88,26 @@ void Hud::toggle()
 
 void Hud::show()
 {
-	mOverlay->show();
+	//mOverlay->show();
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::hide()
 {
-	mOverlay->hide();
+	//mOverlay->hide();
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::reinit()
 {
-	mMana->show();
-	mHealth->show();
-	mSpellName->show();
+	//mMana->show();
+	//mHealth->show();
+	//mSpellName->show();
 
-	for (int i=0; i<NUM_SPELLS; i++)
-		mSpellIcons[i]->show();
+	//for (int i=0; i<NUM_SPELLS; i++)
+		//mSpellIcons[i]->show();
 
 	setMessage("");
 }
@@ -118,12 +118,12 @@ void Hud::makeGhost()
 {
 	setMessage(CONS("HUD_DEAD"));
 
-	mMana->hide();
-	mHealth->hide();
-	mSpellName->hide();
+	//mMana->hide();
+	//mHealth->hide();
+	//mSpellName->hide();
 
-	for (int i=0; i<NUM_SPELLS; i++)
-		mSpellIcons[i]->hide();
+	//for (int i=0; i<NUM_SPELLS; i++)
+	//	mSpellIcons[i]->hide();
 }
 
 //----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ void Hud::setMana()
 	std::ostringstream base("");
 	base << mBaseMana;
 
-	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
+	//mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
 }
 
 //----------------------------------------------------------------------------
@@ -161,9 +161,9 @@ void Hud::frame()
 {
 	if (mMessageClearTime && mMessageClearTime < Clock::getSingleton().getTime())
 	{
-		if (!mMana->isVisible())
-			setMessage(CONS("HUD_DEAD"));
-		else
+		//if (!mMana->isVisible())
+		//	setMessage(CONS("HUD_DEAD"));
+		//else
 			setMessage("");
 	}
 }
@@ -173,9 +173,9 @@ void Hud::frame()
 void Hud::setMessage(String msg, bool temp)
 {
 	// ignore messages when in ghost mode
-	if (!mMana->isVisible()) return;
+	//if (!mMana->isVisible()) return;
 
-	mMessage->setCaption(msg);
+	//mMessage->setCaption(msg);
 
 	if (temp)
 	{
@@ -191,7 +191,7 @@ void Hud::setMessage(String msg, bool temp)
 
 void Hud::setSpellName(String name)
 {
-	mSpellName->setCaption(name);
+	//mSpellName->setCaption(name);
 }
 
 //----------------------------------------------------------------------------
@@ -200,7 +200,7 @@ void Hud::setSpellIcon(int num, String material)
 {
 	if (num >= NUM_SPELLS) return;
 
-	mSpellIcons[num]->setMaterialName(material);
+	//mSpellIcons[num]->setMaterialName(material);
 }
 
 //----------------------------------------------------------------------------
@@ -221,7 +221,7 @@ void Hud::setHealth(int health)
 
 void Hud::setHealth(String health)
 {
-	mHealth->setCaption(health);
+	//mHealth->setCaption(health);
 }
 
 //----------------------------------------------------------------------------
