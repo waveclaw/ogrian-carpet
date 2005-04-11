@@ -44,7 +44,7 @@ PlayerList::PlayerList()
 {
 	mActive = false;
 
-	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/PlayerList/Overlay");
+	//mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/PlayerList/Overlay");
 }
 
 //----------------------------------------------------------------------------
@@ -89,28 +89,28 @@ void PlayerList::clear()
 
 void PlayerList::updateList()
 {
-	// for each element
-	int i=0;
-	for (; i<MAX_PLAYERS && i<(int)mPlayers.size(); i++)
-	{
-		// update the caption
-		String player = "Ogrian/PlayerList/Player";
-			std::ostringstream num("");
-			num << i;
-		OverlayManager::getSingleton().getOverlayElement(player += num.str())
-			->setCaption(mPlayers[i]);
-	}
+	//// for each element
+	//int i=0;
+	//for (; i<MAX_PLAYERS && i<(int)mPlayers.size(); i++)
+	//{
+	//	// update the caption
+	//	String player = "Ogrian/PlayerList/Player";
+	//		std::ostringstream num("");
+	//		num << i;
+	//	OverlayManager::getSingleton().getOverlayElement(player += num.str())
+	//		->setCaption(mPlayers[i]);
+	//}
 
-	// clear the unused slots
-	for (; i<MAX_PLAYERS; i++)
-	{
-		// update the caption
-		String player = "Ogrian/PlayerList/Player";
-			std::ostringstream num("");
-			num << i;
-		OverlayManager::getSingleton().getOverlayElement(player + num.str())
-			->setCaption("");
-	}
+	//// clear the unused slots
+	//for (; i<MAX_PLAYERS; i++)
+	//{
+	//	// update the caption
+	//	String player = "Ogrian/PlayerList/Player";
+	//		std::ostringstream num("");
+	//		num << i;
+	//	OverlayManager::getSingleton().getOverlayElement(player + num.str())
+	//		->setCaption("");
+	//}
 }
 
 //----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void PlayerList::show()
 {
 	if (mActive == true) return;
 
-	mOverlay->show();
+	//mOverlay->show();
 
 	mActive = true;
 }
@@ -130,7 +130,7 @@ void PlayerList::hide()
 {
 	if (mActive == false) return;
 
-	mOverlay->hide();
+	//mOverlay->hide();
 
 	mActive = false;
 }

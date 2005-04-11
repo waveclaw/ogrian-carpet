@@ -131,6 +131,8 @@ bool Renderer::setup(void)
     // Set default mipmap level (NB some APIs ignore this)
 	TextureManager::getSingleton().setDefaultNumMipmaps(5);
 
+	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
     // Create the scene
     createScene();
 
