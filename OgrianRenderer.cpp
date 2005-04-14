@@ -31,7 +31,8 @@ It is a Singleton.
 /*------------------------------------*/
 
 
-#include "Ogre.h"
+#include "OgrianGui.h"
+#include <Ogre.h>
 #include "OgreConfigFile.h"
 #include "OgrianFrameListener.h"
 #include "OgrianPhysics.h"
@@ -204,8 +205,10 @@ void Renderer::createFrameListener(void)
     mFrameListener = new OgrianFrameListener(mWindow, mCamera);
     mRoot->addFrameListener(mFrameListener);
 	
-    mMouseFrameListener = new OgrianMouseFrameListener(mWindow);
-    mRoot->addFrameListener(mMouseFrameListener);
+    //mMouseFrameListener = new OgrianMouseFrameListener(mWindow);
+    //mRoot->addFrameListener(mMouseFrameListener);
+
+	Gui::getSingleton().createFrameListener(mRoot, mWindow, mCamera);
 }
 
 //----------------------------------------------------------------------------
@@ -332,11 +335,13 @@ void Renderer::unloadMap()
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
+	Gui::getSingleton().createScene(mRoot, mWindow, mCamera);
+
 	// show the menu
-	Menu::getSingleton().show();
+	//Menu::getSingleton().show();
 
 	// show the hud
-	Hud::getSingleton().show();
+	//Hud::getSingleton().show();
 }
 
 //----------------------------------------------------------------------------

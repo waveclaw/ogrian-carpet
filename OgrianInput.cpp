@@ -100,6 +100,7 @@ bool Input::processKeyInput(InputReader* input)
 	// cast the selected spell
 	if (input->getMouseButton(0) 
 		&& mTimeUntilNextCast <= 0 
+		&& Renderer::getSingleton().getCameraThing()
 		&& !Renderer::getSingleton().getCameraThing()->isGhost())
 	{
 		// check for sufficient mana
