@@ -315,6 +315,11 @@ void WizardThing::collided(Thing* e)
 	// if its your castle
 	if(!mGhost && e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
 		setHealth(CONI("WIZARD_HEALTH"));
+
+	// claim mana and huts
+	if ((e->getType() == MANATHING || e->getType() == HUTTHING || e->getType() == HUTBALLTHING)
+			&& e->getTeamNum() != getTeamNum())
+		e->claim(getTeamNum());
 }
 
 //----------------------------------------------------------------------------

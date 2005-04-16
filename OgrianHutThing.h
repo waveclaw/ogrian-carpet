@@ -50,7 +50,7 @@ class HutBallThing : public Thing
 {
 public:
 	HutBallThing(Thing* hut)
-		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_WIDTH"), Vector3(0,0,0), SPHERE)
+		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_SCALE"), Vector3(0,0,0), SPHERE)
 	{
 		mHut = hut;
 		setColour(ColourValue::White);
@@ -61,11 +61,9 @@ public:
 		if (colour == ColourValue::White)
 		{
 			setMaterial("Ogrian/Clear");
-			setScale(0);
 		}
 		else
 		{
-			setScale(CONR("HUT_BALL_WIDTH"));
 			setMaterial("Ogrian/HutBall");
 			playSound(Game::getSingleton().SOUND_HUM);
 		}
@@ -156,6 +154,8 @@ public:
 		else setColour(ColourValue::White);
 
 		Thing::setTeamNum(teamNum);
+
+		if (mBall) mBall->setTeamNum(teamNum);
 	}
 
 	virtual void setColour(ColourValue& colour)
@@ -172,7 +172,7 @@ public:
 
 		Thing::setPosition(pos);
 
-		pos.y += getHeight();
+		pos.y += getHeight()/2 + CONR("HUT_BALL_SCALE")/2;
 
 		if (mBall)
             mBall->setPosition(pos);

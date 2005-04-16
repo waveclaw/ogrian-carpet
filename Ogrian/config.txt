@@ -39,7 +39,7 @@ MOUSE_Y_INVERT=true
 MOUSE_SENSITIVITY=1
 
 # ingame music
-MUSIC=false
+MUSIC=true
 MUSIC_VOLUME=128
 
 # mouse bindings:
