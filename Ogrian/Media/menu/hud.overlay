@@ -1,0 +1,140 @@
+// Ogre overlay scripts
+#include <BasicOgreGuiTemplates.inc>
+
+
+Ogrian/HUD/Overlay
+{
+	zorder 450
+
+	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
+	{
+		left .01
+		top .8
+		width .25
+   		caption Health: 100
+	}
+
+	container TextArea(Ogrian/HUD/Mana) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.9
+		width .25
+   		caption mana
+	}
+	
+	container TextArea(Ogrian/HUD/Message) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.7
+		width .95
+		caption Message
+	}
+	
+	container Panel(Ogrian/HUD/Crosshair)
+	{
+		left .45 
+		top 0.44
+		width .1
+		height .12
+		material Ogrian/Crosshair
+	}
+
+	container TextArea(Ogrian/HUD/SpellName) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.14
+		width .95
+		caption Spell Name
+	}
+	
+	container Panel(Ogrian/HUD/SpellIcon/0)
+	{
+		left .0
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/1)
+	{
+		left .1
+		top 0.0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/2)
+	{
+		left .2
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/3)
+	{
+		left .3
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/4)
+	{
+		left .4
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/5)
+	{
+		left .5
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/6)
+	{
+		left .6
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/7)
+	{
+		left .7
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/8)
+	{
+		left .8
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/9)
+	{
+		left .9
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/10)
+	{
+		left .95
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+
+}
+
