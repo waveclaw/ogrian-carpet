@@ -12,6 +12,8 @@ FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
+MAP_MUSIC=Media/music/RidingTheDragon.ogg
+
 # Lava on(1) or off(0)
 Lava=1
 

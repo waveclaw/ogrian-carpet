@@ -1,4 +1,5 @@
 TITLE	Ogrian Carpet 0.7.1
+THEME_MUSIC	Media/music/ogrian_theme.ogg
 
 MSG_JOIN_CONNECTING	Connecting . . .
 MSG_SERVER_LOADING	Loading (Server) .  .  .

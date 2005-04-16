@@ -158,7 +158,7 @@ void Menu::button_musicToggle()
 		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
-		Audio::getSingleton().playSong("Media/music/ogrian_theme.ogg");
+		Audio::getSingleton().playSong(CONS("THEME_MUSIC"));
 		mMusic = true;
 	}
 }
@@ -337,7 +337,7 @@ void Menu::show()
 
 	// play menu music
 	if (mMusic)
-		Audio::getSingleton().playSong("Media/music/ogrian_theme.ogg");
+		Audio::getSingleton().playSong(CONS("THEME_MUSIC"));
 
 	mActive = true;
 }
@@ -361,7 +361,7 @@ void Menu::hide()
 	
 	// play game music
 	if (mMusic)
-		Audio::getSingleton().playSong("Media/music/RidingTheDragon.ogg");
+		Audio::getSingleton().playSong(Game::getSingleton().getMapMusic());
 
 	mActive = false;
 }

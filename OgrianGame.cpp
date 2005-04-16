@@ -175,6 +175,13 @@ void Game::updateScores()
 
 //----------------------------------------------------------------------------
 
+String Game::getMapMusic()
+{
+	return mMapMusic;
+}
+
+//----------------------------------------------------------------------------
+
 void Game::reset()
 {
 	Physics::getSingleton().reset();
@@ -207,6 +214,9 @@ void Game::startGame(ConfigFile config)
 
 	// start the audio
 	Audio::getSingleton().start();
+
+	// set the music
+	mMapMusic = config.getSetting("MAP_MUSIC").c_str();
 
 	if (Multiplayer::getSingleton().isClient()) startClientGame();
 	else if (Multiplayer::getSingleton().isServer()) startServerGame();

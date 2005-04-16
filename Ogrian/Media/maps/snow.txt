@@ -12,6 +12,9 @@ FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
+#music for this map
+MAP_MUSIC=Media/music/ogrian_snow.ogg
+
 # Lava on(1) or off(0)
 Lava=1
 

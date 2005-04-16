@@ -65,6 +65,9 @@ public:
 	void setLava(bool lava);
 	bool getLava();
 
+	// get the music for this map
+	String getMapMusic();
+
 	static Game& getSingleton(void);
 
 	// sound indexes
@@ -77,6 +80,7 @@ public:
 private:
 	bool mLava;
 	Vector3 mStartPos;
+	String mMapMusic;
 	ConfigFile mConfig;
 
 	Game();
