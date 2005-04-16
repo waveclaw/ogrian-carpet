@@ -239,7 +239,7 @@ void BuildingHeightMap::loadTerrain()
 	mImage = new Image(*(HeightMap::getSingleton().getImage()));
 
 	mData = mImage->getData();
-	mSize = (int)mImage->getWidth();
+	mSize = mImage->getWidth();
 
 	mScale = HeightMap::getSingleton().getScale();
 }

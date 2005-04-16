@@ -33,8 +33,8 @@ Description: The Menu
 #include "OgreKeyEvent.h"
 #include "OgreEventListeners.h"
 #include "OgrianInput.h"
-//#include "OgreListGuiElement.h"
-//#include "OgreListChanger.h"
+#include "OgreListGuiElement.h"
+#include "OgreListChanger.h"
 
 using namespace Ogre;
 
@@ -95,8 +95,8 @@ private:
 	String mMapName; // the name of the map
 	int mLoadDelay; // counts down
 
-//	GuiContainer* mCursor; // the cursor
-//	ListChanger* mList; // the list of maps
+	GuiContainer* mCursor; // the cursor
+	ListChanger* mList; // the list of maps
 };
 
 }

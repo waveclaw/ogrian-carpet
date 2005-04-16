@@ -194,7 +194,7 @@ int OrientedSprite::addPose(String basename)
 void OrientedSprite::setPose(int index)
 {
 	if (index >= (int)mPoses.size())
-		OGRE_EXCEPT( Exception::ERR_INTERNAL_ERROR, "Error: Pose not found.",
+		Except( Exception::ERR_INTERNAL_ERROR, "Error: Pose not found.",
 				"OrientedSprite::setPose" );
 
 	mCurrentPose = mPoses[index];

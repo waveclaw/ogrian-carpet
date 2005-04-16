@@ -100,7 +100,6 @@ protected:
     EventProcessor* mEventProcessor;
     InputReader* mInputDevice;
     Camera* mCamera;
-    Overlay* mDebugOverlay;
 
     Vector3 mTranslateVector;
     RenderWindow* mWindow;

@@ -9,15 +9,6 @@ meteor that claims nearby mana
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 move coastline to map file and dont let build castles right next to it
 fix steep walls
-move camerathing to game from renderer
-summon monsters when summon ball touches things (instead of failing)
-remove the bit about mana drifting downhill, and make them only update
-periodically on think(), about every second or so - this might fix the
-lag problems
-
-make multiplayer start with monsters and mana, instead of just mana
-make monsters drop all of their mana if they have no castle. towers too.
-diagnostic key (f10) to calculate the total mana in the world
 
 
 Sounds needed:
@@ -37,8 +28,6 @@ build construction sound
 
 Ideas:
 =========
-Lighning spell: like a fireball, but jumps from enemy to enemy. Not sure what should cast lighting, maybe a miniboss?
-
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
 
 

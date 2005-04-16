@@ -54,10 +54,10 @@ void OgrianFrameListener::updateStats(void)
     static String tris = "Triangle Count: ";
 
     // update stats when necessary
-    OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
-    OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
-    OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
-    OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
+    GuiElement* guiAvg = GuiManager::getSingleton().getGuiElement("Core/AverageFps");
+    GuiElement* guiCurr = GuiManager::getSingleton().getGuiElement("Core/CurrFps");
+    GuiElement* guiBest = GuiManager::getSingleton().getGuiElement("Core/BestFps");
+    GuiElement* guiWorst = GuiManager::getSingleton().getGuiElement("Core/WorstFps");
 
     const RenderTarget::FrameStats& stats = mWindow->getStatistics();
 
@@ -68,10 +68,10 @@ void OgrianFrameListener::updateStats(void)
     guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
         +" "+StringConverter::toString(stats.worstFrameTime)+" ms");
 
-    OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-    guiTris->setCaption(tris + StringConverter::toString((int)stats.triangleCount));
+    GuiElement* guiTris = GuiManager::getSingleton().getGuiElement("Core/NumTris");
+    guiTris->setCaption(tris + StringConverter::toString(unsigned int(stats.triangleCount)));
 
-    OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
+    GuiElement* guiDbg = GuiManager::getSingleton().getGuiElement("Core/DebugText");
     guiDbg->setCaption(mWindow->getDebugText());
 }
 
@@ -80,7 +80,6 @@ void OgrianFrameListener::updateStats(void)
 // Constructor takes a RenderWindow because it uses that to determine input context
 OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool useBufferedInputKeys, bool useBufferedInputMouse)
 {
-	mDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
     mUseBufferedInputKeys = useBufferedInputKeys;
 	mUseBufferedInputMouse = useBufferedInputMouse;
 	mInputTypeSwitchingOn = mUseBufferedInputKeys || mUseBufferedInputMouse;
@@ -151,12 +150,6 @@ bool OgrianFrameListener::getCameraFrozen()
 bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 {
 	// handle universal keypresses //
-
-	// force quit
-    if (mInputDevice->isKeyDown(KC_F12) && mTimeUntilNextToggle <= 0)
-    {
-        return false;
-    }
 
 	// see if switching is on, and you want to toggle 
     if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F5) && mTimeUntilNextToggle <= 0)
@@ -297,16 +290,17 @@ void OgrianFrameListener::moveCamera()
 
 void OgrianFrameListener::showDebugOverlay(bool show)
 {
-    if (mDebugOverlay)
+    Overlay* o = (Overlay*)OverlayManager::getSingleton().getByName("Core/DebugOverlay");
+    if (!o)
+        Except( Exception::ERR_ITEM_NOT_FOUND, "Could not find overlay Core/DebugOverlay",
+            "showDebugOverlay" );
+    if (show)
     {
-        if (show)
-        {
-            mDebugOverlay->show();
-        }
-        else
-        {
-            mDebugOverlay->hide();
-        }
+        o->show();
+    }
+    else
+    {
+        o->hide();
     }
 }
 

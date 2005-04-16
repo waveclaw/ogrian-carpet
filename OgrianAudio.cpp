@@ -65,7 +65,7 @@ void Audio::playSong(String filename)
 	// error if not found
 	if (mSongStream == 0) 
 	{
-		OGRE_EXCEPT( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") + filename,
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") + filename,
 				"Audio::playSong" );	
 	}
 
@@ -88,7 +88,7 @@ int Audio::loadSound(String filename, bool isLong, bool loop)
 	// error if not found
 	if (sound == 0) 
 	{
-		OGRE_EXCEPT( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") + filename,
+		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") + filename,
 				"Audio::playSound" );	
 	}
 

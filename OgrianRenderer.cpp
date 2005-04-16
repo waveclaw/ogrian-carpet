@@ -31,8 +31,7 @@ It is a Singleton.
 /*------------------------------------*/
 
 
-#include "OgrianGui.h"
-#include <Ogre.h>
+#include "Ogre.h"
 #include "OgreConfigFile.h"
 #include "OgrianFrameListener.h"
 #include "OgrianPhysics.h"
@@ -77,7 +76,7 @@ Renderer::~Renderer()
 
 //----------------------------------------------------------------------------
 
-/// Start the renderer
+/// Start the example
 void Renderer::go(void)
 {
     if (!setup())
@@ -130,9 +129,7 @@ bool Renderer::setup(void)
     createViewports();
 
     // Set default mipmap level (NB some APIs ignore this)
-	TextureManager::getSingleton().setDefaultNumMipmaps(5);
-
-	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    TextureManager::getSingleton().setDefaultNumMipMaps(5);
 
     // Create the scene
     createScene();
@@ -205,10 +202,8 @@ void Renderer::createFrameListener(void)
     mFrameListener = new OgrianFrameListener(mWindow, mCamera);
     mRoot->addFrameListener(mFrameListener);
 	
-    //mMouseFrameListener = new OgrianMouseFrameListener(mWindow);
-    //mRoot->addFrameListener(mMouseFrameListener);
-
-	Gui::getSingleton().createFrameListener(mRoot, mWindow, mCamera);
+    mMouseFrameListener = new OgrianMouseFrameListener(mWindow);
+    mRoot->addFrameListener(mMouseFrameListener);
 }
 
 //----------------------------------------------------------------------------
@@ -247,7 +242,6 @@ void Renderer::createOcean(const String& material)
     waterPlane.d = -1.5; 
     MeshManager::getSingleton().createPlane(
         "WaterPlane",
-		"General",
         waterPlane,
         5000, 5000,
         20, 20,
@@ -335,13 +329,11 @@ void Renderer::unloadMap()
 // Just override the mandatory create scene method
 void Renderer::createScene(void)
 {
-	Gui::getSingleton().createScene(mRoot, mWindow, mCamera);
-
 	// show the menu
-	//Menu::getSingleton().show();
+	Menu::getSingleton().show();
 
 	// show the hud
-	//Hud::getSingleton().show();
+	Hud::getSingleton().show();
 }
 
 //----------------------------------------------------------------------------
@@ -372,22 +364,15 @@ void Renderer::setupResources(void)
     ConfigFile cf;
     cf.load("resources.cfg");
 
-    // Go through all sections & settings in the file
-    ConfigFile::SectionIterator seci = cf.getSectionIterator();
+    // Go through all settings in the file
+    ConfigFile::SettingsIterator i = cf.getSettingsIterator();
 
-    String secName, typeName, archName;
-    while (seci.hasMoreElements())
+    String typeName, archName;
+    while (i.hasMoreElements())
     {
-        secName = seci.peekNextKey();
-        ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            ResourceGroupManager::getSingleton().addResourceLocation(
-                archName, typeName, secName);
-        }
+        typeName = i.peekNextKey();
+        archName = i.getNext();
+        ResourceManager::addCommonArchiveEx( archName, typeName );
     }
 }
 

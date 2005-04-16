@@ -66,7 +66,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="C:\Code\ogrenew\Samples\Common\CEGUIRenderer\include;C:\Code\ogrenew\Dependencies\include\CEGUI;C:\Code\RakNet\Source;C:\Code\ogrenew\Dependencies\include;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
+				AdditionalIncludeDirectories="C:\Code\RakNet\Source;C:\Code\ogrenew\PlugIns\GuiElements\include;C:\Code\ogrenew\Samples\Common\include;C:\Code\ogrenew\OgreMain\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -79,10 +79,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib CEGUIBase.lib OgreGUIRenderer.lib fmodvc.lib RakNetLibStatic.lib ws2_32.lib"
+				AdditionalDependencies="OgreMain.lib fmodvc.lib RakNetLibStatic.lib ws2_32.lib"
 				OutputFile="$(OutDir)/Ogrian.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Code\ogrenew\Samples\Common\CEGUIRenderer\lib;C:\Code\ogrenew\Dependencies\lib\Release;C:\Code\RakNet\lib;C:\Code\fmodapi374win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="C:\Code\RakNet\lib;C:\Code\fmodapi374win\api\lib;&quot;C:\Code\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -153,12 +153,6 @@
 			</File>
 			<File
 				RelativePath="OgrianGame.h">
-			</File>
-			<File
-				RelativePath="OgrianGui.cpp">
-			</File>
-			<File
-				RelativePath="OgrianGui.h">
 			</File>
 			<File
 				RelativePath="OgrianHeightMap.cpp">
@@ -347,9 +341,6 @@
 			</File>
 			<File
 				RelativePath="OgrianFrameListener.h">
-			</File>
-			<File
-				RelativePath="OgrianGuiFrameListener.h">
 			</File>
 			<File
 				RelativePath="OgrianMouseFrameListener.h">

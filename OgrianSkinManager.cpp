@@ -68,7 +68,7 @@ void SkinManager::loadSkins()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		OGRE_EXCEPT(
+		Except(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "SkinManager::loadSkins" );
 
 	ret = fgets(rec, 100, fp);

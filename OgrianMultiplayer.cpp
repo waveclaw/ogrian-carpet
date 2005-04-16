@@ -114,7 +114,7 @@ void Multiplayer::clientStart()
 	bool b = mClient->Connect(cn, CONI("PORT"), CONI("PORT")-1, 0, true);
 
 	// error
-	if (!b) OGRE_EXCEPT( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
+	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
 				"Multiplayer::clientStart" );
 
 	LogManager::getSingleton().logMessage("Client Started");
@@ -137,7 +137,7 @@ void Multiplayer::serverStart()
 	bool b = mServer->Start(3, 0, true, CONR("PORT"));
 	
 	// error
-	if (!b) OGRE_EXCEPT( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
+	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::serverStart" );
 
 }
