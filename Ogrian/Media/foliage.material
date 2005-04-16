@@ -1,0 +1,141 @@
+
+material Ogrian/PalmTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture palmtree.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/PalmTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture palmtree_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/PineTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture sprites/pine.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/PineTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/pine_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Beryl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture sprites/beryl.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/BerylDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/beryl-broken.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Quartz
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture sprites/quartz.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/QuartzDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/quartz-broken.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

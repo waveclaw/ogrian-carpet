@@ -73,12 +73,12 @@ void BuildSpellThing::collidedGround()
 			if (thing->isBuilding() && axisDistance(thing) < 6 * CONR("CASTLE_WIDTH"))
 			{
 				// report the problem
-				if (team->getWizardUID() == 0)
+				if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
 				{
 					// send it to the HUD
 					Hud::getSingleton().setMessage(CONS("BUILD_FAIL_PROXIMITY"), true);
 				}
-				else
+				else if (Multiplayer::getSingleton().isServer())
 				{
 					// send a message to the right player
 					PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());

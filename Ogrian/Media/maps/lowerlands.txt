@@ -1,13 +1,13 @@
 Scale.xz=2
 Scale.y=.5
 
-OceanMaterial=Ogrian/Ocean
-SkyMaterial=Ogrian/CloudySky
+OceanMaterial=Ogrian/Ocean2
+SkyMaterial=Ogrian/CloudySky2
 FoliageMaterial=Ogrian/PineTree
-FoliageAmount=30
+FoliageAmount=60
 
 # foliage numbers
-FOLIAGE_SCALE=10
+FOLIAGE_SCALE=15
 FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
@@ -36,7 +36,7 @@ p4startZ=838
 
 # the RGB colour of the native monsters
 MONSTERS_RED=200
-MONSTERS_GREEN=200
+MONSTERS_GREEN=20
 MONSTERS_BLUE=255
 
 # the number of starting stuff in skirmish mode
@@ -56,13 +56,13 @@ MANA_START_AMOUNT=20
 
 
 # The main world texture (if you wish the terrain manager to create a material for you)
-WorldTexture=t_lowlands.jpg
+WorldTexture=t_lowlands2.jpg
 
 # The detail texture (if you wish the terrain manager to create a material for you)
 DetailTexture=terrain_detail_grass.jpg
 
 #number of times the detail texture will tile in a terrain tile
-DetailTile=3
+DetailTile=4
 
 # Heightmap source
 PageSource=Heightmap
