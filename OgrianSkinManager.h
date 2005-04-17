@@ -43,16 +43,22 @@ public:
 
 	static SkinManager& getSingleton(void);
 
-	String getSkin(int skin);
+	String getWizardSkin(int skin);
+	String getKeepSkin(int skin);
+	String getTowerSkin(int skin);
 
-	int numSkins();
+	int numWizardSkins();
+	int numCastleSkins();
 
 private:
 	SkinManager();
 	
-	void loadSkins();
+	void loadWizardSkins();
+	void loadCastleSkins();
 
-	std::vector<String> mSkins;
+	std::vector<String> mWizardSkins;
+	std::vector<String> mKeepSkins;
+	std::vector<String> mTowerSkins;
 };
 
 }

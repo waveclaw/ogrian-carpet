@@ -88,11 +88,11 @@ private:
 class ShrineThing : public Thing
 {
 public:
-	ShrineThing(Vector3 pos, String mesh, Real scale, Real ratio) 
+	ShrineThing(Vector3 pos, String mesh) 
 		: Thing("Ogrian/Tower", MODEL, "Shrine", false, CONR("SHRINE_WIDTH"), pos, CUBE)
 	{
 		// set the mesh
-		static_cast<Model*>(getVisRep())->setMesh(mesh,scale,ratio);
+		static_cast<Model*>(getVisRep())->setMesh(mesh);
 
 		setHeight(CONR("SHRINE_HEIGHT"));
 		Thing::setTeamNum(-1);

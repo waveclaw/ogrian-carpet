@@ -199,8 +199,7 @@ CastleTurretThing::CastleTurretThing(DamageableThing* castle, Vector3 pos)
 {
 	mCrane = 0;
 
-	static_cast<Model*>(getVisRep())->setMesh("towerdark.mesh",
-		CONR("CASTLETURRET_MESH_SCALE"), CONR("CASTLETURRET_MESH_RATIO"));
+	static_cast<Model*>(getVisRep())->setMesh("towerdark.mesh");
 }
 
 //----------------------------------------------------------------------------
@@ -222,8 +221,7 @@ CastleKeepThing::CastleKeepThing(DamageableThing* castle, Vector3 pos)
 {
 	mCrane = 0;
 
-	static_cast<Model*>(getVisRep())->setMesh("keepdark.mesh",
-		CONR("CASTLEKEEP_MESH_SCALE"), CONR("CASTLEKEEP_MESH_RATIO"));
+	static_cast<Model*>(getVisRep())->setMesh("keepdark.mesh");
 }
 
 //----------------------------------------------------------------------------

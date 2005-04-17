@@ -247,7 +247,7 @@ void WizardThing::setSkin(int skin)
 	mSkin = skin;
 	
 	getVisRep()->clearPoses();
-	getVisRep()->addPose(SkinManager::getSingleton().getSkin(skin));
+	getVisRep()->addPose(SkinManager::getSingleton().getWizardSkin(skin));
 	getVisRep()->setPose(0);
 }
 

@@ -32,6 +32,7 @@ a flock of cranes
 #include "OgrianTowerThing.h"
 #include "OgrianClaimSpellThing.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianSkinManager.h"
 #include "OgrianConst.h"
 #include "OgrianModel.h"
 #include "OgrianCraneThing.h"
@@ -98,9 +99,7 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 
 	setThinkPeriod(CONR("TOWER_THINK_PERIOD"));
 
-	// set the mesh
-	static_cast<Model*>(getVisRep())->setMesh("towerdark.mesh",
-		CONR("TOWER_MESH_SCALE"), CONR("TOWER_MESH_RATIO"));
+	setSkin(0);
 
 	// set the height
 	setHeight(CONR("TOWER_HEIGHT"));
@@ -159,6 +158,15 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 		Physics::getSingleton().addThing(mPortal);
 	}
 
+}
+
+//----------------------------------------------------------------------------
+
+void TowerThing::setSkin(int skin)
+{
+	// set the mesh
+	String mesh = SkinManager::getSingleton().getTowerSkin(skin);
+	static_cast<Model*>(getVisRep())->setMesh(mesh);
 }
 
 //----------------------------------------------------------------------------

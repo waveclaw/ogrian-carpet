@@ -47,7 +47,7 @@ public:
 	virtual ~Model();
 
 	// set the mesh (ratio = hight/width)
-	virtual void setMesh(String mesh, Real scale=1, Real ratio=1);
+	virtual void setMesh(String mesh);
 
 	// set the position
 	virtual void setPosition(Vector3 pos);

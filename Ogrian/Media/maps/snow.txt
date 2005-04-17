@@ -12,10 +12,13 @@ FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
+
 #shrine mesh
-SHRINE_MESH=tower.mesh
-SHRINE_MESH_SCALE=1
-SHRINE_MESH_RATIO=2
+SHRINE_MESH=mshrine.mesh
+
+#tower skin
+TOWER_SKIN=1
+
 
 #music for this map
 MAP_MUSIC=Media/music/ogrian_snow.ogg

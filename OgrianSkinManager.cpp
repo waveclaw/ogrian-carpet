@@ -23,7 +23,7 @@ OgrianSkinManager.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: A centralized Skin Manager
+Description: A centralized Skin Manager for wizard skins and castle skins
 /*------------------------------------*/
 
 #include "OgrianSkinManager.h"
@@ -38,7 +38,8 @@ namespace Ogrian
 
 SkinManager::SkinManager()
 {
-	loadSkins();
+	loadWizardSkins();
+	loadCastleSkins();
 }
 
 //----------------------------------------------------------------------------
@@ -50,16 +51,68 @@ SkinManager::~SkinManager()
 
 //----------------------------------------------------------------------------
 
-int SkinManager::numSkins()
+int SkinManager::numWizardSkins()
 {
-	return (int)mSkins.size()-1;
+	return (int)mWizardSkins.size()-1;
 }
 
 //----------------------------------------------------------------------------
 
-void SkinManager::loadSkins()
+int SkinManager::numCastleSkins()
 {
-	String filename = "skins.txt";
+	return (int)mKeepSkins.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+void SkinManager::loadCastleSkins()
+{
+	// copied from OgreConfigFile.cpp //
+
+	String filename = "castleskins.txt";
+	String separators = " ";
+
+    /* Open the configuration file */
+    std::ifstream fp(filename.c_str());
+    if(!fp)
+        Except(
+            Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "ConfigFile::load" );
+    
+    /* Process the file line for line */
+    String line, optName, optVal;
+    while (std::getline(fp, line))
+    {
+        StringUtil::trim(line);
+        /* Ignore comments & blanks */
+        if (line.length() > 0 && line.at(0) != '#' && line.at(0) != '@')
+        {
+            /* Find the first seperator character and split the string there */
+            int separator_pos = (int)line.find_first_of(separators, 0);
+            if (separator_pos != std::string::npos)
+            {
+                optName = line.substr(0, separator_pos);
+                /* Find the first non-seperator character following the name */
+                int nonseparator_pos = (int)line.find_first_not_of(separators, separator_pos);
+                /* ... and extract the value */
+                optVal = line.substr(nonseparator_pos);
+
+                //if (trimWhitespace)
+                //{
+                //    StringUtil::trim(optVal);
+                //    StringUtil::trim(optName);
+                //}
+                
+				mKeepSkins.push_back(optName);
+				mTowerSkins.push_back(optVal);
+            }
+        }
+    }
+}
+//----------------------------------------------------------------------------
+
+void SkinManager::loadWizardSkins()
+{
+	String filename = "wizardskins.txt";
 
 	FILE *fp;
 	char rec[100], *ret;
@@ -86,7 +139,7 @@ void SkinManager::loadSkins()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mSkins.push_back(optName);
+				mWizardSkins.push_back(optName);
 			}
 		}
 		ret = fgets(rec, 100, fp);
@@ -97,11 +150,29 @@ void SkinManager::loadSkins()
 
 //----------------------------------------------------------------------------
 
-String SkinManager::getSkin(int skin)
+String SkinManager::getWizardSkin(int skin)
 {
-	if (skin >= (int)mSkins.size()) skin = 0;
+	if (skin >= (int)mWizardSkins.size()) skin = 0;
 
-	return String("Ogrian/") + mSkins[skin] + "/";
+	return mWizardSkins[skin];
+}
+
+//----------------------------------------------------------------------------
+
+String SkinManager::getKeepSkin(int skin)
+{
+	if (skin >= (int)mKeepSkins.size()) skin = 0;
+
+	return mKeepSkins[skin];
+}
+
+//----------------------------------------------------------------------------
+
+String SkinManager::getTowerSkin(int skin)
+{
+	if (skin >= (int)mTowerSkins.size()) skin = 0;
+
+	return mTowerSkins[skin];
 }
 
 //----------------------------------------------------------------------------

@@ -14,8 +14,9 @@ FOLIAGE_LINE_MAX=500
 
 #shrine mesh
 SHRINE_MESH=mshrine.mesh
-SHRINE_MESH_SCALE=2
-SHRINE_MESH_RATIO=2
+
+#tower skin
+TOWER_SKIN=1
 
 MAP_MUSIC=Media/music/RidingTheDragon.ogg
 

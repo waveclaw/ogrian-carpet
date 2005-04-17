@@ -61,11 +61,9 @@ Model::~Model()
 
 //----------------------------------------------------------------------------
 
-void Model::setMesh(String mesh, Real scale, Real ratio)
+void Model::setMesh(String mesh)
 {
 	mMeshName = mesh;
-	mScale = scale;
-	mRatio = ratio;
 	
 	if (mInRenderer)
 	{
@@ -123,9 +121,9 @@ void Model::_updateScale()
 	if (mInRenderer)
 	{
 		mNode->setScale(
-			(mWidth/2)/mScale,
-			(mHeight/2)/(mScale*mRatio),
-			(mWidth/2)/mScale
+			(mWidth)/mScale,
+			(mHeight)/(mScale/mRatio),
+			(mWidth)/mScale
 		);
 	}
 }
@@ -134,10 +132,7 @@ void Model::_updateScale()
 
 void Model::setMaterial(String material)
 {
-	mMaterial = material;
 
-//	if (mInRenderer)
-//		mEntity->setMaterialName(mMaterial);
 }
 
 //----------------------------------------------------------------------------
@@ -157,6 +152,13 @@ void Model::addToRenderer()
 	// create the entity
 	SceneManager* sceneMgr = Renderer::getSingleton().getSceneManager();
 	mEntity = sceneMgr->createEntity(mName,mMeshName);
+	AxisAlignedBox bounds = mEntity->getMesh()->getBounds();
+	Real meshHeight = bounds.getMaximum().y - bounds.getMinimum().y;
+	Real meshWidth = bounds.getMaximum().x - bounds.getMinimum().x;
+
+	mScale = meshWidth;
+	mRatio = meshWidth/meshHeight;
+
 
 	// attach the set
 	mNode = sceneMgr->getRootSceneNode()->createChildSceneNode();

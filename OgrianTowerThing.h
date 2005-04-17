@@ -79,6 +79,9 @@ class TowerThing : public DamageableThing
 public:
 	TowerThing(int teamNum, Vector3 pos=Vector3(0,0,0));
 
+	// set the skin of this tower
+	virtual void setSkin(int skin);
+
 	// make the beacon the same colour as us
 	virtual void setColour(ColourValue& colour);
 

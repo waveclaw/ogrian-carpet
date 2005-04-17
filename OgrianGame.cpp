@@ -303,8 +303,6 @@ void Game::serverEndPreGame()
 
 	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
 	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
-	Real shrineMeshScale = atof(mConfig.getSetting( "SHRINE_MESH_SCALE" ).c_str());
-	Real shrineMeshRatio = atof(mConfig.getSetting( "SHRINE_MESH_RATIO" ).c_str());
 	int i=0;
 	while(i<numMana)
 	{
@@ -325,7 +323,7 @@ void Game::serverEndPreGame()
 			{
 				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-				ShrineThing* shrine = new ShrineThing(pos, shrineMesh, shrineMeshScale, shrineMeshRatio);
+				ShrineThing* shrine = new ShrineThing(pos, shrineMesh);
 				Physics::getSingleton().addThing(shrine);
 			}
 		}
@@ -439,8 +437,6 @@ void Game::startSkirmishGame()
 	// add some shrines
 	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
 	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
-	Real shrineMeshScale = atof(mConfig.getSetting( "SHRINE_MESH_SCALE" ).c_str());
-	Real shrineMeshRatio = atof(mConfig.getSetting( "SHRINE_MESH_RATIO" ).c_str());
 	i=0;
 	while(i<numShrines)
 	{
@@ -455,7 +451,7 @@ void Game::startSkirmishGame()
 			Vector3 pos = Vector3(x,0,z);
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			ShrineThing* shrine = new ShrineThing(pos, shrineMesh, shrineMeshScale, shrineMeshRatio);
+			ShrineThing* shrine = new ShrineThing(pos, shrineMesh);
 			Physics::getSingleton().addThing(shrine);
 		}
 	}
@@ -477,6 +473,7 @@ void Game::startSkirmishGame()
 
 	// set up some enemy towers
 	Real numTowers = atoi(mConfig.getSetting( "NUM_TOWERS" ).c_str());
+	int towerSkin = atoi(mConfig.getSetting( "TOWER_SKIN" ).c_str());
 	i=0;
 	while(i<numTowers)
 	{
@@ -493,6 +490,7 @@ void Game::startSkirmishGame()
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
 			TowerThing* tower = new TowerThing(teamNum,pos);
+			tower->setSkin(towerSkin);
 			Physics::getSingleton().addThing(tower);
 		}
 	}

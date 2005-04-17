@@ -368,9 +368,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 			{
 				ConfigFile config = Game::getSingleton().getConfig();
 				String shrineMesh = config.getSetting( "SHRINE_MESH" ).c_str();
-				Real shrineMeshScale = atof(config.getSetting( "SHRINE_MESH_SCALE" ).c_str());
-				Real shrineMeshRatio = atof(config.getSetting( "SHRINE_MESH_RATIO" ).c_str());
-				return new ShrineThing(Vector3(0,0,0), shrineMesh, shrineMeshScale, shrineMeshRatio);
+				return new ShrineThing(Vector3(0,0,0), shrineMesh);
 			}
 		case SHRINEBALLTHING: return new ShrineBallThing(0);
 
