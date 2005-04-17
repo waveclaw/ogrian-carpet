@@ -14,8 +14,8 @@ FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=50
 
 
-#shrine mesh
-SHRINE_MESH=mshrine.mesh
+#shrine skin
+SHRINE_SKIN=0
 
 #tower skin
 TOWER_SKIN=1

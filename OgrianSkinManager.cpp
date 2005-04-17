@@ -40,6 +40,7 @@ SkinManager::SkinManager()
 {
 	loadWizardSkins();
 	loadCastleSkins();
+	loadShrineSkins();
 }
 
 //----------------------------------------------------------------------------
@@ -61,6 +62,13 @@ int SkinManager::numWizardSkins()
 int SkinManager::numCastleSkins()
 {
 	return (int)mKeepSkins.size()-1;
+}
+
+//----------------------------------------------------------------------------
+
+int SkinManager::numShrineSkins()
+{
+	return (int)mShrineSkins.size()-1;
 }
 
 //----------------------------------------------------------------------------
@@ -108,6 +116,46 @@ void SkinManager::loadCastleSkins()
         }
     }
 }
+//----------------------------------------------------------------------------
+
+void SkinManager::loadShrineSkins()
+{
+	String filename = "shrineskins.txt";
+
+	FILE *fp;
+	char rec[100], *ret;
+	String optName, optVal;
+
+	// Open and parse entire file
+	fp = fopen(filename.c_str(), "r");
+	if( !fp )
+		Except(
+			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "SkinManager::loadSkins" );
+
+	ret = fgets(rec, 100, fp);
+	while (ret != NULL)
+	{
+		String tst = rec;
+		StringUtil::trim(tst);
+		// Ignore comments & blanks
+		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
+		{
+			// Tokenise on newline
+			char* pName = strtok(rec, "\n");
+			if (pName)
+			{
+				String optName = pName;
+				StringUtil::trim(optName);
+
+				mShrineSkins.push_back(optName);
+			}
+		}
+		ret = fgets(rec, 100, fp);
+	}
+
+	fclose(fp);
+}
+
 //----------------------------------------------------------------------------
 
 void SkinManager::loadWizardSkins()
@@ -173,6 +221,15 @@ String SkinManager::getTowerSkin(int skin)
 	if (skin >= (int)mTowerSkins.size()) skin = 0;
 
 	return mTowerSkins[skin];
+}
+
+//----------------------------------------------------------------------------
+
+String SkinManager::getShrineSkin(int skin)
+{
+	if (skin >= (int)mShrineSkins.size()) skin = 0;
+
+	return mShrineSkins[skin];
 }
 
 //----------------------------------------------------------------------------

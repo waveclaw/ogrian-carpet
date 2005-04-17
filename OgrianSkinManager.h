@@ -46,19 +46,23 @@ public:
 	String getWizardSkin(int skin);
 	String getKeepSkin(int skin);
 	String getTowerSkin(int skin);
+	String getShrineSkin(int skin);
 
 	int numWizardSkins();
 	int numCastleSkins();
+	int numShrineSkins();
 
 private:
 	SkinManager();
 	
 	void loadWizardSkins();
 	void loadCastleSkins();
+	void loadShrineSkins();
 
 	std::vector<String> mWizardSkins;
 	std::vector<String> mKeepSkins;
 	std::vector<String> mTowerSkins;
+	std::vector<String> mShrineSkins;
 };
 
 }

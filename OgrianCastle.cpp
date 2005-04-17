@@ -32,6 +32,7 @@ Description: This is a castle
 #include "OgrianPhysics.h"
 #include "OgrianHud.h"
 #include "OgrianSpellManager.h"
+#include "OgrianSkinManager.h"
 #include "OgrianManaThing.h"
 
 namespace Ogrian
@@ -137,6 +138,13 @@ CastleBlockThing::CastleBlockThing(DamageableThing* castle, Vector3 pos, Real wi
 
 //----------------------------------------------------------------------------
 
+void CastleBlockThing::setSkin(int skin)
+{
+	mSkin = skin;
+}
+
+//----------------------------------------------------------------------------
+
 // set how far up this block should go to
 void CastleBlockThing::setPercentage(Real per)
 {
@@ -194,12 +202,22 @@ Real CastleBlockThing::getCurrentLevel()
 
 //----------------------------------------------------------------------------
 
-CastleTurretThing::CastleTurretThing(DamageableThing* castle, Vector3 pos) 
+CastleTurretThing::CastleTurretThing(DamageableThing* castle, Vector3 pos, int skin) 
 	: CastleBlockThing(castle, pos, CONR("CASTLETURRET_WIDTH"), CONR("CASTLETURRET_HEIGHT"))
 {
 	mCrane = 0;
 
-	static_cast<Model*>(getVisRep())->setMesh("towerdark.mesh");
+	setSkin(skin);
+}
+
+//----------------------------------------------------------------------------
+
+void CastleTurretThing::setSkin(int skin)
+{
+	CastleBlockThing::setSkin(skin);
+
+	String mesh = SkinManager::getSingleton().getTowerSkin(skin);
+	static_cast<Model*>(getVisRep())->setMesh(mesh);
 }
 
 //----------------------------------------------------------------------------
@@ -216,12 +234,22 @@ void CastleTurretThing::destroy()
 
 //----------------------------------------------------------------------------
 
-CastleKeepThing::CastleKeepThing(DamageableThing* castle, Vector3 pos) 
+CastleKeepThing::CastleKeepThing(DamageableThing* castle, Vector3 pos, int skin) 
 	: CastleBlockThing(castle, pos, CONR("CASTLEKEEP_WIDTH"), CONR("CASTLEKEEP_HEIGHT"))
 {
 	mCrane = 0;
 
-	static_cast<Model*>(getVisRep())->setMesh("keepdark.mesh");
+	setSkin(skin);
+}
+
+//----------------------------------------------------------------------------
+
+void CastleKeepThing::setSkin(int skin)
+{
+	CastleBlockThing::setSkin(skin);
+
+	String mesh = SkinManager::getSingleton().getKeepSkin(skin);
+	static_cast<Model*>(getVisRep())->setMesh(mesh);
 }
 
 //----------------------------------------------------------------------------
@@ -238,9 +266,11 @@ void CastleKeepThing::destroy()
 
 //----------------------------------------------------------------------------
 
-Castle::Castle(int teamNum, Vector3 pos) 
+Castle::Castle(int teamNum, Vector3 pos, int skin) 
 	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE, false)
 {
+	mSkin = skin;
+
 	setTeamNum(teamNum);
 	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
 
@@ -259,8 +289,8 @@ Castle::Castle(int teamNum, Vector3 pos)
 	mRubble = false;
 	mLevel = -1;
 
-	// build the castle
-	mBlocks[0] = new CastleKeepThing(this, pos);
+	// build the castle keep
+	mBlocks[0] = new CastleKeepThing(this, pos, mSkin);
 	mBlocks[0]->setColour(getColour());
 
 	for (int i=1; i<NUM_BLOCKS; i++)
@@ -525,15 +555,15 @@ CastleTurretThing* Castle::newCastleTurret(int level)
 
 	switch (level)
 	{
-		case 1: return new CastleTurretThing(this, pos + Vector3( 2*W, 0, 2*W));
-	 	case 2: return new CastleTurretThing(this, pos + Vector3( 2*W, 0,-2*W));
-	 	case 3: return new CastleTurretThing(this, pos + Vector3(-2*W, 0,-2*W));
-	 	case 4: return new CastleTurretThing(this, pos + Vector3(-2*W, 0, 2*W));
+		case 1: return new CastleTurretThing(this, pos + Vector3( 2*W, 0, 2*W), mSkin);
+	 	case 2: return new CastleTurretThing(this, pos + Vector3( 2*W, 0,-2*W), mSkin);
+	 	case 3: return new CastleTurretThing(this, pos + Vector3(-2*W, 0,-2*W), mSkin);
+	 	case 4: return new CastleTurretThing(this, pos + Vector3(-2*W, 0, 2*W), mSkin);
 
-	  	case 5: return new CastleTurretThing(this, pos + Vector3(   0, 0, 4*W));
-	  	case 6: return new CastleTurretThing(this, pos + Vector3(   0, 0,-4*W));
-	  	case 7: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,   0));
-	  	case 8: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,   0));
+	  	case 5: return new CastleTurretThing(this, pos + Vector3(   0, 0, 4*W), mSkin);
+	  	case 6: return new CastleTurretThing(this, pos + Vector3(   0, 0,-4*W), mSkin);
+	  	case 7: return new CastleTurretThing(this, pos + Vector3( 4*W, 0,   0), mSkin);
+	  	case 8: return new CastleTurretThing(this, pos + Vector3(-4*W, 0,   0), mSkin);
 
 		// if you ever feel like adding more levels, here are some convenient tower locations
 		//case 9: return new CastleTurretThing(this, pos + Vector3( 4*W, 0, 4*W));
@@ -611,6 +641,28 @@ void CastleKeepThing::setPercentage(Real per)
 		mCrane->destroy();
 		mCrane = 0;
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void CastleBlockThing::generateBitStream(BitStream& bitstream, int pid)
+{
+	DamageableThing::generateBitStream(bitstream,pid);
+
+	bitstream.Write(mSkin);
+}
+
+//----------------------------------------------------------------------------
+
+void CastleBlockThing::interpretBitStream(BitStream& bitstream)
+{
+	DamageableThing::interpretBitStream(bitstream);
+
+	int skin;
+
+	bitstream.Read(skin);
+
+	setSkin(skin);
 }
 
 //----------------------------------------------------------------------------

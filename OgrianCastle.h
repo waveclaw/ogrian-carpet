@@ -52,6 +52,9 @@ class CastleBlockThing : public DamageableThing
 public:
 	CastleBlockThing(DamageableThing* castle, Vector3 pos, Real width, Real height);
 
+	// blocks are skinnable
+	virtual void setSkin(int);
+
 	// set how far up this block should go to
 	virtual void setPercentage(Real per);
 
@@ -68,18 +71,25 @@ public:
 	
 	virtual bool isBuilding() { return true; }
 	
+	// for keeping the skin updated
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
+	virtual void interpretBitStream(BitStream& bitstream);
+
 private:
 	DamageableThing* mCastle;
 	Real mTargetY;
 	Real mGroundY;
 	Real mPercentage;
+	int mSkin;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 class CastleTurretThing : public CastleBlockThing
 {
 public:
-	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0));
+	CastleTurretThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0), int skin=0);
+
+	virtual void setSkin(int);
 
 	virtual void destroy();
 
@@ -97,7 +107,9 @@ private:
 class CastleKeepThing : public CastleBlockThing
 {
 public:
-	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0));
+	CastleKeepThing(DamageableThing* castle, Vector3 pos=Vector3(0,0,0), int skin=0);
+
+	virtual void setSkin(int);
 
 	virtual void destroy();
 
@@ -177,7 +189,7 @@ private:
 class Castle : public DamageableThing
 {
 public:
-	Castle(int teamNum, Vector3 pos);
+	Castle(int teamNum, Vector3 pos, int skin);
 	virtual ~Castle();
 
 	// set the amount of mana this castle contains
@@ -216,6 +228,7 @@ private:
 	int mMana;
 	Real mLevel;
 	bool mRubble;
+	int mSkin;
 
 	// an array of all the turrets and the keep
 	CastleBlockThing* mBlocks[NUM_BLOCKS];

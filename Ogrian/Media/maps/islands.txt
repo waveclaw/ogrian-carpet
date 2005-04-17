@@ -13,12 +13,11 @@ FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
-
-#shrine mesh
-SHRINE_MESH=mshrine.mesh
+#shrine skin
+SHRINE_SKIN=0
 
 #tower skin
-TOWER_SKIN=1
+TOWER_SKIN=0
 
 
 MAP_MUSIC=Media/music/RidingTheDragon.ogg

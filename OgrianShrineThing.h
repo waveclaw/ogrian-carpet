@@ -31,12 +31,7 @@ Description: This is a shrine which can be claimed to increase mana regen for a 
 #define __OgrianShrineThing_H__
 
 #include <Ogre.h>
-#include "OgrianMultiplayer.h"
-#include "OgrianBuildingHeightMap.h"
 #include "OgrianConst.h"
-#include "OgrianModel.h"
-#include "OgrianPhysics.h"
-#include "OgrianHeightMap.h"
 #include "OgrianDamageableThing.h"
 
 using namespace Ogre;
@@ -49,34 +44,11 @@ namespace Ogrian
 class ShrineBallThing : public Thing
 {
 public:
-	ShrineBallThing(Thing* shrine)
-		: Thing("Ogrian/ShrineBall", SPRITE, "ShrineBall", false, CONR("SHRINE_BALL_SCALE"), Vector3(0,0,0), SPHERE)
-	{
-		mShrine = shrine;
-		setColour(ColourValue::White);
-	}
+	ShrineBallThing(Thing* shrine);
 
-	virtual void setColour(ColourValue& colour)
-	{
-		if (colour == ColourValue::White)
-		{
-			setMaterial("Ogrian/Clear");
-		}
-		else
-		{
-			setMaterial("Ogrian/ShrineBall");
-			playSound(Game::getSingleton().SOUND_HUM);
-		}
+	virtual void setColour(ColourValue& colour);
 
-		Thing::setColour(colour);
-		setUpdateFlag();
-	}
-
-	virtual void claim(int teamNum)
-	{
-		if (mShrine)
-			mShrine->claim(teamNum);
-	}
+	virtual void claim(int teamNum);
 	
 	virtual ThingType getType()	{ return SHRINEBALLTHING; }
 
@@ -88,94 +60,19 @@ private:
 class ShrineThing : public Thing
 {
 public:
-	ShrineThing(Vector3 pos, String mesh) 
-		: Thing("Ogrian/Tower", MODEL, "Shrine", false, CONR("SHRINE_WIDTH"), pos, CUBE)
-	{
-		// set the mesh
-		static_cast<Model*>(getVisRep())->setMesh(mesh);
+	ShrineThing(Vector3 pos=Vector3(0,0,0), int skin=0);
 
-		setHeight(CONR("SHRINE_HEIGHT"));
-		Thing::setTeamNum(-1);
+	virtual void setSkin(int skin);
 
-		mBall = 0;
+	virtual void destroy();
 
-		if (!Multiplayer::getSingleton().isClient())
-		{
-			setColour(ColourValue::White);
-			mBall = new ShrineBallThing(this);
-			Physics::getSingleton().addThing(mBall);
-		}
-		
-		setPosition(pos);
-		BuildingHeightMap::getSingleton().moldLandscape(this);
-	}
+	virtual void claim(int teamNum);
 
-	virtual void destroy()
-	{
-		if (mBall)
-			mBall->destroy();
-	}
+	virtual void setTeamNum(int teamNum);
 
-	virtual void claim(int teamNum)
-	{
-		playSound(Game::getSingleton().SOUND_HUM, true);
+	virtual void setColour(ColourValue& colour);
 
-		setTeamNum(teamNum);
-	}
-
-	virtual void setTeamNum(int teamNum)
-	{
-		// remove from the old team
-		if (getTeamNum() >= 0)
-		{
-			Team* team = Physics::getSingleton().getTeam(getTeamNum());
-			if (team)
-			{
-				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-				if (wizard)
-					wizard->removeShrine();
-			}
-		}
-
-		// add to the new team
-		if (teamNum >= 0)
-		{
-			Team* team = Physics::getSingleton().getTeam(teamNum);
-			if (team)
-			{
-				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-				if (wizard)
-					wizard->addShrine();
-			}
-
-			setColour(team->getColour());
-		}
-		else setColour(ColourValue::White);
-
-		Thing::setTeamNum(teamNum);
-
-		if (mBall) mBall->setTeamNum(teamNum);
-	}
-
-	virtual void setColour(ColourValue& colour)
-	{
-		if (mBall)
-			mBall->setColour(colour);
-	
-		Thing::setColour(colour);
-	}
-
-	virtual void setPosition(Vector3 pos)
-	{
-		pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
-
-		Thing::setPosition(pos);
-
-		pos.y += getHeight()/2 + CONR("SHRINE_BALL_SCALE");
-
-		if (mBall)
-            mBall->setPosition(pos);
-	}
+	virtual void setPosition(Vector3 pos);
 
 	virtual bool isBuilding() { return true; }
 	

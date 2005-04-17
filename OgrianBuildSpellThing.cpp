@@ -90,10 +90,24 @@ void BuildSpellThing::collidedGround()
 			}
 		}
 
+		// get the castle skin
+		int skin = 0;
+		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+		{
+			skin = CONI("PLAYER_CASTLE_SKIN");
+		}
+		else if (Multiplayer::getSingleton().isServer())
+		{
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+			PlayerInfo* info = Multiplayer::getSingleton().getPlayerInfo(player);
+
+			skin = info->castleSkin;
+		}
+
 		// make a castle
 		Vector3 pos = getPosition();
 		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
-		Castle* castle = new Castle(getTeamNum(), pos);
+		Castle* castle = new Castle(getTeamNum(), pos, skin);
 		team->setCastle(castle);
 	}
 	
@@ -126,10 +140,23 @@ void BuildSpellThing::collidedGround()
 			}
 		}
 
+		// get the castle skin
+		int skin = 0;
+		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+		{
+			skin = CONI("PLAYER_CASTLE_SKIN");
+		}
+		else if (Multiplayer::getSingleton().isServer())
+		{
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+			PlayerInfo* info = Multiplayer::getSingleton().getPlayerInfo(player);
+
+			skin = info->castleSkin;
+		}
 		// make a tower
 		Vector3 pos = getPosition();
 		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
-		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), pos));
+		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), pos, skin));
 
 		// remove the mana from the castle
 		Castle* castle = team->getCastle();

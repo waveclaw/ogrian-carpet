@@ -77,7 +77,7 @@ private:
 class TowerThing : public DamageableThing
 {
 public:
-	TowerThing(int teamNum, Vector3 pos=Vector3(0,0,0));
+	TowerThing(int teamNum, Vector3 pos=Vector3(0,0,0), int skin=0);
 
 	// set the skin of this tower
 	virtual void setSkin(int skin);
@@ -113,9 +113,14 @@ public:
 	
 	virtual ThingType getType()	{ return TOWERTHING; }
 	
+	// for keeping the skin updated
+	virtual void generateBitStream(BitStream& bitstream, int pid=ID_UPDATE_THING);
+	virtual void interpretBitStream(BitStream& bitstream);
+
 private:
 	Real mTargetY;
 	Real mGroundY;
+	int mSkin;
 
 	bool mUnbuildMode;
 

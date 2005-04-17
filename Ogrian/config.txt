@@ -11,7 +11,12 @@ SERVER_ADDRESS=Deatrix
 # 3: Jess
 # 4: Rick
 # 5: finger
-PLAYER_SKIN=2
+PLAYER_WIZARD_SKIN=2
+
+#choose your castle:
+# 0: light castle
+# 1: dark castle
+PLAYER_CASTLE_SKIN=0
 
 # set the RGB values of the colour you want your team to be
 # red	green	blue

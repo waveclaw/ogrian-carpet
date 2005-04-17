@@ -92,6 +92,7 @@ enum PacketID
 	// Ogrian Types
 	//
 	ID_ADD_PLAYER,
+	ID_SET_CASTLE_SKIN,
 	ID_KICK,
 	ID_KICKME,
 	ID_MAP_NAME,

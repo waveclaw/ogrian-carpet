@@ -30,6 +30,7 @@ a flock of cranes
 
 #include <Ogre.h>
 #include "OgrianTowerThing.h"
+#include "OgrianHeightMap.h"
 #include "OgrianClaimSpellThing.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianSkinManager.h"
@@ -80,7 +81,7 @@ void TowerBallThing::collided(Thing* e)
 
 //----------------------------------------------------------------------------
 
-TowerThing::TowerThing(int teamNum, Vector3 pos) 
+TowerThing::TowerThing(int teamNum, Vector3 pos, int skin) 
 	: DamageableThing("Ogrian/Tower", MODEL, "Tower", false, CONR("TOWER_WIDTH"), pos, CUBE, false)
 {
 	mLastCastTime = 0;
@@ -99,7 +100,7 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 
 	setThinkPeriod(CONR("TOWER_THINK_PERIOD"));
 
-	setSkin(0);
+	setSkin(skin);
 
 	// set the height
 	setHeight(CONR("TOWER_HEIGHT"));
@@ -164,6 +165,8 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 
 void TowerThing::setSkin(int skin)
 {
+	mSkin = skin;
+
 	// set the mesh
 	String mesh = SkinManager::getSingleton().getTowerSkin(skin);
 	static_cast<Model*>(getVisRep())->setMesh(mesh);
@@ -366,6 +369,28 @@ void TowerThing::damage(int amount, int source)
 	mUnbuildMode = false;
 
 	DamageableThing::damage(amount, source);
+}
+
+//----------------------------------------------------------------------------
+
+void TowerThing::generateBitStream(BitStream& bitstream, int pid)
+{
+	DamageableThing::generateBitStream(bitstream,pid);
+
+	bitstream.Write(mSkin);
+}
+
+//----------------------------------------------------------------------------
+
+void TowerThing::interpretBitStream(BitStream& bitstream)
+{
+	DamageableThing::interpretBitStream(bitstream);
+
+	int skin;
+
+	bitstream.Read(skin);
+
+	setSkin(skin);
 }
 
 //----------------------------------------------------------------------------

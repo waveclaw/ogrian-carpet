@@ -53,6 +53,7 @@ struct PlayerInfo
 	String name;
 	int teamNum;
 	int wizardUID;
+	int castleSkin;
 };
 
 // The Multiplayer class handles all of the multiplayer networking code.
@@ -147,7 +148,6 @@ private:
 	bool mClientReadyToDisconnect;
 	String mPlayerName;
 	String mServerName;
-	String mSkin;
 
 	// Pointers to the interfaces of our server and client.
 	RakClientInterface* mClient;

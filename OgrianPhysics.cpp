@@ -364,12 +364,7 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case WIZARDTHING: 
 		case CAMERATHING: return new WizardThing();
 
-		case SHRINETHING:
-			{
-				ConfigFile config = Game::getSingleton().getConfig();
-				String shrineMesh = config.getSetting( "SHRINE_MESH" ).c_str();
-				return new ShrineThing(Vector3(0,0,0), shrineMesh);
-			}
+		case SHRINETHING:return new ShrineThing();
 		case SHRINEBALLTHING: return new ShrineBallThing(0);
 
 		case TOWERTHING: return new TowerThing(0);

@@ -75,7 +75,6 @@ void Multiplayer::loadConfig()
 	/* Set up the options */
 	mPlayerName = CONS("PLAYER_NAME");
 	mServerName = CONS("SERVER_ADDRESS");
-	mSkin = CONI("PLAYER_SKIN");
 
 	// trim the name
 	std::string name = mPlayerName;
@@ -151,16 +150,9 @@ void Multiplayer::serverAddCameraPlayer(Thing* cam)
 	server.id.binaryAddress = 0;
 	server.name = mPlayerName + " (Serving)";
 
-	//if (cam)
-	//{
-		server.wizardUID = cam->getUID();
-		server.teamNum = cam->getTeamNum();
-	//}
-	//else
-	//{
-		//server.wizardUID = 0; // the server cameraThing is always UID 0, since it is the first created
-		//server.teamNum = Physics::getSingleton().newTeam(colour, server.wizardUID);
-	//}
+	server.wizardUID = cam->getUID();
+	server.teamNum = cam->getTeamNum();
+
 	mPlayers.clear();
 	mPlayers.push_back(server);
 	
@@ -529,6 +521,7 @@ void Multiplayer::updateScores()
 
 //----------------------------------------------------------------------------
 
+// note, mPlayers[0] is the server, not a client
 int Multiplayer::numClients()
 {
 	return (int)mPlayers.size()-1;
@@ -562,6 +555,9 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			std::ostringstream num("");
 			num << uid;
 			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") + num.str());
+
+			// send in the castle skin
+			clientSendInt(CONI("PLAYER_CASTLE_SKIN"), ID_SET_CASTLE_SKIN);
 
 			return true;
 		}
@@ -832,6 +828,27 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			// send the name of the map
 			LogManager::getSingleton().logMessage("Got New Incoming, sending map");
 			serverSendText(Renderer::getSingleton().getMapName(),ID_MAP_NAME,packet->playerId);
+			return true;
+		}
+
+		case ID_SET_CASTLE_SKIN: //////////////////////////////////////////////////////
+		{			
+			// get the skin number
+			int pid, skin;			
+			BitStream bs((const char*)packet->data, packet->length, false);
+			bs.Read(pid);
+			bs.Read(skin);
+
+			// find the client
+			for (int i=0; i<(int)mPlayers.size(); i++)
+			{
+				if (mPlayers[i].id == packet->playerId)
+				{
+					// set the skin
+					mPlayers[i].castleSkin = skin;
+					return true;
+				}
+			}
 			return true;
 		}
 

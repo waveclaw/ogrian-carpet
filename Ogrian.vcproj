@@ -297,6 +297,9 @@
 				RelativePath="OgrianSentinelThing.h">
 			</File>
 			<File
+				RelativePath="OgrianShrineThing.cpp">
+			</File>
+			<File
 				RelativePath="OgrianShrineThing.h">
 			</File>
 			<File

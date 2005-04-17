@@ -298,11 +298,12 @@ void Game::serverEndPreGame()
 	setPreGame(false);
 
 	// set up some wild mana and shrines
-	Real numMana = atoi(mConfig.getSetting( "MANA_START_NUM" ).c_str());
-	Real manaAmount = atoi(mConfig.getSetting( "MANA_START_AMOUNT" ).c_str());
+	int numMana = atoi(mConfig.getSetting( "MANA_START_NUM" ).c_str());
+	int manaAmount = atoi(mConfig.getSetting( "MANA_START_AMOUNT" ).c_str());
 
-	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
-	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
+	int numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
+	int shrineSkin = atoi(mConfig.getSetting( "SHRINE_SKIN" ).c_str());
+
 	int i=0;
 	while(i<numMana)
 	{
@@ -323,7 +324,7 @@ void Game::serverEndPreGame()
 			{
 				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-				ShrineThing* shrine = new ShrineThing(pos, shrineMesh);
+				ShrineThing* shrine = new ShrineThing(pos, shrineSkin);
 				Physics::getSingleton().addThing(shrine);
 			}
 		}
@@ -409,10 +410,10 @@ void Game::startSkirmishGame()
 	// make some foliage
 	LogManager::getSingleton().logMessage("Making Foliage...");
 	int foliageNum = atoi(mConfig.getSetting( "FoliageAmount" ).c_str());
-	Real foliageLineMin = atoi(mConfig.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
-	Real foliageLineMax = atoi(mConfig.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
-	Real foliageScale = atoi(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
-	Real foliageScaleVar = atoi(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
+	Real foliageLineMin = atof(mConfig.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
+	Real foliageLineMax = atof(mConfig.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
+	Real foliageScale = atof(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
+	Real foliageScaleVar = atof(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
 
 	// set up some foliage
 	int i=0;
@@ -435,8 +436,8 @@ void Game::startSkirmishGame()
 	}
 
 	// add some shrines
-	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
-	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
+	int numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
+	int shrineSkin = atoi(mConfig.getSetting( "SHRINE_SKIN" ).c_str());
 	i=0;
 	while(i<numShrines)
 	{
@@ -451,7 +452,7 @@ void Game::startSkirmishGame()
 			Vector3 pos = Vector3(x,0,z);
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			ShrineThing* shrine = new ShrineThing(pos, shrineMesh);
+			ShrineThing* shrine = new ShrineThing(pos, shrineSkin);
 			Physics::getSingleton().addThing(shrine);
 		}
 	}
@@ -489,8 +490,7 @@ void Game::startSkirmishGame()
 			i++;
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			TowerThing* tower = new TowerThing(teamNum,pos);
-			tower->setSkin(towerSkin);
+			TowerThing* tower = new TowerThing(teamNum, pos, towerSkin);
 			Physics::getSingleton().addThing(tower);
 		}
 	}
