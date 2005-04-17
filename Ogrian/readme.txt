@@ -93,8 +93,9 @@ Credits
 programming and design:
 -Mike Prosser
 
-castle and tower models:
+castle and tower models/textures:
 -Carl Olsson
+-John Michel
 
 music: 
 -Adrian Ouarar via WorldForge
@@ -119,6 +120,7 @@ sprites:
 -Mike Prosser
 -Jeremiah "Waveclaw" Powell
 -WorldForge
+-John Michel
 
 sounds:
 -Mike Prosser
@@ -127,6 +129,7 @@ sounds:
 maps:
 -Mike Prosser
 -Corey Ulmer
+-John Michel
 
 libraries:
 -Ogre3D

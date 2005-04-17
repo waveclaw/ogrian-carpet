@@ -1,4 +1,39 @@
 
+material Ogrian/EvergreenTree
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write on
+
+			texture_unit
+			{
+				texture evergreen.png
+				tex_address_mode clamp
+				alpha_rejection not_equal 0
+			}
+		}
+	}
+}
+material Ogrian/EvergreenTreeDead
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture evergreen_dead.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/PalmTree
 {
 	technique

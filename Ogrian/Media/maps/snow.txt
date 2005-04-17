@@ -3,8 +3,8 @@ Scale.y=1
 
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
-FoliageMaterial=Ogrian/PineTree
-FoliageAmount=30
+FoliageMaterial=Ogrian/EvergreenTree
+FoliageAmount=50
 
 # foliage numbers
 FOLIAGE_SCALE=10
