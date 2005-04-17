@@ -279,9 +279,6 @@
 				RelativePath="OgrianGnomeThing.h">
 			</File>
 			<File
-				RelativePath="OgrianHutThing.h">
-			</File>
-			<File
 				RelativePath="OgrianManaThing.cpp">
 			</File>
 			<File
@@ -298,6 +295,9 @@
 			</File>
 			<File
 				RelativePath="OgrianSentinelThing.h">
+			</File>
+			<File
+				RelativePath="OgrianShrineThing.h">
 			</File>
 			<File
 				RelativePath="OgrianSummonSpellThing.h">

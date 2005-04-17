@@ -57,6 +57,7 @@ public:
 
 	// read in the game configuration
 	void readConfig();
+	ConfigFile getConfig();
 
 	// where all wizards should start
 	Vector3 getStartPos();

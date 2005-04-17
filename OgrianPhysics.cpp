@@ -46,7 +46,7 @@ This will be changed to a quadtree or something for performance.
 #include "OgrianFoliageThing.h"
 #include "OgrianTowerThing.h"
 #include "OgrianPortalThing.h"
-#include "OgrianHutThing.h"
+#include "OgrianShrineThing.h"
 #include "OgrianSummonSpellThing.h"
 #include "OgrianSentinelThing.h"
 #include "OgrianTickThing.h"
@@ -364,8 +364,15 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case WIZARDTHING: 
 		case CAMERATHING: return new WizardThing();
 
-		case HUTTHING: return new HutThing();
-		case HUTBALLTHING: return new HutBallThing(0);
+		case SHRINETHING:
+			{
+				ConfigFile config = Game::getSingleton().getConfig();
+				String shrineMesh = config.getSetting( "SHRINE_MESH" ).c_str();
+				Real shrineMeshScale = atof(config.getSetting( "SHRINE_MESH_SCALE" ).c_str());
+				Real shrineMeshRatio = atof(config.getSetting( "SHRINE_MESH_RATIO" ).c_str());
+				return new ShrineThing(Vector3(0,0,0), shrineMesh, shrineMeshScale, shrineMeshRatio);
+			}
+		case SHRINEBALLTHING: return new ShrineBallThing(0);
 
 		case TOWERTHING: return new TowerThing(0);
 		case TOWERBALLTHING: return new TowerBallThing(0);

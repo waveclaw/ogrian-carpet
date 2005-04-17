@@ -23,7 +23,7 @@ OgrianClaimSpellThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This claims a hut or mana
+Description: This claims a shrine or mana
 
 /*------------------------------------*/
 
@@ -34,7 +34,7 @@ Description: This claims a hut or mana
 #include "OgrianTimedThing.h"
 #include "OgrianCastle.h"
 #include "OgrianPhysics.h"
-#include "OgrianHutThing.h"
+#include "OgrianShrineThing.h"
 #include "OgrianManaThing.h"
 
 using namespace Ogre;
@@ -47,7 +47,7 @@ class ClaimSpellThing : public TimedThing
 {
 public:
 	ClaimSpellThing(int teamNum, ColourValue colour=ColourValue::White, Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0), Real lifetime=CONR("CLAIMSPELL_LIFETIME")) 
-		: TimedThing("Ogrian/HutBall", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
+		: TimedThing("Ogrian/ClaimSpell", SPRITE, "ClaimSpell", false, CONR("CLAIMSPELL_SCALE"), pos, SPHERE)
 	{
 		setTeamNum(teamNum);
 		setColour(colour);
@@ -61,8 +61,8 @@ public:
 
 	virtual void collided(Thing* e)
 	{
-		// claim mana and huts
-		if ((e->getType() == MANATHING || e->getType() == HUTTHING || e->getType() == HUTBALLTHING)
+		// claim mana and shrines
+		if ((e->getType() == MANATHING || e->getType() == SHRINETHING || e->getType() == SHRINEBALLTHING)
 			&& e->getTeamNum() != getTeamNum())
 		{
 			e->claim(getTeamNum());

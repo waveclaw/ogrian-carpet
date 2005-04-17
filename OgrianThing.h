@@ -66,8 +66,8 @@ enum ThingType
 	CASTLETURRETTHING,
 	CASTLEFLAGTHING,
 	CASTLEHEARTTHING,
-	HUTTHING,
-	HUTBALLTHING,
+	SHRINETHING,
+	SHRINEBALLTHING,
 	CLAIMTHING,
 	BUILDTHING,
 	SUMMONTHING,
@@ -224,7 +224,7 @@ public:
 	virtual Real getGroundY();
 	virtual Real getGroundY(Vector3 pos);
 
-	// used by mana and huts
+	// used by mana and shrines
 	virtual void claim(int teamNum) { }
 
 	// play a sound

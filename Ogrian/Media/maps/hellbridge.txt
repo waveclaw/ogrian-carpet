@@ -12,6 +12,11 @@ FOLIAGE_SCALE_VAR=5
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
+#shrine mesh
+SHRINE_MESH=mshrine.mesh
+SHRINE_MESH_SCALE=2
+SHRINE_MESH_RATIO=2
+
 MAP_MUSIC=Media/music/RidingTheDragon.ogg
 
 # Lava on(1) or off(0)
@@ -47,8 +52,8 @@ NUM_SENTINELS=15
 # keep monsters this far away from the start location
 MONSTER_MIN_DIST=200
 
-# the number of huts
-NUM_HUTS=15
+# the number of shrines
+NUM_SHRINES=15
 
 # starting mana in multiplayer
 MANA_START_NUM=40

@@ -47,7 +47,7 @@ namespace Ogrian
 
 
 TowerBallThing::TowerBallThing(int teamNum)
-	: Thing("Ogrian/HutBall", SPRITE, "TowerFlag", false, CONR("TOWER_BALL_SCALE"), Vector3(0,0,0), SPHERE)
+	: Thing("Ogrian/TowerFlag", SPRITE, "TowerFlag", false, CONR("TOWER_BALL_SCALE"), Vector3(0,0,0), SPHERE)
 {
 	setTeamNum(teamNum);
 	setThinkPeriod(CONR("TOWER_WIZ_REGEN_PERIOD"));
@@ -302,14 +302,14 @@ void TowerThing::think()
 	if (health > CONI("TOWER_HEALTH"))
 		setHealth(CONI("TOWER_HEALTH"));
 
-	// cast a mana at the nearest mana or hutin range
+	// cast a mana at the nearest mana or shrine in range
 	Thing* target = 0;
 	Real bestDist = CONR("TOWER_RANGE");
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
 	{
 		Thing* candidate = Physics::getSingleton().getThingByIndex(i);
 		if (candidate 
-			&& (candidate->getType() == MANATHING || candidate->getType() == HUTTHING)
+			&& (candidate->getType() == MANATHING || candidate->getType() == SHRINETHING)
 			&& cylinderDistance(candidate) < bestDist
 			&& candidate->getColour() != getColour()
 			&& candidate->isAlive() )

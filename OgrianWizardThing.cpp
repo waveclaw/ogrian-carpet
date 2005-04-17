@@ -53,7 +53,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mStopSpeedTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
-	mNumHuts = 0;
+	mNumShrines = 0;
 	mTeam = 0;
 	mSkin = -1;
 	mGhost = false;
@@ -85,7 +85,7 @@ void WizardThing::reset()
 	mStopSpeedTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
-	mNumHuts = 0;
+	mNumShrines = 0;
 	mTeam = 0;
 	mGhost = false;
 
@@ -316,24 +316,24 @@ void WizardThing::collided(Thing* e)
 	if(!mGhost && e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
 		setHealth(CONI("WIZARD_HEALTH"));
 
-	// claim mana and huts
-	if ((e->getType() == MANATHING || e->getType() == HUTTHING || e->getType() == HUTBALLTHING)
+	// claim mana and Shrines
+	if ((e->getType() == MANATHING || e->getType() == SHRINETHING || e->getType() == SHRINEBALLTHING)
 			&& e->getTeamNum() != getTeamNum())
 		e->claim(getTeamNum());
 }
 
 //----------------------------------------------------------------------------
 
-void WizardThing::addHut()
+void WizardThing::addShrine()
 {
-	mNumHuts++;
+	mNumShrines++;
 }
 
 //----------------------------------------------------------------------------
 
-void WizardThing::removeHut()
+void WizardThing::removeShrine()
 {
-	mNumHuts--;
+	mNumShrines--;
 }
 	
 //----------------------------------------------------------------------------
@@ -379,7 +379,7 @@ void WizardThing::move(Real time)
 		if (Clock::getSingleton().getTime() > mNextRegenTime)
 		{
 			mNextRegenTime = Clock::getSingleton().getTime() + CONT("WIZARD_MANA_REGEN_PERIOD");
-			mActiveMana += CONI("WIZARD_MANA_REGEN") + mNumHuts*CONI("WIZARD_MANA_REGEN_BONUS");
+			mActiveMana += CONI("WIZARD_MANA_REGEN") + mNumShrines*CONI("WIZARD_MANA_REGEN_BONUS");
 			if (mActiveMana > mBaseMana)
 				mActiveMana = mBaseMana;
 

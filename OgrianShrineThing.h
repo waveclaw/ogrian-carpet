@@ -19,16 +19,16 @@
 *****************************************************************************/
 
 /*------------------------------------*
-OgrianHut.h
+OgrianShrineThing.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: This is a hut which can be claimed to increase mana regen for a wizard
+Description: This is a shrine which can be claimed to increase mana regen for a wizard
 
 /*------------------------------------*/
 
-#ifndef __OgrianHut_H__
-#define __OgrianHut_H__
+#ifndef __OgrianShrineThing_H__
+#define __OgrianShrineThing_H__
 
 #include <Ogre.h>
 #include "OgrianMultiplayer.h"
@@ -46,13 +46,13 @@ namespace Ogrian
 
 /////////////////////////////////////////////////////////////////////////////
 
-class HutBallThing : public Thing
+class ShrineBallThing : public Thing
 {
 public:
-	HutBallThing(Thing* hut)
-		: Thing("Ogrian/HutBall", SPRITE, "HutBall", false, CONR("HUT_BALL_SCALE"), Vector3(0,0,0), SPHERE)
+	ShrineBallThing(Thing* shrine)
+		: Thing("Ogrian/ShrineBall", SPRITE, "ShrineBall", false, CONR("SHRINE_BALL_SCALE"), Vector3(0,0,0), SPHERE)
 	{
-		mHut = hut;
+		mShrine = shrine;
 		setColour(ColourValue::White);
 	}
 
@@ -64,7 +64,7 @@ public:
 		}
 		else
 		{
-			setMaterial("Ogrian/HutBall");
+			setMaterial("Ogrian/ShrineBall");
 			playSound(Game::getSingleton().SOUND_HUM);
 		}
 
@@ -74,28 +74,27 @@ public:
 
 	virtual void claim(int teamNum)
 	{
-		if (mHut)
-			mHut->claim(teamNum);
+		if (mShrine)
+			mShrine->claim(teamNum);
 	}
 	
-	virtual ThingType getType()	{ return HUTBALLTHING; }
+	virtual ThingType getType()	{ return SHRINEBALLTHING; }
 
 private:
-	Thing* mHut;
+	Thing* mShrine;
 };
 
 /////////////////////////////////////////////////////////////////////////////
-class HutThing : public Thing
+class ShrineThing : public Thing
 {
 public:
-	HutThing(Vector3 pos=Vector3(0,0,0)) 
-		: Thing("Ogrian/Tower", MODEL, "Hut", false, CONR("HUT_WIDTH"), pos, CUBE)
+	ShrineThing(Vector3 pos, String mesh, Real scale, Real ratio) 
+		: Thing("Ogrian/Tower", MODEL, "Shrine", false, CONR("SHRINE_WIDTH"), pos, CUBE)
 	{
 		// set the mesh
-		static_cast<Model*>(getVisRep())->setMesh("tower.mesh",
-			CONR("HUT_MESH_SCALE"), CONR("HUT_MESH_RATIO"));
+		static_cast<Model*>(getVisRep())->setMesh(mesh,scale,ratio);
 
-		setHeight(CONR("HUT_HEIGHT"));
+		setHeight(CONR("SHRINE_HEIGHT"));
 		Thing::setTeamNum(-1);
 
 		mBall = 0;
@@ -103,7 +102,7 @@ public:
 		if (!Multiplayer::getSingleton().isClient())
 		{
 			setColour(ColourValue::White);
-			mBall = new HutBallThing(this);
+			mBall = new ShrineBallThing(this);
 			Physics::getSingleton().addThing(mBall);
 		}
 		
@@ -134,7 +133,7 @@ public:
 			{
 				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
 				if (wizard)
-					wizard->removeHut();
+					wizard->removeShrine();
 			}
 		}
 
@@ -146,7 +145,7 @@ public:
 			{
 				WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
 				if (wizard)
-					wizard->addHut();
+					wizard->addShrine();
 			}
 
 			setColour(team->getColour());
@@ -172,7 +171,7 @@ public:
 
 		Thing::setPosition(pos);
 
-		pos.y += getHeight()/2 + CONR("HUT_BALL_SCALE")/2;
+		pos.y += getHeight()/2 + CONR("SHRINE_BALL_SCALE");
 
 		if (mBall)
             mBall->setPosition(pos);
@@ -180,10 +179,10 @@ public:
 
 	virtual bool isBuilding() { return true; }
 	
-	virtual ThingType getType()	{ return HUTTHING; }
+	virtual ThingType getType()	{ return SHRINETHING; }
 	
 private:
-	HutBallThing* mBall;
+	ShrineBallThing* mBall;
 };
 
 }

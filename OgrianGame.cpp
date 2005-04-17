@@ -39,7 +39,7 @@ starting games and detecting victory.
 #include "OgrianTickThing.h"
 #include "OgrianSentinelThing.h"
 #include "OgrianTowerThing.h"
-#include "OgrianHutThing.h"
+#include "OgrianShrineThing.h"
 #include "OgrianFoliageThing.h"
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
@@ -76,6 +76,13 @@ void Game::setLava(bool lava)
 bool Game::getLava()
 {
 	return mLava;
+}
+
+//----------------------------------------------------------------------------
+
+ConfigFile Game::getConfig()
+{
+	return mConfig;
 }
 
 //----------------------------------------------------------------------------
@@ -290,10 +297,14 @@ void Game::serverEndPreGame()
 {
 	setPreGame(false);
 
-	// set up some wild mana and huts
-	Real numHuts = atoi(mConfig.getSetting( "NUM_HUTS" ).c_str());
+	// set up some wild mana and shrines
 	Real numMana = atoi(mConfig.getSetting( "MANA_START_NUM" ).c_str());
 	Real manaAmount = atoi(mConfig.getSetting( "MANA_START_AMOUNT" ).c_str());
+
+	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
+	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
+	Real shrineMeshScale = atof(mConfig.getSetting( "SHRINE_MESH_SCALE" ).c_str());
+	Real shrineMeshRatio = atof(mConfig.getSetting( "SHRINE_MESH_RATIO" ).c_str());
 	int i=0;
 	while(i<numMana)
 	{
@@ -310,11 +321,12 @@ void Game::serverEndPreGame()
 			ManaThing* mana = new ManaThing(manaAmount,pos);
 			Physics::getSingleton().addThing(mana);
 			
-			if (i < numHuts)
+			if (i < numShrines)
 			{
 				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
-				HutThing* hut = new HutThing(pos);
-				Physics::getSingleton().addThing(hut);
+
+				ShrineThing* shrine = new ShrineThing(pos, shrineMesh, shrineMeshScale, shrineMeshRatio);
+				Physics::getSingleton().addThing(shrine);
 			}
 		}
 	}
@@ -424,10 +436,13 @@ void Game::startSkirmishGame()
 		}
 	}
 
-	// add some huts
-	Real numHuts = atoi(mConfig.getSetting( "NUM_HUTS" ).c_str());
+	// add some shrines
+	Real numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
+	String shrineMesh = mConfig.getSetting( "SHRINE_MESH" ).c_str();
+	Real shrineMeshScale = atof(mConfig.getSetting( "SHRINE_MESH_SCALE" ).c_str());
+	Real shrineMeshRatio = atof(mConfig.getSetting( "SHRINE_MESH_RATIO" ).c_str());
 	i=0;
-	while(i<numHuts)
+	while(i<numShrines)
 	{
         // Random translate
         Real x = Math::SymmetricRandom() * size;
@@ -440,8 +455,8 @@ void Game::startSkirmishGame()
 			Vector3 pos = Vector3(x,0,z);
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			HutThing* hut = new HutThing(pos);
-			Physics::getSingleton().addThing(hut);
+			ShrineThing* shrine = new ShrineThing(pos, shrineMesh, shrineMeshScale, shrineMeshRatio);
+			Physics::getSingleton().addThing(shrine);
 		}
 	}
 

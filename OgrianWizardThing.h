@@ -91,9 +91,9 @@ public:
 	virtual void speed(Real duration);
 	virtual bool isSpeeding();
 
-	// each hut adds a point to regeneration
-	virtual void addHut();
-	virtual void removeHut();
+	// each shrine adds a point to regeneration
+	virtual void addShrine();
+	virtual void removeShrine();
 
 	virtual Real getGroundY(Vector3 pos);
 
@@ -110,7 +110,7 @@ private:
 	int mActiveMana;
 	int mBaseMana;
 
-	int mNumHuts;
+	int mNumShrines;
 
 	Time mNextRegenTime;
 	Time mLastSetPosTime;
