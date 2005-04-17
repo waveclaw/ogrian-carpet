@@ -99,7 +99,7 @@ TowerThing::TowerThing(int teamNum, Vector3 pos)
 	setThinkPeriod(CONR("TOWER_THINK_PERIOD"));
 
 	// set the mesh
-	static_cast<Model*>(getVisRep())->setMesh("tower1.mesh",
+	static_cast<Model*>(getVisRep())->setMesh("towerdark.mesh",
 		CONR("TOWER_MESH_SCALE"), CONR("TOWER_MESH_RATIO"));
 
 	// set the height
