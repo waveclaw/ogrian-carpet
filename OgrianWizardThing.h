@@ -57,7 +57,6 @@ public:
 	// float
 	virtual void move(Real time);
 
-	// go over castle walls
 	virtual void collided(Thing* e);
 
 	virtual void setPosition(Vector3 pos);
@@ -106,6 +105,7 @@ private:
 	bool mGhost;
 	bool mSpeeding;
 	Time mStopSpeedTime;
+	Real mFrameTime;
 
 	int mActiveMana;
 	int mBaseMana;
@@ -115,7 +115,7 @@ private:
 	Time mNextRegenTime;
 	Time mLastSetPosTime;
 
-	virtual Real getGroundHeight();
+	virtual Real getGroundHeight(Vector3 pos);
 };
 
 }

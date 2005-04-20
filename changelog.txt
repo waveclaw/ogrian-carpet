@@ -1,3 +1,6 @@
+0.8
+-made health bars always visible when in range
+
 0.7.2
 -huts are now shrines
 -skinning support for castles, towers, and shrines

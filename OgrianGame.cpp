@@ -208,9 +208,10 @@ void Game::startGame(ConfigFile config)
 
 	mConfig = config;
 
-	// read the start locations
+	// read the start location
 	mStartPos.x = atoi(mConfig.getSetting( "startX" ).c_str());
 	mStartPos.z = atoi(mConfig.getSetting( "startZ" ).c_str());
+	mStartPos.y = HeightMap::getSingleton().getHeightAt(mStartPos.x, mStartPos.z);
 	Renderer::getSingleton().getCameraThing()->setPosition(mStartPos);
 
 	// start the frame listener
@@ -332,21 +333,21 @@ void Game::serverEndPreGame()
 	
 	// build a list of start locations
 	std::vector<Vector3> slocs;
-	Vector3 spawn1(
-		atoi(mConfig.getSetting( "p1startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p1startZ" ).c_str()) );
+	Real x = atoi(mConfig.getSetting( "p1startX" ).c_str());
+	Real z = atoi(mConfig.getSetting( "p1startZ" ).c_str());
+	Vector3 spawn1(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	Vector3 spawn2(
-		atoi(mConfig.getSetting( "p2startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p2startZ" ).c_str()) );
+	x = atoi(mConfig.getSetting( "p2startX" ).c_str());
+	z = atoi(mConfig.getSetting( "p2startZ" ).c_str());
+	Vector3 spawn2(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	Vector3 spawn3(
-		atoi(mConfig.getSetting( "p3startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p3startZ" ).c_str()) );
+	x = atoi(mConfig.getSetting( "p3startX" ).c_str());
+	z = atoi(mConfig.getSetting( "p3startZ" ).c_str());
+	Vector3 spawn3(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	Vector3 spawn4(
-		atoi(mConfig.getSetting( "p4startX" ).c_str()) ,0,
-		atoi(mConfig.getSetting( "p4startZ" ).c_str()) );
+	x = atoi(mConfig.getSetting( "p4startX" ).c_str());
+	z = atoi(mConfig.getSetting( "p4startZ" ).c_str());
+	Vector3 spawn4(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
 
 	if (spawn1.length() > 1) slocs.push_back(spawn1);

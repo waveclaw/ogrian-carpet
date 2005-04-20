@@ -58,6 +58,7 @@ WizardThing::WizardThing(bool visible, int skin)
 	mSkin = -1;
 	mGhost = false;
 	mVisible = visible;
+	mFrameTime = 0;
 
 	setUpdateType(CONTINUOUS);
 	setMaxHealth(CONI("WIZARD_HEALTH"));
@@ -88,6 +89,7 @@ void WizardThing::reset()
 	mNumShrines = 0;
 	mTeam = 0;
 	mGhost = false;
+	mFrameTime = 0;
 
 	// make a team for this wizard'
 	if (!Multiplayer::getSingleton().isClient())
@@ -345,10 +347,9 @@ Real WizardThing::getGroundY(Vector3 pos)
 
 //----------------------------------------------------------------------------
 	
-Real WizardThing::getGroundHeight()
+Real WizardThing::getGroundHeight(Vector3 pos)
 {
 	// check the terrain height
-	Vector3 pos = getPosition();
 	Real w = getWidth();
 	Real ground00 = getGroundY(pos + Vector3(-w,0,-w));
 	Real ground01 = getGroundY(pos + Vector3(-w,0, w));
@@ -411,6 +412,8 @@ void WizardThing::move(Real time)
 		}
 	}
 
+	mFrameTime = time;
+
 	DamageableThing::move(time);
 }
 
@@ -419,11 +422,11 @@ void WizardThing::move(Real time)
 void WizardThing::setPosition(Vector3 pos)
 {
 	// follow the landscape 
-	Real ground = getGroundHeight();
+	Real ground = getGroundHeight(pos);
 	ground += CONR("WIZARD_MIN_ALTITUDE");
 			
 	// dont ever go below ground
-	if (ground > getPosY()) 
+	if (ground > pos.y) 
 	{
 		if (getVelY() < 0)
 			setVelY(0);
@@ -431,7 +434,22 @@ void WizardThing::setPosition(Vector3 pos)
 		pos.y = ground;
 	}
 
+	// speed limit
+	if (mFrameTime > 0)
+	{
+		Vector3 path = pos - getPosition();
+		if (path.length() > CONR("CAMERA_MOVE_SPEED") * mFrameTime)
+		{
+			path.normalise();
+			path *= CONR("CAMERA_MOVE_SPEED") * mFrameTime;
+
+			pos = getPosition() + path;
+		}
+	}
+
 	DamageableThing::setPosition(pos);
+
+	mFrameTime = 0;
 
 	// check for lava
 	if (!Multiplayer::getSingleton().isClient())

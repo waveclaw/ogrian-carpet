@@ -3,9 +3,8 @@ Ogrian Carpet Notes
 for 0.8:
 =========
 amry counters
-fix steep walls
 thing placement image
-health bars on top
+multipage menu system
 
 to add:
 =========
