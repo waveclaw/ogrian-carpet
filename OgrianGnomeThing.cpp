@@ -85,6 +85,7 @@ void GnomeThing::move(Real time)
 		{
 			Vector3 vel(0,0,0);
 			vel = (wiz->getPosition() + mFormationOffset) - getPosition();
+			vel.y = 0;
 
 			if (vel.length() > getWidth())
 			{

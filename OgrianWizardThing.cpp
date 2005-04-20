@@ -45,7 +45,7 @@ namespace Ogrian
 	
 WizardThing::WizardThing(bool visible, int skin) 
 	: DamageableThing("Ogrian/Clear", visible?ORIENTEDSPRITE:SPRITE, 
-	visible?"WizardThing":"CameraThing", true, CONR("WIZARD_SCALE"))
+	visible?"WizardThing":"CameraThing", true, CONR("WIZARD_SCALE"), Vector3(0,0,0), CYLINDER)
 {
 	mNextRegenTime = 0;
 	mLastSetPosTime = 0;

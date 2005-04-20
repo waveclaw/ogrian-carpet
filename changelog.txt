@@ -6,6 +6,7 @@
 -new castle textures
 -new shrine mesh
 -claim spell now heals monsters
+-can claim shrines and mana by just touching them
 
 
 0.7.1:

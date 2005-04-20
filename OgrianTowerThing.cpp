@@ -319,14 +319,39 @@ void TowerThing::think()
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
 	{
 		Thing* candidate = Physics::getSingleton().getThingByIndex(i);
+		int type = candidate->getType();
 		if (candidate 
-			&& (candidate->getType() == MANATHING || candidate->getType() == SHRINETHING)
+			&& (type == MANATHING || type == SHRINETHING || type == SENTINELTHING 
+				|| type == TICKTHING || type == GNOMETHING)
 			&& cylinderDistance(candidate) < bestDist
-			&& candidate->getColour() != getColour()
 			&& candidate->isAlive() )
 		{
-			target = candidate;
-			bestDist = cylinderDistance(candidate);
+			// only claim mana and shrines of a different colour
+			if (type == MANATHING || type == SHRINETHING)
+			{
+				if (candidate->getColour() != getColour())
+				{
+					target = candidate;
+					bestDist = cylinderDistance(candidate);
+				}
+			}
+
+			// heal allies who need health
+			else
+			{
+				int maxHealth = 0;
+
+				if (type == SENTINELTHING) maxHealth = CONI("SENTINEL_HEALTH");
+				if (type == GNOMETHING) maxHealth = CONI("GNOME_HEALTH");
+				if (type == TICKTHING) maxHealth = CONI("TICK_HEALTH");
+
+				if (candidate->getColour() == getColour()
+					&& ((DamageableThing*)candidate)->getHealth() < maxHealth)
+				{
+					target = candidate;
+					bestDist = cylinderDistance(candidate);
+				}
+			}
 		}
 	}
 

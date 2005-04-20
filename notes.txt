@@ -1,16 +1,18 @@
 Ogrian Carpet Notes
 
+for 0.8:
+=========
+amry counters
+fix steep walls
+thing placement image
+health bars on top
 
 to add:
 =========
-amry counters
 health/mana hud bars
 meteor that claims nearby mana
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 move coastline to map file and dont let build castles right next to it
-fix steep walls
-shrine skins
-finish multipalyer castle skins
 
 
 Sounds needed:
