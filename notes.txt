@@ -31,7 +31,7 @@ build construction sound
 Ideas:
 =========
 for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
-
+name of evil guy: gimplorg!
 
 performance, tweaks:
 ========
@@ -39,3 +39,4 @@ performance, tweaks:
 known bugs:
 ========
 memory leak in making billboards
+extra camera lifebar at 0,0,0

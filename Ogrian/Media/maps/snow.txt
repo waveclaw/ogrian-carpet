@@ -4,7 +4,7 @@ Scale.y=1
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
 FoliageMaterial=Ogrian/EvergreenTree
-FoliageAmount=50
+FoliageAmount=150
 
 # foliage numbers
 FOLIAGE_SCALE=10
@@ -23,7 +23,7 @@ TOWER_SKIN=1
 MAP_MUSIC=Media/music/ogrian_snow.ogg
 
 # Lava on(1) or off(0)
-Lava=1
+Lava=0
 
 # Single-player start locations
 startX=232

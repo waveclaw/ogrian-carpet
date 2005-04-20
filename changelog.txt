@@ -1,3 +1,12 @@
+0.7.2
+-huts are now shrines
+-skinning support for castles, towers, and shrines
+-new map: lowerlands
+-new map textures
+-new castle textures
+-new shrine mesh
+-claim spell now heals monsters
+
 
 0.7.1:
 -some new sprites

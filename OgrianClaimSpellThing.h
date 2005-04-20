@@ -68,6 +68,34 @@ public:
 			e->claim(getTeamNum());
 			destroy();
 		}
+
+		// heal sentinels
+		else if ((e->getType() == SENTINELTHING)
+			&& e->getTeamNum() == getTeamNum()
+			&& ((DamageableThing*)e)->getHealth() < CONI("SENTINEL_HEALTH"))
+		{
+			DamageableThing* d = (DamageableThing*)e;
+			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
+			destroy();
+		}
+		// heal ticks, and gnomes
+		else if ((e->getType() == TICKTHING)
+			&& e->getTeamNum() == getTeamNum()
+			&& ((DamageableThing*)e)->getHealth() < CONI("TICK_HEALTH"))
+		{
+			DamageableThing* d = (DamageableThing*)e;
+			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
+			destroy();
+		}
+		// heal gnomes
+		else if ((e->getType() == GNOMETHING)
+			&& e->getTeamNum() == getTeamNum()
+			&& ((DamageableThing*)e)->getHealth() < CONI("GNOME_HEALTH"))
+		{
+			DamageableThing* d = (DamageableThing*)e;
+			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
+			destroy();
+		}
 	}
 };
 
