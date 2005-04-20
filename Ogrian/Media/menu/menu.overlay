@@ -39,16 +39,16 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Yinvert) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.05
-			width 0.4 
+			top 0.025
+			width 0.2 
 			caption SS/Templates/BasicText INV MOUSE (ON)
 		}
    
 		container BorderButton(Ogrian/Menu/Music) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.20
-			width 0.4 
+			top 0.10
+			width 0.2 
 			caption SS/Templates/BasicText MUSIC (ON)
 		}
 
@@ -57,8 +57,8 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Exit) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.85
-			width 0.2 
+			top 0.425
+			width 0.1 
 			caption SS/Templates/BasicText QUIT
 		}
 				
@@ -66,8 +66,8 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Load) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.40
-			width 0.3 
+			top 0.20
+			width 0.15 
 			caption SS/Templates/BasicText SKIRMISH
 		}
 				
@@ -75,8 +75,8 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Host) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.55
-			width 0.2 
+			top 0.275
+			width 0.1 
 			caption SS/Templates/BasicText host
 		}
 				
@@ -84,8 +84,8 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/Disconnect) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.55
-			width 0.4 
+			top 0.275
+			width 0.2 
 			caption SS/Templates/BasicText DISCONNECT
 		}
 				
@@ -93,16 +93,16 @@ Ogrian/Menu/Overlay
 		container BorderButton(Ogrian/Menu/StartGame) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.70
-			width 0.4 
+			top 0.35
+			width 0.2 
 			caption SS/Templates/BasicText START GAME
 		}
 
 		container BorderButton(Ogrian/Menu/Join) : SS/Templates/BasicButton
 		{
 			left 0.6
-			top 0.70
-			width 0.2 
+			top 0.35
+			width 0.1 
 			caption SS/Templates/BasicText Join
 		}
 				

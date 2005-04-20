@@ -6,7 +6,7 @@ template container BorderPanel(SS/Templates/BasicBorderPanel)
 	width 1
 	height 1
 	material Core/StatsBlockCenter
-    	border_size 0.06 0.06 0.06665 0.06665
+    	border_size 0.03 0.03 0.034 0.034
     	border_material Core/StatsBlockBorder
     	border_topleft_uv     0.0000 0.0000 0.1914 0.2031
 	border_top_uv         0.1914 0.0000 0.8086 0.2031
@@ -27,13 +27,13 @@ template container BorderPanel(SS/Templates/BasicSmallBorderPanel) : SS/Template
 template element TextArea(SS/Templates/BasicText)
 {
 	font_name Ogre
-	char_height 0.08
+	char_height 0.04
 	colour_top 1 1 0
 	colour_bottom 1 0.2 0.2
-	left 0.03
-	top 0.02
+	left 0.015
+	top 0.012
 	width 0.12
-	height 0.09
+	height 0.045
 }
 
 template container TextBox(SS/Templates/BasicTextBox) 
@@ -41,7 +41,7 @@ template container TextBox(SS/Templates/BasicTextBox)
    left 0.02 
    top 0.01 
    width 0.3 
-   height 0.1 
+   height 0.5 
    text_area SS/Templates/BasicText test 
    back_panel SS/Templates/BasicSmallBorderPanel 
 }
@@ -51,7 +51,7 @@ template container BorderButton(SS/Templates/BasicButton) : SS/Templates/BasicBo
 	left 0.82
 	top 0.45
 	width 0.16
-	height 0.13
+	height 0.065
 	material Core/StatsBlockCenter
 	border_up_material Core/StatsBlockBorder/Up
 	border_down_material Core/StatsBlockBorder/Down
