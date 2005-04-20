@@ -45,6 +45,7 @@ public:
     /// Start the application
     virtual void go(void)
     {
+		Clock::getSingleton().init();
 		Renderer::getSingleton().go();
     }
 

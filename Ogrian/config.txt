@@ -2,7 +2,7 @@
 PLAYER_NAME=Mike
 
 # set this to the computer name or IP address of whoever is hosting
-SERVER_ADDRESS=Deatrix
+SERVER_ADDRESS=localhost
 
 #choose your skin:
 # 0: Angry Face
@@ -16,7 +16,7 @@ PLAYER_WIZARD_SKIN=2
 #choose your castle:
 # 0: light castle
 # 1: dark castle
-PLAYER_CASTLE_SKIN=0
+PLAYER_CASTLE_SKIN=1
 
 # set the RGB values of the colour you want your team to be
 # red	green	blue
@@ -35,8 +35,8 @@ PLAYER_CASTLE_SKIN=0
 # 0  	128   	0 	= Dark Green
 # 0   	255  	128 	= Turquoise
 
-COLOUR_RED=0
-COLOUR_GREEN=0
+COLOUR_RED=1
+COLOUR_GREEN=1
 COLOUR_BLUE=255
 
 # mouselook options
@@ -44,7 +44,7 @@ MOUSE_Y_INVERT=true
 MOUSE_SENSITIVITY=1
 
 # ingame music
-MUSIC=true
+MUSIC=false
 MUSIC_VOLUME=128
 
 # mouse bindings:

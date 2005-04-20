@@ -58,7 +58,8 @@ int Const::getConstantInt(const String &key)
 {
 	int c = atoi(mFile1.getSetting(key).c_str());
 	if (c == 0.0) c = atoi(mFile2.getSetting(key).c_str());
-	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+	if (c == 0.0) 
+		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
 
@@ -68,7 +69,8 @@ Real Const::getConstantReal(const String &key)
 {
 	Real c = atof(mFile1.getSetting(key).c_str());
 	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
-	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+	if (c == 0.0) 
+		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
 
@@ -78,7 +80,8 @@ Time Const::getConstantTime(const String &key)
 {
 	Real c = atof(mFile1.getSetting(key).c_str());
 	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
-	if (c == 0.0) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+	if (c == 0.0) 
+		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c*1000;
 }
 
@@ -89,7 +92,8 @@ String Const::getConstantString(const String &key)
 	// only read config and strings
 	String c = mFile2.getSetting(key).c_str();
 	if (c == String("")) c = mFile3.getSetting(key).c_str();
-	if (c == String("")) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+	if (c == String("")) 
+		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 	return c;
 }
 
@@ -99,7 +103,8 @@ bool Const::getConstantBool(const String &key)
 {
 	String c = mFile1.getSetting(key).c_str();
 	if (c == String("")) c = mFile2.getSetting(key).c_str();
-	if (c == String("")) LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+	if (c == String("")) 
+		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
 
 	if (c == String("true") || c == String("yes") || c == String("on")) return true;
 	return false;

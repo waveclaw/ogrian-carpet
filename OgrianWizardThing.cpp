@@ -59,10 +59,10 @@ WizardThing::WizardThing(bool visible, int skin)
 	mGhost = false;
 	mVisible = visible;
 
-	setSkin(skin);
-
 	setUpdateType(CONTINUOUS);
 	setMaxHealth(CONI("WIZARD_HEALTH"));
+
+	setSkin(0);
 
 	reset();
 }
