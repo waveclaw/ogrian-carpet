@@ -30,6 +30,8 @@ It also has an optional health bar
 
 #include "OgrianDamageableThing.h"
 #include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
+#include "OgrianHealthBarManager.h"
 
 using namespace Ogre;
 
@@ -54,15 +56,7 @@ DamageableThing::DamageableThing(String material, ThingVisRep visrep, String pre
 
 void DamageableThing::reset()
 {
-	// make the health bar
-	if (mHasBar)
-	{
-		//if (mBar) mBar->destroy();
 
-		mBar = new HealthBarEffect(getPosition(), getHeight(), getWidth());
-		Physics::getSingleton().addEffect(mBar);
-	}
-	else mBar = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -80,8 +74,34 @@ void DamageableThing::move(Real time)
 	Thing::move(time);
 	
 	// update health bar
-	if (mBar)
-		mBar->update(getPosition(), ((float)mHealth/(float)mMaxHealth)*getWidth());
+	if (mHasBar)
+	{
+		if (mBar)
+		{
+			// remove the bar if we're out of range
+			if (sphereDistance(Renderer::getSingleton().getCameraThing()) > CONR("THING_CULL_DIST"))
+			{
+				HealthBarManager::getSingleton().remove(mBar);
+				mBar = 0;
+			}
+			else // update it
+			{
+				mBar->setPosition(getPosition() + Vector3(0,CONR("HEALTH_BAR_OFFSET"), 0));
+				mBar->setDimensions(((float)mHealth/(float)mMaxHealth)*getWidth(), getHeight());
+			}
+		}
+		else
+		{
+			// add the bar if we're in range
+			if (sphereDistance(Renderer::getSingleton().getCameraThing()) < CONR("THING_CULL_DIST"))
+			{
+				mBar = HealthBarManager::getSingleton().newBar(getPosition(), getColour());
+
+				mBar->setPosition(getPosition() + Vector3(0,CONR("HEALTH_BAR_OFFSET"), 0));
+				mBar->setDimensions(((float)mHealth/(float)mMaxHealth)*getWidth(), getHeight());
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -162,10 +182,12 @@ void DamageableThing::destroy()
 {
 	Thing::destroy();
 
-	if (mBar) mBar->destroy();
+	// lose the bar
+	if (mBar)
+		HealthBarManager::getSingleton().remove(mBar);
 	mBar = 0;
 
-	// remove it from the teams enemy lists
+	// remove this from the teams enemy lists
 	if (getTeamNum() >= 0)
 		for (int i=0; i<Physics::getSingleton().numTeams(); i++)
 			if (i != getTeamNum())

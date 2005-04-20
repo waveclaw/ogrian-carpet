@@ -1,4 +1,4 @@
-Ogrian Carpet v0.7.1
+Ogrian Carpet v0.7.2
 http://ogrian.sf.net
 ======================
 
@@ -46,7 +46,7 @@ Spells
 
 The spells that you have are shown at the top of the screen:
 
-The Claim spell allows you to claim mana and huts. 
+The Claim spell allows you to claim mana and huts. It also heals your monsters.
 
 The Build spell allows you to build a castle. Once you have build a castle, this spell will build a free-standing tower anywhere on the map (except very near water or other buildings). If you cast it on an allies castle, some of your mana will be transfered to them.
 
@@ -106,15 +106,6 @@ skins:
 -Jess Prosser
 -Mike Prosser
 -Rick Prosser
-
-beta testers:
--Marty Cole
--Lawrence Kincheloe 
--Steven "Max" Powers
--Jess Prosser
--Rick Prosser
--Corey Ulmer
--Jeremiah "Waveclaw" Powell
 
 sprites:
 -Mike Prosser

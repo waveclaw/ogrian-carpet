@@ -155,6 +155,12 @@
 				RelativePath="OgrianGame.h">
 			</File>
 			<File
+				RelativePath="OgrianHealthBarManager.cpp">
+			</File>
+			<File
+				RelativePath="OgrianHealthBarManager.h">
+			</File>
+			<File
 				RelativePath="OgrianHeightMap.cpp">
 			</File>
 			<File

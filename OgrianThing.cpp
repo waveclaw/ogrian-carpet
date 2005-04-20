@@ -389,7 +389,7 @@ void Thing::_updateVisibility()
 
 	// check the distance from the camera
 	Thing* cam = Renderer::getSingleton().getCameraThing();
-	if (cylinderDistance(cam) < CONR("THING_CULL_DIST") || isBuilding())
+	if (sphereDistance(cam) < CONR("THING_CULL_DIST") || isBuilding())
 	{
 		// add it if its close enough
 		if (!mVisRep->inRenderer())

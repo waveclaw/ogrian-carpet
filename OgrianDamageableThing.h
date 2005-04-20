@@ -41,31 +41,6 @@ namespace Ogrian
 {
 
 //////////////////////////////////////////////////////////////////////////////////////
-class HealthBarEffect : public Thing
-{
-public:
-	HealthBarEffect(Vector3 pos, Real height, Real width)
-		: Thing("Ogrian/Wizard/HealthBar", SPRITE, "HealthBar", true, 1, pos)
-	{
-		setHeight(height);
-		mOffset = Vector3(0,CONR("HEALTHBAR_OFFSET"),0);
-
-		update(pos, width);
-	}
-
-	virtual void update(Vector3 pos, Real width)
-	{	
-		setPosition(pos+mOffset);
-		setWidth(width);
-	}
-
-	virtual ThingType getType()	{ return EFFECT; }
-
-private:
-	Vector3 mOffset;
-};
-
-//////////////////////////////////////////////////////////////////////////////////////
 class DamageableThing : public Thing
 {
 public:
@@ -100,7 +75,7 @@ private:
 
 	bool mHasBar;
 
-	HealthBarEffect* mBar;
+	Billboard* mBar;
 };
 
 }
