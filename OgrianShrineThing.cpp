@@ -95,10 +95,11 @@ ShrineThing::ShrineThing(Vector3 pos, int skin)
 		setColour(ColourValue::White);
 		mBall = new ShrineBallThing(this);
 		Physics::getSingleton().addThing(mBall);
+
+		setPosition(pos);
+		BuildingHeightMap::getSingleton().moldLandscape(this);
 	}
 	
-	setPosition(pos);
-	BuildingHeightMap::getSingleton().moldLandscape(this);
 }
 
 //----------------------------------------------------------------------------
@@ -184,6 +185,8 @@ void ShrineThing::setPosition(Vector3 pos)
 
 	if (mBall)
         mBall->setPosition(pos);
+	
+	BuildingHeightMap::getSingleton().moldLandscape(this);
 }
 
 //----------------------------------------------------------------------------
