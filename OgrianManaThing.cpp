@@ -61,12 +61,24 @@ ManaThing::ManaThing(int amount, Vector3 pos)
 // change the colour to reflect team ownership
 void ManaThing::setTeamNum(int teamNum)
 {
+	// notify our old wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = 0;
+	if (team) wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeManaBall(getAmount());
+
 	// change the colour
 	Team*  newTeam = Physics::getSingleton().getTeam(teamNum);
 	if (newTeam) setColour(newTeam->getColour());
 	setUpdateFlag();
 
 	Thing::setTeamNum(teamNum);
+
+	// notify our new wizard
+	team = Physics::getSingleton().getTeam(getTeamNum());
+	wiz = 0;
+	if (team) wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addManaBall(getAmount());
 }
 
 //----------------------------------------------------------------------------
@@ -85,6 +97,12 @@ void ManaThing::claim(int teamNum)
 void ManaThing::setAmount(int amount)
 {
 	if (amount < 0) amount = 0;
+
+	// notify our new wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = 0;
+	if (team) wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addManaBall(amount - mAmount);
 
 	mAmount=amount;
 

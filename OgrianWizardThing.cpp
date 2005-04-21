@@ -90,6 +90,7 @@ void WizardThing::reset()
 	mGhost = false;
 	mFrameTime = 0;
 
+	mNumManaBalls = 0;
 	mNumShrines = 0;
 	mNumTowers = 0;
 	mNumSentinels = 0;
@@ -113,6 +114,7 @@ void WizardThing::reset()
 	// reset the HUD counters
 	if (getType() == CAMERATHING)
 	{
+		setNumManaBalls(mNumManaBalls);
 		setNumShrines(mNumShrines);
 		setNumTowers(mNumTowers);
 		setNumSentinels(mNumSentinels);
@@ -328,6 +330,7 @@ void WizardThing::handleMessage(int msg, Vector3 vec, int val)
 		case SET_HEALTH:			setHealth(val);			break;
 		case SET_ACTIVE_MANA:		setActiveMana(val);		break;
 		case SET_BASE_MANA:			setBaseMana(val);		break;
+		case SET_NUM_MANABALLS:		setNumManaBalls(val);	break;
 		case SET_NUM_SHRINES:		setNumShrines(val);		break;
 		case SET_NUM_TOWERS:		setNumTowers(val);		break;
 		case SET_NUM_SENTINELS:		setNumSentinels(val);	break;
@@ -336,6 +339,17 @@ void WizardThing::handleMessage(int msg, Vector3 vec, int val)
 		case SET_NUM_ALBATROSSES:	setNumAlbatrosses(val);	break;
 		}
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumManaBalls(int num)
+{
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumManaBalls(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_MANABALLS, getPosition(), num, getUID());
 }
 
 //----------------------------------------------------------------------------
@@ -440,6 +454,29 @@ void WizardThing::setScore()
 			sendMessage(SET_NUM_ALBATROSSES, getPosition(), score, getUID());
 		}
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addManaBall(int amount)
+{
+	mNumManaBalls += amount;
+	setNumManaBalls(mNumManaBalls);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeManaBall(int amount)
+{
+	mNumManaBalls -= amount;
+	setNumManaBalls(mNumManaBalls);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numManaBalls()
+{
+	return mNumManaBalls;
 }
 
 //----------------------------------------------------------------------------
@@ -677,7 +714,7 @@ void WizardThing::setPosition(Vector3 pos)
 	}
 
 	// speed limit
-	if (mFrameTime > 0)
+	if (mFrameTime > 0 && !mSpeeding)
 	{
 		Vector3 path = pos - getPosition();
 		if (path.length() > CONR("CAMERA_MOVE_SPEED") * mFrameTime)

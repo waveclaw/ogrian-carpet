@@ -55,6 +55,8 @@ Game::Game()
 	mLava = false;
 	mStartPos = Vector3(0,0,0);
 	loadSounds();
+
+	mMapMusic = CONS("THEME_MUSIC");
 }
 
 //----------------------------------------------------------------------------

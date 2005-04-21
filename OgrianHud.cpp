@@ -49,6 +49,7 @@ Hud::Hud()
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
+	mManas = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Manas");
 	mShrines = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Shrines");
 	mTowers = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Towers");
 	mSentinels = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Sentinels");
@@ -56,6 +57,7 @@ Hud::Hud()
 	mTicks = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Ticks");
 	mAlbatrosses = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Albatrosses");
 	
+	mManasIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/ManasIcon");
 	mShrinesIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/ShrinesIcon");
 	mTowersIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/TowersIcon");
 	mSentinelsIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SentinelsIcon");
@@ -167,6 +169,27 @@ void Hud::setMana()
 	base << mBaseMana;
 
 	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumManaBalls(int num)
+{
+	if (num > 0)
+	{
+		mManas->show();
+		mManasIcon->show();
+
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mManas->setCaption(numstr.str());
+	}
+	else
+	{
+		mManas->hide();
+		mManasIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------

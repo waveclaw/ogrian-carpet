@@ -46,6 +46,7 @@ enum MessageType
 	SET_HEALTH,
 	SET_ACTIVE_MANA,
 	SET_BASE_MANA,
+	SET_NUM_MANABALLS,
 	SET_NUM_SHRINES,
 	SET_NUM_TOWERS,
 	SET_NUM_SENTINELS,
@@ -109,6 +110,10 @@ public:
 	virtual int numShrines();
 
 	// track these
+	virtual void addManaBall(int amount);
+	virtual void removeManaBall(int amount);
+	virtual int numManaBalls();
+
 	virtual void addTower();
 	virtual void removeTower();
 	virtual int numTowers();
@@ -148,6 +153,7 @@ private:
 	int mActiveMana;
 	int mBaseMana;
 
+	int mNumManaBalls;
 	int mNumShrines;
 	int mNumTowers;
 	int mNumSentinels;
@@ -160,6 +166,7 @@ private:
 
 	Real getGroundHeight(Vector3 pos);
 
+	void setNumManaBalls(int num);
 	void setNumShrines(int num);
 	void setNumTowers(int num);
 	void setNumSentinels(int num);

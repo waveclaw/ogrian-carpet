@@ -75,6 +75,7 @@ public:
 	void setHealth(int health);
 
 	// set the hud counters
+	void setNumManaBalls(int num);
 	void setNumShrines(int num);
 	void setNumTowers(int num);
 	void setNumSentinels(int num);
@@ -112,6 +113,7 @@ private:
 	GuiElement* mMessage;
 	GuiElement* mSpellName;
 
+	GuiElement* mManas;
 	GuiElement* mShrines;
 	GuiElement* mTowers;
 	GuiElement* mSentinels;
@@ -119,6 +121,7 @@ private:
 	GuiElement* mTicks;
 	GuiElement* mAlbatrosses;
 
+	GuiElement* mManasIcon;
 	GuiElement* mShrinesIcon;
 	GuiElement* mTowersIcon;
 	GuiElement* mSentinelsIcon;

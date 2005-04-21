@@ -21,6 +21,13 @@ Ogrian/HUD/Overlay
 
 
 
+	container TextArea(Ogrian/HUD/Manas) : SS/Templates/BasicText
+	{
+		left .86
+		top .1
+		width .25
+   		caption X1
+	}
 	container TextArea(Ogrian/HUD/Shrines) : SS/Templates/BasicText
 	{
 		left .87
@@ -64,6 +71,14 @@ Ogrian/HUD/Overlay
    		caption X5
 	}
 
+	container Panel(Ogrian/HUD/ManasIcon)
+	{
+		left .9
+		top .075
+		width .08
+		height .1
+		material Ogrian/Mana
+	}
 	container Panel(Ogrian/HUD/ShrinesIcon)
 	{
 		left .9
