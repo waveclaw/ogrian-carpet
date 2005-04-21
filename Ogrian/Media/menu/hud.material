@@ -49,3 +49,23 @@ material Ogrian/HudMana
 		}
 	}
 }
+
+material Ogrian/HudShrineGlow
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+			fog_override true
+
+			texture_unit
+			{
+				texture sprites/shrineglow.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

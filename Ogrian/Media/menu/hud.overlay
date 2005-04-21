@@ -85,7 +85,7 @@ Ogrian/HUD/Overlay
 		top .175
 		width .08
 		height .1
-		material Ogrian/ShrineGlow
+		material Ogrian/HudShrineGlow
 	}
 	container Panel(Ogrian/HUD/TowersIcon)
 	{
