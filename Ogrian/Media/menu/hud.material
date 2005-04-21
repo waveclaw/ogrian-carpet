@@ -14,3 +14,19 @@ material Ogrian/Crosshair
 		}
 	}
 }
+
+material Ogrian/HudBackground
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture hud_background.png
+			}
+		}
+	}
+}

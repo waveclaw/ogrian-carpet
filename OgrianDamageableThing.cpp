@@ -180,12 +180,12 @@ void DamageableThing::setTeamNum(int teamNum)
 
 void DamageableThing::destroy()
 {
-	Thing::destroy();
-
 	// lose the bar
 	if (mBar)
 		HealthBarManager::getSingleton().remove(mBar);
 	mBar = 0;
+
+	Thing::destroy();
 
 	// remove this from the teams enemy lists
 	if (getTeamNum() >= 0)

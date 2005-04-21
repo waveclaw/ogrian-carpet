@@ -1,6 +1,19 @@
 // Ogre overlay scripts
 #include <BasicOgreGuiTemplates.inc>
 
+Ogrian/HUD/Background
+{
+	zorder 440
+
+	container Panel(Ogrian/HUD/Background/Image)
+	{
+		left 0
+		top 0
+		width 1
+		height 1
+		material Ogrian/HudBackground
+	}
+}
 
 Ogrian/HUD/Overlay
 {
@@ -10,46 +23,98 @@ Ogrian/HUD/Overlay
 
 	container TextArea(Ogrian/HUD/Shrines) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .2
 		width .25
    		caption X1
 	}
 	container TextArea(Ogrian/HUD/Towers) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .3
 		width .25
    		caption X2
 	}
 	container TextArea(Ogrian/HUD/Sentinels) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .4
 		width .25
    		caption X3
 	}
 	container TextArea(Ogrian/HUD/Gnomes) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .5
 		width .25
    		caption X4
 	}
 	container TextArea(Ogrian/HUD/Ticks) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .6
 		width .25
    		caption X5
 	}
 	container TextArea(Ogrian/HUD/Albatrosses) : SS/Templates/BasicText
 	{
-		left .9
+		left .87
 		top .7
 		width .25
    		caption X5
 	}
+
+	container Panel(Ogrian/HUD/ShrinesIcon)
+	{
+		left .9
+		top .175
+		width .08
+		height .1
+		material Ogrian/SpellIcon/ClaimSpell/Enabled
+	}
+	container Panel(Ogrian/HUD/TowersIcon)
+	{
+		left .9
+		top .275
+		width .08
+		height .1
+		material Ogrian/SpellIcon/BuildSpell/Enabled
+	}
+	container Panel(Ogrian/HUD/SentinelsIcon)
+	{
+		left .9
+		top .375
+		width .08
+		height .1
+		material Ogrian/SpellIcon/Sentinel/Enabled
+	}
+	container Panel(Ogrian/HUD/GnomesIcon)
+	{
+		left .9
+		top .475
+		width .08
+		height .1
+		material Ogrian/SpellIcon/Gnome/Enabled
+	}
+	container Panel(Ogrian/HUD/TicksIcon)
+	{
+		left .9
+		top .575
+		width .08
+		height .1
+		material Ogrian/SpellIcon/Tick/Enabled
+	}
+	container Panel(Ogrian/HUD/AlbatrossesIcon)
+	{
+		left .9
+		top .675
+		width .08
+		height .1
+		material Ogrian/SpellIcon/Albatross/Enabled
+	}
+
+
+
 	container TextArea(Ogrian/HUD/Score) : SS/Templates/BasicText
 	{
 		left .8

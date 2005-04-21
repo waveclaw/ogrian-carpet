@@ -41,6 +41,8 @@ namespace Ogrian
 
 Hud::Hud()
 {
+	mBackground = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Background");
+
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
 	mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
@@ -53,6 +55,13 @@ Hud::Hud()
 	mGnomes = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Gnomes");
 	mTicks = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Ticks");
 	mAlbatrosses = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Albatrosses");
+	
+	mShrinesIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/ShrinesIcon");
+	mTowersIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/TowersIcon");
+	mSentinelsIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SentinelsIcon");
+	mGnomesIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/GnomesIcon");
+	mTicksIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/TicksIcon");
+	mAlbatrossesIcon = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/AlbatrossesIcon");
 	
 	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
 
@@ -91,6 +100,7 @@ void Hud::toggle()
 
 void Hud::show()
 {
+	mBackground->show();
 	mOverlay->show();
 }
 
@@ -98,6 +108,7 @@ void Hud::show()
 
 void Hud::hide()
 {
+	mBackground->hide();
 	mOverlay->hide();
 }
 
@@ -162,60 +173,126 @@ void Hud::setMana()
 
 void Hud::setNumShrines(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mShrines->show();
+		mShrinesIcon->show();
 
-	mShrines->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mShrines->setCaption(numstr.str());
+	}
+	else
+	{
+		mShrines->hide();
+		mShrinesIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setNumTowers(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mTowers->show();
+		mTowersIcon->show();
 
-	mTowers->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mTowers->setCaption(numstr.str());
+	}
+	else
+	{
+		mTowers->hide();
+		mTowersIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setNumSentinels(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mSentinels->show();
+		mSentinelsIcon->show();
 
-	mSentinels->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mSentinels->setCaption(numstr.str());
+	}
+	else
+	{
+		mSentinels->hide();
+		mSentinelsIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setNumGnomes(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mGnomes->show();
+		mGnomesIcon->show();
 
-	mGnomes->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mGnomes->setCaption(numstr.str());
+	}
+	else
+	{
+		mGnomes->hide();
+		mGnomesIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setNumTicks(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mTicks->show();
+		mTicksIcon->show();
 
-	mTicks->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mTicks->setCaption(numstr.str());
+	}
+	else
+	{
+		mTicks->hide();
+		mTicksIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::setNumAlbatrosses(int num)
 {
-	std::ostringstream numstr("");
-	numstr << num;
+	if (num > 0)
+	{
+		mAlbatrosses->show();
+		mAlbatrossesIcon->show();
 
-	mAlbatrosses->setCaption(numstr.str());
+		std::ostringstream numstr("");
+		numstr << num;
+
+		mAlbatrosses->setCaption(numstr.str());
+	}
+	else
+	{
+		mAlbatrosses->hide();
+		mAlbatrossesIcon->hide();
+	}
 }
 
 //----------------------------------------------------------------------------

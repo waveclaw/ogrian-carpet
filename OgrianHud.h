@@ -104,6 +104,8 @@ private:
 
 	Time mMessageClearTime;
 
+	Overlay* mBackground;
+
 	Overlay* mOverlay;
 	GuiElement* mMana;
 	GuiElement* mHealth;
@@ -116,6 +118,13 @@ private:
 	GuiElement* mGnomes;
 	GuiElement* mTicks;
 	GuiElement* mAlbatrosses;
+
+	GuiElement* mShrinesIcon;
+	GuiElement* mTowersIcon;
+	GuiElement* mSentinelsIcon;
+	GuiElement* mGnomesIcon;
+	GuiElement* mTicksIcon;
+	GuiElement* mAlbatrossesIcon;
 
 	GuiElement* mScore;
 
