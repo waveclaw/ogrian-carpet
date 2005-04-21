@@ -42,7 +42,7 @@ Team::Team(int teamNum, ColourValue colour)
 {
 	mColour = colour;
 	mWizardUID = -1;
-	mCastle = 0;
+	mCastleUID = -1;
 	mScore = 0;
 	mTeamNum = teamNum;
 
@@ -111,21 +111,28 @@ void Team::incrementScore()
 
 void Team::setCastle(Castle* castle)
 {
-	mCastle = castle;
+	mCastleUID = castle->getUID();
 }
 
 //----------------------------------------------------------------------------
 
 Castle* Team::getCastle()
 {
-	return mCastle;
+	return (Castle*)Physics::getSingleton().getThing(mCastleUID);
+}
+
+//----------------------------------------------------------------------------
+
+Thing* Team::getWizard()
+{
+	return Physics::getSingleton().getThing(mWizardUID);
 }
 
 //----------------------------------------------------------------------------
 
 bool Team::hasCastle()
 {
-	return (mCastle != 0);
+	return (mCastleUID >= 0);
 }
 
 //----------------------------------------------------------------------------

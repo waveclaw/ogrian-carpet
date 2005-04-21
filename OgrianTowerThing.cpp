@@ -225,17 +225,24 @@ void TowerThing::die()
 		{
 			int mana = team->getCastle()->getMana() + CONI("TOWER_COST") - CONI("TOWER_DROP");
 			team->getCastle()->setMana(mana);
-		}
 
-		// drop a manathing
-		ManaThing* mana = new ManaThing(CONI("TOWER_DROP"), getPosition());
-		mana->setTeamNum(getTeamNum());
-		Physics::getSingleton().addThing(mana);;
+			// drop the rest of our mana
+			ManaThing* manathing = new ManaThing(CONI("TOWER_DROP"), getPosition());
+			manathing->setTeamNum(getTeamNum());
+			Physics::getSingleton().addThing(manathing);;
+		}
+		else
+		{
+			// drop all of our mana
+			ManaThing* manathing = new ManaThing(CONI("TOWER_COST"), getPosition());
+			manathing->setTeamNum(getTeamNum());
+			Physics::getSingleton().addThing(manathing);;
+		}
 	}
 
 	// notify our wizard
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	WizardThing* wiz = (WizardThing*)team->getWizard();
 	if (wiz) wiz->removeTower();
 
 	destroy();

@@ -197,19 +197,29 @@ void TickThing::collidedGround()
 	
 void TickThing::die()
 {
-	// drop our mana
-	ManaThing* mana = new ManaThing(CONI("TICK_DROP"), getPosition());
-	Physics::getSingleton().addThing(mana);
-	mana->setTeamNum(getTeamNum());
 
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 
-	// add the mana to the castle
 	if (team && team->getCastle())
+	{
+		// return the mana to the castle
 		team->getCastle()->addMana(CONI("TICK_COST") - CONI("TICK_DROP"));
+		
+		// drop the rest of our mana
+		ManaThing* mana = new ManaThing(CONI("TICK_DROP"), getPosition());
+		Physics::getSingleton().addThing(mana);
+		mana->setTeamNum(getTeamNum());
+	}
+	else
+	{
+		// drop all of our mana
+		ManaThing* mana = new ManaThing(CONI("TICK_COST"), getPosition());
+		Physics::getSingleton().addThing(mana);
+		mana->setTeamNum(getTeamNum());
+	}
 
 	// notify our wizard
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	WizardThing* wiz = (WizardThing*)team->getWizard();
 	if (wiz) wiz->removeTick();
 
 	// self destruct

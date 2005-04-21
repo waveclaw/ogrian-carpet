@@ -2,11 +2,10 @@ Ogrian Carpet Notes
 
 for 0.8:
 =========
-amry counters
+amry counter icons
 thing placement image
 multipage menu system
 health/mana hud bars
-make monsters and towers without castles drop all of their mana when they die
 
 
 to add later:

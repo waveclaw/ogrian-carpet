@@ -53,6 +53,7 @@ public:
 	int getWizardUID();
 	void setWizardUID(int uid);
 	bool hasWizard();
+	Thing* getWizard();
 
 	// the team's score
 	void setScore(int score);
@@ -78,9 +79,8 @@ private:
 	int mTeamNum;
 	int mScore;
 	int mWizardUID;
+	int mCastleUID;
 	ColourValue mColour;
-
-	Castle* mCastle;
 
 	std::vector<DamageableThing*> mEnemies;
 };
