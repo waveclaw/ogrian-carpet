@@ -77,7 +77,7 @@ Ogrian/HUD/Overlay
 		top .075
 		width .08
 		height .1
-		material Ogrian/Mana
+		material Ogrian/HudMana
 	}
 	container Panel(Ogrian/HUD/ShrinesIcon)
 	{
@@ -85,7 +85,7 @@ Ogrian/HUD/Overlay
 		top .175
 		width .08
 		height .1
-		material Ogrian/SpellIcon/ClaimSpell/Enabled
+		material Ogrian/ShrineGlow
 	}
 	container Panel(Ogrian/HUD/TowersIcon)
 	{

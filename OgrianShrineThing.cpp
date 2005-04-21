@@ -43,7 +43,7 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 
 ShrineBallThing::ShrineBallThing(Thing* shrine)
-	: Thing("Ogrian/ShrineBall", SPRITE, "ShrineBall", false, CONR("SHRINE_BALL_SCALE"), Vector3(0,0,0), SPHERE)
+	: Thing("Ogrian/ShrineGlow", SPRITE, "ShrineBall", true, CONR("SHRINE_BALL_SCALE"), Vector3(0,0,0), SPHERE)
 {
 	mShrine = shrine;
 	setColour(ColourValue::White);
@@ -59,7 +59,7 @@ void ShrineBallThing::setColour(ColourValue& colour)
 	}
 	else
 	{
-		setMaterial("Ogrian/ShrineBall");
+		setMaterial("Ogrian/ShrineGlow");
 		playSound(Game::getSingleton().SOUND_HUM);
 	}
 

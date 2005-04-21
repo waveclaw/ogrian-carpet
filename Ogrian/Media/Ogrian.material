@@ -12,6 +12,25 @@ material 1 - Default
 	}
 }
 
+material Ogrian/ShrineGlow
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+			fog_override true
+
+			texture_unit
+			{
+				texture sprites/shrineglow.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
 material Ogrian/HealthBar
 {
 	technique
@@ -72,26 +91,6 @@ material Ogrian/Clay
 }
 
 material Ogrian/ClaimSpell
-{
-	technique
-	{
-		pass
-		{
-			scene_blend alpha_blend
-			depth_write off
-			lighting off
-
-			texture_unit
-			{	
-
-				texture halo.png
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Ogrian/ShrineBall
 {
 	technique
 	{
