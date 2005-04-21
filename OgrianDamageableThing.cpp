@@ -74,7 +74,7 @@ void DamageableThing::move(Real time)
 	Thing::move(time);
 	
 	// update health bar
-	if (mHasBar)
+	if (mHasBar && isAlive())
 	{
 		if (mBar)
 		{
@@ -182,8 +182,10 @@ void DamageableThing::destroy()
 {
 	// lose the bar
 	if (mBar)
+	{
 		HealthBarManager::getSingleton().remove(mBar);
-	mBar = 0;
+		mBar = 0;
+	}
 
 	Thing::destroy();
 

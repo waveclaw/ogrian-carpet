@@ -124,16 +124,26 @@ void AlbatrossThing::die()
 	// make an explosion
 	Physics::getSingleton().addEffect(new AlbatrossBlastEffect(getPosition()));
 
-	// drop our mana
-	ManaThing* mana = new ManaThing(CONI("ALBATROSS_DROP"), getPosition());
-	Physics::getSingleton().addThing(mana);
-	mana->setTeamNum(getTeamNum());
 
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 
-	// add the mana to the castle
 	if (team && team->getCastle())
+	{
+		// return the mana to the castle
 		team->getCastle()->addMana(CONI("ALBATROSS_COST") - CONI("ALBATROSS_DROP"));
+		
+		// drop some of our mana
+		ManaThing* mana = new ManaThing(CONI("ALBATROSS_DROP"), getPosition());
+		Physics::getSingleton().addThing(mana);
+		mana->setTeamNum(getTeamNum());
+	}
+	else
+	{
+		// drop all of our mana
+		ManaThing* mana = new ManaThing(CONI("ALBATROSS_COST"), getPosition());
+		Physics::getSingleton().addThing(mana);
+		mana->setTeamNum(getTeamNum());
+	}
 
 	// notify our wizard
 	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
