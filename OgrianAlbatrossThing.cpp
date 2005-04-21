@@ -52,6 +52,10 @@ AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Ve
 		Team* team = Physics::getSingleton().getTeam(teamNum);
 		Castle* castle = team->getCastle();
 		castle->setMana(castle->getMana() - CONI("ALBATROSS_COST"));
+
+		// notify our wizard
+		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz) wiz->addAlbatross();
 	}
 
 	getVisRep()->addPose("Ogrian/Crane/Up/");
@@ -71,11 +75,6 @@ AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Ve
 
 	mLastFlap = false;
 	mDeathTime = Clock::getSingleton().getTime() + CONT("ALBATROSS_LIFETIME");
-
-	// notify our wizard
-	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-	if (wiz) wiz->addAlbatross();
 
 	playSound(Game::getSingleton().SOUND_CHIRP);
 }

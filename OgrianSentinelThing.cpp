@@ -46,7 +46,14 @@ SentinelThing::SentinelThing(int teamNum, Vector3 pos)
 	setThinkPeriod(CONR("SENTINEL_THINK_PERIOD"));
 	
 	if (!Multiplayer::getSingleton().isClient())
+	{
 		setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+
+		// notify our wizard
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz) wiz->addSentinel();
+	}
 
 	getVisRep()->addPose("Ogrian/Sentinel/");
 	getVisRep()->setPose(0);
@@ -56,10 +63,6 @@ SentinelThing::SentinelThing(int teamNum, Vector3 pos)
 
 	setPosY(getGroundY()+CONR("SENTINEL_SCALE")/2);
 
-	// notify our wizard
-	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-	if (wiz) wiz->addSentinel();
 }
 
 //----------------------------------------------------------------------------

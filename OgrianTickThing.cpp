@@ -46,7 +46,20 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	setThinkPeriod(CONR("TICK_THINK_PERIOD"));
 	
 	if (!Multiplayer::getSingleton().isClient())
+	{
 		setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+
+		// notify our wizard
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz) wiz->addTick();
+
+		// set our formation offset
+		Real angle = Math::RangeRandom(0,2*Math::PI);
+		Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+		mFormationOffset.x = sin(angle)*distance;
+		mFormationOffset.z = cos(angle)*distance;
+	}
 
 	getVisRep()->addPose("Ogrian/Tick/Sitting/");
 	getVisRep()->addPose("Ogrian/Tick/Jumping/");
@@ -59,16 +72,7 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 
 	setGroundScan(true);
 	
-	// set our formation offset
-	Real angle = Math::RangeRandom(0,2*Math::PI);
-	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
-	mFormationOffset.x = sin(angle)*distance;
-	mFormationOffset.z = cos(angle)*distance;
 
-	// notify our wizard
-	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-	if (wiz) wiz->addTick();
 }
 //----------------------------------------------------------------------------
 

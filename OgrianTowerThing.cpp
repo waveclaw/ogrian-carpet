@@ -63,7 +63,6 @@ void TowerBallThing::think()
 
 void TowerBallThing::collided(Thing* e)
 {
-	//LogManager::getSingleton().logMessage("tower ball collided");
 	// periodically heal own team's wizard
 	if (mHeal)
 		if (e->getType() == WIZARDTHING || e->getType() == CAMERATHING)

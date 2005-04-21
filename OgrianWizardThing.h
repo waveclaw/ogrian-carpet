@@ -46,6 +46,7 @@ enum MessageType
 	SET_HEALTH,
 	SET_ACTIVE_MANA,
 	SET_BASE_MANA,
+
 	SET_NUM_MANABALLS,
 	SET_NUM_SHRINES,
 	SET_NUM_TOWERS,
@@ -53,6 +54,8 @@ enum MessageType
 	SET_NUM_GNOMES,
 	SET_NUM_TICKS,
 	SET_NUM_ALBATROSSES,
+
+	SET_SCORE,
 };
 
 class WizardThing : public DamageableThing

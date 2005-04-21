@@ -170,7 +170,7 @@ void WizardThing::setBaseMana(int baseMana)
 
 	// send out the update if this is a server
 	else if (Multiplayer::getSingleton().isServer())
-		sendMessage(SET_ACTIVE_MANA, getPosition(), baseMana, getUID());
+		sendMessage(SET_BASE_MANA, getPosition(), baseMana, getUID());
 }
 
 //----------------------------------------------------------------------------
@@ -330,6 +330,7 @@ void WizardThing::handleMessage(int msg, Vector3 vec, int val)
 		case SET_HEALTH:			setHealth(val);			break;
 		case SET_ACTIVE_MANA:		setActiveMana(val);		break;
 		case SET_BASE_MANA:			setBaseMana(val);		break;
+
 		case SET_NUM_MANABALLS:		setNumManaBalls(val);	break;
 		case SET_NUM_SHRINES:		setNumShrines(val);		break;
 		case SET_NUM_TOWERS:		setNumTowers(val);		break;
@@ -337,6 +338,8 @@ void WizardThing::handleMessage(int msg, Vector3 vec, int val)
 		case SET_NUM_GNOMES:		setNumGnomes(val);		break;
 		case SET_NUM_TICKS:			setNumTicks(val);		break;
 		case SET_NUM_ALBATROSSES:	setNumAlbatrosses(val);	break;
+
+		case SET_SCORE: Hud::getSingleton().setScore(val); break;
 		}
 	}
 }
@@ -444,15 +447,13 @@ void WizardThing::setScore()
 		score += mNumTicks * CONI("TICK_COST");
 		score += mNumAlbatrosses * CONI("ALBATROSS_COST");
 
+		team->setScore(score);
+
 		if (getType() == CAMERATHING)
 			Hud::getSingleton().setScore(score);
 
 		else if (Multiplayer::getSingleton().isServer())
-		{
-			team->setScore(score);
-
-			sendMessage(SET_NUM_ALBATROSSES, getPosition(), score, getUID());
-		}
+			sendMessage(SET_SCORE, getPosition(), score, getUID());
 	}
 }
 

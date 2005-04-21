@@ -45,7 +45,14 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 	setThinkPeriod(CONR("GNOME_THINK_PERIOD"));
 	
 	if (!Multiplayer::getSingleton().isClient())
+	{
 		setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+
+		// notify our wizard
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz) wiz->addGnome();
+	}	
 
 	getVisRep()->addPose("Ogrian/Gnome/Sitting/");
 	getVisRep()->addPose("Ogrian/Gnome/Attacking/");
@@ -63,11 +70,6 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
 	mFormationOffset.x = sin(angle)*distance;
 	mFormationOffset.z = cos(angle)*distance;
-	
-	// notify our wizard
-	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-	if (wiz) wiz->addGnome();
 }
 
 //----------------------------------------------------------------------------
