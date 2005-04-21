@@ -86,10 +86,16 @@ void WizardThing::reset()
 	mStopSpeedTime = 0;
 	mActiveMana = 0;
 	mBaseMana = 0;
-	mNumShrines = 0;
 	mTeam = 0;
 	mGhost = false;
 	mFrameTime = 0;
+
+	mNumShrines = 0;
+	mNumTowers = 0;
+	mNumSentinels = 0;
+	mNumGnomes = 0;
+	mNumTicks = 0;
+	mNumAlbatrosses = 0;
 
 	// make a team for this wizard'
 	if (!Multiplayer::getSingleton().isClient())
@@ -102,8 +108,17 @@ void WizardThing::reset()
 
 	// add this player to the server
 	if (Multiplayer::getSingleton().isServer() && getType() == CAMERATHING)
-	{
 		Multiplayer::getSingleton().serverAddCameraPlayer(this);
+
+	// reset the HUD counters
+	if (getType() == CAMERATHING)
+	{
+		setNumShrines(mNumShrines);
+		setNumTowers(mNumTowers);
+		setNumSentinels(mNumSentinels);
+		setNumGnomes(mNumGnomes);
+		setNumTicks(mNumTicks);
+		setNumAlbatrosses(mNumAlbatrosses);
 	}
 
 }
@@ -132,19 +147,11 @@ void WizardThing::setActiveMana(int activeMana)
 
 	// update the hud if this is a camerathing
 	if (getType() == CAMERATHING)
-	{
 		Hud::getSingleton().setActiveMana(activeMana);
-	}
 
 	// send out the update if this is a server
 	else if (Multiplayer::getSingleton().isServer())
-	{
-		// find the wizard's player
-		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
-
-		// update it
-		Multiplayer::getSingleton().serverSendInt(activeMana, ID_SET_ACTIVE_MANA, player);
-	}
+		sendMessage(SET_ACTIVE_MANA, getPosition(), activeMana, getUID());
 }
 
 //----------------------------------------------------------------------------
@@ -153,21 +160,15 @@ void WizardThing::setBaseMana(int baseMana)
 {
 	mBaseMana = baseMana;
 	
+	setScore();
+
 	// update the hud if this is a camerathing
 	if (getType() == CAMERATHING)
-	{
 		Hud::getSingleton().setBaseMana(baseMana);
-	}
 
 	// send out the update if this is a server
 	else if (Multiplayer::getSingleton().isServer())
-	{
-		// find the wizard's player
-		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
-
-		// update it
-		Multiplayer::getSingleton().serverSendInt(baseMana, ID_SET_BASE_MANA, player);
-	}
+		sendMessage(SET_ACTIVE_MANA, getPosition(), baseMana, getUID());
 }
 
 //----------------------------------------------------------------------------
@@ -176,12 +177,7 @@ void WizardThing::subtractActiveMana(int amount)
 {
 	if (amount == 0) return;
 
-	// send an update if this is a client
-	if (Multiplayer::getSingleton().isClient())
-		Multiplayer::getSingleton().clientSendInt(mActiveMana - amount, ID_SET_ACTIVE_MANA);
-	else
-		setActiveMana(mActiveMana - amount);
-
+	setActiveMana(mActiveMana - amount);
 }
 
 //----------------------------------------------------------------------------
@@ -271,14 +267,11 @@ void WizardThing::setHealth(int health)
 
 	DamageableThing::setHealth(health);
 
-	if (Multiplayer::getSingleton().isServer() && getType() != CAMERATHING && getUID() >= 0)
-	{
-		// find the wizard's player
-		PlayerID player = Multiplayer::getSingleton().getPlayerID(getUID());
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setHealth(health);
 
-		// update it
-		Multiplayer::getSingleton().serverSendInt(health, ID_SET_HEALTH, player);
-	}
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_HEALTH, getPosition(), health, getUID());
 }
 //----------------------------------------------------------------------------
 
@@ -326,9 +319,135 @@ void WizardThing::collided(Thing* e)
 
 //----------------------------------------------------------------------------
 
+void WizardThing::handleMessage(int msg, Vector3 vec, int val)
+{
+	if (getType() == CAMERATHING)
+	{
+		switch (msg)
+		{
+		case SET_HEALTH:			setHealth(val);			break;
+		case SET_ACTIVE_MANA:		setActiveMana(val);		break;
+		case SET_BASE_MANA:			setBaseMana(val);		break;
+		case SET_NUM_SHRINES:		setNumShrines(val);		break;
+		case SET_NUM_TOWERS:		setNumTowers(val);		break;
+		case SET_NUM_SENTINELS:		setNumSentinels(val);	break;
+		case SET_NUM_GNOMES:		setNumGnomes(val);		break;
+		case SET_NUM_TICKS:			setNumTicks(val);		break;
+		case SET_NUM_ALBATROSSES:	setNumAlbatrosses(val);	break;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumShrines(int num)
+{
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumShrines(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_SHRINES, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumTowers(int num)
+{
+	setScore();
+
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumTowers(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_TOWERS, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumSentinels(int num)
+{
+	setScore();
+
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumSentinels(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_SENTINELS, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumGnomes(int num)
+{
+	setScore();
+
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumGnomes(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_GNOMES, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumTicks(int num)
+{
+	setScore();
+
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumTicks(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_TICKS, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setNumAlbatrosses(int num)
+{
+	setScore();
+
+	if (getType() == CAMERATHING)
+		Hud::getSingleton().setNumAlbatrosses(num);
+
+	else if (Multiplayer::getSingleton().isServer())
+		sendMessage(SET_NUM_ALBATROSSES, getPosition(), num, getUID());
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::setScore()
+{
+	if (!Multiplayer::getSingleton().isClient())
+	{
+		Team* team = Physics::getSingleton().getTeam(getTeamNum());
+
+		// calcualte score
+		int score = mBaseMana;
+		score += mNumTowers * CONI("TOWER_COST");
+		score += mNumSentinels * CONI("SENTINEL_COST");
+		score += mNumGnomes * CONI("GNOME_COST");
+		score += mNumTicks * CONI("TICK_COST");
+		score += mNumAlbatrosses * CONI("ALBATROSS_COST");
+
+		if (getType() == CAMERATHING)
+			Hud::getSingleton().setScore(score);
+
+		else if (Multiplayer::getSingleton().isServer())
+		{
+			team->setScore(score);
+
+			sendMessage(SET_NUM_ALBATROSSES, getPosition(), score, getUID());
+		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
 void WizardThing::addShrine()
 {
 	mNumShrines++;
+	setNumShrines(mNumShrines);
 }
 
 //----------------------------------------------------------------------------
@@ -336,8 +455,131 @@ void WizardThing::addShrine()
 void WizardThing::removeShrine()
 {
 	mNumShrines--;
+	setNumShrines(mNumShrines);
 }
 	
+//----------------------------------------------------------------------------
+
+int WizardThing::numShrines()
+{
+	return mNumShrines;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addTower()
+{
+	mNumTowers++;
+	setNumTowers(mNumTowers);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeTower()
+{
+	mNumTowers--;
+	setNumTowers(mNumTowers);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numTowers()
+{
+	return mNumTowers;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addSentinel()
+{
+	mNumSentinels++;
+	setNumSentinels(mNumSentinels);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeSentinel()
+{
+	mNumSentinels--;
+	setNumSentinels(mNumSentinels);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numSentinels()
+{
+	return mNumSentinels;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addGnome()
+{
+	mNumGnomes++;
+	setNumGnomes(mNumGnomes);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeGnome()
+{
+	mNumGnomes--;
+	setNumGnomes(mNumGnomes);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numGnomes()
+{
+	return mNumGnomes;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addTick()
+{
+	mNumTicks++;
+	setNumTicks(mNumTicks);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeTick()
+{
+	mNumTicks--;
+	setNumTicks(mNumTicks);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numTicks()
+{
+	return mNumTicks;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::addAlbatross()
+{
+	mNumAlbatrosses++;
+	setNumAlbatrosses(mNumAlbatrosses);
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::removeAlbatross()
+{
+	mNumAlbatrosses--;
+	setNumAlbatrosses(mNumAlbatrosses);
+}
+	
+//----------------------------------------------------------------------------
+
+int WizardThing::numAlbatrosses()
+{
+	return mNumAlbatrosses;
+}
+
 //----------------------------------------------------------------------------
 
 Real WizardThing::getGroundY(Vector3 pos)

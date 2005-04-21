@@ -276,11 +276,12 @@ public:
 	// get the last time a bitstream was generated for this thing
 	virtual Time lastUpdateTime();
 
-	// send a message to instances of this thing on clients
-	virtual void sendMessage(int msg, Vector3 vec);
+	// send a message to instances of this thing on a client. 
+	// the last paramater selects which client to send it to - the default is all clients
+	virtual void sendMessage(int msg, Vector3 vec, int val, int playerWizUID=0);
 
 	// handle messages sent to this thing from the server
-	virtual void handleMessage(int msg, Vector3 vec) { }
+	virtual void handleMessage(int msg, Vector3 vec, int val) { }
 
 	// BE VERY CAREFUL WITH THIS
 	virtual void _setUID(int uid);

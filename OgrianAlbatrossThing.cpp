@@ -72,6 +72,11 @@ AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Ve
 	mLastFlap = false;
 	mDeathTime = Clock::getSingleton().getTime() + CONT("ALBATROSS_LIFETIME");
 
+	// notify our wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addAlbatross();
+
 	playSound(Game::getSingleton().SOUND_CHIRP);
 }
 
@@ -129,6 +134,10 @@ void AlbatrossThing::die()
 	// add the mana to the castle
 	if (team && team->getCastle())
 		team->getCastle()->addMana(CONI("ALBATROSS_COST") - CONI("ALBATROSS_DROP"));
+
+	// notify our wizard
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeAlbatross();
 
 	// self destruct
 	destroy();

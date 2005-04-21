@@ -47,6 +47,15 @@ Hud::Hud()
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
 
+	mShrines = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Shrines");
+	mTowers = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Towers");
+	mSentinels = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Sentinels");
+	mGnomes = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Gnomes");
+	mTicks = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Ticks");
+	mAlbatrosses = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Albatrosses");
+	
+	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
+
 	for (int i=0; i<NUM_SPELLS; i++)
 	{
 		std::ostringstream num("");
@@ -147,6 +156,76 @@ void Hud::setMana()
 	base << mBaseMana;
 
 	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumShrines(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mShrines->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumTowers(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mTowers->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumSentinels(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mSentinels->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumGnomes(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mGnomes->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumTicks(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mTicks->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setNumAlbatrosses(int num)
+{
+	std::ostringstream numstr("");
+	numstr << num;
+
+	mAlbatrosses->setCaption(numstr.str());
+}
+
+//----------------------------------------------------------------------------
+
+void Hud::setScore(int score)
+{
+	std::ostringstream numstr("");
+	numstr << score;
+
+	mScore->setCaption(String(CONS("HUD_SCORE")) + numstr.str());
 }
 
 //----------------------------------------------------------------------------

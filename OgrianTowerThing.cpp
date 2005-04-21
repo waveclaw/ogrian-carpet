@@ -157,6 +157,11 @@ TowerThing::TowerThing(int teamNum, Vector3 pos, int skin)
 		ppos.y = HeightMap::getSingleton().getHeightAt(ppos.x, ppos.z) + CONR("PORTAL_ALTITUDE");
 		mPortal = new PortalThing(this, ppos);
 		Physics::getSingleton().addThing(mPortal);
+
+		// notify our wizard
+		Team* team = Physics::getSingleton().getTeam(teamNum);
+		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+		if (wiz) wiz->addTower();
 	}
 
 }
@@ -227,6 +232,11 @@ void TowerThing::die()
 		mana->setTeamNum(getTeamNum());
 		Physics::getSingleton().addThing(mana);;
 	}
+
+	// notify our wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeTower();
 
 	destroy();
 }

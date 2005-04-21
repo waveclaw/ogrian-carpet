@@ -206,15 +206,9 @@ void CameraThing::move(Real time)
 
 void CameraThing::setHealth(int health)
 {
-	// dont exceed the max health
-	if (health >= CONI("WIZARD_HEALTH"))
-		health = CONI("WIZARD_HEALTH");
-
 	if (isGhost()) health = 0;
 
 	WizardThing::setHealth(health);
-
-	Hud::getSingleton().setHealth(health);
 }
 
 //----------------------------------------------------------------------------

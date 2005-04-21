@@ -55,6 +55,11 @@ SentinelThing::SentinelThing(int teamNum, Vector3 pos)
 	setMaxHealth(CONI("SENTINEL_HEALTH"));
 
 	setPosY(getGroundY()+CONR("SENTINEL_SCALE")/2);
+
+	// notify our wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addSentinel();
 }
 
 //----------------------------------------------------------------------------
@@ -123,6 +128,10 @@ void SentinelThing::die()
 	// add the mana to the castle
 	if (team && team->getCastle())
 		team->getCastle()->addMana(CONI("SENTINEL_COST") - CONI("SENTINEL_DROP"));
+
+	// notify our wizard
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeSentinel();
 
 	// self destruct
 	destroy();

@@ -6,6 +6,58 @@ Ogrian/HUD/Overlay
 {
 	zorder 450
 
+
+
+	container TextArea(Ogrian/HUD/Shrines) : SS/Templates/BasicText
+	{
+		left .9
+		top .2
+		width .25
+   		caption X1
+	}
+	container TextArea(Ogrian/HUD/Towers) : SS/Templates/BasicText
+	{
+		left .9
+		top .3
+		width .25
+   		caption X2
+	}
+	container TextArea(Ogrian/HUD/Sentinels) : SS/Templates/BasicText
+	{
+		left .9
+		top .4
+		width .25
+   		caption X3
+	}
+	container TextArea(Ogrian/HUD/Gnomes) : SS/Templates/BasicText
+	{
+		left .9
+		top .5
+		width .25
+   		caption X4
+	}
+	container TextArea(Ogrian/HUD/Ticks) : SS/Templates/BasicText
+	{
+		left .9
+		top .6
+		width .25
+   		caption X5
+	}
+	container TextArea(Ogrian/HUD/Albatrosses) : SS/Templates/BasicText
+	{
+		left .9
+		top .7
+		width .25
+   		caption X5
+	}
+	container TextArea(Ogrian/HUD/Score) : SS/Templates/BasicText
+	{
+		left .9
+		top .9
+		width .25
+   		caption X5
+	}
+
 	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
 	{
 		left .01

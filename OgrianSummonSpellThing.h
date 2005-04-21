@@ -71,7 +71,12 @@ public:
 	// cant build things inside of other things
 	virtual void collided(Thing* e)
 	{
-		if (e->getType() != WIZARDTHING && e->getType() != CAMERATHING && e->getType() != FOLIAGETHING)
+		if (e->getType() != WIZARDTHING 
+			&& e->getType() != CAMERATHING 
+			&& e->getType() != FOLIAGETHING
+			&& e->getType() != GNOMETHING
+			&& e->getType() != TICKTHING
+			)
 		{
 			Team* team = Physics::getSingleton().getTeam(getTeamNum());
 

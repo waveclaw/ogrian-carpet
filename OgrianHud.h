@@ -74,6 +74,17 @@ public:
 	// set the health 
 	void setHealth(int health);
 
+	// set the hud counters
+	void setNumShrines(int num);
+	void setNumTowers(int num);
+	void setNumSentinels(int num);
+	void setNumGnomes(int num);
+	void setNumTicks(int num);
+	void setNumAlbatrosses(int num);
+
+	// set the score
+	void setScore(int score);
+
 	// set the message, and if temp, clear it after a time
 	void setMessage(String msg, bool temp=false);
 
@@ -98,6 +109,15 @@ private:
 	GuiElement* mHealth;
 	GuiElement* mMessage;
 	GuiElement* mSpellName;
+
+	GuiElement* mShrines;
+	GuiElement* mTowers;
+	GuiElement* mSentinels;
+	GuiElement* mGnomes;
+	GuiElement* mTicks;
+	GuiElement* mAlbatrosses;
+
+	GuiElement* mScore;
 
 	GuiElement* mSpellIcons[NUM_SPELLS];
 };

@@ -41,6 +41,19 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+enum MessageType
+{
+	SET_HEALTH,
+	SET_ACTIVE_MANA,
+	SET_BASE_MANA,
+	SET_NUM_SHRINES,
+	SET_NUM_TOWERS,
+	SET_NUM_SENTINELS,
+	SET_NUM_GNOMES,
+	SET_NUM_TICKS,
+	SET_NUM_ALBATROSSES,
+};
+
 class WizardThing : public DamageableThing
 {
 public:
@@ -93,6 +106,31 @@ public:
 	// each shrine adds a point to regeneration
 	virtual void addShrine();
 	virtual void removeShrine();
+	virtual int numShrines();
+
+	// track these
+	virtual void addTower();
+	virtual void removeTower();
+	virtual int numTowers();
+
+	virtual void addSentinel();
+	virtual void removeSentinel();
+	virtual int numSentinels();
+
+	virtual void addGnome();
+	virtual void removeGnome();
+	virtual int numGnomes();
+
+	virtual void addTick();
+	virtual void removeTick();
+	virtual int numTicks();
+
+	virtual void addAlbatross();
+	virtual void removeAlbatross();
+	virtual int numAlbatrosses();
+
+	// update the hud
+	virtual void handleMessage(int msg, Vector3 vec, int val);
 
 	virtual Real getGroundY(Vector3 pos);
 
@@ -111,11 +149,26 @@ private:
 	int mBaseMana;
 
 	int mNumShrines;
+	int mNumTowers;
+	int mNumSentinels;
+	int mNumGnomes;
+	int mNumTicks;
+	int mNumAlbatrosses;
 
 	Time mNextRegenTime;
 	Time mLastSetPosTime;
 
-	virtual Real getGroundHeight(Vector3 pos);
+	Real getGroundHeight(Vector3 pos);
+
+	void setNumShrines(int num);
+	void setNumTowers(int num);
+	void setNumSentinels(int num);
+	void setNumGnomes(int num);
+	void setNumTicks(int num);
+	void setNumAlbatrosses(int num);
+	
+	// update the score for this wizard
+	void setScore();
 };
 
 }

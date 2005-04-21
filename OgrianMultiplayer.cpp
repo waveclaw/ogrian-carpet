@@ -623,42 +623,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Hud::getSingleton().setMessage(msg);
 			return true;
 		}
-		case ID_SET_HEALTH: //////////////////////////////////////////////////////
-		{
-			// get the new health
-			int pid, health;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(health);
 
-			// set it
-			Hud::getSingleton().setHealth(health);
-			return true;
-		}
-		case ID_SET_BASE_MANA: //////////////////////////////////////////////////////
-		{
-			// get the new base mana
-			int pid, baseMana;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(baseMana);
-
-			// set it
-			Renderer::getSingleton().getCameraThing()->setBaseMana(baseMana);
-			return true;
-		}
-		case ID_SET_ACTIVE_MANA: //////////////////////////////////////////////////////
-		{
-			// get the new base mana
-			int pid, activeMana;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(activeMana);
-
-			// set it
-			Renderer::getSingleton().getCameraThing()->setActiveMana(activeMana);
-			return true;
-		}
 		case ID_DIE: //////////////////////////////////////////////////////
 		{
 			int pid;
@@ -751,12 +716,13 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 		case ID_THINGMESSAGE: //////////////////////////////////////////////////////
 		{
 			// get the thing uid and message
-			int pid, uid, msg;			
+			int pid, uid, msg, val;			
 			Vector3 pos;
 			BitStream bs((const char*)packet->data, packet->length, false);
 			bs.Read(pid);
 			bs.Read(uid);
 			bs.Read(msg);
+			bs.Read(val);
 			bs.Read(pos.x);
 			bs.Read(pos.y);
 			bs.Read(pos.z);
@@ -764,7 +730,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			// handle the message
 			Thing* thing = Physics::getSingleton().getThing(uid);
 			if (thing)
-				thing->handleMessage(msg, pos);
+				thing->handleMessage(msg, pos, val);
 			return true;
 		}
 	}

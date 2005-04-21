@@ -63,6 +63,11 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 	Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
 	mFormationOffset.x = sin(angle)*distance;
 	mFormationOffset.z = cos(angle)*distance;
+	
+	// notify our wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addGnome();
 }
 
 //----------------------------------------------------------------------------
@@ -171,6 +176,10 @@ void GnomeThing::die()
 	// add the mana to the castle
 	if (team && team->getCastle())
 		team->getCastle()->addMana(CONI("GNOME_COST") - CONI("GNOME_DROP"));
+
+	// notify our wizard
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeGnome();
 
 	// self destruct
 	destroy();

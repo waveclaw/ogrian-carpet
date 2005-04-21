@@ -94,7 +94,7 @@ public:
 	virtual void setStateFlyOut();
 	virtual void setStateAttack();
 
-	virtual void handleMessage(int msg, Vector3 vec);
+	virtual void handleMessage(int msg, Vector3 vec, int val);
 
 private:
 	Vector3 mOrbitPos;

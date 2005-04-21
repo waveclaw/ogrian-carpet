@@ -40,6 +40,8 @@ namespace Ogrian
 TickThing::TickThing(int teamNum, Vector3 pos) 
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "TickThing", false, CONR("TICK_SCALE"), pos, SPHERE)
 {
+	mVenom = false;
+
 	setTeamNum(teamNum);
 	setThinkPeriod(CONR("TICK_THINK_PERIOD"));
 	
@@ -63,7 +65,10 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	mFormationOffset.x = sin(angle)*distance;
 	mFormationOffset.z = cos(angle)*distance;
 
-	mVenom = false;
+	// notify our wizard
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->addTick();
 }
 //----------------------------------------------------------------------------
 
@@ -202,6 +207,10 @@ void TickThing::die()
 	// add the mana to the castle
 	if (team && team->getCastle())
 		team->getCastle()->addMana(CONI("TICK_COST") - CONI("TICK_DROP"));
+
+	// notify our wizard
+	WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+	if (wiz) wiz->removeTick();
 
 	// self destruct
 	destroy();

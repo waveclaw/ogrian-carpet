@@ -504,7 +504,7 @@ Real Thing::getGroundY(Vector3 pos)
 
 //----------------------------------------------------------------------------
 
-void Thing::sendMessage(int msg, Vector3 vec)
+void Thing::sendMessage(int msg, Vector3 vec, int val, int playerWizUID)
 {
 	// send this sound to clients if necessary
 	if (Multiplayer::getSingleton().isServer())
@@ -513,11 +513,21 @@ void Thing::sendMessage(int msg, Vector3 vec)
 		bs.Write(ID_THINGMESSAGE);
 		bs.Write(getUID());
 		bs.Write(msg);
+		bs.Write(val);
 		bs.Write(vec.x);
 		bs.Write(vec.y);
 		bs.Write(vec.z);
 
-		Multiplayer::getSingleton().serverSendAll(&bs);
+		if (playerWizUID)
+		{
+			// find the wizard's player
+			PlayerID player = Multiplayer::getSingleton().getPlayerID(playerWizUID);
+        	Multiplayer::getSingleton().serverSend(&bs, player);
+		}
+		else
+		{
+			Multiplayer::getSingleton().serverSendAll(&bs);
+		}
 	}
 }
 

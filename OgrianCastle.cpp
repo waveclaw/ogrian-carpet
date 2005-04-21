@@ -422,9 +422,6 @@ void Castle::setMana(int amount)
 
 	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
 
-	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	team->setScore(amount);
-
 	if (amount > 0) setHealth(CONI("CASTLE_HEALTH"));
 
 	// inform the wizard

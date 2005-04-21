@@ -1,5 +1,6 @@
 0.8
 -made health bars always visible when in range
+-added hud counters for your army
 
 0.7.2
 -huts are now shrines
