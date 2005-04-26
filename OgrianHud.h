@@ -98,7 +98,6 @@ public:
 private:
 	Hud();
 	void setMana(); // acording to mBaseMana and mActiveMana
-	void setHealth(String health);
 
 	int mBaseMana;
 	int mActiveMana;
@@ -130,6 +129,9 @@ private:
 	GuiElement* mAlbatrossesIcon;
 
 	GuiElement* mScore;
+
+	GuiElement* mHealthBar;
+	GuiElement* mManaBar;
 
 	GuiElement* mSpellIcons[NUM_SPELLS];
 };

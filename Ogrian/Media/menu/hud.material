@@ -31,6 +31,41 @@ material Ogrian/HudBackground
 	}
 }
 
+material Ogrian/HudHealthBar
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture hud_healthbar.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Ogrian/HudManaBar
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture hud_manabar.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+
 material Ogrian/HudMana
 {
 	technique

@@ -144,6 +144,8 @@ Ogrian/HUD/Overlay
 		top .8
 		width .25
    		caption Health: 100
+		colour_top 1 .5 .5
+		colour_bottom 1 .5 .5
 	}
 
 	container TextArea(Ogrian/HUD/Mana) : SS/Templates/BasicText
@@ -152,6 +154,26 @@ Ogrian/HUD/Overlay
 		top 0.9
 		width .25
    		caption mana
+		colour_top .5 .5 1
+		colour_bottom .5 .5 1
+	}
+
+	container Panel(Ogrian/HUD/HealthBar)
+	{
+		left .01
+		top .85
+		width .25
+		height .04
+		material Ogrian/HudHealthBar
+	}
+	
+	container Panel(Ogrian/HUD/ManaBar)
+	{
+		left .01
+		top .95
+		width .25
+		height .04
+		material Ogrian/HudManaBar
 	}
 	
 	container TextArea(Ogrian/HUD/Message) : SS/Templates/BasicText

@@ -67,6 +67,9 @@ Hud::Hud()
 	
 	mScore = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Score");
 
+	mHealthBar = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/HealthBar");
+	mManaBar = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/ManaBar");
+
 	for (int i=0; i<NUM_SPELLS; i++)
 	{
 		std::ostringstream num("");
@@ -169,6 +172,10 @@ void Hud::setMana()
 	base << mBaseMana;
 
 	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
+	if (mBaseMana > 0)
+		mManaBar->setWidth((float)mActiveMana / (float)mBaseMana * CONR("HUD_BAR_WIDTH"));
+	else
+		mManaBar->setWidth(0);
 }
 
 //----------------------------------------------------------------------------
@@ -380,21 +387,11 @@ void Hud::setSpellIcon(int num, String material)
 
 void Hud::setHealth(int health)
 {
-	if (health <= 0)
-		setHealth("Game Over - You are Dead!");
-	else
-	{
-        std::ostringstream num("");
-		num << health;
-		setHealth(String(CONS("HUD_HEALTH")) + num.str());
-	}
-}
+    std::ostringstream num("");
+	num << health;
 
-//----------------------------------------------------------------------------
-
-void Hud::setHealth(String health)
-{
-	mHealth->setCaption(health);
+	mHealth->setCaption(String(CONS("HUD_HEALTH")) + num.str());
+	mHealthBar->setWidth((float)health / CONR("WIZARD_HEALTH") * CONR("HUD_BAR_WIDTH"));
 }
 
 //----------------------------------------------------------------------------

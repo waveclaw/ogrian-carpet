@@ -4,7 +4,6 @@ for 0.8:
 =========
 fix hud when ghosting
 multipage menu system with text entry
-health/mana hud bars
 
 
 to add later:
