@@ -178,9 +178,15 @@ void Hud::setMana()
 
 	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
 	if (mBaseMana > 0)
-		mManaBar->setWidth((float)mActiveMana / (float)mBaseMana * CONR("HUD_BAR_WIDTH"));
+	{
+		Real ratio = (float)mActiveMana / (float)mBaseMana;
+		if (ratio > 1) ratio = 1;
+		mManaBar->setWidth(ratio  * CONR("HUD_BAR_WIDTH"));
+	}
 	else
+	{
 		mManaBar->setWidth(0);
+	}
 }
 
 //----------------------------------------------------------------------------
