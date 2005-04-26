@@ -2,6 +2,8 @@
 -made health bars always visible when in range
 -added hud counters for your posessions
 -added a background to the hud to make the text more visible
+-added a loading graphic
+-reorganized the menu into separate screens
 
 
 

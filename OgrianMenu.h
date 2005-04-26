@@ -125,6 +125,7 @@ private:
 	GuiElement* mConfigMenuPanel;
 	GuiElement* mConnectionMenuPanel;
 
+	Overlay* mLoadingOverlay;
 };
 
 }

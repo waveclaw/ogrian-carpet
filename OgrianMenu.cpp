@@ -70,6 +70,8 @@ Menu::Menu()
 	mConfigMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConfigMenuPanel");
 	mConnectionMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConnectionMenuPanel");
 
+	mLoadingOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/LoadingOverlay");
+
 	mMapListPanel->hide();
 	mColourListPanel->hide();
 	mWizardSkinListPanel->hide();
@@ -81,6 +83,8 @@ Menu::Menu()
 	mJoinMenuPanel->hide();
 	mConfigMenuPanel->hide();
 	mConnectionMenuPanel->hide();
+
+	mLoadingOverlay->hide();
 
 	// set up the cursor
 	mCursor = OverlayManager::getSingleton().getCursorGui();
@@ -295,14 +299,15 @@ void Menu::button_musicToggle()
 
 void Menu::button_quit()
 {
-	// hide the menu
-	hide();
+	// do nothing exra
 }
 
 //----------------------------------------------------------------------------
 
 void Menu::button_back()
 {
+	mLoadingOverlay->hide();
+
 	mMapListPanel->hide();
 	mColourListPanel->hide();
 	mWizardSkinListPanel->hide();
@@ -343,6 +348,8 @@ void Menu::button_skirmishload()
 	if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
 
+	button_back();
+
 	loadMap(static_cast<StringResource*>(mMapList->getSelectedItem())->getName());
 }
 
@@ -353,15 +360,14 @@ void Menu::button_hostload()
 	if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
 
-	loadMap(static_cast<StringResource*>(mMapList->getSelectedItem())->getName());
-
-	setMessage(CONS("MSG_SERVER_LOADING"));
-
 	Multiplayer::getSingleton().serverStart();
 
 	button_back();
 	mMainMenuPanel->hide();
 	mConnectionMenuPanel->show();
+
+	loadMap(static_cast<StringResource*>(mMapList->getSelectedItem())->getName());
+	setMessage(CONS("MSG_SERVER_LOADING"));
 }
 
 //----------------------------------------------------------------------------
@@ -385,6 +391,7 @@ void Menu::button_joinload()
 	button_back();
 	mMainMenuPanel->hide();
 	mConnectionMenuPanel->show();
+	mLoadingOverlay->show();
 }
 
 //----------------------------------------------------------------------------
@@ -444,7 +451,9 @@ bool Menu::processKeyInput(InputReader* input)
 	else PlayerList::getSingleton().hide();
 
 	// ESC goes back to the game //////////////////////////////
-    if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0)
+    if ( input->isKeyDown( KC_ESCAPE) && mTimeUntilNextToggle <= 0
+		&& !mLoadingOverlay->isVisible()
+		&& Renderer::getSingleton().getMapName() != "")
     {            
         hide();
     }
@@ -457,10 +466,8 @@ bool Menu::processKeyInput(InputReader* input)
 void Menu::loadMap(String mapname)
 {
 	// Loading...
+	mLoadingOverlay->show();
 	setMessage(CONS("MSG_LOADMAP"));
-
-	// move the camera so the terrain will reload properly
-	//Renderer::getSingleton().getCamera()->setPosition(-100000,0,-100000);
 
 	// stop the game
 	Audio::getSingleton().stop();
@@ -495,6 +502,9 @@ void Menu::frame(Real time)
 		
 		// hide the menu
 		hide();
+
+		// hide the loading screen
+		mLoadingOverlay->hide();
 
 		mLoadMap = false;
 	}

@@ -11,6 +11,19 @@ material Ogrian/Menu/Background
 		}
 	}
 }
+material Ogrian/Menu/Loading
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture menu_loading.jpg
+			}
+		}
+	}
+}
 
 material Examples/Scrollbar/Up
 {

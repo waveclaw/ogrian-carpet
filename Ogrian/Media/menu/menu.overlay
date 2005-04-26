@@ -1,6 +1,19 @@
 // Ogre overlay scripts
 #include <BasicOgreGuiTemplates.inc>
 
+Ogrian/Menu/LoadingOverlay
+{
+	zorder 500
+
+	container Panel(Ogrian/Menu/LoadingPanel)
+	{
+		left 0.25 
+		top 0.25
+		width 0.5
+		height 0.5
+		material Ogrian/Menu/Loading
+	}
+}
 
 Ogrian/Menu/Overlay
 {
@@ -220,8 +233,8 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.07
-				width 0.15 
-				caption SS/Templates/BasicText load
+				width 0.2 
+				caption SS/Templates/BasicText connect
 			}
 			
 			container BorderButton(Ogrian/JoinMenu/Back) : SS/Templates/BasicButton
@@ -293,7 +306,7 @@ Ogrian/Menu/Overlay
 			container BorderButton(Ogrian/ConnectionMenu/Disconnect) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.37
+				top 0.57
 				width 0.2 
 				caption SS/Templates/BasicText DISCONNECT
 			}
@@ -335,16 +348,16 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.17
-				width 0.1 
-				caption SS/Templates/BasicText host
+				width 0.22
+				caption SS/Templates/BasicText host lan game
 			}
 				
 			container BorderButton(Ogrian/MainMenu/Join) : SS/Templates/BasicButton
 			{
 				left 0.02
 				top 0.27
-				width 0.1 
-				caption SS/Templates/BasicText Join
+				width 0.22 
+				caption SS/Templates/BasicText join lan game
 			}
 			
 			container BorderButton(Ogrian/MainMenu/Config) : SS/Templates/BasicButton
@@ -370,8 +383,6 @@ Ogrian/Menu/Overlay
 			width 1
    			caption menu
 		}
-
 	}
-	
 }
 
