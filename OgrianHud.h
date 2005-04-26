@@ -104,9 +104,12 @@ private:
 
 	Time mMessageClearTime;
 
-	Overlay* mBackground;
+	bool mGhost;
 
-	Overlay* mOverlay;
+	Overlay* mHudOverlay;
+	Overlay* mBackgroundOverlay;
+	Overlay* mGhostOverlay;
+
 	GuiElement* mMana;
 	GuiElement* mHealth;
 	GuiElement* mMessage;

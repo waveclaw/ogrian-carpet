@@ -61,7 +61,7 @@ public:
 	void incrementScore();
 
 	// the team's castle
-	void setCastle(Castle* castle);
+	void setCastleUID(int uid);
 	Castle* getCastle();
 	bool hasCastle();
 

@@ -108,7 +108,7 @@ void BuildSpellThing::collidedGround()
 		Vector3 pos = getPosition();
 		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 		Castle* castle = new Castle(getTeamNum(), pos, skin);
-		team->setCastle(castle);
+		team->setCastleUID(castle->getUID());
 	}
 	
 	else if (team && team->getCastle() && team->getCastle()->getMana() >= CONI("TOWER_COST"))

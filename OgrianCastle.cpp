@@ -357,7 +357,7 @@ void Castle::destroy()
 
 	// remove the castle from the team
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
-	team->setCastle(0);
+	team->setCastleUID(-1);
 
 	// banish the wizard
 	Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());

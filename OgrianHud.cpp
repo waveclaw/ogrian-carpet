@@ -41,9 +41,15 @@ namespace Ogrian
 
 Hud::Hud()
 {
-	mBackground = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Background");
+	mGhost = false;
+	mBaseMana = 0;
+	mActiveMana = 0;
+	mMessageClearTime = 0;
 
-	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/Overlay");
+	mHudOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/HudOverlay");
+	mBackgroundOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/BackgroundOverlay");
+	mGhostOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/GhostOverlay");
+
 	mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
@@ -77,11 +83,8 @@ Hud::Hud()
 		mSpellIcons[i] = GuiManager::getSingleton().getGuiElement(String("Ogrian/HUD/SpellIcon/") + num.str());
 	}
 
-	setMessage("");
-
-	mBaseMana = 0;
-	mActiveMana = 0;
-	setMana();
+	reinit();
+	hide();
 }
 
 //----------------------------------------------------------------------------
@@ -95,7 +98,7 @@ Hud::~Hud()
 
 void Hud::toggle()
 {
-	if (mOverlay->isVisible())
+	if (mHudOverlay->isVisible() || mGhostOverlay->isVisible())
 		hide();
 	else
 		show();
@@ -105,44 +108,46 @@ void Hud::toggle()
 
 void Hud::show()
 {
-	mBackground->show();
-	mOverlay->show();
+	if (mGhost) 
+	{
+		mGhostOverlay->show();
+	}
+	else
+	{
+		mBackgroundOverlay->show();
+		mHudOverlay->show();
+	}
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::hide()
 {
-	mBackground->hide();
-	mOverlay->hide();
+	mBackgroundOverlay->hide();
+	mHudOverlay->hide();
+	mGhostOverlay->hide();
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::reinit()
 {
-	mMana->show();
-	mHealth->show();
-	mSpellName->show();
-
-	for (int i=0; i<NUM_SPELLS; i++)
-		mSpellIcons[i]->show();
+	mGhost = false;
+	mBaseMana = 0;
+	mActiveMana = 0;
+	mMessageClearTime = 0;
 
 	setMessage("");
+	setMana();
 }
 
 //----------------------------------------------------------------------------
 
 void Hud::makeGhost()
 {
-	setMessage(CONS("HUD_DEAD"));
-
-	mMana->hide();
-	mHealth->hide();
-	mSpellName->hide();
-
-	for (int i=0; i<NUM_SPELLS; i++)
-		mSpellIcons[i]->hide();
+	mHudOverlay->hide();
+	mBackgroundOverlay->hide();
+	mGhostOverlay->show();
 }
 
 //----------------------------------------------------------------------------

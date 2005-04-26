@@ -2,7 +2,6 @@ Ogrian Carpet Notes
 
 for 0.8:
 =========
-fix hud when ghosting
 multipage menu system with text entry
 
 
@@ -25,6 +24,7 @@ claim whoosh
 meteor whoosh
 build whoosh
 build construction sound
+heal sound
 
 
 

@@ -109,9 +109,9 @@ void Team::incrementScore()
 
 //----------------------------------------------------------------------------
 
-void Team::setCastle(Castle* castle)
+void Team::setCastleUID(int uid)
 {
-	mCastleUID = castle->getUID();
+	mCastleUID = uid;
 }
 
 //----------------------------------------------------------------------------

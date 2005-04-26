@@ -1,7 +1,7 @@
 // Ogre overlay scripts
 #include <BasicOgreGuiTemplates.inc>
 
-Ogrian/HUD/Background
+Ogrian/HUD/BackgroundOverlay
 {
 	zorder 440
 
@@ -15,7 +15,21 @@ Ogrian/HUD/Background
 	}
 }
 
-Ogrian/HUD/Overlay
+Ogrian/HUD/GhostOverlay
+{
+	zorder 440
+
+	container Panel(Ogrian/HUD/Ghost/Image)
+	{
+		left 0
+		top 0
+		width 1
+		height 1
+		material Ogrian/HudGhost
+	}
+}
+
+Ogrian/HUD/HudOverlay
 {
 	zorder 450
 
