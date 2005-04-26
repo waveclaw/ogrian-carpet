@@ -64,12 +64,21 @@ public:
 	// the button functions
 	void button_invertMouseToggle();
 	void button_musicToggle();
-	void button_load();
+
+	void button_skirmishload();
+	void button_hostload();
+	void button_joinload();
+
+	void button_skirmish();
 	void button_join();
 	void button_host();
+	void button_config();
+
 	void button_disconnect();
 	void button_startGame();
+
 	void button_quit();
+	void button_back();
 
 	// set the message
 	void setMessage(String message);
@@ -82,8 +91,11 @@ private:
 	// load a map
 	void loadMap(String mapname);
 
-	// load the map list
+	// load the lists
 	void loadMapList();
+	void loadColourList();
+	void loadWizardSkinList();
+	void loadCastleSkinList();
 
 	bool mMusic; // wether or not to play music
 
@@ -96,7 +108,23 @@ private:
 	int mLoadDelay; // counts down
 
 	GuiContainer* mCursor; // the cursor
-	ListChanger* mList; // the list of maps
+	ListChanger* mMapList; // the list of maps
+	ListChanger* mColourList; // the list of colours
+	ListChanger* mWizardSkinList; // the list of wizard skins
+	ListChanger* mCastleSkinList; // the list of castle skins
+
+	GuiElement* mMapListPanel;
+	GuiElement* mColourListPanel;
+	GuiElement* mWizardSkinListPanel;
+	GuiElement* mCastleSkinListPanel;
+
+	GuiElement* mMainMenuPanel;
+	GuiElement* mSkirmishMenuPanel;
+	GuiElement* mHostMenuPanel;
+	GuiElement* mJoinMenuPanel;
+	GuiElement* mConfigMenuPanel;
+	GuiElement* mConnectionMenuPanel;
+
 };
 
 }

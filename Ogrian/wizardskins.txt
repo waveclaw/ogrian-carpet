@@ -1,5 +1,5 @@
-Ogrian/Wizard/
-Ogrian/Jeff/
-Ogrian/Mike/
-Ogrian/Jess/
-Ogrian/Rick/
+Wizard
+Jeff
+Mike
+Jess
+Rick

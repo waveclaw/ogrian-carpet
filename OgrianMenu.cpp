@@ -56,21 +56,57 @@ Menu::Menu()
 	mMusic = true;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
-	
+
+	// load the panels
+	mMapListPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/MapListPanel");
+	mColourListPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ColourListPanel");
+	mWizardSkinListPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/WizardSkinListPanel");
+	mCastleSkinListPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/CastleSkinListPanel");
+
+	mMainMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/MainMenuPanel");
+	mSkirmishMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/SkirmishMenuPanel");
+	mHostMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/HostMenuPanel");
+	mJoinMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/JoinMenuPanel");
+	mConfigMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConfigMenuPanel");
+	mConnectionMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConnectionMenuPanel");
+
+	mMapListPanel->hide();
+	mColourListPanel->hide();
+	mWizardSkinListPanel->hide();
+	mCastleSkinListPanel->hide();
+
+	mMainMenuPanel->show();
+	mSkirmishMenuPanel->hide();
+	mHostMenuPanel->hide();
+	mJoinMenuPanel->hide();
+	mConfigMenuPanel->hide();
+	mConnectionMenuPanel->hide();
+
 	// set up the cursor
 	mCursor = OverlayManager::getSingleton().getCursorGui();
     mCursor->setMaterialName("Cursor/default");
     mCursor->setDimensions(32.0/640.0, 32.0/480.0);
 
-	// hide the disconnect button at the start
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
-
-	// build the list
-	mList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
-		getGuiElement("Ogrian/Menu/AvailableMapsList"));
+	// build the map list
+	mMapList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
+		getGuiElement("Ogrian/Menu/MapList"));
 	loadMapList();
 	
+	// build the colour list
+	mColourList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
+		getGuiElement("Ogrian/Menu/ColourList"));
+	loadColourList();
+	
+	// build the wizard skin list
+	mWizardSkinList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
+		getGuiElement("Ogrian/Menu/WizardSkinList"));
+	loadWizardSkinList();
+	
+	// build the wizard skin list
+	mCastleSkinList = static_cast<ListGuiElement*>(GuiManager::getSingleton().
+		getGuiElement("Ogrian/Menu/CastleSkinList"));
+	loadCastleSkinList();
+
 	// set the title
 	setMessage(CONS("TITLE"));
 }
@@ -113,7 +149,7 @@ void Menu::loadMapList()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mList->addListItem(new StringResource(optName));
+				mMapList->addListItem(new StringResource(optName));
 			}
 		}
 		ret = fgets(rec, 100, fp);
@@ -123,20 +159,113 @@ void Menu::loadMapList()
 }
 
 //----------------------------------------------------------------------------
+
+void Menu::loadWizardSkinList()
+{
+	String filename = "wizardskins.txt";
+
+	FILE *fp;
+	char rec[100], *ret;
+	String optName, optVal;
+
+	// Open and parse entire file
+	fp = fopen(filename.c_str(), "r");
+	if( !fp )
+		Except(
+			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadWizardSkinList" );
+
+	ret = fgets(rec, 100, fp);
+	while (ret != NULL)
+	{
+		String tst = rec;
+		StringUtil::trim(tst);
+		// Ignore comments & blanks
+		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
+		{
+			// Tokenise on newline
+			char* pName = strtok(rec, "\n");
+			if (pName)
+			{
+				String optName = pName;
+				StringUtil::trim(optName);
+
+				mWizardSkinList->addListItem(new StringResource(optName));
+			}
+		}
+		ret = fgets(rec, 100, fp);
+	}
+
+	fclose(fp);
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::loadCastleSkinList()
+{
+	String filename = "castleskins.txt";
+
+	FILE *fp;
+	char rec[100], *ret;
+	String optName, optVal;
+
+	// Open and parse entire file
+	fp = fopen(filename.c_str(), "r");
+	if( !fp )
+		Except(
+			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadCastleSkinList" );
+
+	ret = fgets(rec, 100, fp);
+	while (ret != NULL)
+	{
+		String tst = rec;
+		StringUtil::trim(tst);
+		// Ignore comments & blanks
+		if (tst.length() > 0 && tst.at(0) != '#' && tst.at(0) != '@' && tst.at(0) != '\n')
+		{
+			// Tokenise on newline
+			char* pName = strtok(rec, "\n");
+			if (pName)
+			{
+				String optName = pName;
+				StringUtil::trim(optName);
+
+				mCastleSkinList->addListItem(new StringResource(optName));
+			}
+		}
+		ret = fgets(rec, 100, fp);
+	}
+
+	fclose(fp);
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::loadColourList()
+{
+	mColourList->addListItem(new StringResource("Black"));
+	mColourList->addListItem(new StringResource("Red"));
+	mColourList->addListItem(new StringResource("Green"));
+	mColourList->addListItem(new StringResource("Blue"));
+	mColourList->addListItem(new StringResource("Cyan"));
+	mColourList->addListItem(new StringResource("Purple"));
+}
+
+//----------------------------------------------------------------------------
+
 void Menu::button_invertMouseToggle()
 {
 	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
 
 	if (ofl->getInvertY())  // uninvert the mouse y axis
 	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert")
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
 			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (OFF)");
 
 		ofl->setInvertY(false);
 	}
 	else // invert the mouse y axis
 	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Yinvert")
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
 			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (ON)");
 
 		ofl->setInvertY(true);
@@ -147,7 +276,7 @@ void Menu::button_musicToggle()
 {
 	if (mMusic)  // deactivate the music
 	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (OFF)");
 
 		Audio::getSingleton().stopSong();
@@ -155,7 +284,7 @@ void Menu::button_musicToggle()
 	}
 	else // activate the music
 	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Music")
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
 		Audio::getSingleton().playSong(CONS("THEME_MUSIC"));
@@ -163,51 +292,110 @@ void Menu::button_musicToggle()
 	}
 }
 //----------------------------------------------------------------------------
+
 void Menu::button_quit()
 {
 	// hide the menu
 	hide();
 }
+
 //----------------------------------------------------------------------------
-void Menu::button_load() // aka skirmish
+
+void Menu::button_back()
+{
+	mMapListPanel->hide();
+	mColourListPanel->hide();
+	mWizardSkinListPanel->hide();
+	mCastleSkinListPanel->hide();
+
+	mMainMenuPanel->show();
+	mSkirmishMenuPanel->hide();
+	mHostMenuPanel->hide();
+	mJoinMenuPanel->hide();
+	mConfigMenuPanel->hide();
+	mConnectionMenuPanel->hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_config() 
+{
+	mMainMenuPanel->hide();
+	mConfigMenuPanel->show();
+	mColourListPanel->show();
+	mWizardSkinListPanel->show();
+	mCastleSkinListPanel->show();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_skirmish() 
+{
+	mMainMenuPanel->hide();
+	mSkirmishMenuPanel->show();
+	mMapListPanel->show();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_skirmishload() 
 {
 	if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
 
-	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
+	loadMap(static_cast<StringResource*>(mMapList->getSelectedItem())->getName());
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_hostload() 
+{
+	if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
+	if (Multiplayer::getSingleton().isClient()) Multiplayer::getSingleton().clientDisconnect();
+
+	loadMap(static_cast<StringResource*>(mMapList->getSelectedItem())->getName());
+
+	setMessage(CONS("MSG_SERVER_LOADING"));
+
+	Multiplayer::getSingleton().serverStart();
+
+	button_back();
+	mMainMenuPanel->hide();
+	mConnectionMenuPanel->show();
 }
 
 //----------------------------------------------------------------------------
 
 void Menu::button_join()
 {
+	mMainMenuPanel->hide();
+	mJoinMenuPanel->show();
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConnectionMenu/StartGame")->hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_joinload()
+{
 	setMessage(CONS("MSG_JOIN_CONNECTING"));
 
 	Multiplayer::getSingleton().clientStart();
 	
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
+	button_back();
+	mMainMenuPanel->hide();
+	mConnectionMenuPanel->show();
 }
 
 //----------------------------------------------------------------------------
 
 void Menu::button_host()
 {
-	loadMap(static_cast<StringResource*>(mList->getSelectedItem())->getName());
-
-	setMessage(CONS("MSG_SERVER_LOADING"));
-
-	Multiplayer::getSingleton().serverStart();
-
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->show();
+	mMainMenuPanel->hide();
+	mHostMenuPanel->show();
+	mMapListPanel->show();
+	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConnectionMenu/StartGame")->show();
 }
 
 //----------------------------------------------------------------------------
@@ -218,12 +406,7 @@ void Menu::button_disconnect()
 	if (Multiplayer::getSingleton().isClient())	Multiplayer::getSingleton().clientRequestKick();
 	else if (Multiplayer::getSingleton().isServer()) Multiplayer::getSingleton().serverDisconnect();
 
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Load")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Host")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Join")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Exit")->show();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Disconnect")->hide();
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
+	button_back();
 }
 
 //----------------------------------------------------------------------------
@@ -231,7 +414,7 @@ void Menu::button_disconnect()
 void Menu::button_startGame()
 {
 	LogManager::getSingleton().logMessage(CONS("MSG_START_GAME"));
-	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/StartGame")->hide();
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConnectionMenu/StartGame")->hide();
 	
 	// hide the menu
 	hide();

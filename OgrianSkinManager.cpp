@@ -110,8 +110,8 @@ void SkinManager::loadCastleSkins()
                 //    StringUtil::trim(optName);
                 //}
                 
-				mKeepSkins.push_back(optName);
-				mTowerSkins.push_back(optVal);
+				mKeepSkins.push_back(optName + ".mesh");
+				mTowerSkins.push_back(optVal + ".mesh");
             }
         }
     }
@@ -147,7 +147,7 @@ void SkinManager::loadShrineSkins()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mShrineSkins.push_back(optName);
+				mShrineSkins.push_back(optName + ".mesh");
 			}
 		}
 		ret = fgets(rec, 100, fp);
@@ -187,7 +187,7 @@ void SkinManager::loadWizardSkins()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mWizardSkins.push_back(optName);
+				mWizardSkins.push_back(String("Ogrian/") + optName + "/");
 			}
 		}
 		ret = fgets(rec, 100, fp);

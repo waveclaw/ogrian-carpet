@@ -14,7 +14,37 @@ Ogrian/Menu/Overlay
 		height 1
 		material Ogrian/Menu/Background
 
-		container Panel(Ogrian/Menu/AvailableMapsListPanel)
+		container Panel(Ogrian/Menu/MapListPanel)
+		{
+			left 0.01 
+			top 0.2
+			width 0.3
+			height 0.6
+			material Core/StatsBlockCenter
+			
+			container TextArea(Ogrian/Menu/MapListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption map 
+			}
+			container List(Ogrian/Menu/MapList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.55
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/ColourListPanel)
 		{
 			left 0.01 
 			top 0.2
@@ -22,92 +52,309 @@ Ogrian/Menu/Overlay
 			height 0.6
 			material Core/StatsBlockCenter
 
-			container List(Ogrian/Menu/AvailableMapsList)
+			container TextArea(Ogrian/Menu/ColourListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption colour 
+			}
+			container List(Ogrian/Menu/ColourList)
 			{
 				item_template SS/Templates/BasicText
 				v_spacing 0.005
 				h_spacing 0.005
 				left 0 
-				top 0
+				top 0.05
 				width 0.3
-				height 0.6
+				height 0.55
 				item_material_selected Examples/Hilite/Yellow
 				material Core/StatsBlockCenter
 				scroll_bar SS/Templates/ScrollBar
 			}
-
 		}
 		
-		container Panel(Ogrian/Menu/Buttons)
+		container Panel(Ogrian/Menu/WizardSkinListPanel)
+		{
+			left 0.69 
+			top 0.2
+			width 0.3
+			height 0.37
+			material Core/StatsBlockCenter
+
+			container TextArea(Ogrian/Menu/WizardSkinListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption wizard skin 
+			}
+			container List(Ogrian/Menu/WizardSkinList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.32
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/CastleSkinListPanel)
+		{
+			left 0.69 
+			top 0.6
+			width 0.3
+			height 0.37
+			material Core/StatsBlockCenter
+
+			container TextArea(Ogrian/Menu/CastleSkinListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption castle skin 
+			}
+			container List(Ogrian/Menu/CastleSkinList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.32
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/SkirmishMenuPanel)
 		{
 			left 0.33 
 			top 0.2
 			width 0.33
 			height 0.65
 			material Core/StatsBlockCenter
-    
-			container BorderButton(Ogrian/Menu/Yinvert) : SS/Templates/BasicButton
+						
+			container TextArea(Ogrian/SkirmishMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption skirmish menu
+			}
+		
+			container BorderButton(Ogrian/SkirmishMenu/Load) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.02
+				top 0.07
+				width 0.15 
+				caption SS/Templates/BasicText load
+			}
+			
+			container BorderButton(Ogrian/SkirmishMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.55
+				width 0.15 
+				caption SS/Templates/BasicText back
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/HostMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/HostMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption host lan game menu
+			}
+		
+			container BorderButton(Ogrian/HostMenu/Load) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.15 
+				caption SS/Templates/BasicText load
+			}
+			
+			container BorderButton(Ogrian/HostMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.55
+				width 0.15 
+				caption SS/Templates/BasicText back
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/JoinMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/JoinMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption join lan game menu
+			}
+		
+			container BorderButton(Ogrian/JoinMenu/Load) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.15 
+				caption SS/Templates/BasicText load
+			}
+			
+			container BorderButton(Ogrian/JoinMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.55
+				width 0.15 
+				caption SS/Templates/BasicText back
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/ConfigMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+			    
+			container TextArea(Ogrian/ConfigMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption configuration menu
+			}
+		
+			container BorderButton(Ogrian/ConfigMenu/Yinvert) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
 				width 0.2 
 				caption SS/Templates/BasicText INV MOUSE (ON)
 			}
 	   
-			container BorderButton(Ogrian/Menu/Music) : SS/Templates/BasicButton
+			container BorderButton(Ogrian/ConfigMenu/Music) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.12
+				top 0.17
 				width 0.2 
 				caption SS/Templates/BasicText MUSIC (ON)
 			}
-
-
-			container BorderButton(Ogrian/Menu/Load) : SS/Templates/BasicButton
+			
+			container BorderButton(Ogrian/ConfigMenu/Back) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.27
+				top 0.55
 				width 0.15 
-				caption SS/Templates/BasicText SKIRMISH
+				caption SS/Templates/BasicText back
 			}
-					
-
-			container BorderButton(Ogrian/Menu/Host) : SS/Templates/BasicButton
+		}
+    	
+		container Panel(Ogrian/Menu/ConnectionMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/ConnectionMenu/Text) : SS/Templates/BasicText
 			{
-				left 0.02
-				top 0.37
-				width 0.1 
-				caption SS/Templates/BasicText host
+				left 0.01
+				top 0.01
+				width 1
+   				caption connection menu
 			}
-					
-
-			container BorderButton(Ogrian/Menu/Disconnect) : SS/Templates/BasicButton
+		
+			container BorderButton(Ogrian/ConnectionMenu/Disconnect) : SS/Templates/BasicButton
 			{
 				left 0.02
 				top 0.37
 				width 0.2 
 				caption SS/Templates/BasicText DISCONNECT
 			}
-					
-
-			container BorderButton(Ogrian/Menu/Join) : SS/Templates/BasicButton
-			{
-				left 0.02
-				top 0.47
-				width 0.1 
-				caption SS/Templates/BasicText Join
-			}
-			
-			container BorderButton(Ogrian/Menu/StartGame) : SS/Templates/BasicButton
+						
+			container BorderButton(Ogrian/ConnectionMenu/StartGame) : SS/Templates/BasicButton
 			{
 				left 0.02
 				top 0.47
 				width 0.2 
 				caption SS/Templates/BasicText START GAME
 			}
+		}
+    	
+		container Panel(Ogrian/Menu/MainMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
 			
-
-			container BorderButton(Ogrian/Menu/Exit) : SS/Templates/BasicButton
+			container TextArea(Ogrian/MainMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption main menu
+			}
+		
+			container BorderButton(Ogrian/MainMenu/Skirmish) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.15
+				caption SS/Templates/BasicText skirmish
+			}
+				
+			container BorderButton(Ogrian/MainMenu/Host) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.17
+				width 0.1 
+				caption SS/Templates/BasicText host
+			}
+				
+			container BorderButton(Ogrian/MainMenu/Join) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.27
+				width 0.1 
+				caption SS/Templates/BasicText Join
+			}
+			
+			container BorderButton(Ogrian/MainMenu/Config) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.47
+				width 0.15 
+				caption SS/Templates/BasicText Config
+			}
+			container BorderButton(Ogrian/MainMenu/Quit) : SS/Templates/BasicButton
 			{
 				left 0.02
 				top 0.57
