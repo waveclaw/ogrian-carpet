@@ -1,4 +1,4 @@
-TITLE	Ogrian Carpet 0.7.1
+TITLE	Ogrian Carpet 0.8
 THEME_MUSIC	Media/music/ogrian_theme.ogg
 
 MSG_JOIN_CONNECTING	Connecting . . .
