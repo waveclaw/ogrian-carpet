@@ -28,8 +28,8 @@ template element TextArea(SS/Templates/BasicText)
 {
 	font_name Ogre
 	char_height 0.04
-	colour_top 1 1 0
-	colour_bottom 1 0.2 0.2
+	colour_top 1 1 1
+	colour_bottom 1 1 1
 	left 0.015
 	top 0.012
 	width 0.12
