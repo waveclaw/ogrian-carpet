@@ -557,7 +557,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") + num.str());
 
 			// send in the castle skin
-			clientSendInt(CONI("PLAYER_CASTLE_SKIN"), ID_SET_CASTLE_SKIN);
+			clientSendInt(Menu::getSingleton().getChosenCastleSkin(), ID_SET_CASTLE_SKIN);
 
 			return true;
 		}

@@ -146,7 +146,8 @@ private:
 	String mConfigName;
 	String mConfigServer;
 
-	int mConfigColour;
+	String mConfigColour;
+
 	int mConfigWizardSkin;
 	int mConfigCastleSkin;
 

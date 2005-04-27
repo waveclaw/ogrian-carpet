@@ -54,21 +54,21 @@ SkinManager::~SkinManager()
 
 int SkinManager::numWizardSkins()
 {
-	return (int)mWizardSkins.size()-1;
+	return (int)mWizardSkins.size();
 }
 
 //----------------------------------------------------------------------------
 
 int SkinManager::numCastleSkins()
 {
-	return (int)mKeepSkins.size()-1;
+	return (int)mKeepSkins.size();
 }
 
 //----------------------------------------------------------------------------
 
 int SkinManager::numShrineSkins()
 {
-	return (int)mShrineSkins.size()-1;
+	return (int)mShrineSkins.size();
 }
 
 //----------------------------------------------------------------------------

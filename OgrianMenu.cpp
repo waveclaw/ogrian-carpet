@@ -131,22 +131,40 @@ void Menu::readConfig()
 
 	mConfigName = config.getSetting("name");
 	mConfigServer = config.getSetting("server");
+	mConfigColour = config.getSetting("colour");
 
-	mConfigColour = atoi(config.getSetting("colour").c_str());
 	mConfigWizardSkin = atoi(config.getSetting("wizard_skin").c_str());
 	mConfigCastleSkin = atoi(config.getSetting("castle_skin").c_str());
 
 	mConfigMusicVolume = atoi(config.getSetting("music_volume").c_str());
 	mConfigYInvert = atoi(config.getSetting("y_invert").c_str());
 
-	// apply the settings
+	// apply the settings // 
+
+	// set the y invert
 	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
-	if (ofl)
-		ofl->setInvertY(mConfigYInvert > 0);
+	if (ofl) ofl->setInvertY(mConfigYInvert > 0);
+
+	if (mConfigYInvert == 0) 
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
+			->setParameter("caption", "SS/Templates/BasicText   ");
+	else 
+		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
+			->setParameter("caption", "SS/Templates/BasicText  X");
 
 	// play menu music
 	if (mConfigMusicVolume > 0)
 		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+
+	// select our skins
+	String wizardSkinName = SkinManager::getSingleton().getRawWizardSkin(mConfigWizardSkin);
+	String castleSkinName = SkinManager::getSingleton().getRawCastleSkin(mConfigCastleSkin);
+
+	mWizardSkinList->setSelectedItem(&StringResource(wizardSkinName));
+	mCastleSkinList->setSelectedItem(&StringResource(castleSkinName));
+
+	// select our colour
+	mColourList->setSelectedItem(&StringResource(mConfigColour));
 }
 
 //----------------------------------------------------------------------------
@@ -154,23 +172,25 @@ void Menu::readConfig()
 // based on Ogre::Root::saveConfig()
 void Menu::writeConfig()
 {
-	FILE *fp;
+	String filename = "ogrian.cfg";
+	FILE *fp = 0;
 	char rec[100];
 
-	fp = fopen("ogrian.cfg", "w");
+	fp = fopen(filename.c_str(), "w");
 	if (!fp)
 		Except(Exception::ERR_CANNOT_WRITE_TO_FILE, "Cannot create settings file.",
 		"Menu::writeConfig");
 
 	// write the values
-	sprintf(rec, "%s\t%s\n", "name", mConfigName);
+	sprintf(rec, "%s\t%s\n", "name", mConfigName.c_str());
 	fputs(rec, fp);
 
-	sprintf(rec, "%s\t%s\n", "server", mConfigServer);
+	sprintf(rec, "%s\t%s\n", "server", mConfigServer.c_str());
 	fputs(rec, fp);
 
-	sprintf(rec, "%s\t%d\n", "colour", mConfigColour);
+	sprintf(rec, "%s\t%s\n", "colour", mConfigColour.c_str());
 	fputs(rec, fp);
+
 
 	sprintf(rec, "%s\t%d\n", "wizard_skin", mConfigWizardSkin);
 	fputs(rec, fp);
@@ -201,23 +221,21 @@ int Menu::getChosenCastleSkin() { return mConfigCastleSkin; }
 
 ColourValue Menu::getChosenColour() 
 { 
-	switch (mConfigColour)
-	{
-		case 0:  return ColourValue(.1, .1, .1);	// Black
-		case 1:  return ColourValue( 0,  0,  1);	// Blue
-		case 2:  return ColourValue(.5,.25,  0);	// Brown
-		case 3:  return ColourValue( 0,  1,  1);	// Cyan
-		case 4:  return ColourValue( 0,  0, .5);	// Dark Blue
-		case 5:  return ColourValue( 0, .5,  0);	// Dark Green
-		case 6:  return ColourValue(.5,  0,  0);	// Dark Red
-		case 7:  return ColourValue( 0,  1,  0);	// Green
-		case 8:  return ColourValue( 1, .5,.25);	// Orange
-		case 9:  return ColourValue( 1,  0,  1);	// Purple
-		case 10: return ColourValue( 1,  0,  0);	// Red
-		case 11: return ColourValue( 0,  1, .5);	// Turquoise
-		case 12: return ColourValue( 1,  1,  0);	// Yellow
-	}
-	return ColourValue::Blue;
+		 if (mConfigColour == "Black")		return ColourValue(.1, .1, .1);	// Black
+	else if (mConfigColour == "Blue")		return ColourValue( 0,  0,  1);	// Blue
+	else if (mConfigColour == "Brown")		return ColourValue(.5,.25,  0);	// Brown
+	else if (mConfigColour == "Cyan")		return ColourValue( 0,  1,  1);	// Cyan
+	else if (mConfigColour == "Dark Blue")	return ColourValue( 0,  0, .5);	// Dark Blue
+	else if (mConfigColour == "Dark Green")	return ColourValue( 0, .5,  0);	// Dark Green
+	else if (mConfigColour == "Dark Red")	return ColourValue(.5,  0,  0);	// Dark Red
+	else if (mConfigColour == "Green")		return ColourValue( 0,  1,  0);	// Green
+	else if (mConfigColour == "Orange")		return ColourValue( 1, .5,.25);	// Orange
+	else if (mConfigColour == "Purple")		return ColourValue( 1,  0,  1);	// Purple
+	else if (mConfigColour == "Red")		return ColourValue( 1,  0,  0);	// Red
+	else if (mConfigColour == "Turquoise")	return ColourValue( 0,  1, .5);	// Turquoise
+	else if (mConfigColour == "Yellow")		return ColourValue( 1,  1,  0);	// Yellow
+
+	else return ColourValue::Blue;
 }
 
 //----------------------------------------------------------------------------
@@ -368,17 +386,19 @@ void Menu::button_invertMouseToggle()
 	if (ofl->getInvertY())  // uninvert the mouse y axis
 	{
 		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
-			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (OFF)");
+			->setParameter("caption", "SS/Templates/BasicText   ");
 
-		ofl->setInvertY(false);
+		mConfigYInvert = 0;
 	}
 	else // invert the mouse y axis
 	{
 		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
-			->setParameter("caption", "SS/Templates/BasicText INV MOUSE (ON)");
-
-		ofl->setInvertY(true);
+			->setParameter("caption", "SS/Templates/BasicText  X");
+		
+		mConfigYInvert = 1;
 	}
+		
+	ofl->setInvertY(mConfigYInvert > 0);
 }
 //----------------------------------------------------------------------------
 void Menu::button_musicToggle()
@@ -401,31 +421,18 @@ void Menu::button_musicToggle()
 //----------------------------------------------------------------------------
 void Menu::button_configOk()
 {	
-	String colourName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
-	String wizardName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
-	String castleName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
+	mConfigColour = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
 
-	// do a reverse lookup on colour
-	if (colourName == "Black")		mConfigColour = 0;
-	if (colourName == "Blue")		mConfigColour = 1;
-	if (colourName == "Brown")		mConfigColour = 2;
-	if (colourName == "Cyan")		mConfigColour = 3;
-	if (colourName == "Dark Blue")	mConfigColour = 4;
-	if (colourName == "Dark Green")	mConfigColour = 5;
-	if (colourName == "Dark Red")	mConfigColour = 6;
-	if (colourName == "Green")		mConfigColour = 7;
-	if (colourName == "Orange")		mConfigColour = 8;
-	if (colourName == "Purple")		mConfigColour = 9;
-	if (colourName == "Red")		mConfigColour = 10;
-	if (colourName == "Turquoise")	mConfigColour = 11;
-	if (colourName == "Yellow")		mConfigColour = 12;
+	String wizardName = static_cast<StringResource*>(mWizardSkinList->getSelectedItem())->getName();
+	String castleName = static_cast<StringResource*>(mCastleSkinList->getSelectedItem())->getName();
 
 	// do a reverse lookup on the wizard skin
 	mConfigWizardSkin = 0;
 	int num = SkinManager::getSingleton().numWizardSkins();
 	for (int i=0; i<num; i++)
 	{
-		if (SkinManager::getSingleton().getRawWizardSkin(i) == wizardName)
+		String name = SkinManager::getSingleton().getRawWizardSkin(i);
+		if (name == wizardName)
 		{
 			mConfigWizardSkin = i;
 			break;
@@ -437,18 +444,16 @@ void Menu::button_configOk()
 	num = SkinManager::getSingleton().numCastleSkins();
 	for (int i=0; i<num; i++)
 	{
-		if (SkinManager::getSingleton().getRawCastleSkin(i) == castleName)
+		String name = SkinManager::getSingleton().getRawCastleSkin(i);
+		if (name == castleName)
 		{
 			mConfigCastleSkin = i;
 			break;
 		}
 	}
 
-	//// set the wizard skin
-	//if (Renderer::getSingleton().getCameraThing())
-	//	Renderer::getSingleton().getCameraThing()->setSkin(mConfigWizardSkin);
-
 	button_back();
+	writeConfig();
 }
 //----------------------------------------------------------------------------
 
