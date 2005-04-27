@@ -2,7 +2,8 @@ Ogrian Carpet Notes
 
 for 0.8:
 =========
-multipage menu system with text entry
+text entry for name and server
+map description and screenshot
 
 
 to add later:

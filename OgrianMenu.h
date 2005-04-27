@@ -77,7 +77,10 @@ public:
 
 	// the button functions
 	void button_invertMouseToggle();
-	void button_musicToggle();
+	void button_musicOff();
+	void button_musicSoft();
+	void button_musicMed();
+	void button_musicLoud();
 
 	void button_skirmishload();
 	void button_hostload();

@@ -101,7 +101,10 @@ public:
 		else if (action == "Ogrian/JoinMenu/Back") Menu::getSingleton().button_back();
 
 		else if (action == "Ogrian/ConfigMenu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
-		else if (action == "Ogrian/ConfigMenu/Music") Menu::getSingleton().button_musicToggle();
+		else if (action == "Ogrian/ConfigMenu/MusicOff") Menu::getSingleton().button_musicOff();
+		else if (action == "Ogrian/ConfigMenu/MusicSoft") Menu::getSingleton().button_musicSoft();
+		else if (action == "Ogrian/ConfigMenu/MusicMed") Menu::getSingleton().button_musicMed();
+		else if (action == "Ogrian/ConfigMenu/MusicLoud") Menu::getSingleton().button_musicLoud();
 		else if (action == "Ogrian/ConfigMenu/Ok") Menu::getSingleton().button_configOk();
 
 		else if (action == "Ogrian/MainMenu/Skirmish") Menu::getSingleton().button_skirmish();
@@ -156,7 +159,19 @@ protected:
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicOff"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicSoft"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicMed"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicLoud"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>

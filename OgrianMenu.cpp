@@ -152,9 +152,15 @@ void Menu::readConfig()
 		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert")
 			->setParameter("caption", "SS/Templates/BasicText  X");
 
-	// play menu music
-	if (mConfigMusicVolume > 0)
-		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+	// set music volume
+	if (mConfigMusicVolume == 0)
+		button_musicOff();
+	else if (mConfigMusicVolume <= 64)
+		button_musicSoft();
+	else if (mConfigMusicVolume <= 128)
+		button_musicMed();
+	else
+		button_musicLoud();
 
 	// select our skins
 	String wizardSkinName = SkinManager::getSingleton().getRawWizardSkin(mConfigWizardSkin);
@@ -401,25 +407,81 @@ void Menu::button_invertMouseToggle()
 		
 	ofl->setInvertY(mConfigYInvert > 0);
 }
+
 //----------------------------------------------------------------------------
-void Menu::button_musicToggle()
+
+void Menu::button_musicOff()
 {
-	if (mConfigMusicVolume > 0)  // deactivate the music
-	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
-			->setParameter("caption", "SS/Templates/BasicText MUSIC (OFF)");
+	mConfigMusicVolume = 0;  // deactivate the music
 
-		Audio::getSingleton().stopSong();
-	}
-	else // activate the music
-	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
-			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicOff")
+		->setParameter("caption", "SS/Templates/BasicText X");  ////////
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicSoft")
+		->setParameter("caption", "SS/Templates/BasicText  ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicMed")
+		->setParameter("caption", "SS/Templates/BasicText  ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicLoud")
+		->setParameter("caption", "SS/Templates/BasicText  ");
 
-		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
-	}
+	Audio::getSingleton().stopSong();
 }
+
 //----------------------------------------------------------------------------
+
+void Menu::button_musicSoft()
+{
+	mConfigMusicVolume = 64;  // set to a low volume
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicOff")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicSoft")
+		->setParameter("caption", "SS/Templates/BasicText X");	/////////
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicMed")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicLoud")
+		->setParameter("caption", "SS/Templates/BasicText  ");
+
+	Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_musicMed()
+{
+	mConfigMusicVolume = 128;  // set to the middle volume
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicOff")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicSoft")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicMed")
+		->setParameter("caption", "SS/Templates/BasicText X");	/////////
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicLoud")
+		->setParameter("caption", "SS/Templates/BasicText  ");
+
+	Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_musicLoud()
+{
+	mConfigMusicVolume = 255;  // set to the max volume
+
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicOff")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicSoft")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicMed")
+		->setParameter("caption", "SS/Templates/BasicText  ");	
+	GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/MusicLoud")
+		->setParameter("caption", "SS/Templates/BasicText X");  ///////
+
+	Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+}
+
+//----------------------------------------------------------------------------
+
 void Menu::button_configOk()
 {	
 	mConfigColour = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
