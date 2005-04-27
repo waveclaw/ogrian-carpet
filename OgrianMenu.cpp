@@ -164,7 +164,8 @@ void Menu::readConfig()
 	mCastleSkinList->setSelectedItem(&StringResource(castleSkinName));
 
 	// select our colour
-	mColourList->setSelectedItem(&StringResource(mConfigColour));
+	if (mConfigColour.length() > 0)
+		mColourList->setSelectedItem(&StringResource(mConfigColour));
 }
 
 //----------------------------------------------------------------------------
