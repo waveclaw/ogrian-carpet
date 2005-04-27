@@ -573,6 +573,13 @@ CastleTurretThing* Castle::newCastleTurret(int level)
 
 //----------------------------------------------------------------------------
 
+int Castle::getSkin()
+{
+	return mSkin;
+}
+
+//----------------------------------------------------------------------------
+
 void Castle::setSpells(int level)
 {
 	if (Multiplayer::getSingleton().isClient()) return;

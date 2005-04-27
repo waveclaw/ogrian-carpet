@@ -102,7 +102,7 @@ public:
 
 		else if (action == "Ogrian/ConfigMenu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
 		else if (action == "Ogrian/ConfigMenu/Music") Menu::getSingleton().button_musicToggle();
-		else if (action == "Ogrian/ConfigMenu/Back") Menu::getSingleton().button_back();
+		else if (action == "Ogrian/ConfigMenu/Ok") Menu::getSingleton().button_configOk();
 
 		else if (action == "Ogrian/MainMenu/Skirmish") Menu::getSingleton().button_skirmish();
 		else if (action == "Ogrian/MainMenu/Host") Menu::getSingleton().button_host();
@@ -160,7 +160,7 @@ protected:
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Back"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Ok"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>

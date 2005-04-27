@@ -52,6 +52,10 @@ public:
 	int numCastleSkins();
 	int numShrineSkins();
 
+	// neede by the menu for reverse lookups
+	String getRawWizardSkin(int skin);
+	String getRawCastleSkin(int skin);
+
 private:
 	SkinManager();
 	

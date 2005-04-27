@@ -136,7 +136,7 @@ bool Renderer::setup(void)
 
     createFrameListener();
 
-	Game::getSingleton().readConfig();
+	Menu::getSingleton().readConfig();
 
     return true;
 

@@ -68,6 +68,8 @@ public:
 
 	virtual void makeGhost();
 
+	virtual void reset();
+
 	// this must not be destroyed
 	virtual void destroy() {}
 

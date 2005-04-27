@@ -4,6 +4,7 @@
 -added a background to the hud to make the text more visible
 -added a loading graphic
 -reorganized the menu into separate screens
+-menu config screen saves its values to ogrian.cfg
 
 
 

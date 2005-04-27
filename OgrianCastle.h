@@ -192,6 +192,9 @@ public:
 	Castle(int teamNum, Vector3 pos, int skin);
 	virtual ~Castle();
 
+	// get the skin this castle is using
+	virtual int getSkin();
+
 	// set the amount of mana this castle contains
 	virtual void setMana(int amount);
 

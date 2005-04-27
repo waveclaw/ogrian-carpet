@@ -1,51 +1,5 @@
-# Your Name Here
-PLAYER_NAME=Mike
 
-# set this to the computer name or IP address of whoever is hosting
-SERVER_ADDRESS=localhost
-
-#choose your skin:
-# 0: Angry Face
-# 1: JeffK
-# 2: Mike
-# 3: Jess
-# 4: Rick
-# 5: finger
-PLAYER_WIZARD_SKIN=2
-
-#choose your castle:
-# 0: light castle
-# 1: dark castle
-PLAYER_CASTLE_SKIN=1
-
-# set the RGB values of the colour you want your team to be
-# red	green	blue
-# 255   255   	255 	= White
-# 0   	0   	0 	= Black
-# 255   0   	0 	= Red
-# 0   	255   	0 	= Green
-# 0   	0   	255 	= Blue
-# 255   0   	255 	= Purple
-# 255   255   	0 	= Yellow
-# 0   	255   	255 	= Cyan
-# 128 	64  	0 	= Brown
-# 255  	128 	64 	= Orange
-# 128  	0   	0 	= Dark Red
-# 0   	0  	128 	= Dark Blue
-# 0  	128   	0 	= Dark Green
-# 0   	255  	128 	= Turquoise
-
-COLOUR_RED=1
-COLOUR_GREEN=1
-COLOUR_BLUE=255
-
-# mouselook options
-MOUSE_Y_INVERT=true
 MOUSE_SENSITIVITY=1
-
-# ingame music
-MUSIC=true
-MUSIC_VOLUME=128
 
 # mouse bindings:
 #0: claim

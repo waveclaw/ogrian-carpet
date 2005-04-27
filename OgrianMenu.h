@@ -23,7 +23,8 @@ OgrianMenu.h
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The Menu
+Description: The Menu that allows you to choose what to play, and also
+to set your config options
 /*------------------------------------*/
 
 #ifndef __OgrianMenu_H__
@@ -45,6 +46,19 @@ class Menu : public Singleton< Menu >
 {
 public:
 	virtual ~Menu();
+
+	// read ogrian.cfg into the configure menu
+	void readConfig();
+
+	// the config options
+	String getChosenName();
+	String getChosenServer();
+	ColourValue getChosenColour();
+	int getChosenWizardSkin();
+	int getChosenCastleSkin();
+
+	// write the configure menu settings into ogrian.cfg
+	void writeConfig();
 
 	// go into menu mode and display the menu
 	void show();
@@ -74,6 +88,8 @@ public:
 	void button_host();
 	void button_config();
 
+	void button_configOk();
+
 	void button_disconnect();
 	void button_startGame();
 
@@ -97,8 +113,6 @@ private:
 	void loadWizardSkinList();
 	void loadCastleSkinList();
 
-	bool mMusic; // wether or not to play music
-
 	bool mActive; // wether or not the menu mode is active
     Real mTimeUntilNextToggle; // prevents rapid toggling
 	Overlay* mOverlay; // the menu overlay
@@ -107,6 +121,7 @@ private:
 	String mMapName; // the name of the map
 	int mLoadDelay; // counts down
 
+	// the gui objects
 	GuiContainer* mCursor; // the cursor
 	ListChanger* mMapList; // the list of maps
 	ListChanger* mColourList; // the list of colours
@@ -126,6 +141,18 @@ private:
 	GuiElement* mConnectionMenuPanel;
 
 	Overlay* mLoadingOverlay;
+
+	// configuration options
+	String mConfigName;
+	String mConfigServer;
+
+	int mConfigColour;
+	int mConfigWizardSkin;
+	int mConfigCastleSkin;
+
+	int mConfigMusicVolume;
+	int mConfigYInvert;
+
 };
 
 }

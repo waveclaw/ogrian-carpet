@@ -278,12 +278,12 @@ Ogrian/Menu/Overlay
 				caption SS/Templates/BasicText MUSIC (ON)
 			}
 			
-			container BorderButton(Ogrian/ConfigMenu/Back) : SS/Templates/BasicButton
+			container BorderButton(Ogrian/ConfigMenu/Ok) : SS/Templates/BasicButton
 			{
 				left 0.02
 				top 0.55
 				width 0.15 
-				caption SS/Templates/BasicText back
+				caption SS/Templates/BasicText Ok
 			}
 		}
     	

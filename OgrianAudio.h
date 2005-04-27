@@ -58,7 +58,7 @@ public:
 	void stopSound(int channel);
 
 	// start playing a song. 
-	void playSong(String filename);
+	void playSong(String filename, Real volume);
 
 	// stop playing the song
 	void stopSong();

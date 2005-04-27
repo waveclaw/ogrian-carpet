@@ -34,6 +34,7 @@ NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
 #include "OgrianAIWizardThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianSpellManager.h"
+#include "OgrianSkinManager.h"
 
 #include "OgreOverlayManager.h"
 
@@ -53,7 +54,6 @@ Menu::Menu()
 {
 	mActive = false;
 	mLoadMap = false;
-	mMusic = true;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 
@@ -120,6 +120,104 @@ Menu::Menu()
 Menu::~Menu()
 {
 	if (mActive) hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::readConfig()
+{
+	ConfigFile config;
+	config.load("ogrian.cfg");
+
+	mConfigName = config.getSetting("name");
+	mConfigServer = config.getSetting("server");
+
+	mConfigColour = atoi(config.getSetting("colour").c_str());
+	mConfigWizardSkin = atoi(config.getSetting("wizard_skin").c_str());
+	mConfigCastleSkin = atoi(config.getSetting("castle_skin").c_str());
+
+	mConfigMusicVolume = atoi(config.getSetting("music_volume").c_str());
+	mConfigYInvert = atoi(config.getSetting("y_invert").c_str());
+
+	// apply the settings
+	OgrianFrameListener* ofl = Renderer::getSingleton().getFrameListener();
+	if (ofl)
+		ofl->setInvertY(mConfigYInvert > 0);
+
+	// play menu music
+	if (mConfigMusicVolume > 0)
+		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
+}
+
+//----------------------------------------------------------------------------
+
+// based on Ogre::Root::saveConfig()
+void Menu::writeConfig()
+{
+	FILE *fp;
+	char rec[100];
+
+	fp = fopen("ogrian.cfg", "w");
+	if (!fp)
+		Except(Exception::ERR_CANNOT_WRITE_TO_FILE, "Cannot create settings file.",
+		"Menu::writeConfig");
+
+	// write the values
+	sprintf(rec, "%s\t%s\n", "name", mConfigName);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%s\n", "server", mConfigServer);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%d\n", "colour", mConfigColour);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%d\n", "wizard_skin", mConfigWizardSkin);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%d\n", "castle_skin", mConfigCastleSkin);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%d\n", "music_volume", mConfigMusicVolume);
+	fputs(rec, fp);
+
+	sprintf(rec, "%s\t%d\n", "y_invert", mConfigYInvert);
+	fputs(rec, fp);
+
+	fclose(fp);
+}
+
+//----------------------------------------------------------------------------
+
+String Menu::getChosenName() { return mConfigName; }
+
+String Menu::getChosenServer() { return mConfigServer; }
+
+int Menu::getChosenWizardSkin() { return mConfigWizardSkin; }
+
+int Menu::getChosenCastleSkin() { return mConfigCastleSkin; }
+
+//----------------------------------------------------------------------------
+
+ColourValue Menu::getChosenColour() 
+{ 
+	switch (mConfigColour)
+	{
+		case 0:  return ColourValue(.1, .1, .1);	// Black
+		case 1:  return ColourValue( 0,  0,  1);	// Blue
+		case 2:  return ColourValue(.5,.25,  0);	// Brown
+		case 3:  return ColourValue( 0,  1,  1);	// Cyan
+		case 4:  return ColourValue( 0,  0, .5);	// Dark Blue
+		case 5:  return ColourValue( 0, .5,  0);	// Dark Green
+		case 6:  return ColourValue(.5,  0,  0);	// Dark Red
+		case 7:  return ColourValue( 0,  1,  0);	// Green
+		case 8:  return ColourValue( 1, .5,.25);	// Orange
+		case 9:  return ColourValue( 1,  0,  1);	// Purple
+		case 10: return ColourValue( 1,  0,  0);	// Red
+		case 11: return ColourValue( 0,  1, .5);	// Turquoise
+		case 12: return ColourValue( 1,  1,  0);	// Yellow
+	}
+	return ColourValue::Blue;
 }
 
 //----------------------------------------------------------------------------
@@ -247,11 +345,18 @@ void Menu::loadCastleSkinList()
 void Menu::loadColourList()
 {
 	mColourList->addListItem(new StringResource("Black"));
-	mColourList->addListItem(new StringResource("Red"));
-	mColourList->addListItem(new StringResource("Green"));
 	mColourList->addListItem(new StringResource("Blue"));
+	mColourList->addListItem(new StringResource("Brown"));
 	mColourList->addListItem(new StringResource("Cyan"));
+	mColourList->addListItem(new StringResource("Dark Blue"));
+	mColourList->addListItem(new StringResource("Dark Green"));
+	mColourList->addListItem(new StringResource("Dark Red"));
+	mColourList->addListItem(new StringResource("Green"));
+	mColourList->addListItem(new StringResource("Orange"));
 	mColourList->addListItem(new StringResource("Purple"));
+	mColourList->addListItem(new StringResource("Red"));
+	mColourList->addListItem(new StringResource("Turquoise"));
+	mColourList->addListItem(new StringResource("Yellow"));
 }
 
 //----------------------------------------------------------------------------
@@ -278,22 +383,72 @@ void Menu::button_invertMouseToggle()
 //----------------------------------------------------------------------------
 void Menu::button_musicToggle()
 {
-	if (mMusic)  // deactivate the music
+	if (mConfigMusicVolume > 0)  // deactivate the music
 	{
 		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (OFF)");
 
 		Audio::getSingleton().stopSong();
-		mMusic = false;
 	}
 	else // activate the music
 	{
 		GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Music")
 			->setParameter("caption", "SS/Templates/BasicText MUSIC (ON)");
 
-		Audio::getSingleton().playSong(CONS("THEME_MUSIC"));
-		mMusic = true;
+		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
 	}
+}
+//----------------------------------------------------------------------------
+void Menu::button_configOk()
+{	
+	String colourName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
+	String wizardName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
+	String castleName = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
+
+	// do a reverse lookup on colour
+	if (colourName == "Black")		mConfigColour = 0;
+	if (colourName == "Blue")		mConfigColour = 1;
+	if (colourName == "Brown")		mConfigColour = 2;
+	if (colourName == "Cyan")		mConfigColour = 3;
+	if (colourName == "Dark Blue")	mConfigColour = 4;
+	if (colourName == "Dark Green")	mConfigColour = 5;
+	if (colourName == "Dark Red")	mConfigColour = 6;
+	if (colourName == "Green")		mConfigColour = 7;
+	if (colourName == "Orange")		mConfigColour = 8;
+	if (colourName == "Purple")		mConfigColour = 9;
+	if (colourName == "Red")		mConfigColour = 10;
+	if (colourName == "Turquoise")	mConfigColour = 11;
+	if (colourName == "Yellow")		mConfigColour = 12;
+
+	// do a reverse lookup on the wizard skin
+	mConfigWizardSkin = 0;
+	int num = SkinManager::getSingleton().numWizardSkins();
+	for (int i=0; i<num; i++)
+	{
+		if (SkinManager::getSingleton().getRawWizardSkin(i) == wizardName)
+		{
+			mConfigWizardSkin = i;
+			break;
+		}
+	}
+
+	// do a reverse lookup on the castle skin
+	mConfigCastleSkin = 0;
+	num = SkinManager::getSingleton().numCastleSkins();
+	for (int i=0; i<num; i++)
+	{
+		if (SkinManager::getSingleton().getRawCastleSkin(i) == castleName)
+		{
+			mConfigCastleSkin = i;
+			break;
+		}
+	}
+
+	//// set the wizard skin
+	//if (Renderer::getSingleton().getCameraThing())
+	//	Renderer::getSingleton().getCameraThing()->setSkin(mConfigWizardSkin);
+
+	button_back();
 }
 //----------------------------------------------------------------------------
 
@@ -529,8 +684,8 @@ void Menu::show()
 	if (ofl != 0) ofl->setCameraFrozen(true);
 
 	// play menu music
-	if (mMusic)
-		Audio::getSingleton().playSong(CONS("THEME_MUSIC"));
+	if (mConfigMusicVolume > 0)
+		Audio::getSingleton().playSong(CONS("THEME_MUSIC"), mConfigMusicVolume);
 
 	mActive = true;
 }
@@ -553,8 +708,8 @@ void Menu::hide()
 	Renderer::getSingleton().getFrameListener()->setCameraFrozen(false);
 	
 	// play game music
-	if (mMusic)
-		Audio::getSingleton().playSong(Game::getSingleton().getMapMusic());
+	if (mConfigMusicVolume > 0)
+		Audio::getSingleton().playSong(Game::getSingleton().getMapMusic(), mConfigMusicVolume);
 
 	mActive = false;
 }

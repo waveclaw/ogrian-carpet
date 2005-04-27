@@ -55,7 +55,7 @@ Audio::~Audio()
 
 //----------------------------------------------------------------------------
 
-void Audio::playSong(String filename)
+void Audio::playSong(String filename, Real volume)
 {
 	stopSong();
 
@@ -73,7 +73,7 @@ void Audio::playSong(String filename)
 	mSongChannel = FSOUND_Stream_Play(FSOUND_FREE, mSongStream);
 
 	// set the volume
-	FSOUND_SetVolume(mSongChannel, CONR("MUSIC_VOLUME"));
+	FSOUND_SetVolume(mSongChannel, volume);
 }
 
 //----------------------------------------------------------------------------

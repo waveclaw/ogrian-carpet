@@ -53,19 +53,9 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	mSensitivity = CONR("MOUSE_SENSITIVITY");
 	if (mSensitivity == 0) mSensitivity = 1;
 
-	// set the color
-	ColourValue colour;
-	colour.r = CONI("COLOUR_RED") / 255.0;
-	colour.g = CONI("COLOUR_GREEN") / 255.0;
-	colour.b = CONI("COLOUR_BLUE") / 255.0;
-
-	// check for white
-	if (colour == ColourValue(1,1,1))
-		colour = ColourValue(.95,.95,.95);
-
-	setColour(colour);
-
-	setSkin(CONI("PLAYER_WIZARD_SKIN"));
+	// set the color and the skin
+	setColour(Menu::getSingleton().getChosenColour());
+	setSkin(Menu::getSingleton().getChosenWizardSkin());
 }
 
 //----------------------------------------------------------------------------
@@ -73,6 +63,17 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 CameraThing::~CameraThing()
 {
 	delete mTempCam;
+}
+
+//----------------------------------------------------------------------------
+
+void CameraThing::reset()
+{
+	WizardThing::reset();
+
+	// set the color and the skin
+	setColour(Menu::getSingleton().getChosenColour());
+	setSkin(Menu::getSingleton().getChosenWizardSkin());
 }
 
 //----------------------------------------------------------------------------

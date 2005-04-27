@@ -53,10 +53,10 @@ public:
 
 	void updateScores();
 
-	void frame(Real time); // call this every frame
+	// call this every frame
+	void frame(Real time); 
 
-	// read in the game configuration
-	void readConfig();
+	// get the map config file
 	ConfigFile getConfig();
 
 	// where all wizards should start

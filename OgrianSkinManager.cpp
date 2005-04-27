@@ -103,15 +103,9 @@ void SkinManager::loadCastleSkins()
                 int nonseparator_pos = (int)line.find_first_not_of(separators, separator_pos);
                 /* ... and extract the value */
                 optVal = line.substr(nonseparator_pos);
-
-                //if (trimWhitespace)
-                //{
-                //    StringUtil::trim(optVal);
-                //    StringUtil::trim(optName);
-                //}
-                
-				mKeepSkins.push_back(optName + ".mesh");
-				mTowerSkins.push_back(optVal + ".mesh");
+              
+				mKeepSkins.push_back(optName);
+				mTowerSkins.push_back(optVal);
             }
         }
     }
@@ -147,7 +141,7 @@ void SkinManager::loadShrineSkins()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mShrineSkins.push_back(optName + ".mesh");
+				mShrineSkins.push_back(optName);
 			}
 		}
 		ret = fgets(rec, 100, fp);
@@ -187,7 +181,7 @@ void SkinManager::loadWizardSkins()
 				String optName = pName;
 				StringUtil::trim(optName);
 
-				mWizardSkins.push_back(String("Ogrian/") + optName + "/");
+				mWizardSkins.push_back(optName);
 			}
 		}
 		ret = fgets(rec, 100, fp);
@@ -198,7 +192,7 @@ void SkinManager::loadWizardSkins()
 
 //----------------------------------------------------------------------------
 
-String SkinManager::getWizardSkin(int skin)
+String SkinManager::getRawWizardSkin(int skin)
 {
 	if (skin >= (int)mWizardSkins.size()) skin = 0;
 
@@ -207,11 +201,29 @@ String SkinManager::getWizardSkin(int skin)
 
 //----------------------------------------------------------------------------
 
+String SkinManager::getRawCastleSkin(int skin)
+{
+	if (skin >= (int)mKeepSkins.size()) skin = 0;
+
+	return mKeepSkins[skin] + " " + mTowerSkins[skin];
+}
+
+//----------------------------------------------------------------------------
+
+String SkinManager::getWizardSkin(int skin)
+{
+	if (skin >= (int)mWizardSkins.size()) skin = 0;
+
+	return String("Ogrian/") + mWizardSkins[skin] + "/";
+}
+
+//----------------------------------------------------------------------------
+
 String SkinManager::getKeepSkin(int skin)
 {
 	if (skin >= (int)mKeepSkins.size()) skin = 0;
 
-	return mKeepSkins[skin];
+	return mKeepSkins[skin] + ".mesh";
 }
 
 //----------------------------------------------------------------------------
@@ -220,7 +232,7 @@ String SkinManager::getTowerSkin(int skin)
 {
 	if (skin >= (int)mTowerSkins.size()) skin = 0;
 
-	return mTowerSkins[skin];
+	return mTowerSkins[skin] + ".mesh";
 }
 
 //----------------------------------------------------------------------------
@@ -229,7 +241,7 @@ String SkinManager::getShrineSkin(int skin)
 {
 	if (skin >= (int)mShrineSkins.size()) skin = 0;
 
-	return mShrineSkins[skin];
+	return mShrineSkins[skin] + ".mesh";
 }
 
 //----------------------------------------------------------------------------

@@ -94,7 +94,7 @@ void BuildSpellThing::collidedGround()
 		int skin = 0;
 		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
 		{
-			skin = CONI("PLAYER_CASTLE_SKIN");
+			skin = Menu::getSingleton().getChosenCastleSkin();
 		}
 		else if (Multiplayer::getSingleton().isServer())
 		{
@@ -140,19 +140,9 @@ void BuildSpellThing::collidedGround()
 			}
 		}
 
-		// get the castle skin
-		int skin = 0;
-		if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
-		{
-			skin = CONI("PLAYER_CASTLE_SKIN");
-		}
-		else if (Multiplayer::getSingleton().isServer())
-		{
-			PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
-			PlayerInfo* info = Multiplayer::getSingleton().getPlayerInfo(player);
+		// get the skin
+		int skin = team->getCastle()->getSkin();
 
-			skin = info->castleSkin;
-		}
 		// make a tower
 		Vector3 pos = getPosition();
 		pos = BuildingHeightMap::getSingleton().alignPosition(pos);
