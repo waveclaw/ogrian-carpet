@@ -84,6 +84,13 @@ void HealthBarManager::remove(Billboard* bar)
 
 //----------------------------------------------------------------------------
 
+void HealthBarManager::clear()
+{
+	mBarSet->clear();
+}
+
+//----------------------------------------------------------------------------
+
 HealthBarManager& HealthBarManager::getSingleton(void)
 {
 	if (!ms_Singleton) 

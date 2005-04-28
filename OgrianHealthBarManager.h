@@ -44,9 +44,14 @@ public:
 	virtual ~HealthBarManager();
     static HealthBarManager& getSingleton(void);
 
+	// make a new bar
 	Billboard* newBar(Vector3 pos, ColourValue colour);
 
+	// remove a bar 
 	void remove(Billboard* bar);
+
+	// clear all bars
+	void clear();
 
 private:
 	HealthBarManager();

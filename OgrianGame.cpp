@@ -29,6 +29,7 @@ starting games and detecting victory.
 #include "OgrianGame.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
+#include "OgrianHealthBarManager.h"
 #include "OgrianBuildingHeightMap.h"
 #include "OgrianHUD.h"
 #include "OgrianAIWizardThing.h"
@@ -194,6 +195,8 @@ String Game::getMapMusic()
 void Game::reset()
 {
 	Physics::getSingleton().reset();
+
+	HealthBarManager::getSingleton().clear();
 
 	Renderer::getSingleton().createCameraThing();
 	CameraThing* cam = Renderer::getSingleton().getCameraThing();
