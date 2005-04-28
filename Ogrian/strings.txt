@@ -2,6 +2,7 @@ TITLE	Ogrian Carpet 0.8
 THEME_MUSIC	Media/music/ogrian_theme.ogg
 
 MSG_JOIN_CONNECTING	Connecting . . .
+MSG_JOIN_CONNECT_FAIL	Connection Failed
 MSG_SERVER_LOADING	Loading (Server) .  .  .
 MSG_DISCONNECT		Disconnected
 MSG_START_GAME		Starting Game . . .

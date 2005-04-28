@@ -81,7 +81,7 @@ void Multiplayer::loadConfig()
 	mPlayerName = name.substr(0,STRING_MAX_LENGTH);
 	
 	// trim the server
-	std::string server = mPlayerName;
+	std::string server = mServerName;
 	mServerName = server.substr(0,STRING_MAX_LENGTH);
 }
 
@@ -104,8 +104,6 @@ void Multiplayer::clientStart()
 	mActive = true;
 	mWasClient = true;
 
-	//Renderer::getSingleton().loadMap("Media/maps/cliffs.txt", false);
-	
 	mClient = RakNetworkFactory::GetRakClientInterface();
 
 	// massage the name because RakNet is Stupid and wont take a const char*
@@ -114,15 +112,18 @@ void Multiplayer::clientStart()
 	char cn[16];
 	strcpy(cn, name.c_str());
 
+	LogManager::getSingleton().logMessage(String("Connecting to: ") + cn);
+
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger, and false for low priority threads
 	bool b = mClient->Connect(cn, CONI("PORT"), CONI("PORT")-1, 0, true);
 
-	// error
-	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Connect Client.",
-				"Multiplayer::clientStart" );
-
-	LogManager::getSingleton().logMessage("Client Started");
+	if (!b)
+	{
+		LogManager::getSingleton().logMessage("Failed To Connect");
+		Menu::getSingleton().setMessage(CONS("MSG_JOIN_CONNECT_FAIL"));
+	}
+	else LogManager::getSingleton().logMessage("Client Started");
 }
 
 //----------------------------------------------------------------------------
@@ -600,6 +601,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			// hide the menu
 			Menu::getSingleton().hide();
+			Menu::getSingleton().clearLoadingScreen();
 
 			// the client is now Ready
 			mClientReady = true;

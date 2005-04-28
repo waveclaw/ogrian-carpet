@@ -675,6 +675,13 @@ void Menu::button_startGame()
 
 //----------------------------------------------------------------------------
 
+void Menu::clearLoadingScreen()
+{
+	mLoadingOverlay->hide();
+}
+
+//----------------------------------------------------------------------------
+
 void Menu::setMessage(String message)
 {
 	GuiManager::getSingleton().getGuiElement("Ogrian/Menu/Text")

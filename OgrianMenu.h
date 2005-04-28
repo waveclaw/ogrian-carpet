@@ -105,6 +105,8 @@ public:
 	void button_quit();
 	void button_back();
 
+	void clearLoadingScreen();
+
 	// set the message
 	void setMessage(String message);
 

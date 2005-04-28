@@ -149,7 +149,7 @@ Ogrian/HUD/HudOverlay
 		left .85
 		top .925
 		width .25
-   		caption SCORE: 123456
+   		caption SCORE: 0
 	}
 
 	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
