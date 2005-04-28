@@ -1,4 +1,4 @@
-Ogrian Carpet v0.7.2
+Ogrian Carpet v0.8
 http://ogrian.sf.net
 ======================
 
@@ -80,11 +80,11 @@ Skirmish - this is the single-player option. It loads the selected map (the list
 
 Host - This starts a server. Up to three other players can connect to you. Once they are all connected, bring up the menu with ESC and then press the "Start Game" button. Before you start the game, no mana can be claimed and no castles can be built. When the game is started, each player will be placed at a start location and the fight can begin.
 
-Join - this joins the server that you have listed in your config.txt file.
-
-Before playing a multiplayer game, it is important to configure your character. Edit config.txt to set your name, your colour, and the IP address of the server you wish to connect to. You may also set other options in this file.
+Join - this joins a server. Type in the name or IP address of the server to connect to it.
 
 To find the ip address of the host machine run "ipconfig" at a command prompt. To get a command prompt, select Start->Run and type "cmd". The ip address is in the form of "192.168.1.1"
+
+Before playing a multiplayer game, it is important to configure your character with the Configure menu.
 
 Also note, players with the same colour are considered "allies". Their monsters will not attack each other, and towers will not claim each other's mana. Also, you can give your ally mana by casting the build spell on their castle. 
 
