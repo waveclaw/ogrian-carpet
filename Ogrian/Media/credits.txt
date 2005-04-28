@@ -28,6 +28,7 @@ from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/
  boom2.mp3
  whoosh2.mp3
 
+
 music:
 =============
 Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/
@@ -37,6 +38,18 @@ Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/
 John Michel
  ogrian_theme.ogg
  ogrian_snow.ogg
+
+
+models:
+=============
+Carl Olsen 
+ the castle
+
+Chris Browning
+ the mana shrine
+
+John Michel
+ dark skin for the castle
 
 
 Skins:

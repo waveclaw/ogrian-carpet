@@ -97,6 +97,9 @@ castle and tower models/textures:
 -Carl Olsson
 -John Michel
 
+mana shrine model/texture:
+-Chris Browning
+
 music: 
 -Adrian Ouarar via WorldForge
 -John Michel

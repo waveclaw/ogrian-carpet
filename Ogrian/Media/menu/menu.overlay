@@ -508,14 +508,14 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.06
 				width 1
-   				caption Mike Prosser - PrograMMing, Maps, 
+   				caption Mike Prosser - PROJECT LEAD, PrograMMing, 
 			}
 			container TextArea(Ogrian/CreditsMenu/Text3) : SS/Templates/BasicText
 			{
 				left 0.01
 				top 0.11
 				width 1
-   				caption .........SouNds, and Sprites
+   				caption ......... Maps, SouNds, and Sprites
 			}
 			container TextArea(Ogrian/CreditsMenu/Text4) : SS/Templates/BasicText
 			{
@@ -557,17 +557,25 @@ Ogrian/Menu/Overlay
 			container TextArea(Ogrian/CreditsMenu/Text9) : SS/Templates/BasicText
 			{
 				left 0.01
-				top 0.46
+				top 0.41
 				width 1
-   				caption Libraries: Ogre, RakNet, FMOD
+   				caption Chris Browning - The MaNa shrine
 			}
-				
+			
 			container TextArea(Ogrian/CreditsMenu/Text10) : SS/Templates/BasicText
 			{
 				left 0.01
 				top 0.51
 				width 1
-   				caption Additional Media - WorldForge
+   				caption Libraries: Ogre, RakNet, FMOD
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text11) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.56
+				width 1
+   				caption Additional Media: WorldForge
 			}
 						
 			container BorderButton(Ogrian/CreditsMenu/Back) : SS/Templates/BasicButton
