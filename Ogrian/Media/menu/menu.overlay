@@ -147,12 +147,75 @@ Ogrian/Menu/Overlay
 			}
 		}
 		
+		container Panel(Ogrian/Menu/MapPanel)
+		{
+			left 0.33 
+			top 0.4
+			width 0.4
+			height 0.5
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/MapMenu/Name/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.31
+				width 1
+   				caption MAP NAME: 
+			}		
+			container TextArea(Ogrian/MapMenu/Author/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.36
+				width 1
+   				caption Author: 
+			}		
+			container TextArea(Ogrian/MapMenu/Difficulty/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.41
+				width 1
+   				caption Difficulty: 
+			}
+			
+			container TextArea(Ogrian/MapMenu/Name) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.31
+				width 1
+   				caption Map Name: 
+			}		
+			container TextArea(Ogrian/MapMenu/Author) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.36
+				width 1
+   				caption Author: 
+			}		
+			container TextArea(Ogrian/MapMenu/Difficulty) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.41
+				width 1
+   				caption Difficulty: 
+			}
+			
+			container Panel(Ogrian/MapMenu/Preview)
+			{
+				left 0.01 
+				top 0.01
+				width 0.3
+				height 0.3
+				material Ogrian/Menu/Background
+					
+			}
+		}
+		
 		container Panel(Ogrian/Menu/SkirmishMenuPanel)
 		{
 			left 0.33 
 			top 0.2
-			width 0.33
-			height 0.65
+			width 0.4
+			height 0.17
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/SkirmishMenu/Text) : SS/Templates/BasicText
@@ -167,15 +230,15 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.07
-				width 0.15 
+				width 0.1 
 				caption SS/Templates/BasicText load
 			}
 			
 			container BorderButton(Ogrian/SkirmishMenu/Back) : SS/Templates/BasicButton
 			{
-				left 0.02
-				top 0.55
-				width 0.15 
+				left 0.22
+				top 0.07
+				width 0.1 
 				caption SS/Templates/BasicText back
 			}
 		}
@@ -185,7 +248,7 @@ Ogrian/Menu/Overlay
 			left 0.33 
 			top 0.2
 			width 0.33
-			height 0.65
+			height 0.17
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/HostMenu/Text) : SS/Templates/BasicText
@@ -206,9 +269,9 @@ Ogrian/Menu/Overlay
 			
 			container BorderButton(Ogrian/HostMenu/Back) : SS/Templates/BasicButton
 			{
-				left 0.02
-				top 0.55
-				width 0.15 
+				left 0.22
+				top 0.07
+				width 0.1 
 				caption SS/Templates/BasicText back
 			}
 		}
@@ -218,7 +281,7 @@ Ogrian/Menu/Overlay
 			left 0.33 
 			top 0.2
 			width 0.33
-			height 0.65
+			height 0.4
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/JoinMenu/Text) : SS/Templates/BasicText
@@ -256,8 +319,8 @@ Ogrian/Menu/Overlay
 			container BorderButton(Ogrian/JoinMenu/Back) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.55
-				width 0.15 
+				top 0.3
+				width 0.1
 				caption SS/Templates/BasicText back
 			}
 		}
@@ -423,7 +486,99 @@ Ogrian/Menu/Overlay
 				caption SS/Templates/BasicText START GAME
 			}
 		}
-    	
+    	    	
+		container Panel(Ogrian/Menu/CreditsMenuPanel)
+		{
+			left 0.2 
+			top 0.2
+			width 0.6
+			height 0.75
+			material Core/StatsBlockCenter
+			
+			container TextArea(Ogrian/CreditsMenu/Text1) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===credits===
+			}
+			
+			container TextArea(Ogrian/CreditsMenu/Text2) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.06
+				width 1
+   				caption Mike Prosser - PrograMMing, Maps, 
+			}
+			container TextArea(Ogrian/CreditsMenu/Text3) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.11
+				width 1
+   				caption .........SouNds, and Sprites
+			}
+			container TextArea(Ogrian/CreditsMenu/Text4) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.16
+				width 1
+   				caption Carl Olsen - Castle Models
+			}
+			container TextArea(Ogrian/CreditsMenu/Text5) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.21
+				width 1
+   				caption Adrian Ouarar - Music
+			}
+			container TextArea(Ogrian/CreditsMenu/Text6) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.26
+				width 1
+   				caption Corey (Akfeka) Ulmer - Maps
+			}
+			container TextArea(Ogrian/CreditsMenu/Text7) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.31
+				width 1
+   				caption John Michel - Music, Sprite and Map
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text8) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.36
+				width 1
+   				caption JereMiah (WaveclaW) PoWell - Sprites
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text9) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.46
+				width 1
+   				caption Libraries: Ogre, RakNet, FMOD
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text10) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.51
+				width 1
+   				caption Additional Media - WorldForge
+			}
+						
+			container BorderButton(Ogrian/CreditsMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.25
+				top 0.65
+				width 0.1 
+				caption SS/Templates/BasicText Back
+			}
+		}
+		
 		container Panel(Ogrian/Menu/MainMenuPanel)
 		{
 			left 0.33 
@@ -470,6 +625,13 @@ Ogrian/Menu/Overlay
 				top 0.47
 				width 0.15 
 				caption SS/Templates/BasicText Config
+			}
+			container BorderButton(Ogrian/MainMenu/Credits) : SS/Templates/BasicButton
+			{
+				left 0.2
+				top 0.57
+				width 0.1
+				caption SS/Templates/BasicText Credits
 			}
 			container BorderButton(Ogrian/MainMenu/Quit) : SS/Templates/BasicButton
 			{

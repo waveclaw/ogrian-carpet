@@ -1,10 +1,5 @@
 Ogrian Carpet Notes
 
-for 0.8:
-=========
-text entry for name and server
-map description and screenshot
-
 
 to add later:
 =========

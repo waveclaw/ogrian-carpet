@@ -96,6 +96,7 @@ public:
 	void button_join();
 	void button_host();
 	void button_config();
+	void button_credits();
 
 	void button_configOk();
 
@@ -118,6 +119,9 @@ private:
 	// load a map
 	void loadMap(String mapname);
 
+	// refresh the map desription
+	void selectMap(String mapname);
+
 	// load the lists
 	void loadMapList();
 	void loadColourList();
@@ -129,6 +133,7 @@ private:
 	Overlay* mOverlay; // the menu overlay
 
 	bool mLoadMap; // true when a map is ready to be loaded
+	String mMapSelection; // the map selection
 	String mMapName; // the name of the map
 	int mLoadDelay; // counts down
 
@@ -159,6 +164,10 @@ private:
 	GuiElement* mJoinMenuPanel;
 	GuiElement* mConfigMenuPanel;
 	GuiElement* mConnectionMenuPanel;
+	GuiElement* mCreditsMenuPanel;
+
+	// the map description panel - used by the host and skirmish menus
+	GuiElement* mMapPanel;
 
 	// the loading screen
 	Overlay* mLoadingOverlay;

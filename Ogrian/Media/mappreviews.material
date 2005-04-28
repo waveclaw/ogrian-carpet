@@ -1,0 +1,118 @@
+
+material Ogrian/Preview/Default
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture menu_background.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Cliffs
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_cliffs.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Crescent
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_crescent.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Hell
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_hell.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Hellbridge
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_hellbridge.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Islands
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_islands.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Lowerlands
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_lowerlands.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Lowlands
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_lowlands.jpg
+			}
+		}
+	}
+}
+material Ogrian/Preview/Snow
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture p_snow.jpg
+			}
+		}
+	}
+}

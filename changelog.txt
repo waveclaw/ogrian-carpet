@@ -5,8 +5,9 @@
 -added a loading graphic
 -reorganized the menu into separate screens
 -menu config screen saves its values to ogrian.cfg
-
-
+-now you can enter your name and choose a server in-game
+-added map previews
+-added credits page
 
 
 0.7.2

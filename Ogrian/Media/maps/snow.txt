@@ -1,3 +1,8 @@
+Author=Mike Prosser
+Difficulty=cold
+Players=four
+Preview=Ogrian/Preview/Snow
+
 Scale.xz=2
 Scale.y=1
 

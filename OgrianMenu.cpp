@@ -56,6 +56,8 @@ Menu::Menu()
 	mLoadMap = false;
 	mTextCursorFlash = false;
 	mNextTextCursorFlashTime = 0;
+	mMapName = "";
+	mMapSelection = "";
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 
@@ -71,6 +73,9 @@ Menu::Menu()
 	mJoinMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/JoinMenuPanel");
 	mConfigMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConfigMenuPanel");
 	mConnectionMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ConnectionMenuPanel");
+	mCreditsMenuPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/CreditsMenuPanel");
+
+	mMapPanel = GuiManager::getSingleton().getGuiElement("Ogrian/Menu/MapPanel");
 
 	mLoadingOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/LoadingOverlay");
 
@@ -88,6 +93,9 @@ Menu::Menu()
 	mJoinMenuPanel->hide();
 	mConfigMenuPanel->hide();
 	mConnectionMenuPanel->hide();
+	mCreditsMenuPanel->hide();
+
+	mMapPanel->hide();
 
 	mLoadingOverlay->hide();
 
@@ -538,6 +546,7 @@ void Menu::button_quit()
 
 void Menu::button_back()
 {
+	mMapPanel->hide();
 	mLoadingOverlay->hide();
 
 	mMapListPanel->hide();
@@ -551,6 +560,15 @@ void Menu::button_back()
 	mJoinMenuPanel->hide();
 	mConfigMenuPanel->hide();
 	mConnectionMenuPanel->hide();
+	mCreditsMenuPanel->hide();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_credits() 
+{
+	mMainMenuPanel->hide();
+	mCreditsMenuPanel->show();
 }
 
 //----------------------------------------------------------------------------
@@ -571,6 +589,7 @@ void Menu::button_skirmish()
 	mMainMenuPanel->hide();
 	mSkirmishMenuPanel->show();
 	mMapListPanel->show();
+	mMapPanel->show();
 }
 
 //----------------------------------------------------------------------------
@@ -643,6 +662,7 @@ void Menu::button_host()
 	mMainMenuPanel->hide();
 	mHostMenuPanel->show();
 	mMapListPanel->show();
+	mMapPanel->show();
 	
 	GuiManager::getSingleton().getGuiElement("Ogrian/ConnectionMenu/StartGame")->show();
 }
@@ -751,6 +771,27 @@ void Menu::keyPressed(KeyEvent* e)
 
 //----------------------------------------------------------------------------
 
+void Menu::selectMap(String mapname)
+{
+	// load the map
+	ConfigFile config;
+	config.load(String("Media/maps/") + mapname + ".txt");
+
+    GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Name")
+		->setParameter("caption", mapname);	
+	
+    GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Author")
+		->setParameter("caption", config.getSetting("Author"));	
+	
+    GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Difficulty")
+		->setParameter("caption", config.getSetting("Difficulty"));	
+	
+    GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Preview")
+		->setParameter("material", config.getSetting("Preview"));	
+}
+
+//----------------------------------------------------------------------------
+
 void Menu::loadMap(String mapname)
 {
 	// Loading...
@@ -821,6 +862,13 @@ void Menu::frame(Real time)
 		}
 	}
 
+	String mapName = static_cast<StringResource*>(mMapList->getSelectedItem())->getName();
+	// if the selected map changes, update the map panel
+	if (mMapSelection != mapName)
+	{
+		mMapSelection = mapName;
+		selectMap(mMapSelection);
+	}
 }
 
 //----------------------------------------------------------------------------

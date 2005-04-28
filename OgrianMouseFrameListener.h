@@ -111,10 +111,13 @@ public:
 		else if (action == "Ogrian/MainMenu/Host") Menu::getSingleton().button_host();
 		else if (action == "Ogrian/MainMenu/Join") Menu::getSingleton().button_join();
 		else if (action == "Ogrian/MainMenu/Config") Menu::getSingleton().button_config();
+		else if (action == "Ogrian/MainMenu/Credits") Menu::getSingleton().button_credits();
 
 		else if (action == "Ogrian/ConnectionMenu/Disconnect") Menu::getSingleton().button_disconnect();
 		else if (action == "Ogrian/ConnectionMenu/StartGame") Menu::getSingleton().button_startGame();
 		else if (action == "Ogrian/ConnectionMenu/Back") Menu::getSingleton().button_back();
+		
+		else if (action == "Ogrian/CreditsMenu/Back") Menu::getSingleton().button_back();
     }
 
 	bool isMulticaster() {}
@@ -155,6 +158,10 @@ protected:
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/CreditsMenu/Back"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Yinvert"));
 		button->addActionListener(this);
 
@@ -192,6 +199,10 @@ protected:
 		
 		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/MainMenu/Config"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/MainMenu/Credits"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>

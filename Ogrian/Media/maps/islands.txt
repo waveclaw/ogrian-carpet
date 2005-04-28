@@ -1,3 +1,8 @@
+Author=Mike Prosser
+Difficulty=green
+Players=four
+Preview=Ogrian/Preview/Islands
+
 Scale.xz=2
 Scale.y=.5
 
