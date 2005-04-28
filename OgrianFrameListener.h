@@ -92,8 +92,8 @@ public:
 	void setGameRunning(bool running);
 	bool getGameRunning();
 
-	void keyClicked(KeyEvent* e) ;
-	void keyPressed(KeyEvent* e) {}
+	void keyClicked(KeyEvent* e) {}
+	void keyPressed(KeyEvent* e) ;
 	void keyReleased(KeyEvent* e) {}
 
 protected:

@@ -160,7 +160,7 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption skirmish menu
+   				caption ===skirmish===
 			}
 		
 			container BorderButton(Ogrian/SkirmishMenu/Load) : SS/Templates/BasicButton
@@ -193,7 +193,7 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption host lan game menu
+   				caption ===hOst lan game===
 			}
 		
 			container BorderButton(Ogrian/HostMenu/Load) : SS/Templates/BasicButton
@@ -226,13 +226,29 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption join lan game menu
+   				caption ===join lan game===
+			}
+					
+			container TextArea(Ogrian/JoinMenu/Server/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.07
+				width 1
+   				caption SERVER NAME OR ADDRESS:
+			}
+					
+			container TextArea(Ogrian/JoinMenu/Sever) : SS/Templates/BasicText
+			{
+				left 0.02
+				top 0.12
+				width 1
+   				caption 999.999.999.999
 			}
 		
 			container BorderButton(Ogrian/JoinMenu/Load) : SS/Templates/BasicButton
 			{
 				left 0.02
-				top 0.07
+				top 0.2
 				width 0.2 
 				caption SS/Templates/BasicText connect
 			}
@@ -259,7 +275,7 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption configuration menu
+   				caption ===cOnfiguratiOn===
 			}
 		
 			container TextArea(Ogrian/ConfigMenu/Name/Text) : SS/Templates/BasicText
@@ -388,7 +404,7 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption connection menu
+   				caption ===cOnnection===
 			}
 		
 			container BorderButton(Ogrian/ConnectionMenu/Disconnect) : SS/Templates/BasicButton
@@ -421,7 +437,7 @@ Ogrian/Menu/Overlay
 				left 0.01
 				top 0.01
 				width 1
-   				caption main menu
+   				caption ===main menu===
 			}
 		
 			container BorderButton(Ogrian/MainMenu/Skirmish) : SS/Templates/BasicButton

@@ -74,6 +74,9 @@ public:
 
 	// this should be called every frame
 	void frame(Real time);
+	
+	// called by OgrianFrameEventListener 
+	void keyPressed(KeyEvent* e);
 
 	// the button functions
 	void button_invertMouseToggle();
@@ -126,16 +129,22 @@ private:
 
 	// the gui objects
 	GuiContainer* mCursor; // the cursor
+
 	ListChanger* mMapList; // the list of maps
 	ListChanger* mColourList; // the list of colours
 	ListChanger* mWizardSkinList; // the list of wizard skins
 	ListChanger* mCastleSkinList; // the list of castle skins
 
+	// panels for the lists
 	GuiElement* mMapListPanel;
 	GuiElement* mColourListPanel;
 	GuiElement* mWizardSkinListPanel;
 	GuiElement* mCastleSkinListPanel;
 
+	GuiElement* mNameText; // the textbox for entering the player name
+	GuiElement* mServerText; // the textbox for entering the server name
+
+	// each submenu has a panel
 	GuiElement* mMainMenuPanel;
 	GuiElement* mSkirmishMenuPanel;
 	GuiElement* mHostMenuPanel;
@@ -143,17 +152,15 @@ private:
 	GuiElement* mConfigMenuPanel;
 	GuiElement* mConnectionMenuPanel;
 
+	// the loading screen
 	Overlay* mLoadingOverlay;
 
 	// configuration options
 	String mConfigName;
 	String mConfigServer;
-
 	String mConfigColour;
-
 	int mConfigWizardSkin;
 	int mConfigCastleSkin;
-
 	int mConfigMusicVolume;
 	int mConfigYInvert;
 

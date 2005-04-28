@@ -77,6 +77,9 @@ Menu::Menu()
 	mWizardSkinListPanel->hide();
 	mCastleSkinListPanel->hide();
 
+	mNameText = GuiManager::getSingleton().getGuiElement("Ogrian/ConfigMenu/Name");
+	mServerText = GuiManager::getSingleton().getGuiElement("Ogrian/JoinMenu/Sever");
+
 	mMainMenuPanel->show();
 	mSkirmishMenuPanel->hide();
 	mHostMenuPanel->hide();
@@ -682,6 +685,45 @@ bool Menu::processKeyInput(InputReader* input)
     }
 
 	return true;
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::keyPressed(KeyEvent* e)
+{
+	char c = e->getKeyChar();
+
+	if ('*' <= c && c <= 'z')
+	{
+		if (mConfigMenuPanel->isVisible())
+		{
+			// add this letter to the player name
+			mConfigName.push_back(c);
+			mNameText->setCaption(mConfigName);
+		}
+		else if (mJoinMenuPanel->isVisible())
+		{
+			// add this letter to the server name
+			mConfigServer.push_back(c);
+			mServerText->setCaption(mConfigServer);
+		}
+	}
+
+	else if (e->getKey() == KC_BACK)
+	{
+		if (mConfigMenuPanel->isVisible())
+		{
+			// remove the last letter from the player name
+			mConfigName.resize(mConfigName.length()-1);
+			mNameText->setCaption(mConfigName);
+		}
+		else if (mJoinMenuPanel->isVisible())
+		{
+			// add this letter to the server name
+			mConfigServer.resize(mConfigName.length()-1);
+			mServerText->setCaption(mConfigServer);
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
