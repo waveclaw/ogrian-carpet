@@ -73,12 +73,16 @@ Multiplayer::~Multiplayer()
 void Multiplayer::loadConfig()
 {
 	/* Set up the options */
-	mPlayerName = CONS("PLAYER_NAME");
-	mServerName = CONS("SERVER_ADDRESS");
+	mPlayerName = Menu::getSingleton().getChosenName();
+	mServerName = Menu::getSingleton().getChosenServer();
 
 	// trim the name
 	std::string name = mPlayerName;
 	mPlayerName = name.substr(0,STRING_MAX_LENGTH);
+	
+	// trim the server
+	std::string server = mPlayerName;
+	mServerName = server.substr(0,STRING_MAX_LENGTH);
 }
 
 //----------------------------------------------------------------------------
@@ -93,6 +97,8 @@ bool Multiplayer::wasClient()
 void Multiplayer::clientStart()
 {
 	assert(!mActive);
+
+	loadConfig();
 
 	mIsServer = false;
 	mActive = true;
@@ -124,6 +130,8 @@ void Multiplayer::clientStart()
 void Multiplayer::serverStart()
 {
 	assert(!mActive);
+
+	loadConfig();
 
 	mIsServer = true; 
 	mActive = true;

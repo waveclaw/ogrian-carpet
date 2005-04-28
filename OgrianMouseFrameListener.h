@@ -98,7 +98,7 @@ public:
 		else if (action == "Ogrian/HostMenu/Back") Menu::getSingleton().button_back();
 
 		else if (action == "Ogrian/JoinMenu/Load") Menu::getSingleton().button_joinload();
-		else if (action == "Ogrian/JoinMenu/Back") Menu::getSingleton().button_back();
+		else if (action == "Ogrian/JoinMenu/Back") Menu::getSingleton().button_joinback();
 
 		else if (action == "Ogrian/ConfigMenu/Yinvert") Menu::getSingleton().button_invertMouseToggle();
 		else if (action == "Ogrian/ConfigMenu/MusicOff") Menu::getSingleton().button_musicOff();

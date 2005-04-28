@@ -54,6 +54,8 @@ Menu::Menu()
 {
 	mActive = false;
 	mLoadMap = false;
+	mTextCursorFlash = false;
+	mNextTextCursorFlashTime = 0;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 
@@ -175,6 +177,10 @@ void Menu::readConfig()
 	// select our colour
 	if (mConfigColour.length() > 0)
 		mColourList->setSelectedItem(&StringResource(mConfigColour));
+
+	// set the text for name and server
+	mNameText->setCaption(mConfigName);
+	mServerText->setCaption(mConfigServer);
 }
 
 //----------------------------------------------------------------------------
@@ -614,10 +620,20 @@ void Menu::button_joinload()
 
 	Multiplayer::getSingleton().clientStart();
 	
+	writeConfig(); // save the server name
 	button_back();
+
 	mMainMenuPanel->hide();
 	mConnectionMenuPanel->show();
 	mLoadingOverlay->show();
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_joinback()
+{
+	writeConfig(); // save the server name
+	button_back();
 }
 
 //----------------------------------------------------------------------------
@@ -693,7 +709,7 @@ void Menu::keyPressed(KeyEvent* e)
 {
 	char c = e->getKeyChar();
 
-	if ('*' <= c && c <= 'z')
+	if (' ' <= c && c <= '~')
 	{
 		if (mConfigMenuPanel->isVisible())
 		{
@@ -711,16 +727,16 @@ void Menu::keyPressed(KeyEvent* e)
 
 	else if (e->getKey() == KC_BACK)
 	{
-		if (mConfigMenuPanel->isVisible())
+		if (mConfigMenuPanel->isVisible() && mConfigName.length() > 0)
 		{
 			// remove the last letter from the player name
 			mConfigName.resize(mConfigName.length()-1);
 			mNameText->setCaption(mConfigName);
 		}
-		else if (mJoinMenuPanel->isVisible())
+		else if (mJoinMenuPanel->isVisible() && mConfigServer.length() > 0)
 		{
 			// add this letter to the server name
-			mConfigServer.resize(mConfigName.length()-1);
+			mConfigServer.resize(mConfigServer.length()-1);
 			mServerText->setCaption(mConfigServer);
 		}
 	}
@@ -773,6 +789,31 @@ void Menu::frame(Real time)
 
 		mLoadMap = false;
 	}
+
+	// flash a cursor on the text entry boxes
+	if (Clock::getSingleton().getTime() >= mNextTextCursorFlashTime)
+	{
+		mNextTextCursorFlashTime = 
+			Clock::getSingleton().getTime() + CONT("TEXT_CURSOR_FLASH_PERIOD");
+
+		mTextCursorFlash = !mTextCursorFlash;
+		
+		if (mConfigMenuPanel->isVisible())
+		{
+			if (mTextCursorFlash)
+				mNameText->setCaption(mConfigName);
+			else
+				mNameText->setCaption(mConfigName + "_");
+		}
+		else if (mJoinMenuPanel->isVisible())
+		{
+			if (mTextCursorFlash)
+				mServerText->setCaption(mConfigServer);
+			else
+				mServerText->setCaption(mConfigServer + "_");
+		}
+	}
+
 }
 
 //----------------------------------------------------------------------------

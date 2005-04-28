@@ -84,31 +84,12 @@ OgrianFrameListener::OgrianFrameListener(RenderWindow* win, Camera* cam, bool us
 	mUseBufferedInputMouse = useBufferedInputMouse;
 	mInputTypeSwitchingOn = mUseBufferedInputKeys || mUseBufferedInputMouse;
 
-	//if (mInputTypeSwitchingOn)
-	//{
- //       mEventProcessor = new EventProcessor();
-	//	mEventProcessor->initialise(win);
-	//	mEventProcessor->startProcessingEvents();
-	//	mEventProcessor->addKeyListener(this);
-	//	mInputDevice = mEventProcessor->getInputReader();
-
-	//	Menu::getSingleton().show();
-	//}
- //   else
- //   {
- //       mInputDevice = PlatformManager::getSingleton().createInputReader();
- //       mInputDevice->initialise(win,true, true);
- //   }
-
-        mInputDevice = PlatformManager::getSingleton().createInputReader();
-        mInputDevice->initialise(win,true, true);
-        mEventProcessor = new EventProcessor();
-		mEventProcessor->initialise(win);
-		mEventProcessor->startProcessingEvents();
-		mEventProcessor->addKeyListener(this);
-
-		Menu::getSingleton().show();
-
+    mInputDevice = PlatformManager::getSingleton().createInputReader();
+    mInputDevice->initialise(win,true, true);
+    mEventProcessor = new EventProcessor();
+	mEventProcessor->initialise(win);
+	mEventProcessor->startProcessingEvents();
+	mEventProcessor->addKeyListener(this);
 
     mCamera = cam;
     mWindow = win;

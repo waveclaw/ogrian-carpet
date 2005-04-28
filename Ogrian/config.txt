@@ -20,6 +20,8 @@ MOUSE_BUTTON_5_SPELL=9
 # how long, in seconds, messages should remain on your HUD
 HUD_MESSAGE_TIME=5
 
+# the period of the flashing of the text cursor in the menu
+TEXT_CURSOR_FLASH_PERIOD=.5
 
 # Performance variables
 # all units are in meters, seconds, or meters per second

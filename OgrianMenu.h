@@ -37,6 +37,8 @@ to set your config options
 #include "OgreListGuiElement.h"
 #include "OgreListChanger.h"
 
+#include "OgrianClock.h"
+
 using namespace Ogre;
 
 namespace Ogrian
@@ -88,6 +90,7 @@ public:
 	void button_skirmishload();
 	void button_hostload();
 	void button_joinload();
+	void button_joinback();
 
 	void button_skirmish();
 	void button_join();
@@ -126,6 +129,9 @@ private:
 	bool mLoadMap; // true when a map is ready to be loaded
 	String mMapName; // the name of the map
 	int mLoadDelay; // counts down
+
+	bool mTextCursorFlash; // for flashing the text cursor
+	Time mNextTextCursorFlashTime;
 
 	// the gui objects
 	GuiContainer* mCursor; // the cursor
