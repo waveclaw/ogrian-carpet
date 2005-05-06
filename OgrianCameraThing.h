@@ -42,6 +42,16 @@ using namespace Ogre;
 namespace Ogrian
 {
 
+class CameraThingStartMarker : public Thing
+{
+public:
+	CameraThingStartMarker::CameraThingStartMarker(Vector3 pos)
+		: Thing("Ogrian/Clear", SPRITE, "Marker", 0, 1, pos) {}
+		
+	virtual ThingType getType() { return CAMERAMARKERTHING; }
+
+};
+
 class CameraThing : public WizardThing
 {
 public:

@@ -8,14 +8,11 @@ Scale.y=.5
 
 OceanMaterial=Ogrian/Ocean
 SkyMaterial=Ogrian/CloudySky
-FoliageMaterial=Ogrian/PineTree
-FoliageAmount=300
+FoliageMaterial=Ogrian/PalmTree
 
 # foliage numbers
 FOLIAGE_SCALE=10
 FOLIAGE_SCALE_VAR=5
-FOLIAGE_LINE_MIN=5
-FOLIAGE_LINE_MAX=500
 
 #shrine skin
 SHRINE_SKIN=0
@@ -50,21 +47,11 @@ MONSTERS_RED=1
 MONSTERS_GREEN=255
 MONSTERS_BLUE=1
 
-# the number of starting stuff in skirmish mode
-NUM_TOWERS=6
-NUM_TICKS=120
-NUM_SENTINELS=30
-
-# keep monsters this far away from the start location
-MONSTER_MIN_DIST=200
-
-# the number of shrines
-NUM_SHRINES=10
-
 # starting mana in multiplayer
 MANA_START_NUM=40
 MANA_START_AMOUNT=20
 
+SkirmishThingsTexture=s_crescent.png
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_crescent.jpg

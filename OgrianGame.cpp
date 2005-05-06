@@ -43,6 +43,16 @@ starting games and detecting victory.
 #include "OgrianShrineThing.h"
 #include "OgrianFoliageThing.h"
 
+#define HEX_RED    0xff0000
+#define HEX_GREEN  0x00ff00
+#define HEX_BLUE   0x0000ff
+#define HEX_YELLOW 0xffff00
+#define HEX_CYAN   0x00ffff
+#define HEX_PURPLE 0xff00ff
+#define HEX_ORANGE 0xff7F00
+#define HEX_BLACK  0x000000
+#define HEX_WHITE  0xffffff
+
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 
 namespace Ogrian
@@ -65,56 +75,6 @@ Game::Game()
 Game::~Game()
 {
 
-}
-
-//----------------------------------------------------------------------------
-
-void Game::loadMapThings(String filename)
-{
-	LogManager::getSingleton().logMessage("Loading Map Things");
-
-	Image image;
-	image.load(filename);
-
-	if ( image.getFormat() != PF_A8R8G8B8 )
-	{		
-		std::ostringstream num("");
-		num << image.getFormat();
-		Except( Exception::ERR_INVALIDPARAMS, String("Error: Image is not an RGBA image. ") + num.str(),
-				"Game::loadMapThings" );
-	}
-
-	uchar* data = image.getData();
-	ushort size = image.getWidth();
-
-	int width = image.getWidth();
-	int height = image.getHeight();
-
-	// loop through each pixel
-	for (int row=0; row<height; row++)
-	{
-		for (int col=0; col<width; col++)
-		{
-			uchar red	= data[ ( ( row * size*4 ) + col*4 ) ];
-			uchar green	= data[ ( ( row * size*4 ) + col*4 + 1) ];
-			uchar blue	= data[ ( ( row * size*4 ) + col*4 + 2) ];
-			uchar alpha	= data[ ( ( row * size*4 ) + col*4 + 3) ];
-
-			int colour = red * 0x10000 + green * 0x100 + blue;
-
-			if (alpha > 0)
-			{
-				std::ostringstream num("");
-				num << colour;
-				LogManager::getSingleton().logMessage(String("Found Something: ") + num.str());
-			
-					 if (colour == 0xff0000)	LogManager::getSingleton().logMessage("Found Red");
-				else if (colour == 0x00ff00)	LogManager::getSingleton().logMessage("Found Green");
-				else if (colour == 0x0000ff)	LogManager::getSingleton().logMessage("Found Blue");
-				else if (colour == 0x000000)	LogManager::getSingleton().logMessage("Found black");
-			}
-		}
-	}
 }
 
 //----------------------------------------------------------------------------
@@ -463,8 +423,50 @@ void Game::serverEndPreGame()
 
 void Game::startSkirmishGame()
 {
+	// reset the player
+	Thing* cam = Renderer::getSingleton().getCameraThing();
+	cam->die();
+	cam->setPosition(mStartPos);
+	Hud::getSingleton().reinit();
+
+	// set up an enemy team 
+	ColourValue colour;
+	colour.r = atoi(mConfig.getSetting( "MONSTERS_RED" ).c_str()) / 255.0;
+	colour.g = atoi(mConfig.getSetting( "MONSTERS_GREEN" ).c_str()) / 255.0;
+	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
+	int teamNum = Physics::getSingleton().newTeam(colour);
+
 	// read in the image file
-	loadMapThings("test.png");
+	loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+
+	//loadMapThingsRandomly(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+
+	// find the CameraThingStartMarker
+	for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	{
+		Thing* thing = Physics::getSingleton().getThingByIndex(i);
+		if (thing->getType() == CAMERAMARKERTHING)
+		{
+			cam->setPosition(thing->getPosition());
+			break;
+		}
+	}
+
+	// reset the score
+	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
+	Renderer::getSingleton().getCameraThing()->setBaseMana(0);
+	Renderer::getSingleton().getCameraThing()->setActiveMana(0);
+
+	// enable the claim and build spells
+	Hud::getSingleton().reinit();
+	SpellManager::getSingleton().setLevel(-1);
+}
+
+//----------------------------------------------------------------------------
+
+void Game::loadMapThingsRandomly(ConfigFile config, Real worldSize, int enemyTeamNum)
+{
+	Thing* cam = Renderer::getSingleton().getCameraThing();
 
 	// make some foliage
 	LogManager::getSingleton().logMessage("Making Foliage...");
@@ -516,19 +518,6 @@ void Game::startSkirmishGame()
 		}
 	}
 
-	// reset the player
-	Thing* cam = Renderer::getSingleton().getCameraThing();
-	cam->die();
-	cam->setPosition(mStartPos);
-	Hud::getSingleton().reinit();
-
-	// set up a team 
-	ColourValue colour;
-	colour.r = atoi(mConfig.getSetting( "MONSTERS_RED" ).c_str()) / 255.0;
-	colour.g = atoi(mConfig.getSetting( "MONSTERS_GREEN" ).c_str()) / 255.0;
-	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
-	int teamNum = Physics::getSingleton().newTeam(colour);
-
 	Real minDist = atoi(mConfig.getSetting( "MONSTER_MIN_DIST" ).c_str());
 
 	// set up some enemy towers
@@ -549,7 +538,7 @@ void Game::startSkirmishGame()
 			i++;
 			pos = BuildingHeightMap::getSingleton().alignPosition(pos);
 
-			TowerThing* tower = new TowerThing(teamNum, pos, towerSkin);
+			TowerThing* tower = new TowerThing(enemyTeamNum, pos, towerSkin);
 			Physics::getSingleton().addThing(tower);
 		}
 	}
@@ -570,7 +559,7 @@ void Game::startSkirmishGame()
 		{
 			i++;
 
-			TickThing* tick = new TickThing(teamNum,pos);
+			TickThing* tick = new TickThing(enemyTeamNum,pos);
 			Physics::getSingleton().addThing(tick);
 		}
 	}
@@ -591,19 +580,114 @@ void Game::startSkirmishGame()
 		{
 			i++;
 
-			SentinelThing* sentinel = new SentinelThing(teamNum,pos);
+			SentinelThing* sentinel = new SentinelThing(enemyTeamNum,pos);
 			Physics::getSingleton().addThing(sentinel);
 		}
 	}
+}
 
-	// reset the score
-	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
-	Renderer::getSingleton().getCameraThing()->setBaseMana(0);
-	Renderer::getSingleton().getCameraThing()->setActiveMana(0);
+//----------------------------------------------------------------------------
 
-	// enable the claim and build spells
-	Hud::getSingleton().reinit();
-	SpellManager::getSingleton().setLevel(-1);
+void Game::loadMapThingsFromImage(ConfigFile config, Real worldSize, int enemyTeamNum)
+{
+	LogManager::getSingleton().logMessage("Loading Map Things");
+
+	String filename = config.getSetting("SkirmishThingsTexture");
+	
+	if (filename == "") return;
+
+	Image image;
+	image.load(filename);
+
+	if ( image.getFormat() != PF_A8R8G8B8 )
+	{		
+		std::ostringstream num("");
+		num << image.getFormat();
+		Except( Exception::ERR_INVALIDPARAMS, String("Error: Image is not an RGBA image. ") + num.str(),
+				"Game::loadMapThings" );
+	}
+
+	uchar* data = image.getData();
+
+	ushort width = image.getWidth();
+	ushort height = image.getHeight();
+
+	// loop through each pixel
+	for (int row=0; row<height; row++)
+	{
+		for (int col=0; col<width; col++)
+		{
+			uchar red	= data[ ( ( row * width*4 ) + col*4 ) ];
+			uchar green	= data[ ( ( row * width*4 ) + col*4 + 1) ];
+			uchar blue	= data[ ( ( row * width*4 ) + col*4 + 2) ];
+			uchar alpha	= data[ ( ( row * width*4 ) + col*4 + 3) ];
+
+			int colour = red * 0x10000 + green * 0x100 + blue;
+
+			Vector3 pos;
+
+			if (alpha > 0)
+			{
+				pos.x = ((float)col / float(width)) * worldSize;
+				pos.z = ((float)row / float(width)) * worldSize;
+				pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
+			}
+
+			if (alpha > 0) switch (colour)
+			{
+				case HEX_RED: // tick
+				{
+					TickThing* tick = new TickThing(enemyTeamNum,pos);
+					Physics::getSingleton().addThing(tick);
+					break;
+				}
+				case HEX_PURPLE: // sentinel
+				{
+					SentinelThing* sentinel = new SentinelThing(enemyTeamNum,pos);
+					Physics::getSingleton().addThing(sentinel);
+					break;
+				}
+				case HEX_ORANGE: // tower
+				{
+					int towerSkin = atoi(mConfig.getSetting( "TOWER_SKIN" ).c_str());
+
+					TowerThing* tower = new TowerThing(enemyTeamNum, pos, towerSkin);
+					Physics::getSingleton().addThing(tower);
+					break;
+				}
+				case HEX_YELLOW: // shrine
+				{
+					int shrineSkin = atoi(mConfig.getSetting( "SHRINE_SKIN" ).c_str());
+
+					ShrineThing* shrine = new ShrineThing(pos, shrineSkin);
+					Physics::getSingleton().addThing(shrine);
+					break;
+				}
+				case HEX_CYAN: // mana
+				{
+					int manaAmount = atoi(config.getSetting( "MANA_START_AMOUNT" ).c_str());
+
+					ManaThing* mana = new ManaThing(manaAmount,pos);
+					Physics::getSingleton().addThing(mana);
+					break;
+				}
+				case HEX_GREEN: // foliage
+				{
+					Real foliageScale = atoi(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
+					Real foliageScaleVar = atoi(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
+					Real scale = foliageScale + (Math::SymmetricRandom()-.5) * foliageScaleVar;
+
+					Physics::getSingleton().addThing(new FoliageThing(scale,pos));
+					break;
+				}
+				case HEX_WHITE: // player start
+				{
+					Physics::getSingleton().addThing(new CameraThingStartMarker(pos));
+					break;
+				}
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
