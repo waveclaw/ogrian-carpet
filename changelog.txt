@@ -1,3 +1,6 @@
+0,9
+-things are now loaded from an image in skirmish, rather then randomly
+
 0.8
 -made health bars always visible when in range
 -added hud counters for your posessions

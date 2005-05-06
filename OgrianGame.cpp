@@ -436,10 +436,16 @@ void Game::startSkirmishGame()
 	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
 	int teamNum = Physics::getSingleton().newTeam(colour);
 
-	// read in the image file
-	loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
-
-	//loadMapThingsRandomly(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+	if (Menu::getSingleton().getChosenSkirmishRandom())
+	{
+		// set up the things randomly
+		loadMapThingsRandomly(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+	}
+	else
+	{
+		// read in the image file
+		loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+	}
 
 	// find the CameraThingStartMarker
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)

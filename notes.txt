@@ -1,9 +1,13 @@
 Ogrian Carpet Notes
 
+for 0.9
+=========
+brain files
+smrat AI player
+
 
 to add later:
 =========
-thing placement image
 meteor that claims nearby mana
 players can rejoin and regain control of their team - and they automatically try to rejoin if they are dropped
 move coastline to map file and dont let build castles right next to it

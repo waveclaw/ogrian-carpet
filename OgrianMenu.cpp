@@ -189,6 +189,9 @@ void Menu::readConfig()
 	// set the text for name and server
 	mNameText->setCaption(mConfigName);
 	mServerText->setCaption(mConfigServer);
+
+	// skirmish random always starts off
+	mConfigSkirmishRandom = false;
 }
 
 //----------------------------------------------------------------------------
@@ -240,6 +243,8 @@ String Menu::getChosenServer() { return mConfigServer; }
 int Menu::getChosenWizardSkin() { return mConfigWizardSkin; }
 
 int Menu::getChosenCastleSkin() { return mConfigCastleSkin; }
+
+bool Menu::getChosenSkirmishRandom() { return mConfigSkirmishRandom; }
 
 //----------------------------------------------------------------------------
 
@@ -399,6 +404,26 @@ void Menu::loadColourList()
 	mColourList->addListItem(new StringResource("Red"));
 	mColourList->addListItem(new StringResource("Turquoise"));
 	mColourList->addListItem(new StringResource("Yellow"));
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_skirmishToggleRandom()
+{
+	if (mConfigSkirmishRandom)  
+	{
+		GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom")
+			->setParameter("caption", "SS/Templates/BasicText   ");
+
+		mConfigSkirmishRandom = false;
+	}
+	else 
+	{
+		GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom")
+			->setParameter("caption", "SS/Templates/BasicText  X");
+		
+		mConfigSkirmishRandom = true;
+	}
 }
 
 //----------------------------------------------------------------------------

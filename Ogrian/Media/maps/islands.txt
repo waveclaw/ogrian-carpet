@@ -52,7 +52,7 @@ MONSTERS_RED=1
 MONSTERS_GREEN=255
 MONSTERS_BLUE=1
 
-# the number of starting stuff in skirmish mode
+# the number of starting stuff in random skirmish mode
 NUM_TOWERS=6
 NUM_TICKS=60
 NUM_SENTINELS=30

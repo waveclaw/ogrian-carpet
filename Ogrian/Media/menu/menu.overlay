@@ -205,8 +205,7 @@ Ogrian/Menu/Overlay
 				top 0.01
 				width 0.3
 				height 0.3
-				material Ogrian/Menu/Background
-					
+				material Ogrian/Menu/Background	
 			}
 		}
 		
@@ -214,7 +213,7 @@ Ogrian/Menu/Overlay
 		{
 			left 0.33 
 			top 0.2
-			width 0.4
+			width 0.6
 			height 0.17
 			material Core/StatsBlockCenter
 						
@@ -236,11 +235,28 @@ Ogrian/Menu/Overlay
 			
 			container BorderButton(Ogrian/SkirmishMenu/Back) : SS/Templates/BasicButton
 			{
-				left 0.22
+				left 0.14
 				top 0.07
 				width 0.1 
 				caption SS/Templates/BasicText back
 			}
+							
+			container TextArea(Ogrian/SkirmishMenu/ScenarioText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.08
+				width 1
+   				caption RandOMized
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/ToggleRandom) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.07
+				width 0.05 
+				caption SS/Templates/BasicText  
+			}
+			
 		}
     	
 		container Panel(Ogrian/Menu/HostMenuPanel)

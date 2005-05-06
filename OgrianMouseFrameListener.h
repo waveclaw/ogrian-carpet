@@ -93,6 +93,7 @@ public:
 		}
 		else if (action == "Ogrian/SkirmishMenu/Load") Menu::getSingleton().button_skirmishload();
 		else if (action == "Ogrian/SkirmishMenu/Back") Menu::getSingleton().button_back();
+		else if (action == "Ogrian/SkirmishMenu/ToggleRandom") Menu::getSingleton().button_skirmishToggleRandom();
 
 		else if (action == "Ogrian/HostMenu/Load") Menu::getSingleton().button_hostload();
 		else if (action == "Ogrian/HostMenu/Back") Menu::getSingleton().button_back();
@@ -135,6 +136,10 @@ protected:
 
 		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/Load"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
