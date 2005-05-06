@@ -75,12 +75,16 @@ DotManager::DotManager()
 DotManager::~DotManager()
 {
 	mDotSet->clear();
+	mFoliageDotSet->clear();
 
 	static_cast<SceneNode*>( mNode -> getParent() )->removeAndDestroyChild( mNode->getName() ); 
 
 	delete mDotSet;
 	mDotSet = 0;
 	
+	delete mFoliageDotSet;
+	mFoliageDotSet = 0;
+
 	mNode->detachAllObjects();
 }
 
@@ -119,6 +123,14 @@ void DotManager::removeFoliage(Billboard* dot)
 void DotManager::setFoliageMaterial(String material)
 {
 	mFoliageDotSet->setMaterialName(material);
+}
+
+//----------------------------------------------------------------------------
+
+void DotManager::reset()
+{
+	mDotSet->clear();
+	mFoliageDotSet->clear();
 }
 
 //----------------------------------------------------------------------------

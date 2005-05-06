@@ -53,6 +53,8 @@ public:
 
 	void setFoliageMaterial(String material);
 
+	void reset();
+
 private:
 	DotManager();
 
