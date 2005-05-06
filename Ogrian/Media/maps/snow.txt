@@ -12,8 +12,8 @@ FoliageMaterial=Ogrian/EvergreenTree
 FoliageAmount=150
 
 # foliage numbers
-FOLIAGE_SCALE=10
-FOLIAGE_SCALE_VAR=5
+FOLIAGE_SCALE=20
+FOLIAGE_SCALE_VAR=0
 FOLIAGE_LINE_MIN=5
 FOLIAGE_LINE_MAX=500
 
@@ -67,6 +67,9 @@ NUM_SHRINES=10
 MANA_START_NUM=40
 MANA_START_AMOUNT=20
 
+
+# thing definition image for skirmish
+SkirmishThingsTexture=s_snow.png
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_snow.jpg

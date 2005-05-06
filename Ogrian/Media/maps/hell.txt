@@ -69,6 +69,8 @@ NUM_SHRINES=10
 MANA_START_NUM=40
 MANA_START_AMOUNT=20
 
+# thing definition image for skirmish
+SkirmishThingsTexture=s_hell.png
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_hell.jpg
