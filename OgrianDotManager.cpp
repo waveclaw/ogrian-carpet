@@ -50,8 +50,24 @@ DotManager::DotManager()
 	mNode->attachObject(mDotSet);
 	mNode->setPosition(Vector3(0,0,0));
 
-	mDotSet->setRenderQueueGroup(RENDER_QUEUE_6);
+	mDotSet->setRenderQueueGroup(RENDER_QUEUE_7);
 	mDotSet->setMaterialName("Ogrian/Dot");
+
+	// for the foliage //
+
+	// create the billboardset
+	mFoliageDotSet = sceneMgr->createBillboardSet("FoliageDotSet", CONI("DOT_POOL"));	
+
+	// attach the set to a node
+	mFoliageNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
+	mFoliageNode->attachObject(mFoliageDotSet);
+	mFoliageNode->setPosition(Vector3(0,0,0));
+
+	mFoliageDotSet->setRenderQueueGroup(RENDER_QUEUE_6);
+	mFoliageDotSet->setMaterialName("Ogrian/Dot");
+			
+	mFoliageDotSet->setBillboardType(BBT_ORIENTED_COMMON);
+	mFoliageDotSet->setCommonDirection(Vector3::UNIT_Y);
 }
 
 //----------------------------------------------------------------------------
@@ -81,6 +97,28 @@ Billboard* DotManager::newDot(Vector3 pos, ColourValue colour)
 void DotManager::remove(Billboard* dot)
 {
 	mDotSet->removeBillboard(dot);
+}
+
+//----------------------------------------------------------------------------
+
+Billboard* DotManager::newFoliageDot(Vector3 pos)
+{
+	Billboard* dot = mFoliageDotSet->createBillboard(pos);
+	return dot;
+}
+
+//----------------------------------------------------------------------------
+
+void DotManager::removeFoliage(Billboard* dot)
+{
+	mFoliageDotSet->removeBillboard(dot);
+}
+
+//----------------------------------------------------------------------------
+
+void DotManager::setFoliageMaterial(String material)
+{
+	mFoliageDotSet->setMaterialName(material);
 }
 
 //----------------------------------------------------------------------------

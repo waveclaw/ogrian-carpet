@@ -1,5 +1,8 @@
 0,9
 -things are now loaded from an image in skirmish, rather then randomly
+-option for old randomized maps
+-trees can now always bee seen
+
 
 0.8
 -made health bars always visible when in range

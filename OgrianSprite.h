@@ -92,11 +92,14 @@ private:
 	BillboardSet* mBbset;
 	Billboard* mBillboard;
 	Billboard* mDot;
+	Billboard* mFoliageDot;
+
 	bool mFixed_y;
 	String mMaterial;
 	SceneNode* mNode;
 	String mName;
 
+	bool mIsFoliage;
 	bool mInRenderer;
 	Real mWidth;
 	Real mHeight; 

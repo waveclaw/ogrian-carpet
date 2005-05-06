@@ -46,14 +46,21 @@ public:
     static DotManager& getSingleton(void);
 
 	Billboard* newDot(Vector3 pos, ColourValue colour);
+	Billboard* newFoliageDot(Vector3 pos);
 
 	void remove(Billboard* dot);
+	void removeFoliage(Billboard* dot);
+
+	void setFoliageMaterial(String material);
 
 private:
 	DotManager();
 
 	BillboardSet* mDotSet;
 	SceneNode* mNode;
+
+	BillboardSet* mFoliageDotSet;
+	SceneNode* mFoliageNode;
 
 };
 

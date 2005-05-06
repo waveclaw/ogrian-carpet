@@ -2,7 +2,6 @@ Ogrian Carpet Notes
 
 for 0.9
 =========
-foliage LOD
 brain files
 smrat AI player
 

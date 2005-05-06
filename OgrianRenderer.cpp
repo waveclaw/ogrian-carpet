@@ -36,6 +36,7 @@ It is a Singleton.
 #include "OgrianFrameListener.h"
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
+#include "OgrianDotManager.h"
 #include "OgrianFoliageThing.h"
 #include "OgrianGame.h"
 #include "OgrianBuildingHeightMap.h"
@@ -271,6 +272,8 @@ void Renderer::loadMap(String configfile, bool server)
 	String oceanMaterial = config.getSetting( "OceanMaterial" );
 	mFoliageMaterial = config.getSetting( "FoliageMaterial" ).c_str();
 	int lava = atoi(config.getSetting( "Lava" ).c_str());
+
+	DotManager::getSingleton().setFoliageMaterial(mFoliageMaterial);
 
 	// set the fog
 	mSceneMgr->setFog(FOG_NONE);

@@ -46,6 +46,7 @@ Sprite::Sprite(String name, bool fixed_y)
 	mBbset = 0;
 	mBillboard = 0;
 	mDot = 0;
+	mFoliageDot = 0;
 	mNode = 0;
 	mName = name;
 	mFixed_y = fixed_y;
@@ -60,7 +61,8 @@ Sprite::Sprite(String name, bool fixed_y)
 	mWidth = -1;
 	mHeight = -1;
 	mColour = ColourValue::White;
-
+	
+	mIsFoliage = false;
 	mInRenderer = false;
 
 }
@@ -76,6 +78,12 @@ Sprite::~Sprite()
 	{
 		DotManager::getSingleton().remove(mDot);
 		mDot = 0;
+	}
+		
+	if (mFoliageDot) 
+	{
+		DotManager::getSingleton().removeFoliage(mFoliageDot);
+		mFoliageDot = 0;
 	}
 }
 
@@ -119,6 +127,8 @@ void Sprite::setPosition(Vector3 pos)
 		mNode->setPosition(pos);
 	else if (mDot)
 		mDot->setPosition(pos);
+	else if (mFoliageDot)
+		mFoliageDot->setPosition(pos);
 }
 
 //----------------------------------------------------------------------------
@@ -127,10 +137,12 @@ void Sprite::setWidth(Real width)
 {
 	mWidth = width;
 
-	if (mInRenderer)
+	if (mBillboard)
 		mBillboard->setDimensions(mWidth,mHeight);
-	//else if (mDot)
-	//	addToRenderer(); // not sure why this is necessary, but it is
+	else if (mDot) 
+		mDot->setDimensions(mWidth,mHeight);
+	else if (mFoliageDot) 
+		mFoliageDot->setDimensions(mWidth,mHeight);
 }
 
 //----------------------------------------------------------------------------
@@ -139,10 +151,12 @@ void Sprite::setHeight(Real height)
 {
 	mHeight = height;
 	
-	if (mInRenderer)
+	if (mBillboard)
 		mBillboard->setDimensions(mWidth,mHeight);
-	//else if (mDot) 
-	//	addToRenderer(); // not sure why this is necessary, but it is
+	else if (mDot) 
+		mDot->setDimensions(mWidth,mHeight);
+	else if (mFoliageDot) 
+		mFoliageDot->setDimensions(mWidth,mHeight);
 }
 
 //----------------------------------------------------------------------------
@@ -158,6 +172,11 @@ void Sprite::setRotation(Radian rotation)
 void Sprite::setMaterial(String material)
 {
 	mMaterial = material;
+
+	if (material == Renderer::getSingleton().getFoliageMaterial())
+		mIsFoliage = true;
+	else 
+		mIsFoliage = false;
 
 	if (mInRenderer)
 		mBbset->setMaterialName(material);
@@ -182,6 +201,11 @@ void Sprite::addToRenderer()
 	{
 		DotManager::getSingleton().remove(mDot);
 		mDot = 0;
+	}
+	if (mFoliageDot) 
+	{
+		DotManager::getSingleton().remove(mFoliageDot);
+		mFoliageDot = 0;
 	}
 
 	// create the billboardset
@@ -252,6 +276,12 @@ void Sprite::makeDot()
 		mDot = DotManager::getSingleton().newDot(mPos, mColour);
 		if (mDot)
 			mDot->setDimensions(mWidth*CONR("DOT_SIZE"), mHeight*CONR("DOT_SIZE"));
+	}
+	else if (!mFoliageDot && mIsFoliage)
+	{
+		mFoliageDot = DotManager::getSingleton().newFoliageDot(mPos);
+		if (mFoliageDot)
+			mFoliageDot->setDimensions(mWidth, mHeight);
 	}
 }
 
