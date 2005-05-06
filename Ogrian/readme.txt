@@ -29,9 +29,9 @@ Basically, the game consists of fighting for control of mana. Whenever you encou
 
 Things
 -----
-Mana are the semi-transparent bubble-like circles. They start out unclaimed and white. To claim them for your own, cast your "claim" spell at them. If your claim spell hits the mana, it will change colour to match the colour of your team. Then, it will slowly migrate towards your castle. When it reaches your castle, it is absorbed and your maximum mana (base mana) goes up. Whenever you see mana that is not your colour, claim it for yourself! Be aware that unclaimed mana slowly rolls downhill, and if two mana collide, they form a bigger mana.
+Mana are the semi-transparent bubble-like circles. To claim them for your own, cast your "claim" spell at them, or touch them. If your claim spell hits the mana, it will change colour to match the colour of your team. Then, it will slowly migrate towards your castle. When it reaches your castle, it is absorbed and your maximum mana (base mana) goes up. Whenever you see mana that is not your colour, claim it for yourself! Be aware that unclaimed mana slowly rolls downhill, and if two mana touch, they form a bigger mana.
 
-Kamikazi Cranes (as in origami cranes) defend castles and towers. They fly around the castle looking for enemies. When they see one, they fly towards it. If they collide with their target, they explode, dealing damage. They then respawn and start the process all over again. If you see a crane flying towards you, the only way to avoid taking damage is to kill it before it hits you.
+Kamikazi Cranes (as in origami cranes) defend castles and towers. They fly around the castle looking for enemies. When they see one, they fly towards it. If they collide with their target, they explode, dealing damage. They then respawn and start the process all over again. If you see a crane flying towards you, the best way to avoid taking damage is to kill it before it hits you.
 
 Sentinels are stationary gaurdians that fire fireballs at nearby enemies.
 
@@ -80,7 +80,7 @@ Skirmish - this is the single-player option. It loads the selected map (the list
 
 Host - This starts a server. Up to three other players can connect to you. Once they are all connected, bring up the menu with ESC and then press the "Start Game" button. Before you start the game, no mana can be claimed and no castles can be built. When the game is started, each player will be placed at a start location and the fight can begin.
 
-Join - this joins a server. Type in the name or IP address of the server to connect to it.
+Join - this joins a server. Type in the name or IP address of the server and then press "connect" to connect to it.
 
 To find the ip address of the host machine run "ipconfig" at a command prompt. To get a command prompt, select Start->Run and type "cmd". The ip address is in the form of "192.168.1.1"
 

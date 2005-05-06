@@ -69,6 +69,9 @@ public:
 	// get the music for this map
 	String getMapMusic();
 
+	// load a set of things from an image
+	void loadMapThings(String filename);
+
 	static Game& getSingleton(void);
 
 	// sound indexes
