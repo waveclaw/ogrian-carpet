@@ -472,7 +472,7 @@ void Game::startSkirmishGame()
 		// give him a castle
 		skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
 		Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botpos);
-		Castle* castle = new Castle(teamNum, caspos, skin);
+		Castle* castle = new Castle(team->getTeamNum(), caspos, skin);
 
 		team->setCastleUID(castle->getUID());
 	}

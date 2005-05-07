@@ -48,7 +48,8 @@ AIWizardThing::AIWizardThing(Vector3 pos, int skin, ColourValue colour)
 	setColour(colour);
 	setHealth(CONR("WIZARD_HEALTH"));
 
-	setThinkPeriod(CONR("AI_WIZARD_THINK_PERIOD"));
+	//setThinkPeriod(CONR("AI_WIZARD_THINK_PERIOD"));
+	setThinkPeriod(CONR("FIREBALL_CAST_PERIOD"));
 }
 
 //----------------------------------------------------------------------------
@@ -143,6 +144,9 @@ void AIWizardThing::think_attack(Thing* target)
 {
 	// attack the enemy //
 
+	// see if we have enough mana
+	if (getActiveMana() < CONI("FIREBALL_MANA_COST")) return;
+
 	Vector3 pos = getPosition();
 	Vector3 epos = target->getPosition();
 
@@ -166,6 +170,8 @@ void AIWizardThing::think_attack(Thing* target)
 	// shoot it
 	Physics::getSingleton().addThing(new FireballThing(getTeamNum(), getColour(),
 		pos, vel, CONI("FIREBALL_DAMAGE"), false));
+
+	subtractActiveMana(CONI("FIREBALL_MANA_COST"));
 }
 
 //----------------------------------------------------------------------------

@@ -425,7 +425,8 @@ void Castle::setMana(int amount)
 	if (amount > 0) setHealth(CONI("CASTLE_HEALTH"));
 
 	// inform the wizard
-	int wuid = Physics::getSingleton().getTeam(getTeamNum())->getWizardUID();
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	int wuid = team->getWizardUID();
 	WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
 
 	if (wizard)
