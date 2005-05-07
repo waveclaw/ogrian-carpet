@@ -132,16 +132,16 @@ Real SpellManager::castSpell()
 	Vector3 pos = Renderer::getSingleton().getCamera()->getPosition();
 	Vector3 dir = Renderer::getSingleton().getCamera()->getDirection();
 
-	mSpells[mCurrentSpell]->cast(pos, dir);
+	mSpells[mCurrentSpell]->cast(pos, dir, Renderer::getSingleton().getCameraThing(), mLevel);
 
-	return mSpells[mCurrentSpell]->getCastPeriod();
+	return mSpells[mCurrentSpell]->getCastPeriod(mLevel);
 }
 
 //----------------------------------------------------------------------------
 
 int SpellManager::getManaCost()
 {
-	return mSpells[mCurrentSpell]->getManaCost();
+	return mSpells[mCurrentSpell]->getManaCost(mLevel);
 }
 
 //----------------------------------------------------------------------------
@@ -260,21 +260,21 @@ void SpellManager::readyCurrentSpell()
 	{
 		// if its the ready spell
 		if (i == mCurrentSpell) 
-			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getReadyMaterial());
+			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getReadyMaterial(mLevel));
 
 		// if its enabled
 		else if (mSpells[i]->getEnabled())
-			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getEnabledMaterial());
+			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getEnabledMaterial(mLevel));
 
 		// if its disabled
 		else 
-			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getDisabledMaterial());
+			Hud::getSingleton().setSpellIcon(i, mSpells[i]->getDisabledMaterial(mLevel));
 	}
 
 	// show the name
 	std::ostringstream cost("");
-	cost << mSpells[mCurrentSpell]->getManaCost() << " : ";
-	Hud::getSingleton().setSpellName(cost.str() + mSpells[mCurrentSpell]->getString());
+	cost << mSpells[mCurrentSpell]->getManaCost(mLevel) << " : ";
+	Hud::getSingleton().setSpellName(cost.str() + mSpells[mCurrentSpell]->getString(mLevel));
 }
 
 //----------------------------------------------------------------------------

@@ -55,8 +55,11 @@ public:
 		// teleport the wizard back to his castle=
 		if (wiz->getType() == CAMERATHING)
 			wiz->setPosition(castle->getPosition());
-		else
+		else if (Multiplayer::getSingleton().isServer())
 			Multiplayer::getSingleton().teleportWizard(wiz, castle->getPosition());
+		else // bot
+			wiz->setPosition(castle->getPosition());
+
 
 		// teleport his posse back to his castle
 		for (int i=0; i<Physics::getSingleton().numThings(); i++)

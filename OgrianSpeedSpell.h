@@ -44,22 +44,22 @@ class SpeedSpell : public Spell
 public:
 
 	// make an instance of this spell
-	virtual void cast(Vector3 pos, Vector3 dir)
+	virtual void cast(Vector3 pos, Vector3 dir, WizardThing* caster, int level)
 	{
-		Renderer::getSingleton().getCameraThing()->speed(CONR("SPEEDSPELL_DURATION"));
+		caster->speed(CONR("SPEEDSPELL_DURATION"));
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/Speed/Ready"); }; 
+	virtual String getReadyMaterial(int level) { return String("Ogrian/SpellIcon/Speed/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/Speed/Enabled"); }; 
+	virtual String getEnabledMaterial(int level) { return String("Ogrian/SpellIcon/Speed/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/Speed/Disabled"); }; 
+	virtual String getDisabledMaterial(int level) { return String("Ogrian/SpellIcon/Speed/Disabled"); }; 
 
-	virtual Real getCastPeriod() { return CONR("SPEEDSPELL_CAST_PERIOD"); }
+	virtual Real getCastPeriod(int level) { return CONR("SPEEDSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost() { return CONI("SPEEDSPELL_MANA_COST"); }
+	virtual int getManaCost(int level) { return CONI("SPEEDSPELL_MANA_COST"); }
 
-	virtual String getString() { return CONS("NAME_SPEED"); }
+	virtual String getString(int level) { return CONS("NAME_SPEED"); }
 };
 
 }

@@ -460,9 +460,9 @@ void Game::startSkirmishGame()
 		botpos.z = atoi(mConfig.getSetting( "botstartZ" ).c_str());
 		botpos.y = HeightMap::getSingleton().getHeightAt(botpos.x, botpos.z);
 
-		int skin = atoi(mConfig.getSetting( "BOT_SKIN" ).c_str());
+		String brain = mConfig.getSetting( "BOT_BRAIN" ).c_str();
 
-		AIWizardThing* bot = new AIWizardThing(botpos, skin, colour);
+		AIWizardThing* bot = new AIWizardThing(botpos, colour, brain);
 		Physics::getSingleton().addThing(bot);
 
 		Team* team = bot->getTeam();
@@ -470,7 +470,7 @@ void Game::startSkirmishGame()
 		team->setWizardUID(bot->getUID());
 
 		// give him a castle
-		skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
+		int skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
 		Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botpos);
 		Castle* castle = new Castle(team->getTeamNum(), caspos, skin);
 

@@ -33,6 +33,7 @@ Description: This is a spell
 
 #include <Ogre.h>
 #include "OgrianConst.h"
+#include "OgrianWizardThing.h"
 
 using namespace Ogre;
 
@@ -46,19 +47,19 @@ public:
 	virtual ~Spell() {}
 
 	// cast this spell
-	virtual void cast(Vector3 pos, Vector3 dir) = 0;
+	virtual void cast(Vector3 pos, Vector3 dir, WizardThing* caster, int level) = 0;
 
-	virtual Real getCastPeriod() = 0;
+	virtual Real getCastPeriod(int level) = 0;
 
-	virtual int getManaCost() = 0;
+	virtual int getManaCost(int level) = 0;
 
-	virtual String getString() = 0;
+	virtual String getString(int level) = 0;
 
-	virtual String getReadyMaterial() = 0; 
+	virtual String getReadyMaterial(int level) = 0; 
 
-	virtual String getEnabledMaterial() = 0; 
+	virtual String getEnabledMaterial(int level) = 0; 
 
-	virtual String getDisabledMaterial() = 0; 
+	virtual String getDisabledMaterial(int level) = 0; 
 
 	virtual void setEnabled(bool enabled) { mEnabled = enabled; }
 

@@ -32,6 +32,7 @@ Description: A computer controlled Wizard
 #define __OgrianAIWizardThing_H__
 
 #include <Ogre.h>
+#include "OgrianFireballSpell.h"
 #include "OgrianWizardThing.h"
 
 using namespace Ogre;
@@ -42,7 +43,7 @@ namespace Ogrian
 class AIWizardThing : public WizardThing
 {
 public:
-	AIWizardThing(Vector3 pos, int skin, ColourValue colour);
+	AIWizardThing(Vector3 pos, ColourValue colour, String brain);
 
 	// think
 	virtual void think();
@@ -54,6 +55,13 @@ private:
 	void think_attack(Thing* target);
 	void think_circleStrafe(Thing* target);
 	void think_faceTarget(Thing* target);
+
+	ConfigFile mConfig;
+
+	Real mSightRange;
+	Time mNextCastTime;
+
+	FireballSpell mFireballSpell;
 };
 
 }

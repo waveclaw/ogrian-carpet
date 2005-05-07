@@ -43,28 +43,26 @@ class BuildSpell : public Spell
 {
 public:
 	// make an instance of this spell
-	virtual void cast(Vector3 pos, Vector3 dir)
+	virtual void cast(Vector3 pos, Vector3 dir, WizardThing* caster, int level)
 	{
 		dir.normalise();
 		dir *= CONR("BUILDSPELL_SPEED");
 	
-		Thing* cam = Renderer::getSingleton().getCameraThing();
-
-		BuildSpellThing* thing = new BuildSpellThing(cam->getTeamNum(), pos,dir);
+		BuildSpellThing* thing = new BuildSpellThing(caster->getTeamNum(), pos,dir);
 		Physics::getSingleton().addThing(thing);
 	}
 
-	virtual String getReadyMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Ready"); }; 
+	virtual String getReadyMaterial(int level) { return String("Ogrian/SpellIcon/BuildSpell/Ready"); }; 
 
-	virtual String getEnabledMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Enabled"); }; 
+	virtual String getEnabledMaterial(int level) { return String("Ogrian/SpellIcon/BuildSpell/Enabled"); }; 
 
-	virtual String getDisabledMaterial() { return String("Ogrian/SpellIcon/BuildSpell/Disabled"); }; 
+	virtual String getDisabledMaterial(int level) { return String("Ogrian/SpellIcon/BuildSpell/Disabled"); }; 
 	
-	virtual Real getCastPeriod() { return CONR("BUILDSPELL_CAST_PERIOD"); }
+	virtual Real getCastPeriod(int level) { return CONR("BUILDSPELL_CAST_PERIOD"); }
 
-	virtual int getManaCost() { return 0; }
+	virtual int getManaCost(int level) { return 0; }
 
-	virtual String getString() { return CONS("NAME_BUILD"); }
+	virtual String getString(int level) { return CONS("NAME_BUILD"); }
 };
 
 }

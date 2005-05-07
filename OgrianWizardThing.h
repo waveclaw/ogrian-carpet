@@ -88,6 +88,8 @@ public:
 	virtual void setActiveMana(int activeMana);
 	virtual void subtractActiveMana(int amount);
 	virtual int getActiveMana();
+
+	virtual int getLevel();
 	
 	virtual void destroy();
 

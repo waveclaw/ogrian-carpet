@@ -192,6 +192,9 @@ public:
 	Castle(int teamNum, Vector3 pos, int skin);
 	virtual ~Castle();
 
+	// get the level of this castle
+	int getLevel();
+
 	// get the skin this castle is using
 	virtual int getSkin();
 

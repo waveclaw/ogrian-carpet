@@ -33,6 +33,7 @@ Description: This is a fireball spell
 
 #include "OgrianSpell.h"
 #include "OgrianFireballThing.h"
+#include "OgrianPhysics.h"
 
 // akimbo fireball level
 #define AKLEV 3
@@ -54,19 +55,17 @@ public:
 	}
 
 	// make an instance of this spell
-	virtual void cast(Vector3 pos, Vector3 dir)
+	virtual void cast(Vector3 pos, Vector3 dir, WizardThing* caster, int level)
 	{
-		if (SpellManager::getSingleton().getLevel() < AKLEV) // normal fireball
+		if (level < AKLEV) // normal fireball
 		{
 			dir.normalise();
 			dir *= CONR("FIREBALL_SPEED");
 		
-			Thing* cam = Renderer::getSingleton().getCameraThing();
-
-			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos, dir);
+			FireballThing* thing = new FireballThing(caster->getTeamNum(), caster->getColour(), pos, dir);
 			Physics::getSingleton().addThing(thing);
 		}
-		else if (SpellManager::getSingleton().getLevel() < STLEV) // akimbo fireball
+		else if (level < STLEV) // akimbo fireball
 		{
 			Vector3 offset = dir.crossProduct(Vector3::UNIT_Y);
 			offset.normalise();
@@ -78,9 +77,7 @@ public:
 			dir.normalise();
 			dir *= CONR("FIREBALL_SPEED");
 		
-			Thing* cam = Renderer::getSingleton().getCameraThing();
-
-			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
+			FireballThing* thing = new FireballThing(caster->getTeamNum(), caster->getColour(), pos,dir);
 			Physics::getSingleton().addThing(thing);
 
 			mLastSide = !mLastSide;
@@ -103,63 +100,61 @@ public:
 			dir.normalise();
 			dir *= CONR("FIREBALL_SPEED");
 		
-			Thing* cam = Renderer::getSingleton().getCameraThing();
-
-			FireballThing* thing = new FireballThing(cam->getTeamNum(), cam->getColour(), pos,dir);
+			FireballThing* thing = new FireballThing(caster->getTeamNum(), caster->getColour(), pos,dir);
 			Physics::getSingleton().addThing(thing);
 		}
 	}
 
-	virtual String getReadyMaterial() 
+	virtual String getReadyMaterial(int level) 
 	{ 
-		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+		if (level < AKLEV) 
 			return String("Ogrian/SpellIcon/Fireball/Ready"); 
-		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+		else if (level < STLEV) 
 			return String("Ogrian/SpellIcon/AkimboFireball/Ready"); 
 		else 
 			return String("Ogrian/SpellIcon/Firestorm/Ready"); 
 	}; 
 
-	virtual String getEnabledMaterial() 
+	virtual String getEnabledMaterial(int level) 
 	{ 
-		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+		if (level < AKLEV) 
 			return String("Ogrian/SpellIcon/Fireball/Enabled"); 
-		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+		else if (level < STLEV) 
 			return String("Ogrian/SpellIcon/AkimboFireball/Enabled"); 
 		else
 			return String("Ogrian/SpellIcon/Firestorm/Enabled"); 
 	}; 
 
-	virtual String getDisabledMaterial() 
+	virtual String getDisabledMaterial(int level) 
 	{ 
-		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+		if (level < AKLEV) 
 			return String("Ogrian/SpellIcon/Fireball/Disabled"); 
-		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+		else if (level < STLEV) 
 			return String("Ogrian/SpellIcon/AkimboFireball/Disabled"); 
 		else
 			return String("Ogrian/SpellIcon/Firestorm/Disabled");
 	}; 
 
-	virtual Real getCastPeriod() 
+	virtual Real getCastPeriod(int level) 
 	{ 
-		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+		if (level < AKLEV) 
 			return CONR("FIREBALL_CAST_PERIOD"); 
-		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+		else if (level < STLEV) 
 			return CONR("FIREBALL_CAST_PERIOD")/2; 
 		else
 			return CONR("FIREBALL_CAST_PERIOD")/4; 
 	}
 
-	virtual int getManaCost() 
+	virtual int getManaCost(int level) 
 	{ 
 		return CONI("FIREBALL_MANA_COST"); 
 	}
 
-	virtual String getString() 
+	virtual String getString(int level) 
 	{ 
-		if (SpellManager::getSingleton().getLevel() < AKLEV) 
+		if (level < AKLEV) 
 			return CONS("NAME_FIREBALL"); 
-		else if (SpellManager::getSingleton().getLevel() < STLEV) 
+		else if (level < STLEV) 
 			return CONS("NAME_AKIMBO_FIREBALL");
 		else
 			return CONS("NAME_FIRESTORM");

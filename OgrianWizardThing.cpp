@@ -127,6 +127,13 @@ void WizardThing::reset()
 
 //----------------------------------------------------------------------------
 
+int WizardThing::getLevel()
+{
+	return getTeam()->getCastle()->getLevel();
+}
+
+//----------------------------------------------------------------------------
+
 void WizardThing::speed(Real duration)
 {
 	mStopSpeedTime = Clock::getSingleton().getTime() + duration*1000;

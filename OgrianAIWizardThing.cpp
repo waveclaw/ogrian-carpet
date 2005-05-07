@@ -29,10 +29,10 @@ Description: A computer controlled Wizard
 
 #include <Ogre.h>
 #include "OgrianAIWizardThing.h"
-#include "OgrianFireballThing.h"
 #include "OgrianManaThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianHeightMap.h"
+//#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 
@@ -41,15 +41,21 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-AIWizardThing::AIWizardThing(Vector3 pos, int skin, ColourValue colour) 
-	: WizardThing(true, skin) 
+AIWizardThing::AIWizardThing(Vector3 pos, ColourValue colour, String brain) 
+	: WizardThing(true, 0) 
 {
+	mConfig.load(String("Media/brains/") + brain + ".txt");
+	int skin = atoi(mConfig.getSetting("BOT_SKIN").c_str());
+	Real thinkPeriod = atof(mConfig.getSetting("BOT_THINK_PERIOD").c_str());
+	mSightRange = atof(mConfig.getSetting("BOT_SIGHT_RANGE").c_str());
+	mNextCastTime = 0;
+
+	setSkin(skin);
 	setPosition(pos);
 	setColour(colour);
 	setHealth(CONR("WIZARD_HEALTH"));
 
-	//setThinkPeriod(CONR("AI_WIZARD_THINK_PERIOD"));
-	setThinkPeriod(CONR("FIREBALL_CAST_PERIOD"));
+	setThinkPeriod(thinkPeriod);
 }
 
 //----------------------------------------------------------------------------
@@ -60,17 +66,22 @@ void AIWizardThing::think()
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 	if (!team) return;
 	
-	Thing* target = team->getNearestEnemy(this, CONR("AI_WIZARD_SIGHT_RANGE")*100);
+	Thing* target = team->getNearestEnemy(this, mSightRange*100);
+
+	// find nearest mana
+
+	// choose mode
+
 	if (target) 
 	{
 		think_faceTarget(target);
 
-		if (sphereDistance(target) < CONR("AI_WIZARD_SIGHT_RANGE"))
+		if (sphereDistance(target) < mSightRange)
 		{
 			think_attack(target);
 		}
 
-		if (sphereDistance(target) < CONR("AI_WIZARD_SIGHT_RANGE")/2)
+		if (sphereDistance(target) < mSightRange/2)
 		{
 			think_circleStrafe(target);
 		}
@@ -147,6 +158,9 @@ void AIWizardThing::think_attack(Thing* target)
 	// see if we have enough mana
 	if (getActiveMana() < CONI("FIREBALL_MANA_COST")) return;
 
+	// see if we are able to cast yet
+	if (Clock::getSingleton().getTime() < mNextCastTime) return;
+
 	Vector3 pos = getPosition();
 	Vector3 epos = target->getPosition();
 
@@ -164,14 +178,12 @@ void AIWizardThing::think_attack(Thing* target)
 
 	// calculate the trajectory
 	Vector3 vel = (epos + targetOffset) - pos;
-	vel.normalise();
-	vel *= CONR("FIREBALL_SPEED");
 
-	// shoot it
-	Physics::getSingleton().addThing(new FireballThing(getTeamNum(), getColour(),
-		pos, vel, CONI("FIREBALL_DAMAGE"), false));
+	// cast it
+	mFireballSpell.cast(pos, vel, this, getLevel());
 
 	subtractActiveMana(CONI("FIREBALL_MANA_COST"));
+	mNextCastTime = Clock::getSingleton().getTime() + mFireballSpell.getCastPeriod(getLevel())*1000;
 }
 
 //----------------------------------------------------------------------------

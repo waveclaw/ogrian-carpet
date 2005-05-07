@@ -546,6 +546,13 @@ void Castle::setLevel(Real level)
 
 //----------------------------------------------------------------------------
 
+int Castle::getLevel()
+{
+	return mLevel;
+}
+
+//----------------------------------------------------------------------------
+
 CastleTurretThing* Castle::newCastleTurret(int level)
 {
 	Vector3 pos = getPosition();
