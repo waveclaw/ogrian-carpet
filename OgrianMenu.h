@@ -58,7 +58,8 @@ public:
 	ColourValue getChosenColour();
 	int getChosenWizardSkin();
 	int getChosenCastleSkin();
-	bool getChosenSkirmishRandom();
+
+	int getChosenSkirmishMode(); // 0 = normal, 1 = random, 2 = bot
 
 	// write the configure menu settings into ogrian.cfg
 	void writeConfig();
@@ -89,7 +90,10 @@ public:
 	void button_musicLoud();
 
 	void button_skirmishload();
-	void button_skirmishToggleRandom();
+	void button_skirmishSelectNormal();
+	void button_skirmishSelectRandom();
+	void button_skirmishSelectBot();
+
 	void button_hostload();
 	void button_joinload();
 	void button_joinback();
@@ -182,7 +186,7 @@ private:
 	int mConfigCastleSkin;
 	int mConfigMusicVolume;
 	int mConfigYInvert;
-	bool mConfigSkirmishRandom;
+	int mConfigSkirmishRandom;
 
 };
 

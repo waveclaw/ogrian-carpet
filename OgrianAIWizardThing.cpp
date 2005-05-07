@@ -41,19 +41,18 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-AIWizardThing::AIWizardThing(Vector3 pos, int skin) : WizardThing(true, skin) 
+AIWizardThing::AIWizardThing(Vector3 pos, int skin, int teamNum) : WizardThing(true, skin) 
 {
 	setPosition(pos);
 
 	ColourValue colour;
-	colour.r = Math::RangeRandom(0,.95);
-	colour.g = Math::RangeRandom(0,.95);
-	colour.b = Math::RangeRandom(0,.95);
-	setColour(colour);
+	Team* team = Physics::getSingleton().getTeam(teamNum);
+	if (team) 
+		setColour(team->getColour());
 
 	setHealth(CONR("WIZARD_HEALTH"));
 
-	setThinkPeriod(CONT("FIREBALL_CAST_PERIOD"));
+	setThinkPeriod(CONR("AI_WIZARD_THINK_PERIOD"));
 }
 
 //----------------------------------------------------------------------------
@@ -61,44 +60,39 @@ AIWizardThing::AIWizardThing(Vector3 pos, int skin) : WizardThing(true, skin)
 // think
 void AIWizardThing::think()
 {
-	// find the nearest wizard // 
-
-	WizardThing* enemy = 0;
-	Real bestDist = -1;
-	int bestWuid = -1;
-
-	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+	Team* team = Physics::getSingleton().getTeam(getTeamNum());
+	if (!team) return;
+	
+	Thing* target = team->getNearestEnemy(this, CONR("AI_WIZARD_SIGHT_RANGE")*100);
+	if (target) 
 	{
-		int wuid = Physics::getSingleton().getTeam(i)->getWizardUID();
-		if (wuid != getUID()) // if its not me
+		think_faceTarget(target);
+
+		if (sphereDistance(target) < CONR("AI_WIZARD_SIGHT_RANGE"))
 		{
-			enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(wuid));
-			if (enemy == 0)
-			{
-				std::ostringstream num("");
-				num << wuid;
-				LogManager::getSingleton().logMessage(String("ERROR, wuid not found for AI:") + num.str());
-			}
-			else
-			{
-				Real dist = axisDistance(enemy);
-				if (dist < bestDist || bestWuid == -1) // if its the closest so far, or the first
-				{
-					bestDist = dist; // its the new closest 
-					bestWuid = wuid;
-				}
-			}
+			think_attack(target);
+		}
+
+		if (sphereDistance(target) < CONR("AI_WIZARD_SIGHT_RANGE")/2)
+		{
+			think_circleStrafe(target);
+		}
+		else
+		{
+			think_moveTo(target);
 		}
 	}
+}
 
-	if (bestWuid == -1) return;
-	enemy = static_cast<WizardThing*>(Physics::getSingleton().getThing(bestWuid));
+//----------------------------------------------------------------------------
 
+void AIWizardThing::think_faceTarget(Thing* target)
+{
 	// face the enemy //
-	
+
 	// determine the direction
 	Vector3 pos = getPosition();
-	Vector3 epos = enemy->getPosition();
+	Vector3 epos = target->getPosition();
 	float dir = atan2(epos.x - pos.x, epos.z - pos.z);
 	
 	// constrain the offset
@@ -107,47 +101,75 @@ void AIWizardThing::think()
 
 	// set orientation
 	setOrientation(dir);
+}
 
-	Vector3 vel;
+//----------------------------------------------------------------------------
 
-	if (bestDist < CONR("FIREBALL_SPEED") * CONR("FIREBALL_LIFETIME"))
-	{
-		// circle strafe randomly //
+void AIWizardThing::think_moveTo(Thing* target)
+{
+	// determine the direction
+	Vector3 pos = getPosition();
+	Vector3 epos = target->getPosition();
 
-		// set perpindicular velocity
-		vel = pos-epos;
-		Vector3 fvel = vel; // note the original for fireballs
-		vel = vel.crossProduct(Vector3::UNIT_Y);
-		vel.normalise();
-		vel *= CONR("CAMERA_MOVE_SPEED");
+	// move towards the target
+	Vector3 vel = epos-pos;
+	vel.normalise();
+	vel *= CONR("CAMERA_MOVE_SPEED");
 
-		// randomize direction
-		if (Math::RangeRandom(-1,1) < 0) vel *= -1;
+	setVelocity(vel);
+}
 
-		setVelocity(vel);
+//----------------------------------------------------------------------------
 
-		// fire fireballs //
-		if (Math::RangeRandom(-1,1) < 0)
-		{
-			Vector3 fpos = getPosition();
-			fvel.normalise();
-			fvel *= -1;
+void AIWizardThing::think_circleStrafe(Thing* target)
+{
+	// circle strafe randomly //
 
-			fpos += fvel*(CONR("WIZARD_SCALE") + CONR("FIREBALL_SCALE"))*1.1;
-			fvel *= CONR("FIREBALL_SPEED");
-		
-			Physics::getSingleton().addThing(new FireballThing(-1, getColour(), fpos,fvel));
-		}
-	}
-	else
-	{
-		// move towards the target
-		vel = epos-pos;
-		vel.normalise();
-		vel *= CONR("CAMERA_MOVE_SPEED");
+	// determine the direction
+	Vector3 pos = getPosition();
+	Vector3 epos = target->getPosition();
 
-		setVelocity(vel);
-	}
+	// set perpindicular velocity
+	Vector3 vel = pos-epos;
+	vel = vel.crossProduct(Vector3::UNIT_Y);
+	vel.normalise();
+	vel *= CONR("CAMERA_MOVE_SPEED");
+
+	// randomize direction
+	if (Math::RangeRandom(-1,1) < 0) vel *= -1;
+
+	setVelocity(vel);
+}
+
+//----------------------------------------------------------------------------
+
+void AIWizardThing::think_attack(Thing* target)
+{
+	// attack the enemy //
+
+	Vector3 pos = getPosition();
+	Vector3 epos = target->getPosition();
+
+	// account for target movement
+	Real claimTravelTime = sphereDistance(target) / CONR("FIREBALL_SPEED");
+	Vector3 targetOffset = target->getVelocity()*claimTravelTime;
+
+	// ignore the falling of wizards
+	if (target->getType() == CAMERATHING || target->getType() == WIZARDTHING)
+		targetOffset.y = 0;
+
+	// shoot at the tips of buildings
+	if (target->isBuilding())
+		epos.y = epos.y + target->getHeight()/2;
+
+	// calculate the trajectory
+	Vector3 vel = (epos + targetOffset) - pos;
+	vel.normalise();
+	vel *= CONR("FIREBALL_SPEED");
+
+	// shoot it
+	Physics::getSingleton().addThing(new FireballThing(getTeamNum(), getColour(),
+		pos, vel, CONI("FIREBALL_DAMAGE"), false));
 }
 
 //----------------------------------------------------------------------------
@@ -156,17 +178,6 @@ void AIWizardThing::die()
 {
 	WizardThing::die();
 
-	// drop a manathing
-	if (CONI("BOT_MANA_DROP") > 0)
-		Physics::getSingleton().addThing(new ManaThing(CONI("BOT_MANA_DROP"), getPosition()));
-
-	// respawn at a random location
-	Vector3 pos;
-	Real size = HeightMap::getSingleton().getWorldSize();
-	pos.x = Math::RangeRandom(0, size);
-	pos.z = Math::RangeRandom(0, size);
-	pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z) + getHeight();
-	setPosition(pos);
 }
 
 //----------------------------------------------------------------------------

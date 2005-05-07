@@ -42,12 +42,18 @@ namespace Ogrian
 class AIWizardThing : public WizardThing
 {
 public:
-	AIWizardThing(Vector3 pos, int skin);
+	AIWizardThing(Vector3 pos, int skin, int teamNum);
 
 	// think
 	virtual void think();
 
 	virtual void die();
+
+private:
+	void think_moveTo(Thing* target);
+	void think_attack(Thing* target);
+	void think_circleStrafe(Thing* target);
+	void think_faceTarget(Thing* target);
 };
 
 }

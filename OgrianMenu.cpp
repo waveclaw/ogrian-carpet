@@ -191,7 +191,7 @@ void Menu::readConfig()
 	mServerText->setCaption(mConfigServer);
 
 	// skirmish random always starts off
-	mConfigSkirmishRandom = false;
+	mConfigSkirmishRandom = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -244,7 +244,7 @@ int Menu::getChosenWizardSkin() { return mConfigWizardSkin; }
 
 int Menu::getChosenCastleSkin() { return mConfigCastleSkin; }
 
-bool Menu::getChosenSkirmishRandom() { return mConfigSkirmishRandom; }
+int Menu::getChosenSkirmishMode() { return mConfigSkirmishRandom; }
 
 //----------------------------------------------------------------------------
 
@@ -408,22 +408,44 @@ void Menu::loadColourList()
 
 //----------------------------------------------------------------------------
 
-void Menu::button_skirmishToggleRandom()
+void Menu::button_skirmishSelectNormal()
 {
-	if (mConfigSkirmishRandom)  
-	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom")
-			->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectNormal")
+		->setParameter("caption", "SS/Templates/BasicText  X");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectRandom")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
+		->setParameter("caption", "SS/Templates/BasicText   ");
 
-		mConfigSkirmishRandom = false;
-	}
-	else 
-	{
-		GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom")
-			->setParameter("caption", "SS/Templates/BasicText  X");
-		
-		mConfigSkirmishRandom = true;
-	}
+	mConfigSkirmishRandom = 0;
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_skirmishSelectRandom()
+{
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectNormal")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectRandom")
+		->setParameter("caption", "SS/Templates/BasicText  X");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+
+	mConfigSkirmishRandom = 1;
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_skirmishSelectBot()
+{
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectNormal")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectRandom")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
+		->setParameter("caption", "SS/Templates/BasicText  X");
+
+	mConfigSkirmishRandom = 2;
 }
 
 //----------------------------------------------------------------------------

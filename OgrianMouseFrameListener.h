@@ -93,7 +93,9 @@ public:
 		}
 		else if (action == "Ogrian/SkirmishMenu/Load") Menu::getSingleton().button_skirmishload();
 		else if (action == "Ogrian/SkirmishMenu/Back") Menu::getSingleton().button_back();
-		else if (action == "Ogrian/SkirmishMenu/ToggleRandom") Menu::getSingleton().button_skirmishToggleRandom();
+		else if (action == "Ogrian/SkirmishMenu/SelectNormal") Menu::getSingleton().button_skirmishSelectNormal();
+		else if (action == "Ogrian/SkirmishMenu/SelectRandom") Menu::getSingleton().button_skirmishSelectRandom();
+		else if (action == "Ogrian/SkirmishMenu/SelectBot") Menu::getSingleton().button_skirmishSelectBot();
 
 		else if (action == "Ogrian/HostMenu/Load") Menu::getSingleton().button_hostload();
 		else if (action == "Ogrian/HostMenu/Back") Menu::getSingleton().button_back();
@@ -139,7 +141,15 @@ protected:
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
-			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/ToggleRandom"));
+			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectNormal"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectRandom"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>

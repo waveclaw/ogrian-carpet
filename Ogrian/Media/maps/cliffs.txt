@@ -33,6 +33,10 @@ Lava=0
 startX=100
 startZ=100
 
+botstartX=110
+botstartZ=110
+
+
 # Multi-player start locations
 p1startX=100
 p1startZ=100

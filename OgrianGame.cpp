@@ -438,15 +438,32 @@ void Game::startSkirmishGame()
 	colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
 	int teamNum = Physics::getSingleton().newTeam(colour);
 
-	if (Menu::getSingleton().getChosenSkirmishRandom())
+	int mode = Menu::getSingleton().getChosenSkirmishMode();
+	if (mode == 0)
+	{
+		// read in the image file
+		loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+	}
+	else if (mode == 1)
 	{
 		// set up the things randomly
 		loadMapThingsRandomly(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
 	}
-	else
+	else if (mode == 2)
 	{
-		// read in the image file
-		loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+		// set up the things sparsely
+		loadMapThingsSparsely(mConfig, HeightMap::getSingleton().getWorldSize());
+
+		// add a bot
+		Vector3 botpos;
+		botpos.x = atoi(mConfig.getSetting( "botstartX" ).c_str());
+		botpos.z = atoi(mConfig.getSetting( "botstartZ" ).c_str());
+		botpos.y = HeightMap::getSingleton().getHeightAt(botpos.x, botpos.z);
+
+		int skin = atoi(mConfig.getSetting( "BotSkin" ).c_str());
+
+		AIWizardThing* bot = new AIWizardThing(botpos, skin, teamNum);
+		Physics::getSingleton().addThing(bot);
 	}
 
 	// find the CameraThingStartMarker
@@ -468,6 +485,70 @@ void Game::startSkirmishGame()
 	// enable the claim and build spells
 	Hud::getSingleton().reinit();
 	SpellManager::getSingleton().setLevel(-1);
+}
+
+//----------------------------------------------------------------------------
+
+void Game::loadMapThingsSparsely(ConfigFile config, Real worldSize)
+{
+	// make some foliage
+	int foliageNum = atoi(config.getSetting( "FoliageAmount" ).c_str());
+	Real foliageLineMin = atof(config.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
+	Real foliageLineMax = atof(config.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
+	Real foliageScale = atof(config.getSetting( "FOLIAGE_SCALE" ).c_str());
+	Real foliageScaleVar = atof(config.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
+
+	// set up some foliage
+	int i=0;
+	while (i<foliageNum)
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * worldSize;
+        Real z = Math::SymmetricRandom() * worldSize;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > foliageLineMin && y < foliageLineMax)
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+			Real scale = foliageScale + (Math::SymmetricRandom()-.5) * foliageScaleVar;
+
+			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
+		}
+	}
+
+	// set up some wild mana and shrines
+	int numMana = atoi(config.getSetting( "MANA_START_NUM" ).c_str());
+	int manaAmount = atoi(config.getSetting( "MANA_START_AMOUNT" ).c_str());
+
+	int numShrines = atoi(config.getSetting( "NUM_SHRINES" ).c_str());
+	int shrineSkin = atoi(config.getSetting( "SHRINE_SKIN" ).c_str());
+
+	i=0;
+	while(i<numMana)
+	{
+        // Random translate
+        Real x = Math::SymmetricRandom() * 1000.0;
+        Real z = Math::SymmetricRandom() * 1000.0;
+		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+
+		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		{
+			i++;
+			Vector3 pos = Vector3(x,0,z);
+
+			ManaThing* mana = new ManaThing(manaAmount,pos);
+			Physics::getSingleton().addThing(mana);
+			
+			if (i < numShrines)
+			{
+				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
+
+				ShrineThing* shrine = new ShrineThing(pos, shrineSkin);
+				Physics::getSingleton().addThing(shrine);
+			}
+		}
+	}
 }
 
 //----------------------------------------------------------------------------

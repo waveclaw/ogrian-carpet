@@ -99,6 +99,9 @@ private:
 	// load a set of things randomly
 	void loadMapThingsRandomly(ConfigFile config, Real worldSize, int enemyTeamNum);
 
+	// load random mana and foliage only
+	void loadMapThingsSparsely(ConfigFile config, Real worldSize);
+
 	void serverVictoryCheck();
 
 	void loadSounds();

@@ -212,9 +212,9 @@ Ogrian/Menu/Overlay
 		container Panel(Ogrian/Menu/SkirmishMenuPanel)
 		{
 			left 0.33 
-			top 0.2
+			top 0.15
 			width 0.6
-			height 0.17
+			height 0.24
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/SkirmishMenu/Text) : SS/Templates/BasicText
@@ -240,23 +240,55 @@ Ogrian/Menu/Overlay
 				width 0.1 
 				caption SS/Templates/BasicText back
 			}
-							
-			container TextArea(Ogrian/SkirmishMenu/ScenarioText) : SS/Templates/BasicText
+																			
+			container TextArea(Ogrian/SkirmishMenu/NormalText) : SS/Templates/BasicText
 			{
 				left 0.4
-				top 0.08
+				top 0.02
+				width 1
+   				caption NORMAL
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/SelectNormal) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.01
+				width 0.05 
+				caption SS/Templates/BasicText  X
+			}
+				
+			container TextArea(Ogrian/SkirmishMenu/RandomText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.09
 				width 1
    				caption RandOMized
 			}
 					
-			container BorderButton(Ogrian/SkirmishMenu/ToggleRandom) : SS/Templates/BasicButton
+			container BorderButton(Ogrian/SkirmishMenu/SelectRandom) : SS/Templates/BasicButton
 			{
 				left 0.32
-				top 0.07
+				top 0.08
 				width 0.05 
 				caption SS/Templates/BasicText  
 			}
-			
+										
+			container TextArea(Ogrian/SkirmishMenu/BotText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.16
+				width 1
+   				caption VS    AI    BOT
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/SelectBot) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.15
+				width 0.05 
+				caption SS/Templates/BasicText  
+			}
+
 		}
     	
 		container Panel(Ogrian/Menu/HostMenuPanel)
