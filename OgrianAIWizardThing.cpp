@@ -34,6 +34,9 @@ Description: A computer controlled Wizard
 #include "OgrianHeightMap.h"
 #include "OgrianGame.h"
 
+#define MODE_GATHER 0
+#define MODE_ATTACK 1
+
 using namespace Ogre;
 
 namespace Ogrian
@@ -63,33 +66,93 @@ AIWizardThing::AIWizardThing(Vector3 pos, ColourValue colour, String brain)
 // think
 void AIWizardThing::think()
 {
+	if (isGhost()) return;
+
 	Team* team = Physics::getSingleton().getTeam(getTeamNum());
 	if (!team) return;
 	
-	Thing* target = team->getNearestEnemy(this, mSightRange*100);
+	// find nearest enemy
+	Thing* enemy = team->getNearestEnemy(this, mSightRange*100);
 
 	// find nearest mana
+	Thing* mana = think_findNearestMana(mSightRange*100);
 
 	// choose mode
+	if (mana) mMode = MODE_GATHER;
+	else mMode = MODE_ATTACK;
 
-	if (target) 
+	if (mMode == MODE_GATHER)
 	{
-		think_faceTarget(target);
+		think_faceTarget(mana);
 
-		if (sphereDistance(target) < mSightRange)
-		{
-			think_attack(target);
-		}
-
-		if (sphereDistance(target) < mSightRange/2)
-		{
-			think_circleStrafe(target);
-		}
+		// cast when in range
+		if (sphereDistance(mana) < mSightRange/2)
+			think_castClaim(mana);
 		else
+			think_moveTo(mana);
+	}
+
+	else if (mMode == MODE_ATTACK) 
+	{
+		think_faceTarget(enemy);
+
+		// attack if in range
+		if (sphereDistance(enemy) < mSightRange)
+			think_attack(enemy);
+
+		// circle strafe or chase
+		if (sphereDistance(enemy) < mSightRange/2)
+			think_circleStrafe(enemy);
+		else
+			think_moveTo(enemy);
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void AIWizardThing::think_castClaim(Thing* target)
+{
+	// see if we are able to cast yet
+	if (Clock::getSingleton().getTime() < mNextCastTime) return;
+
+	Vector3 startPos = getPosition();
+
+	// account for target movement
+	Real claimTravelTime = sphereDistance(target) / CONR("CLAIMSPELL_SPEED");
+	Vector3 targetOffset = target->getVelocity()*claimTravelTime;
+
+	Vector3 vel = (target->getPosition() + targetOffset) - startPos;
+	vel.normalise();
+
+	mClaimSpell.cast(startPos, vel, this, 0);
+	mNextCastTime = Clock::getSingleton().getTime() + mClaimSpell.getCastPeriod(0)*1000;
+}
+
+//----------------------------------------------------------------------------
+
+Thing* AIWizardThing::think_findNearestMana(Real range)
+{
+	Thing* target = 0;
+	Real bestDist = range;
+	for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	{
+		Thing* candidate = Physics::getSingleton().getThingByIndex(i);
+		int type = candidate->getType();
+		if (candidate 
+			&& (type == MANATHING || type == SHRINETHING)
+			&& cylinderDistance(candidate) < bestDist
+			&& candidate->isAlive() )
 		{
-			think_moveTo(target);
+			// only claim mana and shrines of a different colour
+			if (candidate->getColour() != getColour())
+			{
+				target = candidate;
+				bestDist = cylinderDistance(candidate);
+			}
 		}
 	}
+
+	return target;
 }
 
 //----------------------------------------------------------------------------
@@ -181,8 +244,7 @@ void AIWizardThing::think_attack(Thing* target)
 
 	// cast it
 	mFireballSpell.cast(pos, vel, this, getLevel());
-
-	subtractActiveMana(CONI("FIREBALL_MANA_COST"));
+	subtractActiveMana(mFireballSpell.getManaCost(getLevel()));
 	mNextCastTime = Clock::getSingleton().getTime() + mFireballSpell.getCastPeriod(getLevel())*1000;
 }
 

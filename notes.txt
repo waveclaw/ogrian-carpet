@@ -40,4 +40,4 @@ performance, tweaks:
 known bugs:
 ========
 memory leak in making billboards
-extra camera lifebar at 0,0,0
+health bars are glitchy

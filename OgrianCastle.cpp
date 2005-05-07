@@ -500,7 +500,8 @@ void Castle::dropMana(int amount)
 	setMana(mMana-amount);
 
 	// drop some mana
-	Real dir = Math::RangeRandom(0, 2*Math::PI);
+	int choice = Math::RangeRandom(0,4);
+	Real dir = choice * 0.5f*Math::PI;
 	Vector3 offset;
 	offset.x = sin(dir);
 	offset.y = 0;

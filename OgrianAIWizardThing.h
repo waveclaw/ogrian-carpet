@@ -32,6 +32,7 @@ Description: A computer controlled Wizard
 #define __OgrianAIWizardThing_H__
 
 #include <Ogre.h>
+#include "OgrianClaimSpell.h"
 #include "OgrianFireballSpell.h"
 #include "OgrianWizardThing.h"
 
@@ -55,15 +56,21 @@ public:
 private:
 	void think_moveTo(Thing* target);
 	void think_attack(Thing* target);
+	void think_castClaim(Thing* target);
 	void think_circleStrafe(Thing* target);
 	void think_faceTarget(Thing* target);
+
+	Thing* think_findNearestMana(Real range);
 
 	ConfigFile mConfig;
 
 	Real mSightRange;
 	Time mNextCastTime;
 
+	int mMode;
+
 	FireballSpell mFireballSpell;
+	ClaimSpell mClaimSpell;
 };
 
 }

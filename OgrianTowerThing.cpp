@@ -391,7 +391,7 @@ void TowerThing::think()
 		Physics::getSingleton().addThing(new ClaimSpellThing(getTeamNum(), mColour , startPos, 
 			vel, CONR("TOWER_CLAIM_LIFETIME")));
 	}
-	}
+}
 	
 //----------------------------------------------------------------------------
 
