@@ -50,6 +50,8 @@ public:
 
 	virtual void die();
 
+	virtual bool isBot() { return true; }
+
 private:
 	void think_moveTo(Thing* target);
 	void think_attack(Thing* target);

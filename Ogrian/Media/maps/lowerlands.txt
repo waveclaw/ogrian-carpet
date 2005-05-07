@@ -23,6 +23,13 @@ SHRINE_SKIN=0
 #tower skin
 TOWER_SKIN=1
 
+#bot information for this map
+botstartX=900
+botstartZ=900
+
+BOT_BRAIN=joe
+BOT_CASTLE_SKIN=1
+
 MAP_MUSIC=Media/music/RidingTheDragon.ogg
 
 # Lava on(1) or off(0)

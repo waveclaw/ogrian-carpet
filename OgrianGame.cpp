@@ -129,6 +129,8 @@ void Game::frame(Real time)
 	// victory check
 	if (Multiplayer::getSingleton().isServer())
 		serverVictoryCheck();
+	else if (!Multiplayer::getSingleton().isClient())
+		skirmishVictoryCheck();
 
 	// tick the clock
 	Clock::getSingleton().frame();
@@ -170,6 +172,34 @@ void Game::serverVictoryCheck()
 			PlayerID pid = Multiplayer::getSingleton().getPlayerID(winner->getUID());
 			Multiplayer::getSingleton().serverSendText(CONS("HUD_VICTORY"), ID_MESSAGE, pid);
 		}
+	}
+}
+
+//----------------------------------------------------------------------------
+
+void Game::skirmishVictoryCheck()
+{
+	int numGhostBots = 0;
+	int numBots = 0;
+	Thing* winner = 0;
+	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
+	{
+		Team* team = Physics::getSingleton().getTeam(i);
+		if (team)
+		{
+			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
+			if (wizard && wizard->isBot())
+			{
+				numBots++;
+				if (wizard->isGhost()) numGhostBots++;				
+			}
+		}
+	}
+
+	if (numGhostBots == numBots && numBots > 0)
+	{
+		// we are the winner
+		Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
 	}
 
 }

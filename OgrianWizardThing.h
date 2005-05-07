@@ -68,6 +68,8 @@ public:
 
 	virtual ThingType getType()	{ return WIZARDTHING; }
 
+	virtual bool isBot() { return false; }
+
 	// ignore external up/down velocity changes
 	virtual void setVelocity(Vector3 vel);
 

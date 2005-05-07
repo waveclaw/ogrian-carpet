@@ -32,7 +32,7 @@ Description: A computer controlled Wizard
 #include "OgrianManaThing.h"
 #include "OgrianPhysics.h"
 #include "OgrianHeightMap.h"
-//#include "OgrianFireballThing.h"
+#include "OgrianGame.h"
 
 using namespace Ogre;
 

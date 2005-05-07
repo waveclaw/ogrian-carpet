@@ -104,6 +104,8 @@ private:
 
 	void serverVictoryCheck();
 
+	void skirmishVictoryCheck();
+
 	void loadSounds();
 
 	bool mPreGame;

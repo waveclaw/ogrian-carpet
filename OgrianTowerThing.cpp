@@ -329,7 +329,7 @@ void TowerThing::think()
 	if (health > CONI("TOWER_HEALTH"))
 		setHealth(CONI("TOWER_HEALTH"));
 
-	// cast a mana at the nearest mana or shrine in range
+	// cast a claim at the nearest mana or shrine in range
 	Thing* target = 0;
 	Real bestDist = CONR("TOWER_RANGE");
 	for (int i=0; i<Physics::getSingleton().numThings(); i++)
@@ -337,36 +337,40 @@ void TowerThing::think()
 		Thing* candidate = Physics::getSingleton().getThingByIndex(i);
 		int type = candidate->getType();
 		if (candidate 
-			&& (type == MANATHING || type == SHRINETHING || type == SENTINELTHING 
-				|| type == TICKTHING || type == GNOMETHING)
+			&& (type == MANATHING || type == SHRINETHING)
 			&& cylinderDistance(candidate) < bestDist
 			&& candidate->isAlive() )
 		{
 			// only claim mana and shrines of a different colour
-			if (type == MANATHING || type == SHRINETHING)
+			if (candidate->getColour() != getColour())
 			{
-				if (candidate->getColour() != getColour())
-				{
-					target = candidate;
-					bestDist = cylinderDistance(candidate);
-				}
+				target = candidate;
+				bestDist = cylinderDistance(candidate);
 			}
+		}
+	}
 
-			// heal allies who need health
-			else
+	// if there's no mana or shrine, look for an ally to heal
+	if (!target) for (int i=0; i<Physics::getSingleton().numThings(); i++)
+	{
+		Thing* candidate = Physics::getSingleton().getThingByIndex(i);
+		int type = candidate->getType();
+		if (candidate 
+			&& (type == SENTINELTHING || type == TICKTHING || type == GNOMETHING)
+			&& cylinderDistance(candidate) < bestDist
+			&& candidate->isAlive() )
+		{
+			int maxHealth = 0;
+
+			if (type == SENTINELTHING) maxHealth = CONI("SENTINEL_HEALTH");
+			if (type == GNOMETHING) maxHealth = CONI("GNOME_HEALTH");
+			if (type == TICKTHING) maxHealth = CONI("TICK_HEALTH");
+
+			if (candidate->getColour() == getColour()
+				&& ((DamageableThing*)candidate)->getHealth() < maxHealth)
 			{
-				int maxHealth = 0;
-
-				if (type == SENTINELTHING) maxHealth = CONI("SENTINEL_HEALTH");
-				if (type == GNOMETHING) maxHealth = CONI("GNOME_HEALTH");
-				if (type == TICKTHING) maxHealth = CONI("TICK_HEALTH");
-
-				if (candidate->getColour() == getColour()
-					&& ((DamageableThing*)candidate)->getHealth() < maxHealth)
-				{
-					target = candidate;
-					bestDist = cylinderDistance(candidate);
-				}
+				target = candidate;
+				bestDist = cylinderDistance(candidate);
 			}
 		}
 	}

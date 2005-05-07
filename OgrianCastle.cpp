@@ -71,7 +71,7 @@ void CastleHeartThing::damage(int amount, int sourceTeamNum)
 		// send it to the HUD
 		Hud::getSingleton().setMessage(CONS("CASTLE_HEART_UNDER_ATTACK"), true);
 	}
-	else
+	else if (Multiplayer::getSingleton().isServer())
 	{
 		// send a message to the right player
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
@@ -472,7 +472,7 @@ void Castle::damage(int amount, int sourceTeamNum)
 		// send it to the HUD
 		Hud::getSingleton().setMessage(CONS("CASTLE_UNDER_ATTACK"), true);
 	}
-	else
+	else if (Multiplayer::getSingleton().isServer())
 	{
 		// send a message to the right player
 		PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
