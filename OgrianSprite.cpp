@@ -169,14 +169,16 @@ void Sprite::setRotation(Radian rotation)
 
 //----------------------------------------------------------------------------
 
+void Sprite::setFoliage(bool foliage)
+{
+	mIsFoliage = foliage;
+}
+
+//----------------------------------------------------------------------------
+
 void Sprite::setMaterial(String material)
 {
 	mMaterial = material;
-
-	if (material == Renderer::getSingleton().getFoliageMaterial())
-		mIsFoliage = true;
-	else 
-		mIsFoliage = false;
 
 	if (mInRenderer)
 		mBbset->setMaterialName(material);
@@ -204,7 +206,7 @@ void Sprite::addToRenderer()
 	}
 	if (mFoliageDot) 
 	{
-		DotManager::getSingleton().remove(mFoliageDot);
+		DotManager::getSingleton().removeFoliage(mFoliageDot);
 		mFoliageDot = 0;
 	}
 

@@ -46,6 +46,9 @@ public:
 	Sprite(String name, bool fixed_y=false);
 	virtual ~Sprite();
 
+	// set this to true for foliage
+	virtual void setFoliage(bool foliage);
+
 	// set the position
 	virtual void setPosition(Vector3 pos);
 

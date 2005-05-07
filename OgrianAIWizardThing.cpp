@@ -41,15 +41,11 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-AIWizardThing::AIWizardThing(Vector3 pos, int skin, int teamNum) : WizardThing(true, skin) 
+AIWizardThing::AIWizardThing(Vector3 pos, int skin, ColourValue colour) 
+	: WizardThing(true, skin) 
 {
 	setPosition(pos);
-
-	ColourValue colour;
-	Team* team = Physics::getSingleton().getTeam(teamNum);
-	if (team) 
-		setColour(team->getColour());
-
+	setColour(colour);
 	setHealth(CONR("WIZARD_HEALTH"));
 
 	setThinkPeriod(CONR("AI_WIZARD_THINK_PERIOD"));
@@ -178,6 +174,14 @@ void AIWizardThing::die()
 {
 	WizardThing::die();
 
+	Castle* castle = 0;
+	Team* team = getTeam();
+
+	if (team) 
+		castle = team->getCastle();
+
+	if (castle)
+		setPosition(castle->getPosition());
 }
 
 //----------------------------------------------------------------------------

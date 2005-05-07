@@ -42,7 +42,7 @@ namespace Ogrian
 class AIWizardThing : public WizardThing
 {
 public:
-	AIWizardThing(Vector3 pos, int skin, int teamNum);
+	AIWizardThing(Vector3 pos, int skin, ColourValue colour);
 
 	// think
 	virtual void think();
