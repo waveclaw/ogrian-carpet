@@ -90,6 +90,32 @@ public:
 		// self destruct
 		destroy();
 	}
+
+	// cant build sentinels inside of other sentinels or buildings
+	virtual void collided(Thing* e)
+	{
+		if (e->getType() == SENTINELTHING 
+			|| e->getType() == CASTLEKEEPTHING 
+			|| e->getType() == CASTLETURRETTHING
+			|| e->getType() == TOWERTHING )
+		{
+			Team* team = Physics::getSingleton().getTeam(getTeamNum());
+
+			// report the problem
+			if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
+			{
+				// send it to the HUD
+				Hud::getSingleton().setMessage(CONS("SUMMON_FAIL_OCCUPIED"), true);
+			}
+			else
+			{
+				// send a message to the right player
+				PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
+				Multiplayer::getSingleton().serverSendHudText(CONS("SUMMON_FAIL_OCCUPIED"), player);
+			}
+			destroy();
+		}
+	}
 };
 
 }

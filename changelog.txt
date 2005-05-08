@@ -1,7 +1,10 @@
 0,9
--things are now loaded from an image in skirmish, rather then randomly
+-AI bot player for skirmish
+-things can now be loaded from an image in skirmish, rather then randomly
 -option for old randomized maps
 -trees can now always bee seen
+-made castle mana drops aggregate more
+-loosened the restrictions on summoning
 
 
 0.8

@@ -67,34 +67,6 @@ public:
 
 	// override this to summon a monster
 	virtual void collidedGround() {}
-
-	// cant build things inside of other things
-	virtual void collided(Thing* e)
-	{
-		if (e->getType() != WIZARDTHING 
-			&& e->getType() != CAMERATHING 
-			&& e->getType() != FOLIAGETHING
-			&& e->getType() != GNOMETHING
-			&& e->getType() != TICKTHING
-			)
-		{
-			Team* team = Physics::getSingleton().getTeam(getTeamNum());
-
-			// report the problem
-			if (team->getWizardUID() == Renderer::getSingleton().getCameraThing()->getUID())
-			{
-				// send it to the HUD
-				Hud::getSingleton().setMessage(CONS("SUMMON_FAIL_OCCUPIED"), true);
-			}
-			else
-			{
-				// send a message to the right player
-				PlayerID player = Multiplayer::getSingleton().getPlayerID(team->getWizardUID());
-				Multiplayer::getSingleton().serverSendHudText(CONS("SUMMON_FAIL_OCCUPIED"), player);
-			}
-			destroy();
-		}
-	}
 };
 
 }

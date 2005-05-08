@@ -195,14 +195,8 @@ void BuildSpellThing::collided(Thing* e)
 			return;
 		}
 
-		// except for these ...
-		case WIZARDTHING:
-		case CAMERATHING:
-		case FOLIAGETHING:
-			return;
-
-		// ... dont build inside other stuff
-		default: 
+		// ... dont build inside sentinels
+		case SENTINELTHING:
 		{
 			// report the problem
 			Team* team = Physics::getSingleton().getTeam(getTeamNum());
