@@ -5,6 +5,7 @@
 -trees can now always bee seen
 -made castle mana drops aggregate more
 -loosened the restrictions on summoning
+-made the config menu better
 
 
 0.8

@@ -128,6 +128,13 @@ private:
 	// refresh the map desription
 	void selectMap(String mapname);
 
+	// refresh the colour
+	void selectColour(String colour);
+
+	// refresh the wizard skin
+	String mSelectedWizard;
+	void selectWizardSkin(String colour);
+
 	// load the lists
 	void loadMapList();
 	void loadColourList();

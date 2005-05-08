@@ -186,6 +186,8 @@ void Menu::readConfig()
 	if (mConfigColour.length() > 0)
 		mColourList->setSelectedItem(&StringResource(mConfigColour));
 
+	selectColour(mConfigColour);
+
 	// set the text for name and server
 	mNameText->setCaption(mConfigName);
 	mServerText->setCaption(mConfigServer);
@@ -818,6 +820,40 @@ void Menu::keyPressed(KeyEvent* e)
 
 //----------------------------------------------------------------------------
 
+void Menu::selectWizardSkin(String skin)
+{
+	String material = String("Ogrian/") + skin + "/fl";
+
+    GuiManager::getSingleton().getGuiElement("Ogrian/Menu/WizardSkinListPanel/Preview")
+		->setParameter("material", material);	
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::selectColour(String colour)
+{
+	// construct the colour
+	ColourValue colval = getChosenColour();
+
+	std::ostringstream red("");
+	std::ostringstream green("");
+	std::ostringstream blue("");
+
+	red << colval.r;
+	green << colval.g;
+	blue << colval.b;
+
+	String col = String("") + red.str() + " " + green.str() + " " + blue.str();
+
+    GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ColourListPanel/Text")
+		->setParameter("colour_top", col);	
+	
+    GuiManager::getSingleton().getGuiElement("Ogrian/Menu/ColourListPanel/Text")
+		->setParameter("colour_bottom", col);	
+}
+
+//----------------------------------------------------------------------------
+
 void Menu::selectMap(String mapname)
 {
 	// load the map
@@ -909,12 +945,28 @@ void Menu::frame(Real time)
 		}
 	}
 
-	String mapName = static_cast<StringResource*>(mMapList->getSelectedItem())->getName();
 	// if the selected map changes, update the map panel
+	String mapName = static_cast<StringResource*>(mMapList->getSelectedItem())->getName();
 	if (mMapSelection != mapName)
 	{
 		mMapSelection = mapName;
 		selectMap(mMapSelection);
+	}
+
+	// if the selected colour chagnes, update the colour
+	String colour = static_cast<StringResource*>(mColourList->getSelectedItem())->getName();
+	if (mConfigColour != colour)
+	{
+		mConfigColour = colour;
+		selectColour(mConfigColour);
+	}
+	
+	// if the selected colour chagnes, update the colour
+	String wizskin = static_cast<StringResource*>(mWizardSkinList->getSelectedItem())->getName();
+	if (mSelectedWizard != wizskin)
+	{
+		mSelectedWizard = wizskin;
+		selectWizardSkin(mSelectedWizard);
 	}
 }
 
