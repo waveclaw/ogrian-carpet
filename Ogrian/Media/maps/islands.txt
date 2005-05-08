@@ -60,9 +60,9 @@ MONSTERS_GREEN=255
 MONSTERS_BLUE=1
 
 # the number of starting stuff in random skirmish mode
-NUM_TOWERS=6
-NUM_TICKS=60
-NUM_SENTINELS=30
+NUM_TOWERS=0
+NUM_TICKS=0
+NUM_SENTINELS=1
 
 # keep monsters this far away from the start location
 MONSTER_MIN_DIST=200

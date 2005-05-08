@@ -6,6 +6,8 @@
 -made castle mana drops aggregate more
 -loosened the restrictions on summoning
 -made the config menu better
+-added victory conditions to skirmish
+-made ticks and gnomes stay in the formation you put them in
 
 
 0.8

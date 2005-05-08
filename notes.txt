@@ -2,7 +2,6 @@ Ogrian Carpet Notes
 
 for 0.9
 =========
-brain files
 smrat AI player
 
 
@@ -25,13 +24,16 @@ meteor whoosh
 build whoosh
 build construction sound
 heal sound
+victory fanfare
+defeat antifanfare
 
 
 
 
 Ideas:
 =========
-for the tutorial, have TextBoxThing that pops up a textbox when teh camera touches it. Make many sublclasses or instances that link together, walking the player through the rules of the game. 
+for the tutorial, have a tutorial singleton with button_ style methods
+ditto the campaign
 name of evil guy: gimplorg!
 
 performance, tweaks:
@@ -39,5 +41,5 @@ performance, tweaks:
 
 known bugs:
 ========
-memory leak in making billboards
+possible small memory leak in making billboards
 health bars are glitchy

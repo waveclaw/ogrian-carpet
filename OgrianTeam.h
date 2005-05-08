@@ -75,6 +75,8 @@ public:
 
 	DamageableThing* getNearestEnemy(Thing* thing, Real range);
 
+	int getNumEnemies() { return (int)mEnemies.size(); }
+
 private:
 	int mTeamNum;
 	int mScore;

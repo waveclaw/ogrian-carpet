@@ -179,29 +179,17 @@ void Game::serverVictoryCheck()
 
 void Game::skirmishVictoryCheck()
 {
-	int numGhostBots = 0;
-	int numBots = 0;
-	Thing* winner = 0;
-	for (int i=0; i<Physics::getSingleton().numTeams(); i++)
-	{
-		Team* team = Physics::getSingleton().getTeam(i);
-		if (team)
-		{
-			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
-			if (wizard && wizard->isBot())
-			{
-				numBots++;
-				if (wizard->isGhost()) numGhostBots++;				
-			}
-		}
-	}
+	// look for enemies
+	WizardThing* cam = Renderer::getSingleton().getCameraThing();
+	Team* team = 0;
+	
+	if (cam) team = cam->getTeam();
 
-	if (numGhostBots == numBots && numBots > 0)
+	if (team && team->getNumEnemies() == 0)
 	{
 		// we are the winner
 		Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
 	}
-
 }
 
 //----------------------------------------------------------------------------

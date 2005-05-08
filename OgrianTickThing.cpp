@@ -54,11 +54,16 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
 		if (wiz) wiz->addTick();
 
-		// set our formation offset
-		Real angle = Math::RangeRandom(0,2*Math::PI);
-		Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
-		mFormationOffset.x = sin(angle)*distance;
-		mFormationOffset.z = cos(angle)*distance;
+		// set up our formation offset
+		if (wiz)
+		{
+			Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+
+			mFormationOffset = pos - wiz->getPosition();
+			mFormationOffset.y = 0;
+			mFormationOffset.normalise();
+			mFormationOffset *= distance;
+		}
 	}
 
 	getVisRep()->addPose("Ogrian/Tick/Sitting/");
@@ -71,9 +76,8 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 	setPosY(getGroundY()+CONR("TICK_SCALE")/2);
 
 	setGroundScan(true);
-	
-
 }
+
 //----------------------------------------------------------------------------
 
 // fall
