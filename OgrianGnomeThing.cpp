@@ -56,12 +56,16 @@ GnomeThing::GnomeThing(int teamNum, Vector3 pos)
 		// set up our formation offset
 		if (wiz)
 		{
-			Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+			Real distance = CONR("GNOME_FORMATION_OFFSET");
 
 			mFormationOffset = pos - wiz->getPosition();
 			mFormationOffset.y = 0;
-			mFormationOffset.normalise();
-			mFormationOffset *= distance;
+
+			if (mFormationOffset.length() > distance)
+			{
+				mFormationOffset.normalise();
+				mFormationOffset *= distance;
+			}
 		}
 	}	
 

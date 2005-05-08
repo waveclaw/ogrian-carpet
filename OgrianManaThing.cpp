@@ -221,7 +221,7 @@ void ManaThing::setPosition(Vector3 pos)
 	Thing::setPosition(pos);
 
 	// if we are now underground, go up to the surface
-	Real ground = getGroundY() + getHeight()/2;
+	Real ground = getGroundY() + CONR("WIZARD_MIN_ALTITUDE");
 	if (ground > getPosY()) 
 	{
 		setVelY(0);

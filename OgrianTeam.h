@@ -74,6 +74,7 @@ public:
 	void removeEnemy(DamageableThing* enemy);
 
 	DamageableThing* getNearestEnemy(Thing* thing, Real range);
+	DamageableThing* getNearestEnemyBuilding(Thing* thing, Real range);
 
 	int getNumEnemies() { return (int)mEnemies.size(); }
 

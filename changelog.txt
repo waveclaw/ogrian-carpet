@@ -6,8 +6,10 @@
 -made castle mana drops aggregate more
 -loosened the restrictions on summoning
 -made the config menu better
--added victory conditions to skirmish
+-added victory conditions to skirmish: kill all enemy towers/castles
 -made ticks and gnomes stay in the formation you put them in
+-made enmy monsters and towers drop less then their cost in skirmish
+-made mana float higher
 
 
 0.8

@@ -43,7 +43,6 @@ class Game : public Singleton< Game >
 public:
 	virtual ~Game();
 
-
 	void startGame(ConfigFile config);
 
 	// while in pregame mode, claimthings cannot be made
@@ -61,6 +60,9 @@ public:
 
 	// where all wizards should start
 	Vector3 getStartPos();
+
+	// in skirmish mode, less mana is dropped by native monsters
+	Real getManaDropMultiplier(int neamNum);
 
 	// wether or not the current map has lava
 	void setLava(bool lava);

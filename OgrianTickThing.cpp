@@ -57,12 +57,16 @@ TickThing::TickThing(int teamNum, Vector3 pos)
 		// set up our formation offset
 		if (wiz)
 		{
-			Real distance = Math::RangeRandom(0.5,1) * CONR("GNOME_FORMATION_OFFSET");
+			Real distance = CONR("GNOME_FORMATION_OFFSET");
 
 			mFormationOffset = pos - wiz->getPosition();
 			mFormationOffset.y = 0;
-			mFormationOffset.normalise();
-			mFormationOffset *= distance;
+
+			if (mFormationOffset.length() > distance)
+			{
+				mFormationOffset.normalise();
+				mFormationOffset *= distance;
+			}
 		}
 	}
 
@@ -221,9 +225,10 @@ void TickThing::die()
 	else
 	{
 		// drop all of our mana
-		ManaThing* mana = new ManaThing(CONI("TICK_COST"), getPosition());
-		Physics::getSingleton().addThing(mana);
-		mana->setTeamNum(getTeamNum());
+		int amount = CONI("TICK_COST") * Game::getSingleton().getManaDropMultiplier(getTeamNum());
+		ManaThing* manathing = new ManaThing(amount, getPosition());
+		Physics::getSingleton().addThing(manathing);
+		manathing->setTeamNum(getTeamNum());
 	}
 
 	// notify our wizard

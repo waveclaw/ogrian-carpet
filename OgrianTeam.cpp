@@ -216,4 +216,37 @@ DamageableThing* Team::getNearestEnemy(Thing* thing, Real range)
 
 //----------------------------------------------------------------------------
 
+DamageableThing* Team::getNearestEnemyBuilding(Thing* thing, Real range)
+{
+	if (mEnemies.size() == 0) return 0;
+
+	DamageableThing* target = 0;
+	Real bestDist = range;
+	ColourValue colour = thing->getColour();
+
+	for (int i=0; i<(int)mEnemies.size(); i++)
+	{
+		DamageableThing* candidate = mEnemies[i];
+		if (candidate && candidate->isAlive() && candidate->getColour() != colour
+			&& (candidate->getType() == TOWERTHING
+				|| candidate->getType() == CASTLEKEEPTHING
+				|| candidate->getType() == CASTLETURRETTHING))
+		{
+			Real dist = candidate->sphereDistance(thing);
+			if (dist < bestDist)
+			{
+				bestDist = dist;
+				target = mEnemies[i];
+			}
+		}
+	}
+
+	if (target && target->isAlive())
+		return target;
+	else
+		return 0;
+}
+
+//----------------------------------------------------------------------------
+
 }

@@ -137,9 +137,10 @@ void SentinelThing::die()
 	else
 	{
 		// drop all of our mana
-		ManaThing* mana = new ManaThing(CONI("SENTINEL_COST"), getPosition());
-		Physics::getSingleton().addThing(mana);
-		mana->setTeamNum(getTeamNum());
+		int amount = CONI("SENTINEL_COST") * Game::getSingleton().getManaDropMultiplier(getTeamNum());
+		ManaThing* manathing = new ManaThing(amount, getPosition());
+		Physics::getSingleton().addThing(manathing);
+		manathing->setTeamNum(getTeamNum());
 	}
 
 	// notify our wizard

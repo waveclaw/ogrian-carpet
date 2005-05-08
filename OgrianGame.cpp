@@ -185,7 +185,7 @@ void Game::skirmishVictoryCheck()
 	
 	if (cam) team = cam->getTeam();
 
-	if (team && team->getNumEnemies() == 0)
+	if (team && team->getNearestEnemyBuilding(cam, 100000000000) == 0)
 	{
 		// we are the winner
 		Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
@@ -210,6 +210,19 @@ void Game::updateScores()
 	// propogate the new scores if this is a server
 	if (Multiplayer::getSingleton().isServer()) 
 		Multiplayer::getSingleton().updateScores();
+}
+
+//----------------------------------------------------------------------------
+
+Real Game::getManaDropMultiplier(int teamNum)
+{
+	Team* team = Physics::getSingleton().getTeam(teamNum);
+	
+	if (!team) return 1;
+
+	if (team->getWizardUID() >= 0) return 1;
+
+	return atof(mConfig.getSetting("MANA_DROP_MULTIPLIER").c_str());
 }
 
 //----------------------------------------------------------------------------

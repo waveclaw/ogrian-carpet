@@ -66,6 +66,8 @@ NUM_TOWERS=3
 NUM_TICKS=60
 NUM_SENTINELS=60
 
+MANA_DROP_MULTIPLIER=0.25
+
 # keep monsters this far away from the start location
 MONSTER_MIN_DIST=100
 

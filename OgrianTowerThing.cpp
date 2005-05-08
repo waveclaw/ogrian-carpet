@@ -233,7 +233,8 @@ void TowerThing::die()
 		else
 		{
 			// drop all of our mana
-			ManaThing* manathing = new ManaThing(CONI("TOWER_COST"), getPosition());
+			int amount = CONI("TOWER_COST") * Game::getSingleton().getManaDropMultiplier(getTeamNum());
+			ManaThing* manathing = new ManaThing(amount, getPosition());
 			manathing->setTeamNum(getTeamNum());
 			Physics::getSingleton().addThing(manathing);;
 		}

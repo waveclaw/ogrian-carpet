@@ -3,6 +3,7 @@ Ogrian Carpet Notes
 for 0.9
 =========
 smrat AI player
+multiplayer thing images
 
 
 to add later:
