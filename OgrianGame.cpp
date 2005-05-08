@@ -472,7 +472,7 @@ void Game::startSkirmishGame()
 	if (mode == 0)
 	{
 		// read in the image file
-		loadMapThingsFromImage(mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+		loadMapThingsFromImage("SkirmishThingsTexture", mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
 	}
 	else if (mode == 1)
 	{
@@ -514,6 +514,7 @@ void Game::startSkirmishGame()
 		if (thing->getType() == CAMERAMARKERTHING)
 		{
 			cam->setPosition(thing->getPosition());
+			thing->destroy();
 			break;
 		}
 	}
@@ -718,11 +719,11 @@ void Game::loadMapThingsRandomly(ConfigFile config, Real worldSize, int enemyTea
 
 //----------------------------------------------------------------------------
 
-void Game::loadMapThingsFromImage(ConfigFile config, Real worldSize, int enemyTeamNum)
+void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real worldSize, int enemyTeamNum)
 {
 	LogManager::getSingleton().logMessage("Loading Map Things");
 
-	String filename = config.getSetting("SkirmishThingsTexture");
+	String filename = config.getSetting(textureKey);
 	
 	if (filename == "") return;
 
