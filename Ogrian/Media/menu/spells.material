@@ -291,7 +291,7 @@ material Ogrian/SpellIcon/Speed/Ready
 
 			texture_unit
 			{
-				texture mike/mike_r.png
+				texture icons/icon_speed.png
 			}
 		}
 	}
@@ -307,7 +307,7 @@ material Ogrian/SpellIcon/Speed/Enabled
 
 			texture_unit
 			{
-				texture  mike/mike_r.png
+				texture icons/icon_speed.png
 			}
 		}
 	}
