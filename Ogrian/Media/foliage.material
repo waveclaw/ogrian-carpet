@@ -5,13 +5,13 @@ material Ogrian/EvergreenTree
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
 				texture evergreen.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -22,13 +22,13 @@ material Ogrian/EvergreenTreeDead
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
 				texture evergreen_dead.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -39,13 +39,13 @@ material Ogrian/PalmTree
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
 				texture palmtree.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -56,13 +56,13 @@ material Ogrian/PalmTreeDead
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
 				texture palmtree_dead.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -73,13 +73,13 @@ material Ogrian/PineTree
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
-				texture sprites/pine.png
+				texture pine.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -90,13 +90,13 @@ material Ogrian/PineTreeDead
 	{
 		pass
 		{
-			scene_blend alpha_blend
-			depth_write off
-
+			depth_write on
+			
 			texture_unit
 			{
-				texture sprites/pine_dead.png
+				texture pine_dead.png
 				tex_address_mode clamp
+				alpha_rejection greater_equal 128
 			}
 		}
 	}
@@ -109,11 +109,12 @@ material Ogrian/Beryl
 		{
 			scene_blend alpha_blend
 			depth_write off
-
+			
 			texture_unit
 			{
-				texture sprites/beryl.png
+				texture beryl.png
 				tex_address_mode clamp
+				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -126,11 +127,12 @@ material Ogrian/BerylDead
 		{
 			scene_blend alpha_blend
 			depth_write off
-
+			
 			texture_unit
 			{
-				texture sprites/beryl-broken.png
+				texture beryl-broken.png
 				tex_address_mode clamp
+				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -143,11 +145,12 @@ material Ogrian/Quartz
 		{
 			scene_blend alpha_blend
 			depth_write off
-
+			
 			texture_unit
 			{
-				texture sprites/quartz.png
+				texture quartz.png
 				tex_address_mode clamp
+				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -160,11 +163,12 @@ material Ogrian/QuartzDead
 		{
 			scene_blend alpha_blend
 			depth_write off
-
+			
 			texture_unit
 			{
-				texture sprites/quartz-broken.png
+				texture quartz-broken.png
 				tex_address_mode clamp
+				alpha_rejection not_equal 0
 			}
 		}
 	}
