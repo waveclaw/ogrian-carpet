@@ -6,13 +6,12 @@ material Ogrian/EvergreenTree
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write on
+			depth_write off
 
 			texture_unit
 			{
 				texture evergreen.png
 				tex_address_mode clamp
-				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -41,13 +40,12 @@ material Ogrian/PalmTree
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write on
+			depth_write off
 
 			texture_unit
 			{
 				texture palmtree.png
 				tex_address_mode clamp
-				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -76,13 +74,12 @@ material Ogrian/PineTree
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write on
+			depth_write off
 
 			texture_unit
 			{
 				texture sprites/pine.png
 				tex_address_mode clamp
-				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -111,13 +108,12 @@ material Ogrian/Beryl
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write on
+			depth_write off
 
 			texture_unit
 			{
 				texture sprites/beryl.png
 				tex_address_mode clamp
-				alpha_rejection not_equal 0
 			}
 		}
 	}
@@ -146,13 +142,12 @@ material Ogrian/Quartz
 		pass
 		{
 			scene_blend alpha_blend
-			depth_write on
+			depth_write off
 
 			texture_unit
 			{
 				texture sprites/quartz.png
 				tex_address_mode clamp
-				alpha_rejection not_equal 0
 			}
 		}
 	}
