@@ -32,6 +32,11 @@ botstartZ=900
 BOT_BRAIN=joe
 BOT_CASTLE_SKIN=1
 
+# the RGB colour of the bot
+BOT_RED=221
+BOT_GREEN=10
+BOT_BLUE=32
+
 
 #music for this map
 MAP_MUSIC=Media/music/LastGlimpse.ogg
@@ -39,22 +44,9 @@ MAP_MUSIC=Media/music/LastGlimpse.ogg
 # Lava on(1) or off(0)
 Lava=1
 
-# Single-player start locations
+# Single-player start location
 startX=100
 startZ=100
-
-# Multi-player start locations
-p1startX=100
-p1startZ=100
-
-p2startX=928
-p2startZ=928
-
-p3startX=84
-p3startZ=582
-
-p4startX=800
-p4startZ=168
 
 # the RGB colour of the native monsters
 MONSTERS_RED=200
@@ -80,6 +72,9 @@ MANA_START_AMOUNT=20
 
 # thing definition image for skirmish
 SkirmishThingsTexture=s_hell.png
+
+# thing definition image for multiplayer
+MultiplayerThingsTexture=m_hell.png
 
 # The main world texture (if you wish the terrain manager to create a material for you)
 WorldTexture=t_hell.jpg

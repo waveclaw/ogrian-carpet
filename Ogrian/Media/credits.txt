@@ -38,6 +38,7 @@ Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/
 John Michel
  ogrian_theme.ogg
  ogrian_snow.ogg
+ ogrian_rocky.ogg
 
 
 models:

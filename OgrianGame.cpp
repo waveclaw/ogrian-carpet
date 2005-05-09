@@ -474,6 +474,18 @@ void Game::startSkirmishGame()
 	{
 		// read in the image file
 		loadMapThingsFromImage("SkirmishThingsTexture", mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+		
+		// set the camera position
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->getType() == PLAYERMARKERTHING)
+			{
+				cam->setPosition(thing->getPosition());
+				thing->destroy();
+				break;
+			}
+		}
 	}
 	else if (mode == 1)
 	{
@@ -482,43 +494,66 @@ void Game::startSkirmishGame()
 	}
 	else if (mode == 2)
 	{
-		// set up the things sparsely
-		loadMapThingsSparsely(mConfig, HeightMap::getSingleton().getWorldSize());
+		// read in the image file
+		loadMapThingsFromImage("MultiplayerThingsTexture", mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
 
+		// build a list of start locations
+		std::vector<Vector3> slocs;
+
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		{
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->getType() == PLAYERMARKERTHING)
+			{
+				slocs.push_back(thing->getPosition());
+				thing->destroy();
+			}
+		}
+			
+		// chose start for the player
+		if (slocs.size() > 0)
+		{
+			int index = Math::RangeRandom(0,slocs.size()-.1);
+			Vector3 playerStart = slocs[index];
+			slocs.erase(slocs.begin()+index);
+
+			playerStart.y = HeightMap::getSingleton().getHeightAt(playerStart.x, playerStart.z);
+			cam->setPosition(playerStart);
+		}
+
+		// chose a start for the bot
+		Vector3 botStart;
+		if (slocs.size() > 0)
+		{
+			int index = Math::RangeRandom(0,slocs.size()-.1);
+			botStart = slocs[index];
+			slocs.erase(slocs.begin()+index);
+
+			botStart.y = HeightMap::getSingleton().getHeightAt(botStart.x, botStart.z);
+		}
+
+		ColourValue botColour;
+		botColour.r = atoi(mConfig.getSetting( "BOT_RED" ).c_str()) / 255.0;
+		botColour.g = atoi(mConfig.getSetting( "BOT_GREEN" ).c_str()) / 255.0;
+		botColour.b = atoi(mConfig.getSetting( "BOT_BLUE" ).c_str()) / 255.0;
 		// add a bot
-		Vector3 botpos;
-		botpos.x = atoi(mConfig.getSetting( "botstartX" ).c_str());
-		botpos.z = atoi(mConfig.getSetting( "botstartZ" ).c_str());
-		botpos.y = HeightMap::getSingleton().getHeightAt(botpos.x, botpos.z);
-
 		String brain = mConfig.getSetting( "BOT_BRAIN" ).c_str();
 
-		AIWizardThing* bot = new AIWizardThing(botpos, colour, brain);
+		AIWizardThing* bot = new AIWizardThing(botStart, botColour, brain);
 		Physics::getSingleton().addThing(bot);
 
 		Team* team = bot->getTeam();
-		team->setColour(colour);
+		team->setColour(botColour);
 		team->setWizardUID(bot->getUID());
 
 		// give him a castle
 		int skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
-		Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botpos);
+		Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botStart);
 		Castle* castle = new Castle(team->getTeamNum(), caspos, skin);
 
 		team->setCastleUID(castle->getUID());
 	}
 
-	// find the CameraThingStartMarker
-	for (int i=0; i<Physics::getSingleton().numThings(); i++)
-	{
-		Thing* thing = Physics::getSingleton().getThingByIndex(i);
-		if (thing->getType() == CAMERAMARKERTHING)
-		{
-			cam->setPosition(thing->getPosition());
-			thing->destroy();
-			break;
-		}
-	}
 
 	// reset the score
 	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
@@ -814,7 +849,7 @@ void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real wor
 				}
 				case HEX_WHITE: // player start
 				{
-					Physics::getSingleton().addThing(new CameraThingStartMarker(pos));
+					Physics::getSingleton().addThing(new PlayerMarkerThing(pos));
 					break;
 				}
 			}

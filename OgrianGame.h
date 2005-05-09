@@ -31,12 +31,21 @@ starting games and detecting victory.
 #define __OgrianGame_H__
 
 #include <Ogre.h>
+#include "OgrianThing.h"
 
 using namespace Ogre;
 
 namespace Ogrian
 {
 
+class PlayerMarkerThing : public Thing
+{
+public:
+	PlayerMarkerThing::PlayerMarkerThing(Vector3 pos)
+		: Thing("Ogrian/Clear", SPRITE, "Marker", 0, 1, pos) {}
+		
+	virtual ThingType getType() { return PLAYERMARKERTHING; }
+};
 
 class Game : public Singleton< Game >
 {

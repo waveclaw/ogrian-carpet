@@ -30,6 +30,11 @@ botstartZ=900
 BOT_BRAIN=joe
 BOT_CASTLE_SKIN=1
 
+# the RGB colour of the bot
+BOT_RED=221
+BOT_GREEN=10
+BOT_BLUE=32
+
 #music for this map
 MAP_MUSIC=Media/music/RidingTheDragon.ogg
 
@@ -39,19 +44,6 @@ Lava=0
 # Single-player start location
 startX=100
 startZ=100
-
-# Multi-player start locations
-p1startX=100
-p1startZ=100
-
-p2startX=900
-p2startZ=900
-
-p3startX=100
-p3startZ=900
-
-p4startX=900
-p4startZ=100
 
 # the RGB colour of the native monsters
 MONSTERS_RED=221
@@ -77,6 +69,9 @@ MANA_START_AMOUNT=20
 
 # thing definition image for skirmish
 SkirmishThingsTexture=s_cliffs.png
+
+# thing definition image for multiplayer
+MultiplayerThingsTexture=m_cliffs.png
 
 
 # The main world texture (if you wish the terrain manager to create a material for you)

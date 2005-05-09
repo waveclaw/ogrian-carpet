@@ -11,9 +11,8 @@ MSG_LOADMAP		Loading . . .
 HUD_MANA	Mana: 
 HUD_HEALTH	Health:
 HUD_SCORE	SCORE:
-HUD_GAMEOVER	Game Over - You are Dead!
-HUD_VICTORY	! ! !   a   winner   is   you   ! ! !
-HUD_DEAD	you   are   dead   : (
+
+HUD_VICTORY	! ! !   a   winner   is   you   ! ! !                                                    PRESS ESC TO RETURN TO MENU
 
 NAME_ALBATROSS		ALBATROSS !
 NAME_TICK		TICK

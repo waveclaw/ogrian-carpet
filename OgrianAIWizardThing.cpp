@@ -81,7 +81,7 @@ void AIWizardThing::think()
 	if (mana) mMode = MODE_GATHER;
 	else mMode = MODE_ATTACK;
 
-	if (mMode == MODE_GATHER)
+	if (mana && mMode == MODE_GATHER)
 	{
 		think_faceTarget(mana);
 
@@ -92,7 +92,7 @@ void AIWizardThing::think()
 			think_moveTo(mana);
 	}
 
-	else if (mMode == MODE_ATTACK) 
+	else if (enemy && mMode == MODE_ATTACK) 
 	{
 		think_faceTarget(enemy);
 
