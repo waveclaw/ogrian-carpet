@@ -896,6 +896,9 @@ void Menu::selectMap(String mapname)
     GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Difficulty")
 		->setParameter("caption", config.getSetting("Difficulty"));	
 	
+    GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Players")
+		->setParameter("caption", config.getSetting("Players"));	
+	
     GuiManager::getSingleton().getGuiElement("Ogrian/MapMenu/Preview")
 		->setParameter("material", config.getSetting("Preview"));	
 }

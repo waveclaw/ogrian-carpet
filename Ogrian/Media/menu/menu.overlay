@@ -166,7 +166,7 @@ Ogrian/Menu/Overlay
 			left 0.33 
 			top 0.4
 			width 0.4
-			height 0.5
+			height 0.55
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/MapMenu/Name/Text) : SS/Templates/BasicText
@@ -189,7 +189,15 @@ Ogrian/Menu/Overlay
 				top 0.41
 				width 1
    				caption Difficulty: 
+			}	
+			container TextArea(Ogrian/MapMenu/Players/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.46
+				width 1
+   				caption PLAYERS: 
 			}
+			
 			
 			container TextArea(Ogrian/MapMenu/Name) : SS/Templates/BasicText
 			{
@@ -211,6 +219,13 @@ Ogrian/Menu/Overlay
 				top 0.41
 				width 1
    				caption Difficulty: 
+			}
+			container TextArea(Ogrian/MapMenu/Players) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.46
+				width 1
+   				caption players: 
 			}
 			
 			container Panel(Ogrian/MapMenu/Preview)

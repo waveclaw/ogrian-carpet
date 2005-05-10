@@ -1,6 +1,6 @@
 Author=John Michel
 Difficulty=average
-Players=four
+Players=two
 Preview=Ogrian/Preview/Lowerlands
 
 Scale.xz=2

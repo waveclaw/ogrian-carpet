@@ -1,6 +1,6 @@
 Author=Corey Ulmer
 Difficulty=regular
-Players=four
+Players=two
 Preview=Ogrian/Preview/Lowlands
 
 Scale.xz=2

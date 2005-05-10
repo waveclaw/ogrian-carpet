@@ -492,37 +492,41 @@ void Game::startSkirmishGame()
 			cam->setPosition(playerStart);
 		}
 
-		// chose a start for the bot
-		Vector3 botStart;
-		if (slocs.size() > 0)
+		// fill the rest of the slots with bots
+		while (slocs.size() > 0)
 		{
-			int index = Math::RangeRandom(0,slocs.size()-.1);
+			// chose a start for the bot
+			Vector3 botStart;
+
+			int index =	Math::RangeRandom(0,slocs.size()-.1);
 			botStart = slocs[index];
 			slocs.erase(slocs.begin()+index);
 
 			botStart.y = HeightMap::getSingleton().getHeightAt(botStart.x, botStart.z);
+			
+			// choose a random colour
+			ColourValue botColour;
+			botColour.r = Math::RangeRandom(0,1);
+			botColour.g = Math::RangeRandom(0,1);
+			botColour.b = Math::RangeRandom(0,1);
+
+			// add a bot
+			String brain = mConfig.getSetting( "BOT_BRAIN" ).c_str();
+
+			AIWizardThing* bot = new AIWizardThing(botStart, botColour, brain);
+			Physics::getSingleton().addThing(bot);
+
+			Team* team = bot->getTeam();
+			team->setColour(botColour);
+			team->setWizardUID(bot->getUID());
+
+			// give him a castle
+			int skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
+			Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botStart);
+			Castle* castle = new Castle(team->getTeamNum(), caspos, skin);
+
+			team->setCastleUID(castle->	getUID());
 		}
-
-		ColourValue botColour;
-		botColour.r = atoi(mConfig.getSetting( "BOT_RED" ).c_str()) / 255.0;
-		botColour.g = atoi(mConfig.getSetting( "BOT_GREEN" ).c_str()) / 255.0;
-		botColour.b = atoi(mConfig.getSetting( "BOT_BLUE" ).c_str()) / 255.0;
-		// add a bot
-		String brain = mConfig.getSetting( "BOT_BRAIN" ).c_str();
-
-		AIWizardThing* bot = new AIWizardThing(botStart, botColour, brain);
-		Physics::getSingleton().addThing(bot);
-
-		Team* team = bot->getTeam();
-		team->setColour(botColour);
-		team->setWizardUID(bot->getUID());
-
-		// give him a castle
-		int skin = atoi(mConfig.getSetting( "BOT_CASTLE_SKIN" ).c_str());
-		Vector3 caspos = BuildingHeightMap::getSingleton().alignPosition(botStart);
-		Castle* castle = new Castle(team->getTeamNum(), caspos, skin);
-
-		team->setCastleUID(castle->getUID());
 	}
 
 

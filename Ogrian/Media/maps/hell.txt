@@ -1,6 +1,6 @@
 Author=Mike Prosser
 Difficulty=hellish
-Players=four
+Players=two
 Preview=Ogrian/Preview/Hell
 
 OceanMaterial=Ogrian/Lava
