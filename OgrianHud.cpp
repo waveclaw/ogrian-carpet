@@ -139,6 +139,10 @@ void Hud::reinit()
 
 	setMessage("");
 	setMana();
+
+	mBackgroundOverlay->show();
+	mHudOverlay->show();
+	mGhostOverlay->hide();
 }
 
 //----------------------------------------------------------------------------

@@ -83,7 +83,7 @@ void AIWizardThing::think()
 	{
 		mMode = MODE_NULL;
 	}
-	if (enemy && !mana)
+	else if (enemy && !mana)
 	{
 		// if there's an enemy, but no mana, attack
 		mMode = MODE_ATTACK;
@@ -93,7 +93,7 @@ void AIWizardThing::think()
 		// if there's mana, but no enemy, gather
 		mMode = MODE_GATHER;
 	}
-	else // (mana && enemy)
+	else if (mana && enemy)
 	{
 		// if there's both, choose the closest
 		if (sphereDistance(mana) > sphereDistance(enemy))

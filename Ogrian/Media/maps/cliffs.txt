@@ -36,7 +36,7 @@ BOT_GREEN=10
 BOT_BLUE=32
 
 #music for this map
-MAP_MUSIC=Media/music/RidingTheDragon.ogg
+MAP_MUSIC=Media/music/ogrian_rocky.ogg
 
 # Lava on(1) or off(0)
 Lava=0
