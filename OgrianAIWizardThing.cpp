@@ -34,8 +34,9 @@ Description: A computer controlled Wizard
 #include "OgrianHeightMap.h"
 #include "OgrianGame.h"
 
-#define MODE_GATHER 0
-#define MODE_ATTACK 1
+#define MODE_NULL 0
+#define MODE_GATHER 1
+#define MODE_ATTACK 2
 
 using namespace Ogre;
 
@@ -78,10 +79,32 @@ void AIWizardThing::think()
 	Thing* mana = think_findNearestMana(mSightRange*100);
 
 	// choose mode
-	if (mana) mMode = MODE_GATHER;
-	else mMode = MODE_ATTACK;
+	if (!enemy && !mana)
+	{
+		mMode = MODE_NULL;
+	}
+	if (enemy && !mana)
+	{
+		// if there's an enemy, but no mana, attack
+		mMode = MODE_ATTACK;
+	}
+	else if (mana && !enemy)
+	{
+		// if there's mana, but no enemy, gather
+		mMode = MODE_GATHER;
+	}
+	else // (mana && enemy)
+	{
+		// if there's both, choose the closest
+		if (sphereDistance(mana) > sphereDistance(enemy))
+			mMode = MODE_ATTACK;
+		else
+			mMode = MODE_GATHER;
+	}
 
-	if (mana && mMode == MODE_GATHER)
+
+	// peform the chosen mode
+	if (mMode == MODE_GATHER)
 	{
 		think_faceTarget(mana);
 
@@ -92,7 +115,7 @@ void AIWizardThing::think()
 			think_moveTo(mana);
 	}
 
-	else if (enemy && mMode == MODE_ATTACK) 
+	else if (mMode == MODE_ATTACK) 
 	{
 		think_faceTarget(enemy);
 

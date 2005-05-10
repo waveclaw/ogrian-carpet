@@ -192,8 +192,9 @@ void Menu::readConfig()
 	mNameText->setCaption(mConfigName);
 	mServerText->setCaption(mConfigServer);
 
-	// skirmish random always starts off
-	mConfigSkirmishRandom = 0;
+	// skirmish and host mode start at normal
+	mConfigSkirmishMode = 0;
+	mConfigHostMode = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -246,7 +247,9 @@ int Menu::getChosenWizardSkin() { return mConfigWizardSkin; }
 
 int Menu::getChosenCastleSkin() { return mConfigCastleSkin; }
 
-int Menu::getChosenSkirmishMode() { return mConfigSkirmishRandom; }
+int Menu::getChosenSkirmishMode() { return mConfigSkirmishMode; }
+
+int Menu::getChosenHostMode() { return mConfigHostMode; }
 
 //----------------------------------------------------------------------------
 
@@ -419,7 +422,7 @@ void Menu::button_skirmishSelectNormal()
 	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
 		->setParameter("caption", "SS/Templates/BasicText   ");
 
-	mConfigSkirmishRandom = 0;
+	mConfigSkirmishMode = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -433,7 +436,7 @@ void Menu::button_skirmishSelectRandom()
 	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
 		->setParameter("caption", "SS/Templates/BasicText   ");
 
-	mConfigSkirmishRandom = 1;
+	mConfigSkirmishMode = 1;
 }
 
 //----------------------------------------------------------------------------
@@ -447,7 +450,31 @@ void Menu::button_skirmishSelectBot()
 	GuiManager::getSingleton().getGuiElement("Ogrian/SkirmishMenu/SelectBot")
 		->setParameter("caption", "SS/Templates/BasicText  X");
 
-	mConfigSkirmishRandom = 2;
+	mConfigSkirmishMode = 2;
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_hostSelectNormal()
+{
+	GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectNormal")
+		->setParameter("caption", "SS/Templates/BasicText  X");
+	GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectRandom")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+
+	mConfigHostMode = 0;
+}
+
+//----------------------------------------------------------------------------
+
+void Menu::button_hostSelectRandom()
+{
+	GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectNormal")
+		->setParameter("caption", "SS/Templates/BasicText   ");
+	GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectRandom")
+		->setParameter("caption", "SS/Templates/BasicText  X");
+
+	mConfigHostMode = 1;
 }
 
 //----------------------------------------------------------------------------

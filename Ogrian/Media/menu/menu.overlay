@@ -267,7 +267,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.32
 				top 0.01
-				width 0.05 
+				width 0.06 
 				caption SS/Templates/BasicText  X
 			}
 				
@@ -283,7 +283,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.32
 				top 0.08
-				width 0.05 
+				width 0.06 
 				caption SS/Templates/BasicText  
 			}
 										
@@ -299,7 +299,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.32
 				top 0.15
-				width 0.05 
+				width 0.06 
 				caption SS/Templates/BasicText  
 			}
 
@@ -308,9 +308,9 @@ Ogrian/Menu/Overlay
 		container Panel(Ogrian/Menu/HostMenuPanel)
 		{
 			left 0.33 
-			top 0.2
-			width 0.33
-			height 0.17
+			top 0.15
+			width 0.6
+			height 0.24
 			material Core/StatsBlockCenter
 						
 			container TextArea(Ogrian/HostMenu/Text) : SS/Templates/BasicText
@@ -325,16 +325,48 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.07
-				width 0.15 
+				width 0.1 
 				caption SS/Templates/BasicText load
 			}
 			
 			container BorderButton(Ogrian/HostMenu/Back) : SS/Templates/BasicButton
 			{
-				left 0.22
+				left 0.14
 				top 0.07
 				width 0.1 
 				caption SS/Templates/BasicText back
+			}
+																	
+			container TextArea(Ogrian/HostMenu/NormalText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.02
+				width 1
+   				caption NORMAL
+			}
+					
+			container BorderButton(Ogrian/HostMenu/SelectNormal) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.01
+				width 0.06 
+				caption SS/Templates/BasicText  X
+			}
+				
+			container TextArea(Ogrian/HostMenu/RandomText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.09
+				width 1
+   				caption RandOMized
+			}
+					
+			container BorderButton(Ogrian/HostMenu/SelectRandom) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.08
+				width 0.06 
+				caption SS/Templates/BasicText  
 			}
 		}
     	
@@ -431,7 +463,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.2
-				width 0.05 
+				width 0.06 
 				caption SS/Templates/BasicText X
 			}
 	   		
@@ -479,7 +511,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.36
-				width 0.05
+				width 0.06
 				caption SS/Templates/BasicText X
 			}
 			
@@ -487,7 +519,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.42
-				width 0.05
+				width 0.06
 				caption SS/Templates/BasicText X
 			}
 			
@@ -495,7 +527,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.48
-				width 0.05
+				width 0.06
 				caption SS/Templates/BasicText X
 			}
 			
@@ -503,7 +535,7 @@ Ogrian/Menu/Overlay
 			{
 				left 0.02
 				top 0.54
-				width 0.05
+				width 0.06
 				caption SS/Templates/BasicText X
 			}
 			

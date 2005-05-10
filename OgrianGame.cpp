@@ -310,34 +310,6 @@ void Game::startServerGame()
 
 	// activate pregame mode
 	mPreGame = true;
-
-	// make some foliage
-	LogManager::getSingleton().logMessage("Making Foliage...");
-	int foliageNum = atoi(mConfig.getSetting( "FoliageAmount" ).c_str());
-	Real foliageLineMin = atoi(mConfig.getSetting( "FOLIAGE_LINE_MIN" ).c_str());
-	Real foliageLineMax = atoi(mConfig.getSetting( "FOLIAGE_LINE_MAX" ).c_str());
-	Real foliageScale = atoi(mConfig.getSetting( "FOLIAGE_SCALE" ).c_str());
-	Real foliageScaleVar = atoi(mConfig.getSetting( "FOLIAGE_SCALE_VAR" ).c_str());
-
-	// set up some foliage
-	int i=0;
-	Real size = HeightMap::getSingleton().getWorldSize();
-	while (i<foliageNum)
-	{
-        // Random translate
-        Real x = Math::SymmetricRandom() * size;
-        Real z = Math::SymmetricRandom() * size;
-		Real y = HeightMap::getSingleton().getHeightAt(x, z);
-
-		if (y > foliageLineMin && y < foliageLineMax)
-		{
-			i++;
-			Vector3 pos = Vector3(x,0,z);
-			Real scale = foliageScale + (Math::SymmetricRandom()-.5) * foliageScaleVar;
-
-			Physics::getSingleton().addThing(new FoliageThing(scale,pos));
-		}
-	}
 }
 
 //----------------------------------------------------------------------------
@@ -346,72 +318,70 @@ void Game::serverEndPreGame()
 {
 	setPreGame(false);
 
-	// set up some wild mana and shrines
-	int numMana = atoi(mConfig.getSetting( "MANA_START_NUM" ).c_str());
-	int manaAmount = atoi(mConfig.getSetting( "MANA_START_AMOUNT" ).c_str());
+	// build a list of start locations
+	std::vector<Vector3> slocs;
 
-	int numShrines = atoi(mConfig.getSetting( "NUM_SHRINES" ).c_str());
-	int shrineSkin = atoi(mConfig.getSetting( "SHRINE_SKIN" ).c_str());
-
-	int i=0;
-	while(i<numMana)
+	if (Menu::getSingleton().getChosenHostMode() == 0)
 	{
-        // Random translate
-        Real x = Math::SymmetricRandom() * 1000.0;
-        Real z = Math::SymmetricRandom() * 1000.0;
-		Real y = HeightMap::getSingleton().getHeightAt(x, z);
+		// set up an enemy team 
+		ColourValue colour;
+		colour.r = atoi(mConfig.getSetting( "MONSTERS_RED" ).c_str()) / 255.0;
+		colour.g = atoi(mConfig.getSetting( "MONSTERS_GREEN" ).c_str()) / 255.0;
+		colour.b = atoi(mConfig.getSetting( "MONSTERS_BLUE" ).c_str()) / 255.0;
+		int teamNum = Physics::getSingleton().newTeam(colour);
 
-		if (y > CONR("BUILDING_MIN_GROUNDY"))
+		// read in the image file
+		loadMapThingsFromImage("MultiplayerThingsTexture", mConfig, HeightMap::getSingleton().getWorldSize(), teamNum);
+
+		// load the starting locations
+		for (int i=0; i<Physics::getSingleton().numThings(); i++)
 		{
-			i++;
-			Vector3 pos = Vector3(x,0,z);
-
-			ManaThing* mana = new ManaThing(manaAmount,pos);
-			Physics::getSingleton().addThing(mana);
-			
-			if (i < numShrines)
+			Thing* thing = Physics::getSingleton().getThingByIndex(i);
+			if (thing->getType() == PLAYERMARKERTHING)
 			{
-				pos = BuildingHeightMap::getSingleton().alignPosition(pos);
-
-				ShrineThing* shrine = new ShrineThing(pos, shrineSkin);
-				Physics::getSingleton().addThing(shrine);
+				slocs.push_back(thing->getPosition());
+				thing->destroy();
 			}
 		}
 	}
-	
-	// build a list of start locations
-	std::vector<Vector3> slocs;
-	Real x = atoi(mConfig.getSetting( "p1startX" ).c_str());
-	Real z = atoi(mConfig.getSetting( "p1startZ" ).c_str());
-	Vector3 spawn1(x,HeightMap::getSingleton().getHeightAt(x,z), z);
+	else
+	{
+		loadMapThingsSparsely(mConfig, HeightMap::getSingleton().getWorldSize());
 
-	x = atoi(mConfig.getSetting( "p2startX" ).c_str());
-	z = atoi(mConfig.getSetting( "p2startZ" ).c_str());
-	Vector3 spawn2(x,HeightMap::getSingleton().getHeightAt(x,z), z);
+		// build a list of start locations
+		Real x = atoi(mConfig.getSetting( "p1startX" ).c_str());
+		Real z = atoi(mConfig.getSetting( "p1startZ" ).c_str());
+		Vector3 spawn1(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	x = atoi(mConfig.getSetting( "p3startX" ).c_str());
-	z = atoi(mConfig.getSetting( "p3startZ" ).c_str());
-	Vector3 spawn3(x,HeightMap::getSingleton().getHeightAt(x,z), z);
+		x = atoi(mConfig.getSetting( "p2startX" ).c_str());
+		z = atoi(mConfig.getSetting( "p2startZ" ).c_str());
+		Vector3 spawn2(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	x = atoi(mConfig.getSetting( "p4startX" ).c_str());
-	z = atoi(mConfig.getSetting( "p4startZ" ).c_str());
-	Vector3 spawn4(x,HeightMap::getSingleton().getHeightAt(x,z), z);
+		x = atoi(mConfig.getSetting( "p3startX" ).c_str());
+		z = atoi(mConfig.getSetting( "p3startZ" ).c_str());
+		Vector3 spawn3(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
+		x = atoi(mConfig.getSetting( "p4startX" ).c_str());
+		z = atoi(mConfig.getSetting( "p4startZ" ).c_str());
+		Vector3 spawn4(x,HeightMap::getSingleton().getHeightAt(x,z), z);
 
-	if (spawn1.length() > 1) slocs.push_back(spawn1);
-	if (spawn2.length() > 1) slocs.push_back(spawn2);
-	if (spawn3.length() > 1) slocs.push_back(spawn3);
-	if (spawn4.length() > 1) slocs.push_back(spawn4);
+		if (spawn1.length() > 1) slocs.push_back(spawn1);
+		if (spawn2.length() > 1) slocs.push_back(spawn2);
+		if (spawn3.length() > 1) slocs.push_back(spawn3);
+		if (spawn4.length() > 1) slocs.push_back(spawn4);
+	}
+
 
 	// chose an sloc for the camera
 	Vector3 sloc = Vector3(500,0,500);
-	if (slocs.size() > 0)
+	if (slocs.size() > 1)
 	{
 		int index = Math::RangeRandom(0,slocs.size()-.1);
 		sloc = slocs[index];
 		slocs.erase(slocs.begin()+index);
 	}
-	else sloc = spawn1;
+	else if (slocs.size() > 0)
+		sloc = slocs[0];
 
 	sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
 
@@ -430,13 +400,14 @@ void Game::serverEndPreGame()
 		if (thing && thing->getType() == WIZARDTHING)
 		{
 			// chose an sloc
-			if (slocs.size() > 0)
+			if (slocs.size() > 1)
 			{
 				int index = Math::RangeRandom(0,slocs.size()-.1);
 				sloc = slocs[index];
 				slocs.erase(slocs.begin()+index);
 			}
-			else sloc = spawn1;
+			else if (slocs.size() > 0) 
+				sloc = slocs[0];
 
 			sloc.y = HeightMap::getSingleton().getHeightAt(sloc.x, sloc.z);
 

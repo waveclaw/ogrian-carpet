@@ -1,6 +1,6 @@
 0,9
 -AI bot player for skirmish
--things can now be loaded from an image in skirmish, rather then randomly
+-things can now be loaded from an image, rather then randomly
 -option for old randomized maps
 -trees can now always bee seen
 -made castle mana drops aggregate more
@@ -8,7 +8,7 @@
 -made the config menu better
 -added victory conditions to skirmish: kill all enemy towers/castles
 -made ticks and gnomes stay in the formation you put them in
--made enmy monsters and towers drop less then their cost in skirmish
+-made monsters and towers drop less then their cost when they have no wizard
 -made mana float higher
 
 

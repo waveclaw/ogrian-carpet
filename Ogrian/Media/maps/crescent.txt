@@ -44,6 +44,18 @@ Lava=0
 startX=232
 startZ=296
 
+# Multi-player start locations
+p1startX=232
+p1startZ=296
+
+p2startX=678
+p2startZ=986
+
+p3startX=298
+p3startZ=876
+
+p4startX=34
+p4startZ=838
 
 # the RGB colour of the native monsters
 MONSTERS_RED=1

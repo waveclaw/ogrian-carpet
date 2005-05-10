@@ -99,6 +99,8 @@ public:
 
 		else if (action == "Ogrian/HostMenu/Load") Menu::getSingleton().button_hostload();
 		else if (action == "Ogrian/HostMenu/Back") Menu::getSingleton().button_back();
+		else if (action == "Ogrian/HostMenu/SelectNormal") Menu::getSingleton().button_hostSelectNormal();
+		else if (action == "Ogrian/HostMenu/SelectRandom") Menu::getSingleton().button_hostSelectRandom();
 
 		else if (action == "Ogrian/JoinMenu/Load") Menu::getSingleton().button_joinload();
 		else if (action == "Ogrian/JoinMenu/Back") Menu::getSingleton().button_joinback();
@@ -162,6 +164,14 @@ protected:
 
 		button = static_cast<ButtonGuiElement*>
 			(GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/Back"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectNormal"));
+		button->addActionListener(this);
+
+		button = static_cast<ButtonGuiElement*>
+			(GuiManager::getSingleton().getGuiElement("Ogrian/HostMenu/SelectRandom"));
 		button->addActionListener(this);
 
 		button = static_cast<ButtonGuiElement*>
