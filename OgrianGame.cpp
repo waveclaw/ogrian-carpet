@@ -201,6 +201,9 @@ void Game::loadSounds()
 	SOUND_HISS = Audio::getSingleton().loadSound("Media/sounds/hiss1.wav");
 	SOUND_CHIRP = Audio::getSingleton().loadSound("Media/sounds/zap1.wav");
 	SOUND_HUM = Audio::getSingleton().loadSound("Media/sounds/hum1.wav");
+	SOUND_CRUNCH = Audio::getSingleton().loadSound("Media/sounds/crunch.ogg");
+	SOUND_TELEPORT = Audio::getSingleton().loadSound("Media/sounds/teleport.ogg");
+	SOUND_HEAL = Audio::getSingleton().loadSound("Media/sounds/heal.ogg");
 }
 
 //----------------------------------------------------------------------------

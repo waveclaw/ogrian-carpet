@@ -319,13 +319,19 @@ void WizardThing::collided(Thing* e)
 	if (isGhost()) return;
 
 	// if its your castle
-	if(!mGhost && e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
+	if(!mGhost && e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum()
+		&& getHealth() < getMaxHealth())
+	{
+		playSound(Game::getSingleton().SOUND_HEAL, true);
 		setHealth(CONI("WIZARD_HEALTH"));
+	}
 
 	// claim mana and Shrines
 	if ((e->getType() == MANATHING || e->getType() == SHRINETHING || e->getType() == SHRINEBALLTHING)
 			&& e->getTeamNum() != getTeamNum())
+	{
 		e->claim(getTeamNum());
+	}
 }
 
 //----------------------------------------------------------------------------

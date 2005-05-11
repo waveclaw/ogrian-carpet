@@ -116,6 +116,15 @@ void DamageableThing::setHealth(int health)
 
 //----------------------------------------------------------------------------
 
+void DamageableThing::heal(int amount)
+{
+	setHealth(mHealth + amount);
+
+	playSound(Game::getSingleton().SOUND_HEAL, true);
+}
+
+//----------------------------------------------------------------------------
+
 void DamageableThing::setMaxHealth(int maxHealth)
 {
 	mMaxHealth = maxHealth;
@@ -126,6 +135,13 @@ void DamageableThing::setMaxHealth(int maxHealth)
 int DamageableThing::getHealth()
 {
 	return mHealth;
+}
+
+//----------------------------------------------------------------------------
+
+int DamageableThing::getMaxHealth()
+{
+	return mMaxHealth;
 }
 
 //----------------------------------------------------------------------------

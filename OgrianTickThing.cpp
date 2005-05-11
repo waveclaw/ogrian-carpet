@@ -181,6 +181,8 @@ void TickThing::collided(Thing* e)
 	{
 		e->damage(CONI("TICK_DAMAGE"), getTeamNum());
 
+		playSound(Game::getSingleton().SOUND_CRUNCH, true);
+
 		if (e->isBuilding())
 		{
 			// stop moving

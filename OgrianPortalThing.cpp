@@ -83,7 +83,6 @@ void PortalThing::collided(Thing* e)
 			// find this tower
 			for (int i=0; i<(int)towers.size()-1; i++)
 			{
-					LogManager::getSingleton().logMessage(towers[i]->getString());
 				if (towers[i] == mTower)
 				{
 					nextTower = towers[i+1];
@@ -103,6 +102,10 @@ void PortalThing::collided(Thing* e)
 				e->setPosition(nextTower->getPosition());
 			else if (Multiplayer::getSingleton().isServer())
 				Multiplayer::getSingleton().teleportWizard(e, nextTower->getPosition());
+
+			// play a teleport sound
+			playSound(Game::getSingleton().SOUND_TELEPORT, true);
+			e->playSound(Game::getSingleton().SOUND_TELEPORT, true);
 		}
 }
 

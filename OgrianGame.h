@@ -88,6 +88,9 @@ public:
 	int SOUND_HISS;
 	int SOUND_CHIRP;
 	int SOUND_HUM;
+	int SOUND_CRUNCH;
+	int SOUND_TELEPORT;
+	int SOUND_HEAL;
 
 private:
 	bool mLava;

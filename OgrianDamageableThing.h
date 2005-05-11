@@ -50,7 +50,9 @@ public:
 
 	// makes damage happen
 	virtual void setHealth(int health);
+	virtual void heal(int amount);
 	virtual int getHealth();
+	virtual int getMaxHealth();
 	virtual void damage(int amount, int sourceTeamNum);
 	virtual int getLastDamageSourceTeamNum();
 	virtual void setTeamNum(int teamNum);

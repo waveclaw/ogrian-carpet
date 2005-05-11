@@ -69,31 +69,13 @@ public:
 			destroy();
 		}
 
-		// heal sentinels
-		else if ((e->getType() == SENTINELTHING)
+		// heal sentinels, ticks, and gnomes
+		else if ((e->getType() == SENTINELTHING || e->getType() == TICKTHING || e->getType() == GNOMETHING)
 			&& e->getTeamNum() == getTeamNum()
-			&& ((DamageableThing*)e)->getHealth() < CONI("SENTINEL_HEALTH"))
+			&& ((DamageableThing*)e)->getHealth() < ((DamageableThing*)e)->getMaxHealth())
 		{
 			DamageableThing* d = (DamageableThing*)e;
-			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
-			destroy();
-		}
-		// heal ticks, and gnomes
-		else if ((e->getType() == TICKTHING)
-			&& e->getTeamNum() == getTeamNum()
-			&& ((DamageableThing*)e)->getHealth() < CONI("TICK_HEALTH"))
-		{
-			DamageableThing* d = (DamageableThing*)e;
-			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
-			destroy();
-		}
-		// heal gnomes
-		else if ((e->getType() == GNOMETHING)
-			&& e->getTeamNum() == getTeamNum()
-			&& ((DamageableThing*)e)->getHealth() < CONI("GNOME_HEALTH"))
-		{
-			DamageableThing* d = (DamageableThing*)e;
-			d->setHealth(d->getHealth() + CONI("CLAIMSPELL_HEAL"));
+			d->heal(CONI("CLAIMSPELL_HEAL"));
 			destroy();
 		}
 	}
