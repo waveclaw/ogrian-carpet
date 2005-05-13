@@ -309,31 +309,6 @@ bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
     }
 
 
-	if ( !mUseBufferedInputMouse || !mUseBufferedInputKeys)
-	{
-		// one of the input modes is immediate, so setup what is needed for immediate mouse/key movement
-		if (mTimeUntilNextToggle >= 0) 
-			mTimeUntilNextToggle -= evt.timeSinceLastFrame;
-
-		// If this is the first frame, pick a speed
-		if (evt.timeSinceLastFrame == 0)
-		{
-			mMoveScale = 1;
-			mRotScale = 0.1;
-		}
-		// Otherwise scale movement units by time passed since last frame
-		else
-		{
-			// Move about 100 units per second,
-			mMoveScale = CONR("CAMERA_MOVE_SPEED") * evt.timeSinceLastFrame;
-			// Take about 10 seconds for full rotation
-			mRotScale = 36 * evt.timeSinceLastFrame;
-		}
-		mRotX = 0;
-        mRotY = 0;
-	    mTranslateVector = Vector3::ZERO;
-	}
-
     if (mUseBufferedInputKeys)
     {
         // no need to do any processing here, it is handled by event processor and 

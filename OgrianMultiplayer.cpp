@@ -115,8 +115,8 @@ void Multiplayer::clientStart()
 	LogManager::getSingleton().logMessage(String("Connecting to: ") + cn);
 
 	// Connecting the client is very simple.  0 means we don't care about
-	// a connectionValidationInteger, and false for low priority threads
-	bool b = mClient->Connect(cn, CONI("PORT"), CONI("PORT")-1, 0, true);
+	// a connectionValidationInteger
+	bool b = mClient->Connect(cn, CONI("PORT"), CONI("PORT")-1, 0, CONI("RAKNET_THREAD_SLEEP_TIME"));
 
 	if (!b)
 	{
@@ -139,10 +139,9 @@ void Multiplayer::serverStart()
 
 	mServer = RakNetworkFactory::GetRakServerInterface();
 
-	// Starting the server is very simple.  4 players allowed.
-	// 0 means we don't care about a connectionValidationInteger, and false
-	// for low priority threads
-	bool b = mServer->Start(3, 0, true, CONR("PORT"));
+	// Starting the server is very simple.  4 players allowed (local + 3).
+	// 0 means we don't care about a connectionValidationInteger, 
+	bool b = mServer->Start(3, 0, CONI("RAKNET_THREAD_SLEEP_TIME"), CONR("PORT"));
 	
 	// error
 	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",

@@ -6,6 +6,7 @@ smrat AI player
 -A* pathfinding
 -ability to use all spells
 -spell preferences
+-fix dead building humps
 
 
 to add later:
