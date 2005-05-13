@@ -46,6 +46,8 @@ class AIWizardThing : public WizardThing
 public:
 	AIWizardThing(Vector3 pos, ColourValue colour, String brain);
 
+	virtual Vector3 getDirection();
+
 	// think
 	virtual void think();
 
@@ -66,6 +68,8 @@ private:
 
 	Real mSightRange;
 	Time mNextCastTime;
+
+	Vector3 mDir;
 
 	int mMode;
 

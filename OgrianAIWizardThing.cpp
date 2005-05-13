@@ -64,6 +64,13 @@ AIWizardThing::AIWizardThing(Vector3 pos, ColourValue colour, String brain)
 
 //----------------------------------------------------------------------------
 
+Vector3 AIWizardThing::getDirection()
+{
+	return mDir;
+}
+
+//----------------------------------------------------------------------------
+
 // think
 void AIWizardThing::think()
 {
@@ -195,6 +202,9 @@ void AIWizardThing::think_faceTarget(Thing* target)
 
 	// set orientation
 	setOrientation(dir);
+
+	mDir.x = sin(dir);
+	mDir.z = cos(dir);
 }
 
 //----------------------------------------------------------------------------

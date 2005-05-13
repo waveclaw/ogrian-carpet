@@ -52,11 +52,6 @@ public:
 
 	virtual Vector3 getDirection();
 
-	virtual void moveForward();
-	virtual void moveBack();
-	virtual void moveLeft();
-	virtual void moveRight();
-
 	// handle camera movement given directional input 
 	virtual void moveCamera(Real rotX, Real rotY);
 
@@ -76,9 +71,6 @@ public:
 private:
 	Camera* mCamera;
 	Camera* mTempCam;
-	bool mForeward, mBack, mLeft, mRight;
-	Vector3 mForce;
-	Vector3 mDir;
 	Real mSensitivity;
 };
 }

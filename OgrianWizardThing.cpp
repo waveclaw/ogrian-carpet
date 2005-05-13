@@ -23,7 +23,8 @@ OgrianWizardThing.cpp
 Original Author: Mike Prosser
 Additional Authors: 
 
-Description: The wizard thing is the superclass of the CameraThing
+Description: The wizard thing is the superclass of the CameraThing and the AIWizardThing
+it handles all wizard movement code and army tracking and mana regen
 
 /*------------------------------------*/
 
@@ -59,6 +60,8 @@ WizardThing::WizardThing(bool visible, int skin)
 	mGhost = false;
 	mVisible = visible;
 	mFrameTime = 0;
+
+	mForeward = mBack = mLeft = mRight = false;
 
 	setUpdateType(CONTINUOUS);
 	setMaxHealth(CONI("WIZARD_HEALTH"));
@@ -663,11 +666,96 @@ Real WizardThing::getGroundHeight(Vector3 pos)
 
 //----------------------------------------------------------------------------
 
+void WizardThing::moveForward()
+{
+	mForeward = true;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::moveBack()
+{
+	mBack = true;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::moveLeft()
+{
+	mLeft = true;
+}
+
+//----------------------------------------------------------------------------
+
+void WizardThing::moveRight()
+{
+	mRight = true;
+}
+
+//----------------------------------------------------------------------------
+
+Vector3 WizardThing::getDirection()
+{
+	return Vector3(1,0,0);
+}
+
+//----------------------------------------------------------------------------
+
 void WizardThing::move(Real time)
 {
 	// check to see if its time to stop speeding yet
 	if (mStopSpeedTime < Clock::getSingleton().getTime())
 		mSpeeding = false;
+
+	//handle movement for the camera and bots
+	if (getType() == CAMERATHING || isBot())
+	{
+		// set the velocity according to the orientation
+		mForce = Vector3(0,0,0);
+		Real or = getOrientation();
+		if (mForeward && !mBack)
+		{
+			mForce.x += sin(or);
+			mForce.z += cos(or);
+		}
+		if (mBack && !mForeward)
+		{
+			mForce.x -= sin(or);
+			mForce.z -= cos(or);
+		}
+		if (mLeft && !mRight)
+		{
+			mForce.x += cos(or);
+			mForce.z -= sin(or);
+		}
+		if (mRight && !mLeft)
+		{
+			mForce.x -= cos(or);
+			mForce.z += sin(or);
+		}
+
+		mForce.normalise();
+		mForce *= CONR("WIZARD_MOVE_SPEED");
+
+		if (isSpeeding() || isGhost())
+			mForce *= CONR("SPEEDSPELL_MULTIPLIER");
+
+		Vector3 vel = getVelocity();
+
+		if (mForce.length() == 0) vel -= vel*time*CONR("WIZARD_DECEL"); // slowing down
+		else vel = mForce*time*CONR("WIZARD_ACCEL") + vel*(1-time*CONR("WIZARD_ACCEL")); // speeding up
+
+		if (isSpeeding())
+		{
+			vel = getDirection();
+			vel.normalise();
+			vel *= CONR("WIZARD_MOVE_SPEED") * CONR("SPEEDSPELL_MULTIPLIER");
+		}
+
+		setVelocity(vel);
+
+		mForeward = mBack = mLeft = mRight = false;
+	}
 
 	// regenerate mana
 	if (!Multiplayer::getSingleton().isClient())
@@ -686,20 +774,20 @@ void WizardThing::move(Real time)
 	// float
 	if (!(Multiplayer::getSingleton().isServer() && getType() == WIZARDTHING) && !mGhost) // dont make remote wizards float
 	{
-		float fall_max = CONR("CAMERA_FALL_MAX");
-		float grav = CONR("CAMERA_GRAV");
+		float fall_max = CONR("WIZARD_MOVE_SPEED");
+		float grav = CONR("WIZARD_GRAV");
 
 		// fall faster when speeding on a lava map
 		if (mSpeeding && Game::getSingleton().getLava())
 		{
-			fall_max *= CONR("SPEEDSPELL_MULTIPLIER");
 			grav *= CONR("SPEEDSPELL_MULTIPLIER");
+			fall_max *= CONR("SPEEDSPELL_MULTIPLIER");
 		}
 
 		// accelerate downward until we reach terminal velocity
 		if (getVelY() > -fall_max)
 		{
-			setVelY(getVelY() - CONR("CAMERA_GRAV")*time);
+			setVelY(getVelY() - CONR("WIZARD_GRAV")*time);
 		}
 		else if (getVelY() < -fall_max) 
 		{
@@ -733,10 +821,10 @@ void WizardThing::setPosition(Vector3 pos)
 	if (mFrameTime > 0 && !mSpeeding)
 	{
 		Vector3 path = pos - getPosition();
-		if (path.length() > CONR("CAMERA_MOVE_SPEED") * mFrameTime)
+		if (path.length() > CONR("WIZARD_MOVE_SPEED") * mFrameTime)
 		{
 			path.normalise();
-			path *= CONR("CAMERA_MOVE_SPEED") * mFrameTime;
+			path *= CONR("WIZARD_MOVE_SPEED") * mFrameTime;
 
 			pos = getPosition() + path;
 		}

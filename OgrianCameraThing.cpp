@@ -47,7 +47,6 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 {
 	mCamera = camera;
 	mTempCam = new Camera("TempCam", 0);
-	mForeward = mBack = mLeft = mRight = false;
 
 	// set the sensitivity
 	mSensitivity = CONR("MOUSE_SENSITIVITY");
@@ -94,34 +93,6 @@ Vector3 CameraThing::getDirection()
 
 //----------------------------------------------------------------------------
 
-void CameraThing::moveForward()
-{
-	mForeward = true;
-}
-
-//----------------------------------------------------------------------------
-
-void CameraThing::moveBack()
-{
-	mBack = true;
-}
-
-//----------------------------------------------------------------------------
-
-void CameraThing::moveLeft()
-{
-	mLeft = true;
-}
-
-//----------------------------------------------------------------------------
-
-void CameraThing::moveRight()
-{
-	mRight = true;
-}
-
-//----------------------------------------------------------------------------
-
 // handle camera movement given directional input 
 void CameraThing::moveCamera(Real rotX, Real rotY)
 {
@@ -133,71 +104,24 @@ void CameraThing::moveCamera(Real rotX, Real rotY)
 	mCamera->yaw(Degree(rotX));
 
 	// constrain the pitch
-	mDir = mCamera->getDirection();
+	Vector3 dir = mCamera->getDirection();
 
 	mTempCam->setDirection(Vector3(0,0,1));
-	mTempCam->setDirection(mDir);
+	mTempCam->setDirection(dir);
 	mTempCam->pitch(Degree(rotY));
-	mDir = mTempCam->getDirection();
+	dir = mTempCam->getDirection();
 
-	if (mDir.y < CONR("CAMERA_PITCH_MAX") && mDir.y > -CONR("CAMERA_PITCH_MAX"))
-		mCamera->setDirection(mDir);
+	if (dir.y < CONR("CAMERA_PITCH_MAX") && dir.y > -CONR("CAMERA_PITCH_MAX"))
+		mCamera->setDirection(dir);
 
 	// set the orientation of the thing to match the camera
-	setOrientation(atan2(mDir.x, mDir.z));
+	setOrientation(atan2(dir.x, dir.z));
 }
 
 //----------------------------------------------------------------------------
 
 void CameraThing::move(Real time)
 {
-	// set the velocity according to the orientation
-	mForce = Vector3(0,0,0);
-	Real or = getOrientation();
-	if (mForeward && !mBack)
-	{
-		mForce.x += sin(or);
-		mForce.z += cos(or);
-	}
-	if (mBack && !mForeward)
-	{
-		mForce.x -= sin(or);
-		mForce.z -= cos(or);
-	}
-	if (mLeft && !mRight)
-	{
-		mForce.x += cos(or);
-		mForce.z -= sin(or);
-	}
-	if (mRight && !mLeft)
-	{
-		mForce.x -= cos(or);
-		mForce.z += sin(or);
-	}
-
-	mForce.normalise();
-	mForce *= CONR("CAMERA_MOVE_SPEED");
-
-	if (isSpeeding() || isGhost())
-		mForce *= CONR("SPEEDSPELL_MULTIPLIER");
-
-	Vector3 vel = getVelocity();
-
-	if (mForce.length() == 0) vel -= vel*time*CONR("CAMERA_DECEL"); // slowing down
-	else vel = mForce*time*CONR("CAMERA_ACCEL") + vel*(1-time*CONR("CAMERA_ACCEL")); // speeding up
-
-	if (isSpeeding())
-	{
-		vel = mDir;
-		vel.normalise();
-		vel *= CONR("CAMERA_MOVE_SPEED") * CONR("SPEEDSPELL_MULTIPLIER");
-	}
-
-	setVelocity(vel);
-
-
-	mForeward = mBack = mLeft = mRight = false;
-
 	WizardThing::move(time);
 
 	mCamera->setPosition(getPosition());

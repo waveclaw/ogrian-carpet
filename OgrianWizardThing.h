@@ -73,6 +73,14 @@ public:
 	// ignore external up/down velocity changes
 	virtual void setVelocity(Vector3 vel);
 
+	// smooth movement for bots and cameras
+	virtual void moveForward();
+	virtual void moveBack();
+	virtual void moveLeft();
+	virtual void moveRight();
+	virtual Vector3 getDirection();
+
+
 	// float
 	virtual void move(Real time);
 
@@ -170,6 +178,11 @@ private:
 
 	Time mNextRegenTime;
 	Time mLastSetPosTime;
+
+	// for smooth movement
+	bool mForeward, mBack, mLeft, mRight;
+	Vector3 mForce;
+	Vector3 mDir;
 
 	Real getGroundHeight(Vector3 pos);
 
