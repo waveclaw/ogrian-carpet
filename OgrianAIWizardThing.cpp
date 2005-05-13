@@ -38,6 +38,12 @@ Description: A computer controlled Wizard
 #define MODE_GATHER 1
 #define MODE_ATTACK 2
 
+#define MOVE_NONE 0
+#define MOVE_FORWARD 1
+#define MOVE_BACK 2
+#define MOVE_LEFT 3
+#define MOVE_RIGHT 4
+
 using namespace Ogre;
 
 namespace Ogrian
@@ -53,6 +59,7 @@ AIWizardThing::AIWizardThing(Vector3 pos, ColourValue colour, String brain)
 	Real thinkPeriod = atof(mConfig.getSetting("BOT_THINK_PERIOD").c_str());
 	mSightRange = atof(mConfig.getSetting("BOT_SIGHT_RANGE").c_str());
 	mNextCastTime = 0;
+	mMovingDirection = MOVE_NONE;
 
 	setSkin(skin);
 	setPosition(pos);
@@ -67,6 +74,22 @@ AIWizardThing::AIWizardThing(Vector3 pos, ColourValue colour, String brain)
 Vector3 AIWizardThing::getDirection()
 {
 	return mDir;
+}
+
+//----------------------------------------------------------------------------
+
+// move
+void AIWizardThing::move(Real time)
+{
+	switch (mMovingDirection)
+	{
+		case MOVE_FORWARD: moveForward(); break;
+		case MOVE_BACK: moveBack(); break;
+		case MOVE_LEFT: moveLeft(); break;
+		case MOVE_RIGHT: moveRight(); break;
+	}
+
+	WizardThing::move(time);
 }
 
 //----------------------------------------------------------------------------
@@ -189,7 +212,7 @@ Thing* AIWizardThing::think_findNearestMana(Real range)
 
 void AIWizardThing::think_faceTarget(Thing* target)
 {
-	// face the enemy //
+	// face the target //
 
 	// determine the direction
 	Vector3 pos = getPosition();
@@ -211,16 +234,10 @@ void AIWizardThing::think_faceTarget(Thing* target)
 
 void AIWizardThing::think_moveTo(Thing* target)
 {
-	// determine the direction
-	Vector3 pos = getPosition();
-	Vector3 epos = target->getPosition();
+	// move forward
+	mMovingDirection = MOVE_FORWARD;
 
-	// move towards the target
-	Vector3 vel = epos-pos;
-	vel.normalise();
-	vel *= CONR("CAMERA_MOVE_SPEED");
-
-	setVelocity(vel);
+	// TODO: A* pathfinding 
 }
 
 //----------------------------------------------------------------------------
@@ -229,20 +246,16 @@ void AIWizardThing::think_circleStrafe(Thing* target)
 {
 	// circle strafe randomly //
 
-	// determine the direction
-	Vector3 pos = getPosition();
-	Vector3 epos = target->getPosition();
-
-	// set perpindicular velocity
-	Vector3 vel = pos-epos;
-	vel = vel.crossProduct(Vector3::UNIT_Y);
-	vel.normalise();
-	vel *= CONR("CAMERA_MOVE_SPEED");
-
 	// randomize direction
-	if (Math::RangeRandom(-1,1) < 0) vel *= -1;
+	if (Math::RangeRandom(-1,1) < 0)
+	{
+		mMovingDirection = MOVE_LEFT;
+	}
+	else
+	{
+		mMovingDirection = MOVE_RIGHT; 
+	}
 
-	setVelocity(vel);
 }
 
 //----------------------------------------------------------------------------

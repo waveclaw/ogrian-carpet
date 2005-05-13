@@ -51,6 +51,8 @@ public:
 	// think
 	virtual void think();
 
+	virtual void move(Real time);
+
 	virtual void die();
 
 	virtual bool isBot() { return true; }
@@ -70,6 +72,8 @@ private:
 	Time mNextCastTime;
 
 	Vector3 mDir;
+
+	int mMovingDirection;
 
 	int mMode;
 
