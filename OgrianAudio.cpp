@@ -44,7 +44,7 @@ Audio::Audio()
 	mSongChannel = -1;
 	mRunning = false;
 	mScale = CONR("SOUND_SCALE");
-	mCurrentSong = "";
+	mCurrentSong = "nothing";
 }
 
 //----------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void Audio::playSong(String filename, Real volume)
 		return;
 	}
 
-	if (mCurrentSong != filename)
+	if (mCurrentSong != filename || mSongStream == 0)
 	{
         stopSong();
 

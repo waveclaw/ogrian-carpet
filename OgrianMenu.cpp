@@ -58,6 +58,7 @@ Menu::Menu()
 	mNextTextCursorFlashTime = 0;
 	mMapName = "";
 	mMapSelection = "";
+	mConfigMusicVolume=0;
 
 	mOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/Menu/Overlay");
 

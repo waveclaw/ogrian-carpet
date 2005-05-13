@@ -142,19 +142,6 @@ bool OgrianFrameListener::processUnbufferedKeyInput(const FrameEvent& evt)
 {
 	// handle universal keypresses //
 
-	// see if switching is on, and you want to toggle 
-    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F5) && mTimeUntilNextToggle <= 0)
-    {
-		switchMouseMode();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
-
-    if (mInputTypeSwitchingOn && mInputDevice->isKeyDown(KC_F6) && mTimeUntilNextToggle <= 0)
-    {
-		// must be going from immediate keyboard to buffered keyboard
-		switchKeyMode();
-        mTimeUntilNextToggle = CONR("KEY_DELAY");
-    }
     if (mInputDevice->isKeyDown(KC_F1) && mTimeUntilNextToggle <= 0)
     {
         mStatsOn = !mStatsOn;
@@ -301,6 +288,9 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 bool OgrianFrameListener::frameStarted(const FrameEvent& evt)
 {
 	Game::getSingleton().frame(evt.timeSinceLastFrame);
+
+	if (mTimeUntilNextToggle >= 0) 
+			mTimeUntilNextToggle -= evt.timeSinceLastFrame;
 
 	// handle input //
     if (!mInputTypeSwitchingOn)

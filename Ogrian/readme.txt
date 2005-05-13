@@ -19,6 +19,8 @@ e or mousewheel down - select next spell
 0-9 - select a spell directly
 escape - show/hide menu
 F1 - show/hide framerate, etc.
+F2 - switch texture fileter mode (bilinear, trilinear, anisotropic)
+F3 - switch render mode (normal, wireframe, points)
 TAB - show players and mana amounts
 
 how to play
