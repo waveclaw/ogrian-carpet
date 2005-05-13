@@ -777,11 +777,10 @@ void WizardThing::move(Real time)
 		float fall_max = CONR("WIZARD_MOVE_SPEED");
 		float grav = CONR("WIZARD_GRAV");
 
-		// fall faster when speeding on a lava map
+		// stick to the ground when speeding on a lava map
 		if (mSpeeding && Game::getSingleton().getLava())
 		{
-			grav *= CONR("SPEEDSPELL_MULTIPLIER");
-			fall_max *= CONR("SPEEDSPELL_MULTIPLIER");
+			setPosY(getGroundHeight(getPosition()));
 		}
 
 		// accelerate downward until we reach terminal velocity

@@ -1,4 +1,4 @@
-0,9
+0.9
 -AI bot player for skirmish
 -things can now be loaded from an image, rather then randomly
 -option for old randomized maps
@@ -10,6 +10,9 @@
 -made ticks and gnomes stay in the formation you put them in
 -made monsters and towers drop less then their cost when they have no wizard
 -made mana float higher
+-made towers cheaper (50)
+-made sentinels drop much less (3)
+-changed speed behavior on lava maps
 
 
 0.8

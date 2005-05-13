@@ -1,8 +1,11 @@
 Ogrian Carpet Notes
 
-for 0.9
+for 0.9.X
 =========
 smrat AI player
+-A* pathfinding
+-ability to use all spells
+-spell preferences
 
 
 to add later:
