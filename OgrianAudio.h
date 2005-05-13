@@ -84,6 +84,8 @@ private:
 
 	std::vector<FSOUND_SAMPLE*> mSamples;
 	std::vector<bool> mIsLong;
+
+	String mCurrentSong;
 };
 
 }

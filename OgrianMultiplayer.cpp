@@ -655,6 +655,11 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Renderer::getSingleton().getCameraThing()->makeGhost();
 			return true;
 		}
+		case ID_VICTORY: //////////////////////////////////////////////////////
+		{
+			Game::getSingleton().victory();
+			return true;
+		}
 		case ID_TELEPORT: //////////////////////////////////////////////////////
 		{
 			int pid;

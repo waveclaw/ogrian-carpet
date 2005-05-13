@@ -44,6 +44,7 @@ Audio::Audio()
 	mSongChannel = -1;
 	mRunning = false;
 	mScale = CONR("SOUND_SCALE");
+	mCurrentSong = "";
 }
 
 //----------------------------------------------------------------------------
@@ -57,20 +58,31 @@ Audio::~Audio()
 
 void Audio::playSong(String filename, Real volume)
 {
-	stopSong();
-
-	// load teh new song
-	mSongStream = FSOUND_Stream_Open(filename.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
-	
-	// error if not found
-	if (mSongStream == 0) 
+	if (volume == 0)
 	{
-		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") + filename,
-				"Audio::playSong" );	
+		stopSong();
+		return;
 	}
 
-	// play the new song
-	mSongChannel = FSOUND_Stream_Play(FSOUND_FREE, mSongStream);
+	if (mCurrentSong != filename)
+	{
+        stopSong();
+
+		// load teh new song
+		mSongStream = FSOUND_Stream_Open(filename.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+		
+		// error if not found
+		if (mSongStream == 0) 
+		{
+			Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Song file not found:") + filename,
+					"Audio::playSong" );	
+		}
+
+		// play the new song
+		mSongChannel = FSOUND_Stream_Play(FSOUND_FREE, mSongStream);
+
+		mCurrentSong = filename;
+	}
 
 	// set the volume
 	FSOUND_SetVolume(mSongChannel, volume);

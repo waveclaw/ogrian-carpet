@@ -61,6 +61,9 @@ public:
 
 	void updateScores();
 
+	// call this when this player wins
+	void victory();
+
 	// call this every frame
 	void frame(Real time); 
 
@@ -94,6 +97,8 @@ public:
 
 private:
 	bool mLava;
+	bool mHasWon;
+
 	Vector3 mStartPos;
 	String mMapMusic;
 	ConfigFile mConfig;

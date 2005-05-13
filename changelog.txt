@@ -13,6 +13,7 @@
 -made towers cheaper (50)
 -made sentinels drop much less (3)
 -changed speed behavior on lava maps
+-added victory music
 
 
 0.8

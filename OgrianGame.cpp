@@ -65,6 +65,8 @@ Game::Game()
 {
 	mPreGame = false;
 	mLava = false;
+	mHasWon = false;
+
 	mStartPos = Vector3(0,0,0);
 	loadSounds();
 
@@ -164,13 +166,13 @@ void Game::serverVictoryCheck()
 		if (winner == Renderer::getSingleton().getCameraThing())
 		{
 			// we are the winner
-			Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
+			victory();
 		}
 		else
 		{
 			// send the victory message to the right player
 			PlayerID pid = Multiplayer::getSingleton().getPlayerID(winner->getUID());
-			Multiplayer::getSingleton().serverSendText(CONS("HUD_VICTORY"), ID_MESSAGE, pid);
+			Multiplayer::getSingleton().serverSendInt(0, ID_VICTORY, pid);
 		}
 	}
 }
@@ -179,6 +181,8 @@ void Game::serverVictoryCheck()
 
 void Game::skirmishVictoryCheck()
 {
+	if (mHasWon) return;
+
 	// look for enemies
 	WizardThing* cam = Renderer::getSingleton().getCameraThing();
 	Team* team = 0;
@@ -188,8 +192,22 @@ void Game::skirmishVictoryCheck()
 	if (team && team->getNearestEnemyBuilding(cam, 100000000000) == 0)
 	{
 		// we are the winner
-		Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
+		victory();
 	}
+}
+
+//----------------------------------------------------------------------------
+
+void Game::victory()
+{
+	if (mHasWon) return;
+
+	Hud::getSingleton().setMessage(CONS("HUD_VICTORY"));
+
+	int volume = Menu::getSingleton().getChosenMusicVolume();
+	Audio::getSingleton().playSong(CONS("THEME_MUSIC"), volume);
+
+	mHasWon = true;
 }
 
 //----------------------------------------------------------------------------

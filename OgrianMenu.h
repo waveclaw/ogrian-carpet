@@ -62,6 +62,8 @@ public:
 	int getChosenSkirmishMode(); // 0 = normal, 1 = random, 2 = bot
 	int getChosenHostMode(); // 0 = normal, 1 = random
 
+	int getChosenMusicVolume();
+
 	// write the configure menu settings into ogrian.cfg
 	void writeConfig();
 

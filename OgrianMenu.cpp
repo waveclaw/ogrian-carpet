@@ -251,6 +251,8 @@ int Menu::getChosenSkirmishMode() { return mConfigSkirmishMode; }
 
 int Menu::getChosenHostMode() { return mConfigHostMode; }
 
+int Menu::getChosenMusicVolume() { return mConfigMusicVolume; }
+
 //----------------------------------------------------------------------------
 
 ColourValue Menu::getChosenColour() 
