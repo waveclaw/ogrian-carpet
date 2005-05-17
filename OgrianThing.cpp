@@ -230,6 +230,8 @@ void Thing::setVelocity(Vector3 vel)
 
 void Thing::setPosition(Vector3 pos)
 {
+	bool moved = (pos != mPos);
+
 	Real worldSize = HeightMap::getSingleton().getWorldSize();
 	Real coast = CONR("COASTLINE");
 
@@ -243,21 +245,20 @@ void Thing::setPosition(Vector3 pos)
 	mVisRep->setPosition(pos);
 
 	// update physics
-	if (mInPhysics && pos != mPos && mUID != EFFECT_UID)
+	if (mInPhysics && moved && mUID != EFFECT_UID)
 		Physics::getSingleton().updateThing(this, mPos, pos);
 
 	// update the sound
-	if (mPlayingSound && mInEarshot && pos != mPos)
+	if (mPlayingSound && mInEarshot && moved)
 		Audio::getSingleton().setSoundPosition(mCurrentSound, pos);
-
-	if (isBuilding() && mPos != pos)
-	{
-		// update BuildingHeightMap
-		BuildingHeightMap::getSingleton().moldLandscape(this);
-	}
 
 	// update mPos
 	mPos = pos;
+
+	// update BuildingHeightMap
+	if (isBuilding())
+		BuildingHeightMap::getSingleton().moldLandscape(this);
+
 }
 
 //----------------------------------------------------------------------------

@@ -252,6 +252,9 @@ void TowerThing::die()
 
 void TowerThing::destroy()
 {
+	// unmold the landscape
+	BuildingHeightMap::getSingleton().unmoldLandscape(this);
+
 	// remove the cranes
 	for (int i=0; i<(int)mCranes.size(); i++)
 		mCranes[i]->destroy();

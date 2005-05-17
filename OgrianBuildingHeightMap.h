@@ -54,6 +54,9 @@ public:
 	// apply a building to the landscape
 	void moldLandscape(Thing* building);
 
+	// reset the landscape 
+	void unmoldLandscape(Thing* building);
+
 	// align a position vector to the array
 	Vector3 alignPosition(Vector3 pos);
 

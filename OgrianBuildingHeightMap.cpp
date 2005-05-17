@@ -172,9 +172,6 @@ Real BuildingHeightMap::getHeightAt(Real x, Real z)
 
 void BuildingHeightMap::moldLandscape(Thing* building)
 {
-	//if (building->getType() == HUTTHING)
-	//	LogManager::getSingleton().logMessage("molding hut");
-
 	// get the coordinates
 	Vector3 pos = building->getPosition();
 	Real x = pos.x;
@@ -211,6 +208,43 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	for (int i=rowf; i<=rowl; i++)
 		for (int j=colf; j<=coll; j++)
 			_setWorldHeight(i, j, y);
+}
+
+//----------------------------------------------------------------------------
+
+void BuildingHeightMap::unmoldLandscape(Thing* building)
+{
+	// get the coordinates
+	Vector3 pos = building->getPosition();
+	Real x = pos.x;
+	Real z = pos.z;
+
+	// scale the coordinates
+	x /= mScale.x;
+	z /= mScale.z;
+
+	// calculate the matrix indeces for the grid cell
+	int fx = int(x);
+	int fz = int(z);
+
+	int width = building->getWidth() / mScale.x;
+	if (fx - width - 1 <= 0) fx = width + 2;
+	if (fx + width + 2 >= mSize - 1) fx = mSize - width - 1;
+	if (fz - width - 1 <= 0) fz = width + 2;
+	if (fz + width + 2 >= mSize - 1) fz = mSize - width - 1;
+
+	//std::ostringstream msg("setting height: ");
+	//msg << "(" << fx << ", " << y << ", " << fz << ")";
+	//LogManager::getSingleton().logMessage(msg.str());
+
+	// set the height at each grid point covered by the building
+	int rowf = fx - width +1; // the first row
+	int rowl = fx + width ; // the last row
+	int colf = fz - width +1; // the first col
+	int coll = fz + width ; // the last col
+	for (int i=rowf; i<=rowl; i++)
+		for (int j=colf; j<=coll; j++)
+			_setWorldHeight(i, j, 0);
 }
 
 //----------------------------------------------------------------------------
