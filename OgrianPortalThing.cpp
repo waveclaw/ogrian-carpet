@@ -42,7 +42,7 @@ namespace Ogrian
 //----------------------------------------------------------------------------
 
 PortalThing::PortalThing(Thing* tower, Vector3 pos)
-	: Thing("Ogrian/Swirl", SPRITE, "PortalTHing", false, CONR("PORTAL_SCALE"), pos, SPHERE)
+	: Thing("Ogrian/Swirl", SPRITE, "PortalThing", false, CONR("PORTAL_SCALE"), pos, SPHERE)
 {
 	if (!Multiplayer::getSingleton().isClient())
 	{

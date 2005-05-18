@@ -588,13 +588,9 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			LogManager::getSingleton().logMessage(String("Got Map") + themap);
 
-			// if the map is different from the one we have loaded
-			if (themap != Renderer::getSingleton().getMapName())
-			{
-				// load the new map as a client
-				Renderer::getSingleton().loadMap(themap, false);
-			}
-
+			// load the new map
+			Renderer::getSingleton().loadMap(themap, false);
+			
 			// send our name and skin to the server
 			clientSendText(mPlayerName,ID_ADD_PLAYER);
 

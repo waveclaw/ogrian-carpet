@@ -128,6 +128,7 @@ private:
 	void loadSounds();
 
 	bool mPreGame;
+	bool mSkirmishMode;
 };
 
 }

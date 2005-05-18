@@ -755,7 +755,7 @@ void Physics::_delete(Thing* thing)
 // remove and delete all things
 void Physics::reset()
 {
-	if (!Multiplayer::getSingleton().isClient())
+	//if (!Multiplayer::getSingleton().isClient())
 	{
 		// clear the grid
 		for (int i=0; i<PHYSICS_GRID_SIZE; i++)

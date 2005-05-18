@@ -66,6 +66,7 @@ Game::Game()
 	mPreGame = false;
 	mLava = false;
 	mHasWon = false;
+	mSkirmishMode = false;
 
 	mStartPos = Vector3(0,0,0);
 	loadSounds();
@@ -129,9 +130,9 @@ void Game::frame(Real time)
 	Input::getSingleton().frame(time);
 
 	// victory check
-	if (Multiplayer::getSingleton().isServer())
+	if (Multiplayer::getSingleton().isServer() && !mHasWon)
 		serverVictoryCheck();
-	else if (!Multiplayer::getSingleton().isClient())
+	else if (mSkirmishMode && !mHasWon)
 		skirmishVictoryCheck();
 
 	// tick the clock
@@ -181,8 +182,6 @@ void Game::serverVictoryCheck()
 
 void Game::skirmishVictoryCheck()
 {
-	if (mHasWon) return;
-
 	// look for enemies
 	WizardThing* cam = Renderer::getSingleton().getCameraThing();
 	Team* team = 0;
@@ -220,7 +219,7 @@ void Game::loadSounds()
 	SOUND_CHIRP = Audio::getSingleton().loadSound("Media/sounds/zap1.wav");
 	SOUND_HUM = Audio::getSingleton().loadSound("Media/sounds/hum1.wav");
 	SOUND_CRUNCH = Audio::getSingleton().loadSound("Media/sounds/crunch.ogg");
-	SOUND_TELEPORT = Audio::getSingleton().loadSound("Media/sounds/teleport.ogg");
+	SOUND_TELEPORT = Audio::getSingleton().loadSound("Media/sounds/teleport.ogg", true);
 	SOUND_HEAL = Audio::getSingleton().loadSound("Media/sounds/heal.ogg");
 }
 
@@ -257,6 +256,8 @@ String Game::getMapMusic()
 
 void Game::reset()
 {
+	mSkirmishMode = false;
+
 	Physics::getSingleton().reset();
 
 	HealthBarManager::getSingleton().clear();
@@ -559,6 +560,8 @@ void Game::startSkirmishGame()
 	// enable the claim and build spells
 	Hud::getSingleton().reinit();
 	SpellManager::getSingleton().setLevel(-1);
+
+	mSkirmishMode = true;
 }
 
 //----------------------------------------------------------------------------

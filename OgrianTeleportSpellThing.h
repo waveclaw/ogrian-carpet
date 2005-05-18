@@ -40,12 +40,12 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-class TeleportSpellThing : public Thing
+class TeleportSpellThing : public TimedThing
 {
 public:
 
-	TeleportSpellThing(int teamNum)
-		: Thing("Ogrian/Clear")
+	TeleportSpellThing(int teamNum, Vector3 pos=Vector3(0,0,0))
+		: TimedThing("Ogrian/Swirl", SPRITE, "PortalThing", false, CONR("PORTAL_SCALE"), pos, SPHERE)
 	{
 		if (!Multiplayer::getSingleton().isClient())  
 		{
@@ -53,6 +53,8 @@ public:
 			Team* team = Physics::getSingleton().getTeam(teamNum);
 			Thing* castle = team->getCastle();
 			Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
+
+			setColour(team->getColour());
 
 			// teleport the wizard back to his castle=
 			if (wiz->getType() == CAMERATHING)
@@ -62,6 +64,8 @@ public:
 			else // bot
 				wiz->setPosition(castle->getPosition());
 
+			// play the teleport sound
+			wiz->playSound(Game::getSingleton().SOUND_TELEPORT, true);
 
 			// teleport his posse back to his castle
 			for (int i=0; i<Physics::getSingleton().numThings(); i++)
@@ -75,7 +79,11 @@ public:
 			}
 		}
 		
-		destroy();
+		setRelativeExpirationTime(CONR("TELEPORTSPELL_PORTAL_TIME"));
+		setFlickerPeriod(CONR("TELEPORTSPELL_PORTAL_FLICKER_PERIOD"));
+
+		// play a teleport sound
+		playSound(Game::getSingleton().SOUND_TELEPORT);
 	}
 
 	virtual ThingType getType()	{ return TELEPORTSPELLTHING; }

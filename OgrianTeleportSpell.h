@@ -48,7 +48,7 @@ public:
 	// make an instance of this spell
 	virtual void cast(Vector3 pos, Vector3 dir, WizardThing* caster, int level)
 	{
-		TeleportSpellThing* thing = new TeleportSpellThing(caster->getTeamNum());
+		TeleportSpellThing* thing = new TeleportSpellThing(caster->getTeamNum(), pos);
 		Physics::getSingleton().addThing(thing);
 	}
 

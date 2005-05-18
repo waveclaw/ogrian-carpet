@@ -48,6 +48,7 @@ material Ogrian/Mike/fl
 		{
 			scene_blend alpha_blend
 			depth_write off
+			lighting on
 
 			texture_unit
 			{
