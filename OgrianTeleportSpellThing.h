@@ -47,28 +47,31 @@ public:
 	TeleportSpellThing(int teamNum)
 		: Thing("Ogrian/Clear")
 	{
-		// get the castle
-		Team* team = Physics::getSingleton().getTeam(teamNum);
-		Thing* castle = team->getCastle();
-		Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
-
-		// teleport the wizard back to his castle=
-		if (wiz->getType() == CAMERATHING)
-			wiz->setPosition(castle->getPosition());
-		else if (Multiplayer::getSingleton().isServer())
-			Multiplayer::getSingleton().teleportWizard(wiz, castle->getPosition());
-		else // bot
-			wiz->setPosition(castle->getPosition());
-
-
-		// teleport his posse back to his castle
-		for (int i=0; i<Physics::getSingleton().numThings(); i++)
+		if (!Multiplayer::getSingleton().isClient())  
 		{
-			Thing* thing = Physics::getSingleton().getThingByIndex(i);
-			if (thing->getTeamNum() == wiz->getTeamNum() 
-				&& (thing->getType() == GNOMETHING || thing->getType() == TICKTHING))
+			// get the castle
+			Team* team = Physics::getSingleton().getTeam(teamNum);
+			Thing* castle = team->getCastle();
+			Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
+
+			// teleport the wizard back to his castle=
+			if (wiz->getType() == CAMERATHING)
+				wiz->setPosition(castle->getPosition());
+			else if (Multiplayer::getSingleton().isServer())
+				Multiplayer::getSingleton().teleportWizard(wiz, castle->getPosition());
+			else // bot
+				wiz->setPosition(castle->getPosition());
+
+
+			// teleport his posse back to his castle
+			for (int i=0; i<Physics::getSingleton().numThings(); i++)
 			{
-				thing->setPosition(castle->getPosition());
+				Thing* thing = Physics::getSingleton().getThingByIndex(i);
+				if (thing->getTeamNum() == wiz->getTeamNum() 
+					&& (thing->getType() == GNOMETHING || thing->getType() == TICKTHING))
+				{
+					thing->setPosition(castle->getPosition());
+				}
 			}
 		}
 		
