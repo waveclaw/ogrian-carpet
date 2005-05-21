@@ -792,14 +792,13 @@ void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real wor
 
 			Vector3 pos;
 
-			if (alpha > 0)
+			if (alpha == 0xff)
 			{
 				pos.x = ((float)col / float(width)) * worldSize;
 				pos.z = ((float)row / float(width)) * worldSize;
 				pos.y = HeightMap::getSingleton().getHeightAt(pos.x, pos.z);
-			}
-
-			if (alpha > 0) switch (colour)
+			
+			switch (colour)
 			{
 				case HEX_RED: // tick
 				{
@@ -851,7 +850,7 @@ void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real wor
 					Physics::getSingleton().addThing(new PlayerMarkerThing(pos));
 					break;
 				}
-			}
+			}}
 		}
 	}
 }

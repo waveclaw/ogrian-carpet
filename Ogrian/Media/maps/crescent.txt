@@ -1,5 +1,5 @@
 Author=Mike Prosser
-Difficulty=rough
+Difficulty=easy
 Players=two
 Preview=Ogrian/Preview/Crescent
 
