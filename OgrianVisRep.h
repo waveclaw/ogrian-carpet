@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The VisRep class serves as a superclass for Sprites, OrientedSprites, and Meshes. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianVisRep_H__
 #define __OgrianVisRep_H__

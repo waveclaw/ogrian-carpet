@@ -28,7 +28,7 @@ It also handles all scene creation.
 Later, Non-Foliage world population is handled by Game 
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "Ogre.h"

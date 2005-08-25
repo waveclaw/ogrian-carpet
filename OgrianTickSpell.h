@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This summons a tick
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianTickSpell_H__

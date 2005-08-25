@@ -30,7 +30,7 @@ They have some amount of mana.
 When they combine, one transfers all of its amount to the other.
 When they are claimed, they move to the castle
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianManaThing_H__

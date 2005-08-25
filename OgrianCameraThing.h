@@ -28,7 +28,7 @@ It also handles the specifics of camera movement behavior.
 It derives from wizard. 
 This is never rendered.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianCameraThing_H__
 #define __OgrianCameraThing_H__

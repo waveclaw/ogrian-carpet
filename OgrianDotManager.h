@@ -26,7 +26,7 @@ Additional Authors:
 Description: This manages the 'dots' that are used in place of sprites
 far from the camera
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianDotManager_H__
 #define __OgrianDotManager_H__

@@ -28,7 +28,7 @@ It also handles all scene creation.
 Later, Thing placing will be moved to a WorldMaker class. 
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianRenderer_H__
 #define __OgrianRenderer_H__

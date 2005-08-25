@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a 3D mesh VisRep
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianModel.h"
 #include "OgrianRenderer.h"

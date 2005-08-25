@@ -26,7 +26,7 @@ Additional Authors:
 Description: A Sprite is a billboard that is properly depth
 sorted and has a unique material. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianSprite_H__
 #define __OgrianSprite_H__

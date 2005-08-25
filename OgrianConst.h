@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: A singleton that reads all of the constants from a text file
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianConst_H__

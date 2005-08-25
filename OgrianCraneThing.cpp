@@ -27,7 +27,7 @@ Description: the crane is a flying bird that orbits a point until it detects an 
 at which point, it flys towards it. when it reaches its target, it blows up, dealing damage,
 and respawns back at its home point (around which it orbits).
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "OgrianCraneThing.h"

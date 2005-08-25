@@ -25,14 +25,15 @@ Additional Authors:
 
 Description: Game is a singleton that holds general game-related code, such as for
 starting games and detecting victory. 
-/*------------------------------------*/
+ *------------------------------------*/
+
 #include "OgrianGame.h"
 #include "OgrianPhysics.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianDotManager.h"
 #include "OgrianHealthBarManager.h"
 #include "OgrianBuildingHeightMap.h"
-#include "OgrianHUD.h"
+#include "OgrianHud.h"
 #include "OgrianAIWizardThing.h"
 #include "OgrianSkinManager.h"
 #include "OgrianSpellManager.h"
@@ -188,7 +189,8 @@ void Game::skirmishVictoryCheck()
 	
 	if (cam) team = cam->getTeam();
 
-	if (team && team->getNearestEnemyBuilding(cam, 100000000000) == 0)
+	// note:  100000000000 > sizeof(signed long)  --jdpowell 20050612
+	if (team && team->getNearestEnemyBuilding(cam, 2147483648) == 0)
 	{
 		// we are the winner
 		victory();
@@ -773,10 +775,12 @@ void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real wor
 				"Game::loadMapThings" );
 	}
 
-	uchar* data = image.getData();
+	// uchar?  ushort?  M$ crap datatypes 
+	// see OgrianGame.h for defines to fix this. --jdpowell 20050612
+	unsigned char* data = image.getData();
 
-	ushort width = image.getWidth();
-	ushort height = image.getHeight();
+	unsigned short width = image.getWidth();
+	unsigned short height = image.getHeight();
 
 	// loop through each pixel
 	for (int row=0; row<height; row++)

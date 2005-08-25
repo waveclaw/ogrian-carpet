@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: A computer controlled Wizard
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianAIWizardThing_H__

@@ -27,7 +27,7 @@ Description: the BuildingHeightMap is used to determine the height of the terrai
 at an arbitrary Real position.
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "Ogre.h"
@@ -92,7 +92,9 @@ Vector3 BuildingHeightMap::alignPosition(Vector3 pos)
 
 int BuildingHeightMap::getWorldSize()
 {
-	return mSize * mScale.x;
+/* Both of these are Ogre Real types, either double or floats.  
+   Narrowing conversions are a Bad Thing. --jdpowell 20050602 */
+	return (int) mSize * (int) mScale.x;
 }
 
 //----------------------------------------------------------------------------
@@ -100,7 +102,10 @@ int BuildingHeightMap::getWorldSize()
 // do a lookup in the array to find the height at a grid point
 int BuildingHeightMap::_getWorldHeight( int x, int z )
 {
-	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
+	Real m = CONR("HEIGTHMAP_MIN_HEIGHT");
+/* Real types are either double or floats.  Figure out what you want, damnit!
+   Narrowing conversions are a Bad Thing. --jdpowell 20050602 */
+	int min = (int) m;
 
 	if (x <= 0) return min;
 	if (z <= 0) return min;
@@ -120,7 +125,13 @@ int BuildingHeightMap::_getWorldHeight( int x, int z )
 // do a lookup in the array to set the height at a grid point
 void BuildingHeightMap::_setWorldHeight( int x, int z, int height )
 {
-	int min = HeightMap::getSingleton()._worldheight(x, z);
+//	int min = HeightMap::getSingleton()._worldheight(x, z);
+/* ahem.  _function is supposed to be a PRIVATE funtion of that class, IMHO.
+   furthermore, this WHOLE damn object should be extending HeightMap or parent 
+   null class NOT cloning buggy work. Also, BE CONSISTENT, this Real vs. int shit
+   really pisses me and every non-M$ compiler off, badly, and is a source of 
+   runtime bugs even after M$ shit compilers finish with it. */
+	int min = (int) HeightMap::getSingleton().getHeightAt((Real) x, (Real) z);
 	if (height < min) height = min;
 	if (height > 255) height = 255;
 
@@ -190,7 +201,9 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	int fx = int(x);
 	int fz = int(z);
 
-	int width = building->getWidth() / mScale.x;
+	/* An Ogre Real is a double OR a float, NOT AN INTEGER 
+	--jdpowell 20050602*/
+	int width = (int) building->getWidth() / (int) mScale.x;
 	if (fx - width - 1 <= 0) fx = width + 2;
 	if (fx + width + 2 >= mSize - 1) fx = mSize - width - 1;
 	if (fz - width - 1 <= 0) fz = width + 2;
@@ -207,7 +220,7 @@ void BuildingHeightMap::moldLandscape(Thing* building)
 	int coll = fz + width ; // the last col
 	for (int i=rowf; i<=rowl; i++)
 		for (int j=colf; j<=coll; j++)
-			_setWorldHeight(i, j, y);
+			_setWorldHeight(i, j, (int) y);
 }
 
 //----------------------------------------------------------------------------
@@ -227,7 +240,9 @@ void BuildingHeightMap::unmoldLandscape(Thing* building)
 	int fx = int(x);
 	int fz = int(z);
 
-	int width = building->getWidth() / mScale.x;
+	/* An Ogre Real is a double OR a float, NOT AN INTEGER 
+	--jdpowell 20050602*/
+	int width = (int) building->getWidth() / (int) mScale.x;
 	if (fx - width - 1 <= 0) fx = width + 2;
 	if (fx + width + 2 >= mSize - 1) fx = mSize - width - 1;
 	if (fz - width - 1 <= 0) fz = width + 2;

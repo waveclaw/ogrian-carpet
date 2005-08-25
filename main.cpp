@@ -25,7 +25,7 @@ Additional Authors: Mike Prosser
 
 Description: makes an app and makes it go, in a platform independant way
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "Ogre.h"
 #include "OgrianApplication.h"

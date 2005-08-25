@@ -26,7 +26,7 @@ Additional Authors:
 Description: This is a tower to stand on. it also claims nearby mana and has
 a flock of cranes
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include <Ogre.h>
 #include "OgrianTowerThing.h"

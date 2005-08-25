@@ -26,7 +26,7 @@ Additional Authors:
 Description: The wizard thing is the superclass of the CameraThing and the AIWizardThing
 it handles all wizard movement code and army tracking and mana regen
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "OgrianWizardThing.h"
@@ -34,7 +34,7 @@ it handles all wizard movement code and army tracking and mana regen
 #include "OgrianRenderer.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianHud.h"
-#include "OgrianBuildingHeightmap.h"
+#include "OgrianBuildingHeightMap.h"
 #include "OgrianSkinManager.h"
 
 using namespace Ogre;
@@ -139,7 +139,10 @@ int WizardThing::getLevel()
 
 void WizardThing::speed(Real duration)
 {
-	mStopSpeedTime = Clock::getSingleton().getTime() + duration*1000;
+// again, duration is a Real, even if Time is a typedef to the same underlying
+// type, a strict compiler would flag using it as a Time as an error.
+// -- jdpowell 20060603
+	mStopSpeedTime = Clock::getSingleton().getTime() + (Time) duration*1000;
 
 	mSpeeding = true;
 }
@@ -263,7 +266,7 @@ void WizardThing::setSkin(int skin)
 
 //----------------------------------------------------------------------------
 
-void WizardThing::setColour(ColourValue& colour)
+void WizardThing::setColour(ColourValue colour)
 {
 	DamageableThing::setColour(colour);
 	if (mTeam) mTeam->setColour(colour);
@@ -708,30 +711,32 @@ void WizardThing::move(Real time)
 		mSpeeding = false;
 
 	//handle movement for the camera and bots
-	if (getType() == CAMERATHING || isBot())
+	if ((getType() == CAMERATHING) || isBot())
 	{
 		// set the velocity according to the orientation
 		mForce = Vector3(0,0,0);
-		Real or = getOrientation();
+// note to Mr. Prosser: or is a reserved C++ word for |, ONLY M$ doesn't implement it.
+// -- jdpowell 20050603
+		Real orient = getOrientation();
 		if (mForeward && !mBack)
 		{
-			mForce.x += sin(or);
-			mForce.z += cos(or);
+			mForce.x += sin(orient);
+			mForce.z += cos(orient);
 		}
 		if (mBack && !mForeward)
 		{
-			mForce.x -= sin(or);
-			mForce.z -= cos(or);
+			mForce.x -= sin(orient);
+			mForce.z -= cos(orient);
 		}
 		if (mLeft && !mRight)
 		{
-			mForce.x += cos(or);
-			mForce.z -= sin(or);
+			mForce.x += cos(orient);
+			mForce.z -= sin(orient);
 		}
 		if (mRight && !mLeft)
 		{
-			mForce.x -= cos(or);
-			mForce.z += sin(or);
+			mForce.x -= cos(orient);
+			mForce.z += sin(orient);
 		}
 
 		mForce.normalise();

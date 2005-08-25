@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This makes a castle or a tower
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianBuildSpellThing.h"
 #include "OgrianTowerThing.h"

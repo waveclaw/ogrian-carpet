@@ -31,7 +31,7 @@ It is a Singleton.
 At the moment, it just checks all all Things against all other Things. 
 This will be changed to a quadtree or something for performance.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
@@ -387,7 +387,10 @@ Thing* Physics::newThing(ThingType type, int teamNum)
 		case GNOMESUMMONTHING: return new GnomeSummonSpellThing(teamNum);
 
 		case CRANETHING: return new CraneThing(teamNum);
-		case ALBATROSSTHING: return new AlbatrossThing(teamNum);
+		// FIXME
+		//case ALBATROSSTHING: return new AlbatrossThing(teamNum);
+		// WARNING:  this is a hack. -- jdpowell 20050612
+		case ALBATROSSTHING: return new AlbatrossThing(teamNum, ColourValue::White, Vector3(0,0,0), Vector3(0,0,0)); 
 		case SENTINELTHING: return new SentinelThing(teamNum);
 		case TICKTHING: return new TickThing(teamNum);
 		case GNOMETHING: return new GnomeThing(teamNum);

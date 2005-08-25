@@ -26,7 +26,7 @@ Additional Authors:
 
 Description: the Portal teleports its wizard to the next tower
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianPortalThing_H__

@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a teleport spell
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianTeleportSpell_H__

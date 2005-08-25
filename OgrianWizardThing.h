@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The wizard thing is the superclass of the CameraThing
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianWizardThing_H__
@@ -89,7 +89,7 @@ public:
 	virtual void setPosition(Vector3 pos);
 	virtual void setVelY(Real vel);
 
-	virtual void setColour(ColourValue& colour);
+	virtual void setColour(ColourValue colour);
 	virtual void setHealth(int health);
 	virtual void damage(int amount, int sourceTeamNum);
 	virtual void die();

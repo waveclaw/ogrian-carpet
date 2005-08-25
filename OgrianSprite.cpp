@@ -26,7 +26,7 @@ Additional Authors:
 Description: A Sprite is a billboard that is properly depth
 sorted and has a unique material. 
 
-/*------------------------------------*/
+*------------------------------------*/
 
 #include "OgrianSprite.h"
 #include "OgrianRenderer.h"

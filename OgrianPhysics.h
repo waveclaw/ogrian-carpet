@@ -29,7 +29,7 @@ This also has a moveAll() function that moves all of the particles.
 collisionCheck() and moveAll() should be called every frame. 
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianPhysics_H__
 #define __OgrianPhysics_H__

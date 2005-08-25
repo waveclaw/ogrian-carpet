@@ -25,7 +25,7 @@ Additional Authors: Mike Prosser
 
 Description: Initiates the renderer. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianApplication_H__

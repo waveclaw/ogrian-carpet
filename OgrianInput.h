@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: Handle game input
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianInput_H__
 #define __OgrianInput_H__

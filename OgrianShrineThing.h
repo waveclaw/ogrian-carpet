@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a shrine which can be claimed to increase mana regen for a wizard
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianShrineThing_H__
 #define __OgrianShrineThing_H__
@@ -70,7 +70,7 @@ public:
 
 	virtual void setTeamNum(int teamNum);
 
-	virtual void setColour(ColourValue& colour);
+	virtual void setColour(ColourValue colour);
 
 	virtual void setPosition(Vector3 pos);
 

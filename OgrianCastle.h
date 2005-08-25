@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a castle
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianCastle_H__
 #define __OgrianCastle_H__

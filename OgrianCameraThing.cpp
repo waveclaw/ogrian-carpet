@@ -28,7 +28,7 @@ It also handles the specifics of camera movement behavior.
 It derives from wizard. 
 This is never rendered.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
@@ -52,9 +52,11 @@ CameraThing::CameraThing(Camera* camera) : WizardThing(false)
 	mSensitivity = CONR("MOUSE_SENSITIVITY");
 	if (mSensitivity == 0) mSensitivity = 1;
 
-	// set the color and the skin
-	setColour(Menu::getSingleton().getChosenColour());
-	setSkin(Menu::getSingleton().getChosenWizardSkin());
+	// set the color and the skin, BTW this changes as
+	// there was a type mismatch for this function.
+	// &a != a no matter what M$ says, kids -- jdpowell 20060612
+	Ogrian::WizardThing::setColour(Menu::getSingleton().getChosenColour());
+	Ogrian::WizardThing::setSkin(Menu::getSingleton().getChosenWizardSkin());
 }
 
 //----------------------------------------------------------------------------
@@ -69,10 +71,11 @@ CameraThing::~CameraThing()
 void CameraThing::reset()
 {
 	WizardThing::reset();
-
-	// set the color and the skin
-	setColour(Menu::getSingleton().getChosenColour());
-	setSkin(Menu::getSingleton().getChosenWizardSkin());
+	// set the color and the skin, BTW this changes as
+	// there was a type mismatch for this function.
+	// &a != a no matter what M$ says, kids -- jdpowell 20060612	
+	WizardThing::setColour(Menu::getSingleton().getChosenColour());
+	WizardThing::setSkin(Menu::getSingleton().getChosenWizardSkin());
 }
 
 //----------------------------------------------------------------------------

@@ -25,13 +25,15 @@ Additional Authors:
 
 Description: This is a 3D mesh VisRep
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianModel_H__
 #define __OgrianModel_H__
 
 #include <Ogre.h>
-#include "Math.h"
+/* WTF?  this doesn't exist. Using OgreMath, instead. --jdpowell 20050602
+ include "Math.h" */
+#include <OgreMath.h>
 
 #include "OgrianSprite.h"
 

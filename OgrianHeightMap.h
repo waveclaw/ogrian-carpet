@@ -27,7 +27,7 @@ Description: the HeightMap is used to determine the height of the terrain
 at an arbitrary Real position. 
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianHeightMap_H__
 #define __OgrianHeightMap_H__

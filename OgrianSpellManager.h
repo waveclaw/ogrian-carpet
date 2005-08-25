@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This manages the spells for the HUD, etc
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianSpellManager_H__

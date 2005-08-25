@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: The audio handler
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianAudio_H__
 #define __OgrianAudio_H__

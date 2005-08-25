@@ -26,7 +26,7 @@ Additional Authors:
 Description: This manages the 'dots' that are used in place of sprites
 far from the camera
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianDotManager.h"
 #include "OgrianRenderer.h"

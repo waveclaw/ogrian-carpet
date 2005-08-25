@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The albatross is like a cruise missile, it just flies straight until it hits something.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "OgrianAlbatrossThing.h"
@@ -38,7 +38,7 @@ namespace Ogrian
 
 //----------------------------------------------------------------------------
 
-AlbatrossThing::AlbatrossThing(int teamNum, ColourValue& colour, Vector3 pos, Vector3 vel) 
+AlbatrossThing::AlbatrossThing(int teamNum, ColourValue colour, Vector3 pos, Vector3 vel) 
 	: DamageableThing("Ogrian/Clear", ORIENTEDSPRITE, "AlbatrossThing", false, CONR("TICK_SCALE"), pos, SPHERE)
 {
 	setTeamNum(teamNum);

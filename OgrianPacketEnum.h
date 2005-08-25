@@ -25,7 +25,7 @@ Additional Authors: Mike Prosser
 
 Description: This enumerates the packets used in Ogrian Carpet
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianPacketEnum_H__
 #define __OgrianPacketEnum_H__

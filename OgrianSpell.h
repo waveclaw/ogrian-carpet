@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a spell
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianSpell_H__

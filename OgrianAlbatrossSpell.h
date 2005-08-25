@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This summons an albatross
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianAlbatrossSpell_H__

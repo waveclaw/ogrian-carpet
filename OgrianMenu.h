@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The Menu that allows you to choose what to play, and also
 to set your config options
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianMenu_H__
 #define __OgrianMenu_H__

@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a speed spell
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianSpeedSpell_H__

@@ -26,7 +26,7 @@ Additional Authors:
 Description: This is a tower to stand on. it also claims nearby mana and has
 a flock of cranes
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianTower_H__
 #define __OgrianTower_H__

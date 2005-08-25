@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: A computer controlled Wizard
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include <Ogre.h>
 #include "OgrianAIWizardThing.h"

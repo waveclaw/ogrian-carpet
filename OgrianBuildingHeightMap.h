@@ -31,7 +31,7 @@ This is basically a carbon copy of HeightMap with added code for buildings. It w
 to make this a subclass of HeightMap, but because they are Singletons, subclassing
 is... difficult. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianBuildingHeightMap_H__
 #define __OgrianBuildingHeightMap_H__

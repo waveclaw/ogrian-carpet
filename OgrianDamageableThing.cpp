@@ -26,7 +26,7 @@ Additional Authors:
 Description: DamageableThing is a thing that can take damage, and will die
 It also has an optional health bar
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianDamageableThing.h"
 #include "OgrianPhysics.h"
@@ -61,7 +61,7 @@ void DamageableThing::reset()
 
 //----------------------------------------------------------------------------
 
-void DamageableThing::setColour(ColourValue& colour)
+void DamageableThing::setColour(ColourValue colour)
 {
 	Thing::setColour(colour);
 	if (mBar) mBar->setColour(colour);

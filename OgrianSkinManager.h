@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: A central manager for skins
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianOgrianSkinManager_H__
 #define __OgrianOgrianSkinManager_H__

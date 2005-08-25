@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: FoliageThing has the Foliage material. It is for scenery. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianFoliageThing_H__
 #define __OgrianFoliageThing_H__
@@ -69,6 +69,7 @@ public:
 		setPosY(getGroundY() + scale*CONR("FOLIAGE_HEIGHT_OFF"));
 		setHealth(CONI("FOLIAGE_HEALTH"));
 		setColour(ColourValue(1,1,1));
+
 
 		((Sprite*)getVisRep())->setFoliage(true);
 	}

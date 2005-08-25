@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This handles all of the multiplayer networking code.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianMultiplayer_H__
 #define __OgrianMultiplayer_H__

@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This summons a sentinel
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianSentinelSpell_H__

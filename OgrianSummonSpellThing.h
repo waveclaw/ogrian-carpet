@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a base class to be used by monsters for summoning
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianSummonSpellThing_H__
 #define __OgrianSummonSpellThing_H__

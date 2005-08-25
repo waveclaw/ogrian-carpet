@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: The Player List
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianPlayerList_H__
 #define __OgrianPlayerList_H__

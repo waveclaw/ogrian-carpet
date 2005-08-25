@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: A centralized Skin Manager for wizard skins and castle skins
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianSkinManager.h"
 
@@ -96,7 +96,10 @@ void SkinManager::loadCastleSkins()
         {
             /* Find the first seperator character and split the string there */
             int separator_pos = (int)line.find_first_of(separators, 0);
-            if (separator_pos != std::string::npos)
+/* std::string::npos, like almost 99.99999% of std functions, will always return an
+   unsigned int (for double the size, double the fun)  Another Narrowing Conversion
+   to signed int has to be made, or warnings will be thrown.  --jdpowell 20050602 */
+            if (separator_pos != (signed int) std::string::npos)
             {
                 optName = line.substr(0, separator_pos);
                 /* Find the first non-seperator character following the name */

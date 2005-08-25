@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: The Player List
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianPlayerList.h"
 #include "OgrianRenderer.h"

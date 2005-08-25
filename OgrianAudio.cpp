@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: The audio handler
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianAudio.h"
 #include "OgrianRenderer.h"

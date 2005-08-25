@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: A singleton that reads all of the constants from a text file
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "OgrianConst.h"
@@ -82,7 +82,7 @@ Time Const::getConstantTime(const String &key)
 	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
 	if (c == 0.0) 
 		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
-	return c*1000;
+	return (Time) c*1000; /* re: se OgrianCock.h line 49 for definition - jdpowell */
 }
 
 //----------------------------------------------------------------------------

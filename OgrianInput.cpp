@@ -24,7 +24,7 @@ Original Author: Mike Prosser
 Additional Authors: 
 
 Description: Handle game input, as opposed to menu input.
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianInput.h"
 #include "OgrianPhysics.h"

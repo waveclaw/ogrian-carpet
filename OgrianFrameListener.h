@@ -35,7 +35,7 @@ Description: Defines a frame listener which responds to frame events.
              T:        Cycle texture filtering
                        Bilinear, Trilinear, Anisotropic(8)
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 

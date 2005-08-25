@@ -26,7 +26,7 @@ Additional Authors:
 Description: The sentinal is a monster that is stationary at fires fireballs at 
 nearby enemies.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianSentinelThing_H__

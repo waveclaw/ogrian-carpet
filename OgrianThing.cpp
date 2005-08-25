@@ -27,7 +27,7 @@ Description: the Thing class is the basic moveable object.
 It interacts with the renderer and the physics engine. 
 It is rendered as a Billboard.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianThing.h"
 #include "OgrianPhysics.h"
@@ -150,9 +150,16 @@ void Thing::setGroundScan(bool active)
 
 //----------------------------------------------------------------------------
 
-void Thing::setColour(ColourValue& colour)
+//void Thing::setColour(ColourValue& colour)
+//{
+//	mVisRep->setColour(colour);
+//}
+
+//----------------------------------------------------------------------------
+// try to replace the bad function with a good one --jdpowell 20050612
+void Thing::setColour(ColourValue colour)
 {
-	mVisRep->setColour(colour);
+	mVisRep->setColour((Ogre::ColourValue&) colour);
 }
 
 //----------------------------------------------------------------------------

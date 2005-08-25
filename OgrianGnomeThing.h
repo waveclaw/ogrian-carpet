@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The gnome attacks enemies by shooting fireballs at them. it also follows its wizard.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianGnomeThing_H__

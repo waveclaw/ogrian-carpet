@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The heads up display
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianHud_H__

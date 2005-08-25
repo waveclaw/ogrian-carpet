@@ -27,7 +27,7 @@ Description: the HeightMap is used to determine the height of the terrain
 at an arbitrary Real position.
 It is a Singleton.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "Ogre.h"
@@ -67,7 +67,9 @@ HeightMap::~HeightMap()
 
 int HeightMap::getWorldSize()
 {
-	return mSize * mScale.x;
+/* Both of these are Ogre Real types, either double or floats.  
+   Narrowing conversions are a Bad Thing. --jdpowell 20050602 */
+	return (int) mSize * (int) mScale.x; 
 }
 
 //----------------------------------------------------------------------------
@@ -90,17 +92,18 @@ Image* HeightMap::getImage()
 int HeightMap::_worldheight( int x, int z )
 {
 	Real min = CONR("HEIGTHMAP_MIN_HEIGHT");
+/* Real types are either double or floats.  Figure out what you want, damnit!
+   Narrowing conversions are a Bad Thing. --jdpowell 20050602 */
+	if (x <= 0) return (int) min;
+	if (z <= 0) return (int) min;
+	if (x >= mSize-1) return (int) min;
+	if (z >= mSize-1) return (int) min;
 
-	if (x <= 0) return min;
-	if (z <= 0) return min;
-	if (x >= mSize-1) return min;
-	if (z >= mSize-1) return min;
+	if (!mData) return (int) min;
 
-	if (!mData) return min;
+    int height = mData[ ( ( z * (int) mSize ) + x ) ];
 
-    int height = mData[ ( ( z * mSize ) + x ) ];
-
-	if (height < min) return min;
+	if (height < min) return (int) min;
 	return height;
 };
 

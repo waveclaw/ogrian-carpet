@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This handles all of the multiplayer networking code.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianMultiplayer.h"
 #include "OgrianMenu.h"

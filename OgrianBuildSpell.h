@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This builds a castle or a tower, or tears down a tower
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianBuildSpell_H__

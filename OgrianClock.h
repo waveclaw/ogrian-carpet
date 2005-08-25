@@ -25,7 +25,7 @@ Additional Authors: Mike Prosser
 
 Description: this is a re-do of the RakNet GetTime class to make it a proper singleton
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianClock_H__
 #define __OgrianClock_H__

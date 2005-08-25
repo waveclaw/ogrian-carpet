@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The Menu
 NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianMenu.h"
 #include "OgrianPlayerList.h"

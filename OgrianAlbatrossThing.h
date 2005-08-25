@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The albatross is like a cruise missile, it just flies straight until it hits something.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianAlbatrossThing_H__
@@ -63,7 +63,7 @@ public:
 class AlbatrossThing : public DamageableThing
 {
 public:
-	AlbatrossThing(int teamNum, ColourValue& colour=ColourValue(0,0,0), Vector3 pos=Vector3(0,0,0), Vector3 vel=Vector3(0,0,0));
+	AlbatrossThing(int teamNum, Ogre::ColourValue ColourValue, Ogre::Vector3 pos, Ogre::Vector3 vel);
 
 	virtual ThingType getType() { return ALBATROSSTHING; }
 

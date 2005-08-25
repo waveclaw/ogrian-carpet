@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This manages the health bars that are shown above nearby damageable things
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianHealthBarManager.h"
 #include "OgrianRenderer.h"

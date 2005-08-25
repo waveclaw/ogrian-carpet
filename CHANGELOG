@@ -1,0 +1,18 @@
+20050807
+ - Updated for commit.
+ - New Changelog.  New ReadMe.  New dependancy check and notes log.
+
+20050805
+ - Abandoned autoconf system for simplified Makefile.
+ - TODO: autoconf + automake to add Linux 5 step install.
+
+20050720
+ - Built with profile information.  
+ - Still super-slow even with OpenGL accelration.  
+ - Sound only works if no other sound using application is running becuase 
+   fmod ONLY wants exclusive access to the raw HW.
+
+20050719
+ - Builds on Linux without hacked configuration.
+ - First version with simple autoconf configuration.
+ - Wrote /tests scripts for dependancy verification.

@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: TeleportSpellThing is a thing that helps the teleport spell work properly in multiplayer
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianTeleportSpellThing_H__
 #define __OgrianTeleportSpellThing_H__
@@ -54,7 +54,9 @@ public:
 			Thing* castle = team->getCastle();
 			Thing* wiz = Physics::getSingleton().getThing(team->getWizardUID());
 
-			setColour(team->getColour());
+			// Once again, type mismatch --jdpowell 20050612
+			Ogre::ColourValue notTempColour = team->getColour();
+			setColour((Ogre::ColourValue &) notTempColour);
 
 			// teleport the wizard back to his castle=
 			if (wiz->getType() == CAMERATHING)

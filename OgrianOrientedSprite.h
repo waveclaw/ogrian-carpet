@@ -26,13 +26,16 @@ Additional Authors:
 Description: The OrientedSprite is a visual representation that can represent an object from each of 
 the eight cardinal directions and also from any of an arbitrary number of poses. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianOrientedSprite_H__
 #define __OgrianOrientedSprite_H__
 
 #include <Ogre.h>
-#include "Math.h"
+
+/* WTF? No such file. Use OgreMath.h insdead. --jdpowell 20050602
+ include "Math.h" */
+#include <OgreMath.h>
 
 #include "OgrianSprite.h"
 

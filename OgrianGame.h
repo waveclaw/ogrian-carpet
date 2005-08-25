@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: Game is a singleton that holds general game-related code, such as for
 starting games and detecting victory. 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianGame_H__
 #define __OgrianGame_H__

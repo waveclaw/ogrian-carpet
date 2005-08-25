@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: The tick attacks enemies by jumping at them
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianTickThing_H__

@@ -24,7 +24,7 @@ Original Author: The OGRE Team
 Additional Authors: Mike Prosser
 
 Description: this handles mouse input for the menu, including buttons. 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 
@@ -125,7 +125,10 @@ public:
 		else if (action == "Ogrian/CreditsMenu/Back") Menu::getSingleton().button_back();
     }
 
-	bool isMulticaster() {}
+	bool isMulticaster() { 
+	/* please, if you declare a return, do it. --jdpowell 20050602 */ 
+	return (false);
+    }
 
 protected:
     EventProcessor* mEventProcessor;

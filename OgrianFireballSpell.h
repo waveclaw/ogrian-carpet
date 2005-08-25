@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a fireball spell
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianFireballSpell_H__

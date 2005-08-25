@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a team, it has a wizard and a score
 
-/*------------------------------------*/
+*------------------------------------*/
 
 
 #include "OgrianTeam.h"

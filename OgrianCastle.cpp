@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a castle
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianCastle.h"
 #include "OgrianRenderer.h"
@@ -45,7 +45,6 @@ CastleHeartThing::CastleHeartThing(DamageableThing* castle, Vector3 pos)
 {
 	mCastle = castle;
 
-	// set the colour
 	if (castle)
 		setColour(castle->getColour());
 
@@ -270,9 +269,10 @@ Castle::Castle(int teamNum, Vector3 pos, int skin)
 	: DamageableThing("Ogrian/Flag", SPRITE, "Castle", true, CONR("CASTLE_WIDTH"), pos, SPHERE, false)
 {
 	mSkin = skin;
-
+	// again, there is a type mismatch beteetn getColour and setColour -- jdpowell 20050612
+    Ogre::ColourValue notTempColour = Physics::getSingleton().getTeam(teamNum)->getColour();
 	setTeamNum(teamNum);
-	setColour(Physics::getSingleton().getTeam(teamNum)->getColour());
+	setColour((ColourValue &) notTempColour);
 
 	Physics::getSingleton().addThing(this);
 
@@ -280,7 +280,10 @@ Castle::Castle(int teamNum, Vector3 pos, int skin)
 	mBeacon = new CastleBeaconThing();
 	Physics::getSingleton().addEffect(mBeacon);
 
-	mBeacon->setColour(getColour());
+	// WARNING: I am about to adjust an object that has a pointer for it
+	// not in this context (see above) --jdpowell 20050612
+	notTempColour = getColour();
+	mBeacon->setColour((ColourValue&) notTempColour);
 
 	Vector3 bpos = getPosition();
 	bpos.y += CONR("CASTLE_BEACON_ALTITUDE");
@@ -291,7 +294,9 @@ Castle::Castle(int teamNum, Vector3 pos, int skin)
 
 	// build the castle keep
 	mBlocks[0] = new CastleKeepThing(this, pos, mSkin);
-	mBlocks[0]->setColour(getColour());
+	// &a != a, type mismatch --jdpowell 20050612
+    notTempColour = getColour();
+	mBlocks[0]->setColour((Ogre::ColourValue &) notTempColour);
 
 	for (int i=1; i<NUM_BLOCKS; i++)
 		mBlocks[i]=0;
@@ -528,8 +533,10 @@ void Castle::setLevel(Real level)
 			// make the turret if needed
 			if (mBlocks[i] == 0)
 			{
+				// &a != a, type mismatch --jdpowell 20050612
+				Ogre::ColourValue notTempColour = getColour();
 				mBlocks[i] = newCastleTurret(i);
-				mBlocks[i]->setColour(getColour());
+				mBlocks[i]->setColour((Ogre::ColourValue &) notTempColour);
 				Physics::getSingleton().addThing(mBlocks[i]);
 			}
 

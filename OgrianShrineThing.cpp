@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This is a shrine which can be claimed to increase mana regen for a wizard
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianMultiplayer.h"
 #include "OgrianSkinManager.h"
@@ -149,7 +149,6 @@ void ShrineThing::setTeamNum(int teamNum)
 			if (wizard)
 				wizard->addShrine();
 		}
-
 		setColour(team->getColour());
 	}
 	else setColour(ColourValue::White);
@@ -161,7 +160,7 @@ void ShrineThing::setTeamNum(int teamNum)
 
 //----------------------------------------------------------------------------
 
-void ShrineThing::setColour(ColourValue& colour)
+void ShrineThing::setColour(ColourValue colour)
 {
 	if (mBall)
 		mBall->setColour(colour);

@@ -26,7 +26,7 @@ Additional Authors:
 Description: DamageableThing is a thing that can take damage, and will die
 It also has an optional health bar
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianDamageableThing_H__
 #define __OgrianDamageableThing_H__
@@ -61,8 +61,8 @@ public:
 
 	// used for health bars
 	virtual void setMaxHealth(int maxHealth);
-	virtual void reset();
-	virtual void setColour(ColourValue& colour);
+	virtual void reset();	
+	virtual void setColour(ColourValue colour);
 	virtual void move(Real time);
 	virtual bool hasHealthBar();
 

@@ -27,7 +27,7 @@ Description: the Thing class is the basic moveable object.
 It interacts with the renderer and the physics engine. 
 It is rendered as a Billboard.
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianThing_H__
 #define __OgrianThing_H__
@@ -137,8 +137,11 @@ public:
 	// set the material
 	virtual void setMaterial(String material);
 
+	// set the colour, not anymore
+	//virtual void setColour(ColourValue& colour);
+	
 	// set the colour
-	virtual void setColour(ColourValue& colour);
+	virtual void setColour(ColourValue colour);
 	
 	// get the colour
 	virtual ColourValue getColour();

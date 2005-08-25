@@ -27,7 +27,7 @@ Description: Fireballs are the basic form of ranged attack. There are two modes.
 In simple=true mode, they fly straight with no smoke and dont hurt teammates.
 In simple=false mode, they fly in an arc, leave a smoke trail, and hurt teammates. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include <Ogre.h>

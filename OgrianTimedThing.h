@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: TimedThing self-destructs after a specified time
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianTimedThing_H__
 #define __OgrianTimedThing_H__
@@ -59,7 +59,8 @@ public:
 	// set expiration time in seconds from now
 	virtual void setRelativeExpirationTime(Real time)
 	{
-		mExpirationTime = time*1000 + Clock::getSingleton().getTime();
+/* ahem.  matching parameters? Try again. -- jdpowell 20050602 */
+		mExpirationTime = ((Time) time*1000) + Clock::getSingleton().getTime();
 	}
 
 	// check to see if the time is up

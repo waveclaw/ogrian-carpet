@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This summons a gnome
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #ifndef __OgrianGnomeSpell_H__

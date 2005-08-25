@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This manages the health bars that are shown above nearby damageable things
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianHealthBarManager_H__
 #define __OgrianHealthBarManager_H__

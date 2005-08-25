@@ -26,7 +26,7 @@ Additional Authors:
 Description: The OrientedSprite is a visual representation that can represent an object from each of 
 the eight cardinal directions and also from any of an arbitrary number of poses. 
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #include "OgrianOrientedSprite.h"
 #include "OgrianRenderer.h"

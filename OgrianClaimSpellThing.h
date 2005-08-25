@@ -25,7 +25,7 @@ Additional Authors:
 
 Description: This claims a shrine or mana
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 #ifndef __OgrianClaimSpellThing_H__
 #define __OgrianClaimSpellThing_H__

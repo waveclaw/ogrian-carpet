@@ -26,7 +26,7 @@ Additional Authors: Mike Prosser
 Description: This handles keyboard and mouse input. 
 See OgrianFrameListener.h for command listings
 
-/*------------------------------------*/
+ *------------------------------------*/
 
 
 #include "OgreConfigFile.h"
@@ -69,7 +69,7 @@ void OgrianFrameListener::updateStats(void)
         +" "+StringConverter::toString(stats.worstFrameTime)+" ms");
 
     GuiElement* guiTris = GuiManager::getSingleton().getGuiElement("Core/NumTris");
-    guiTris->setCaption(tris + StringConverter::toString(unsigned int(stats.triangleCount)));
+    guiTris->setCaption(tris + StringConverter::toString((unsigned int) stats.triangleCount ));
 
     GuiElement* guiDbg = GuiManager::getSingleton().getGuiElement("Core/DebugText");
     guiDbg->setCaption(mWindow->getDebugText());
