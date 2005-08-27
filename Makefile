@@ -5,7 +5,8 @@
 CC             =/usr/bin/gcc
 CXX            =$(CC)
 LD             =$(CC)
-CLEANER        =rm -rf
+CLEANER        =/bin/rm -rf
+COPY           =/bin/cp
 
 # -W -> warning flags, -I -> extra includes for <include> style
 # -g -> include info for debuggers, -pg -> include info for profilers
@@ -27,6 +28,7 @@ LDFLAGS        =$(OGRE_LIBS) $(RACKNET_LIBS) $(FMOD_LIBS)
 
 all: fix_gui *.cpp
 	$(CC) $(CXXFLAGS) *.cpp $(LDFLAGS) 
+	$(COPY) a.out Ogrian/Ogrian
 
 # remove the offending OGRE 1.0 files 
 fix_gui:
@@ -34,7 +36,7 @@ fix_gui:
 
 # clean the installed and uninstalled temp files
 clean: 
-	-$(CLEANER) t *~ *.~ *.o *.bak *.temp *.tmp 
+	-$(CLEANER) t *~ *.~ *.o *.bak *.temp *.tmp Ogrian/Ogrian
 
 # for GNU compatability
 distclean: clean
