@@ -77,14 +77,13 @@ public:
 		}
 
 		// if there's enough mana
-		if (team && team->getCastle() && team->getCastle()->getMana() >= CONI("SENTINEL_COST"))
+		if (team && team->getCastle() && team->getCastle()->getManaStone() >= CONI("SENTINEL_COST"))
 		{
 			// make a sentinel
 			Physics::getSingleton().addThing(new SentinelThing(getTeamNum(), getPosition()));
 
 			// remove the mana from the castle
-			Castle* castle = team->getCastle();
-			castle->setMana(castle->getMana() - CONI("SENTINEL_COST"));
+			team->getCastle()->removeManaStone(CONI("SENTINEL_COST"));
 		}
 
 		// self destruct

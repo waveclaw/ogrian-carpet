@@ -42,8 +42,8 @@ namespace Ogrian
 Hud::Hud()
 {
 	mGhost = false;
-	mBaseMana = 0;
-	mActiveMana = 0;
+	mManaStoneAmount = 0;
+	mManaAmount = 0;
 	mMessageClearTime = 0;
 
 	mHudOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/HudOverlay");
@@ -51,6 +51,7 @@ Hud::Hud()
 	mGhostOverlay = (Overlay*)OverlayManager::getSingleton().getByName("Ogrian/HUD/GhostOverlay");
 
 	mMana = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Mana");
+	mManaStone = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/ManaStone");
 	mHealth = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Health");
 	mMessage = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/Message");
 	mSpellName = GuiManager::getSingleton().getGuiElement("Ogrian/HUD/SpellName");
@@ -133,12 +134,12 @@ void Hud::hide()
 void Hud::reinit()
 {
 	mGhost = false;
-	mBaseMana = 0;
-	mActiveMana = 0;
+	mManaStoneAmount = 0;
+	mManaAmount = 0;
 	mMessageClearTime = 0;
 
 	setMessage("");
-	setMana();
+	setManaBar();
 
 	mBackgroundOverlay->show();
 	mHudOverlay->show();
@@ -156,34 +157,37 @@ void Hud::makeGhost()
 
 //----------------------------------------------------------------------------
 
-void Hud::setBaseMana(int baseMana)
+void Hud::setManaStone(int manastone)
 {
-	mBaseMana = baseMana;
-	setMana();
+	std::ostringstream numstr("");
+	numstr << manastone;
+
+	mManaStone->setCaption(String(CONS("HUD_MANASTONE")) + numstr.str());
+
+	mManaStoneAmount = manastone;
+	setManaBar();
 }
 
 //----------------------------------------------------------------------------
 
-void Hud::setActiveMana(int activeMana)
+void Hud::setMana(int mana)
 {
-	mActiveMana = activeMana;
-	setMana();
+	std::ostringstream numstr("");
+	numstr << mana;
+
+	mMana->setCaption(String(CONS("HUD_MANA")) + numstr.str());
+
+	mManaAmount = mana;
+	setManaBar();
 }
 
 //----------------------------------------------------------------------------
 
-void Hud::setMana()
+void Hud::setManaBar()
 {
-	std::ostringstream active("");
-	active << mActiveMana;
-
-	std::ostringstream base("");
-	base << mBaseMana;
-
-	mMana->setCaption(String(CONS("HUD_MANA")) +active.str() + "/" + base.str());
-	if (mBaseMana > 0)
+	if (mManaStoneAmount > 0)
 	{
-		Real ratio = (float)mActiveMana / (float)mBaseMana;
+		Real ratio = (float)mManaAmount / (float)mManaStoneAmount;
 		if (ratio > 1) ratio = 1;
 		mManaBar->setWidth(ratio  * CONR("HUD_BAR_WIDTH"));
 	}

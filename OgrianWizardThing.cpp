@@ -52,8 +52,8 @@ WizardThing::WizardThing(bool visible, int skin)
 	mLastSetPosTime = 0;
 	mSpeeding = false;
 	mStopSpeedTime = 0;
-	mActiveMana = 0;
-	mBaseMana = 0;
+	mMana = 0;
+	mManaStone = 0;
 	mNumShrines = 0;
 	mTeam = 0;
 	mSkin = -1;
@@ -87,8 +87,8 @@ void WizardThing::reset()
 	mLastSetPosTime = 0;
 	mSpeeding = false;
 	mStopSpeedTime = 0;
-	mActiveMana = 0;
-	mBaseMana = 0;
+	mMana = 0;
+	mManaStone = 0;
 	mTeam = 0;
 	mGhost = false;
 	mFrameTime = 0;
@@ -156,50 +156,50 @@ bool WizardThing::isSpeeding()
 
 //----------------------------------------------------------------------------
 
-void WizardThing::setActiveMana(int activeMana)
+void WizardThing::setMana(int mana)
 {
-	mActiveMana = activeMana;
+	mMana = mana;
 
 	// update the hud if this is a camerathing
 	if (getType() == CAMERATHING)
-		Hud::getSingleton().setActiveMana(activeMana);
+		Hud::getSingleton().setMana(mana);
 
 	// send out the update if this is a server
 	else if (Multiplayer::getSingleton().isServer())
-		sendMessage(SET_ACTIVE_MANA, getPosition(), activeMana, getUID());
+		sendMessage(SET_MANA, getPosition(), mana, getUID());
 }
 
 //----------------------------------------------------------------------------
 
-void WizardThing::setBaseMana(int baseMana)
+void WizardThing::setManaStone(int manaStone)
 {
-	mBaseMana = baseMana;
+	mManaStone = manaStone;
 	
 	setScore();
 
 	// update the hud if this is a camerathing
 	if (getType() == CAMERATHING)
-		Hud::getSingleton().setBaseMana(baseMana);
+		Hud::getSingleton().setManaStone(manaStone);
 
 	// send out the update if this is a server
 	else if (Multiplayer::getSingleton().isServer())
-		sendMessage(SET_BASE_MANA, getPosition(), baseMana, getUID());
+		sendMessage(SET_MANASTONE, getPosition(), manaStone, getUID());
 }
 
 //----------------------------------------------------------------------------
 
-void WizardThing::subtractActiveMana(int amount)
+void WizardThing::subtractMana(int amount)
 {
 	if (amount == 0) return;
 
-	setActiveMana(mActiveMana - amount);
+	setMana(mMana - amount);
 }
 
 //----------------------------------------------------------------------------
 
-int WizardThing::getActiveMana()
+int WizardThing::getMana()
 {
-	return mActiveMana;
+	return mMana;
 }
 
 //----------------------------------------------------------------------------
@@ -294,7 +294,7 @@ void WizardThing::die()
 {
 	DamageableThing::die();
 		
-	setActiveMana(0);
+	setMana(0);
 
 	if (!Multiplayer::getSingleton().isClient())
 	{
@@ -349,8 +349,8 @@ void WizardThing::handleMessage(int msg, Vector3 vec, int val)
 		switch (msg)
 		{
 		case SET_HEALTH:			setHealth(val);			break;
-		case SET_ACTIVE_MANA:		setActiveMana(val);		break;
-		case SET_BASE_MANA:			setBaseMana(val);		break;
+		case SET_MANA:				setMana(val);			break;
+		case SET_MANASTONE:			setManaStone(val);		break;
 
 		case SET_NUM_MANABALLS:		setNumManaBalls(val);	break;
 		case SET_NUM_SHRINES:		setNumShrines(val);		break;
@@ -461,7 +461,7 @@ void WizardThing::setScore()
 		Team* team = Physics::getSingleton().getTeam(getTeamNum());
 
 		// calcualte score
-		int score = mBaseMana;
+		int score = mManaStone;
 		score += mNumTowers * CONI("TOWER_COST");
 		score += mNumSentinels * CONI("SENTINEL_COST");
 		score += mNumGnomes * CONI("GNOME_COST");
@@ -768,11 +768,11 @@ void WizardThing::move(Real time)
 		if (Clock::getSingleton().getTime() > mNextRegenTime)
 		{
 			mNextRegenTime = Clock::getSingleton().getTime() + CONT("WIZARD_MANA_REGEN_PERIOD");
-			mActiveMana += CONI("WIZARD_MANA_REGEN") + mNumShrines*CONI("WIZARD_MANA_REGEN_BONUS");
-			if (mActiveMana > mBaseMana)
-				mActiveMana = mBaseMana;
+			mMana += CONI("WIZARD_MANA_REGEN") + mNumShrines*CONI("WIZARD_MANA_REGEN_BONUS");
+			if (mMana > mManaStone)
+				mMana = mManaStone;
 
-			setActiveMana(mActiveMana);
+			setMana(mMana);
 		}
 	}
 

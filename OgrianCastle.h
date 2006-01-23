@@ -198,20 +198,20 @@ public:
 	// get the skin this castle is using
 	virtual int getSkin();
 
-	// set the amount of mana this castle contains
-	virtual void setMana(int amount);
+	// set the amount of manaStone this castle contains
+	virtual void setManaStone(int amount);
 
-	// get the amount of mana this castle contains
-	virtual int getMana();
+	// get the amount of manaStone this castle contains
+	virtual int getManaStone();
 
-	// add to the amount of mana this castle contains
-	virtual void addMana(int amount);
+	// add to the amount of manaStone this castle contains
+	virtual void addManaStone(int amount);
 
-	// remove some mana from the castle. it returns the actuall amount removed
-	virtual int removeMana(int amount);
+	// remove some manaStone from the castle. it returns the actuall amount removed
+	virtual int removeManaStone(int amount);
 
-	// drop this amount of mana
-	virtual void dropMana(int amount);
+	// drop this amount of manaStone
+	virtual void dropManaStone(int amount);
 
 	// take damage
 	virtual void damage(int amount, int sourceTeamNum);
@@ -231,7 +231,7 @@ public:
 	virtual ThingType getType()	{ return CASTLEFLAGTHING; }
 
 private:
-	int mMana;
+	int mManaStone;
 	Real mLevel;
 	bool mRubble;
 	int mSkin;

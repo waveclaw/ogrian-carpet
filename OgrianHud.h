@@ -65,11 +65,11 @@ public:
 	// change the HUD back to normal mode
 	void reinit();
 
-	// set the base Mana
-	void setBaseMana(int baseMana);
+	// set the ManaStone
+	void setManaStone(int manaStone);
 
-	// set the active Mana
-	void setActiveMana(int activeMana);
+	// set the Mana
+	void setMana(int mana);
 
 	// set the health 
 	void setHealth(int health);
@@ -97,10 +97,10 @@ public:
 
 private:
 	Hud();
-	void setMana(); // acording to mBaseMana and mActiveMana
+	void setManaBar(); // acording to mMana and mManaStone
 
-	int mBaseMana;
-	int mActiveMana;
+	int mManaAmount;
+	int mManaStoneAmount;
 
 	Time mMessageClearTime;
 
@@ -111,6 +111,7 @@ private:
 	Overlay* mGhostOverlay;
 
 	GuiElement* mMana;
+	GuiElement* mManaStone;
 	GuiElement* mHealth;
 	GuiElement* mMessage;
 	GuiElement* mSpellName;

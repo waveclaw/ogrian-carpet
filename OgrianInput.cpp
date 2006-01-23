@@ -103,7 +103,7 @@ bool Input::processKeyInput(InputReader* input)
 		&& !Renderer::getSingleton().getCameraThing()->isGhost())
 	{
 		// check for sufficient mana
-		int wmana = Renderer::getSingleton().getCameraThing()->getActiveMana(); // wizard's mana
+		int wmana = Renderer::getSingleton().getCameraThing()->getMana(); // wizard's mana
 		int smana = SpellManager::getSingleton().getManaCost(); // spell's mana cost
 
 		if (wmana >= smana)
@@ -112,13 +112,9 @@ bool Input::processKeyInput(InputReader* input)
 			mTimeUntilNextCast = SpellManager::getSingleton().castSpell();
 
 			// consume the mana
-			Renderer::getSingleton().getCameraThing()->subtractActiveMana(smana);
+			Renderer::getSingleton().getCameraThing()->subtractMana(smana);
 		}
 	}
-
-	// move forward
-	//if (input->getMouseButton(1))
-	//	Renderer::getSingleton().getCameraThing()->moveForward();
 
 	return true;
 }

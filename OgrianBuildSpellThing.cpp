@@ -111,7 +111,7 @@ void BuildSpellThing::collidedGround()
 		team->setCastleUID(castle->getUID());
 	}
 	
-	else if (team && team->getCastle() && team->getCastle()->getMana() >= CONI("TOWER_COST"))
+	else if (team && team->getCastle() && team->getCastle()->getManaStone() >= CONI("TOWER_COST"))
 	{
 		// make sure its not too close to other buildings
 		for (int i=0; i<Physics::getSingleton().numThings(); i++)
@@ -149,8 +149,7 @@ void BuildSpellThing::collidedGround()
 		Physics::getSingleton().addThing(new TowerThing(getTeamNum(), pos, skin));
 
 		// remove the mana from the castle
-		Castle* castle = team->getCastle();
-		castle->setMana(castle->getMana() - CONI("TOWER_COST"));
+		team->getCastle()->removeManaStone(CONI("TOWER_COST"));
 	}
 
 	// self destruct
@@ -176,8 +175,8 @@ void BuildSpellThing::collided(Thing* e)
 				Castle* theircastle = theirteam->getCastle();
 				if (ourcastle && theircastle)
 				{
-					int mana = ourcastle->removeMana(CONI("GIVE_ALLY_MANA_AMOUNT"));
-					theircastle->addMana(mana);
+					int mana = ourcastle->removeManaStone(CONI("GIVE_ALLY_MANA_AMOUNT"));
+					theircastle->addManaStone(mana);
 				}
 			}
 

@@ -154,7 +154,7 @@ void ManaThing::collided(Thing* e)
 	
 	else if (e->getType() == CASTLEFLAGTHING && e->getTeamNum() == getTeamNum())
 	{
-		Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addMana(mAmount);
+		Physics::getSingleton().getTeam(getTeamNum())->getCastle()->addManaStone(mAmount);
 		destroy();
 	}
 }

@@ -265,7 +265,7 @@ void AIWizardThing::think_attack(Thing* target)
 	// attack the enemy //
 
 	// see if we have enough mana
-	if (getActiveMana() < CONI("FIREBALL_MANA_COST")) return;
+	if (getMana() < CONI("FIREBALL_MANA_COST")) return;
 
 	// see if we are able to cast yet
 	if (Clock::getSingleton().getTime() < mNextCastTime) return;
@@ -290,7 +290,7 @@ void AIWizardThing::think_attack(Thing* target)
 
 	// cast it
 	mFireballSpell.cast(pos, vel, this, getLevel());
-	subtractActiveMana(mFireballSpell.getManaCost(getLevel()));
+	subtractMana(mFireballSpell.getManaCost(getLevel()));
 	mNextCastTime = Clock::getSingleton().getTime() + mFireballSpell.getCastPeriod(getLevel())*1000;
 }
 

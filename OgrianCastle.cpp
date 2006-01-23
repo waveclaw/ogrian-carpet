@@ -304,7 +304,7 @@ Castle::Castle(int teamNum, Vector3 pos, int skin)
 	// add them to physics
 	Physics::getSingleton().addThing(mBlocks[0]);
 
-	setMana(CONI("CASTLE_START_MANA"));
+	setManaStone(CONI("CASTLE_START_MANA"));
 	setHealth(CONI("CASTLE_HEALTH"));
 	setPosition(mBlocks[0]->getPosition() + Vector3(0, CONR("CASTLEKEEP_HEIGHT")*1.5 + CONR("CASTLE_WIDTH")/4, 0));
 	
@@ -343,9 +343,9 @@ Castle::~Castle()
 
 void Castle::destroy()
 {
-	// drop any remaining mana
-	ManaThing* mana = new ManaThing(getMana(), getPosition());
-	Physics::getSingleton().addThing(mana);
+	// drop any remaining manaStone
+	ManaThing* manathing = new ManaThing(getManaStone(), getPosition());
+	Physics::getSingleton().addThing(manathing);
 
 	// destroy the portal
 	if (mPortal) mPortal->destroy();
@@ -419,13 +419,13 @@ void Castle::setHealth(int health)
 
 //----------------------------------------------------------------------------
 
-void Castle::setMana(int amount)
+void Castle::setManaStone(int amount)
 {
 	if (amount < 0) amount = 0;
 
-	mMana = amount;
+	mManaStone = amount;
 
-	setLevel(mMana / CONR("CASTLE_MANA_PER_LEVEL"));
+	setLevel(mManaStone / CONR("CASTLE_MANA_PER_LEVEL"));
 
 	if (amount > 0) setHealth(CONI("CASTLE_HEALTH"));
 
@@ -435,29 +435,29 @@ void Castle::setMana(int amount)
 	WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
 
 	if (wizard)
-		wizard->setBaseMana(mMana);
+		wizard->setManaStone(mManaStone);
 }
 
 //----------------------------------------------------------------------------
 
-int Castle::getMana()
+int Castle::getManaStone()
 {
-	return mMana;
+	return mManaStone;
 }
 
 //----------------------------------------------------------------------------
 
-void Castle::addMana(int amount)
+void Castle::addManaStone(int amount)
 {
-	setMana(mMana + amount);
+	setManaStone(mManaStone + amount);
 }
 
 //----------------------------------------------------------------------------
 
-int Castle::removeMana(int amount)
+int Castle::removeManaStone(int amount)
 {
-	if (amount > mMana) amount = mMana;
-	setMana(mMana - amount);
+	if (amount > mManaStone) amount = mManaStone;
+	setManaStone(mManaStone - amount);
 	return amount;
 }
 
@@ -465,8 +465,8 @@ int Castle::removeMana(int amount)
 
 void Castle::damage(int amount, int sourceTeamNum)
 {
-	if (mMana > 0)
-		dropMana(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
+	if (mManaStone > 0)
+		dropManaStone(amount / CONR("CASTLE_DAMAGE_PER_MANA"));
 	else 
 		DamageableThing::damage(amount, sourceTeamNum);
 
@@ -494,17 +494,17 @@ bool Castle::isRubble()
 
 //----------------------------------------------------------------------------
 
-void Castle::dropMana(int amount)
+void Castle::dropManaStone(int amount)
 {
 	// cant drop more then we have
-	if (amount > mMana) amount = mMana;
+	if (amount > mManaStone) amount = mManaStone;
 
-	// can't drop less then one mana
+	// can't drop less then one manaStone
 	if (amount < 1) return;
 
-	setMana(mMana-amount);
+	setManaStone(mManaStone-amount);
 
-	// drop some mana
+	// drop some manaStone
 	int choice = Math::RangeRandom(0,4);
 	Real dir = choice * 0.5f*Math::PI;
 	Vector3 offset;
@@ -513,10 +513,10 @@ void Castle::dropMana(int amount)
 	offset.z = cos(dir);
 	offset.normalise();
 	offset *= CONR("CASTLE_MANA_RADIUS");
-	ManaThing* mana = new ManaThing(amount, getPosition()+offset);
-	Physics::getSingleton().addThing(mana);
-	mana->setTeamNum(getTeamNum());
-	mana->setPosY(mana->getGroundY());
+	ManaThing* manathing = new ManaThing(amount, getPosition()+offset);
+	Physics::getSingleton().addThing(manathing);
+	manathing->setTeamNum(getTeamNum());
+	manathing->setPosY(manathing->getGroundY());
 }
 
 //----------------------------------------------------------------------------

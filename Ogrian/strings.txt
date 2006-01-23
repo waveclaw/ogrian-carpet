@@ -9,6 +9,7 @@ MSG_START_GAME		Starting Game . . .
 MSG_LOADMAP		Loading . . . 
 
 HUD_MANA	Mana: 
+HUD_MANASTONE	Manastone: 
 HUD_HEALTH	Health:
 HUD_SCORE	SCORE:
 

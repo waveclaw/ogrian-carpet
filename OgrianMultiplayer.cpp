@@ -828,23 +828,6 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			return true;
 		}
 
-		case ID_SET_ACTIVE_MANA: //////////////////////////////////////////////////////
-		{
-			// get the new base mana
-			int pid, activeMana;			
-			BitStream bs((const char*)packet->data, packet->length, false);
-			bs.Read(pid);
-			bs.Read(activeMana);
-			
-			// update the wizard
-			int teamNum = getPlayerInfo(packet->playerId)->teamNum;
-			int wuid = Physics::getSingleton().getTeam(teamNum)->getWizardUID();
-			WizardThing* wizard = (WizardThing*)Physics::getSingleton().getThing(wuid);
-			wizard->setActiveMana(activeMana);
-
-			return true;
-		}
-
 		case ID_KICKME://////////////////////////////////////////////////////
 			serverSendText("Disconnected ",ID_KICK,packet->playerId);
 		case ID_DISCONNECTION_NOTIFICATION: 

@@ -163,9 +163,19 @@ Ogrian/HUD/HudOverlay
 	container TextArea(Ogrian/HUD/Mana) : SS/Templates/BasicText
 	{
 		left .01
-		top 0.9
+		top 0.88
 		width .25
    		caption mana
+		colour_top .5 .5 1
+		colour_bottom .5 .5 1
+	}
+
+	container TextArea(Ogrian/HUD/ManaStone) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.94
+		width .25
+   		caption manastone
 		colour_top .5 .5 1
 		colour_bottom .5 .5 1
 	}
@@ -173,18 +183,18 @@ Ogrian/HUD/HudOverlay
 	container Panel(Ogrian/HUD/HealthBar)
 	{
 		left .01
-		top .85
+		top .84
 		width .25
-		height .04
+		height .02
 		material Ogrian/HudHealthBar
 	}
 	
 	container Panel(Ogrian/HUD/ManaBar)
 	{
 		left .01
-		top .95
+		top .92
 		width .25
-		height .04
+		height .02
 		material Ogrian/HudManaBar
 	}
 	

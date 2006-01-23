@@ -556,8 +556,8 @@ void Game::startSkirmishGame()
 
 	// reset the score
 	Renderer::getSingleton().getCameraThing()->getTeam()->setScore(0);
-	Renderer::getSingleton().getCameraThing()->setBaseMana(0);
-	Renderer::getSingleton().getCameraThing()->setActiveMana(0);
+	Renderer::getSingleton().getCameraThing()->setManaStone(0);
+	Renderer::getSingleton().getCameraThing()->setMana(0);
 
 	// enable the claim and build spells
 	Hud::getSingleton().reinit();

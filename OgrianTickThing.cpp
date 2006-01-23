@@ -217,12 +217,12 @@ void TickThing::die()
 	if (team && team->getCastle())
 	{
 		// return the mana to the castle
-		team->getCastle()->addMana(CONI("TICK_COST") - CONI("TICK_DROP"));
+		team->getCastle()->addManaStone(CONI("TICK_COST") - CONI("TICK_DROP"));
 		
 		// drop the rest of our mana
-		ManaThing* mana = new ManaThing(CONI("TICK_DROP"), getPosition());
-		Physics::getSingleton().addThing(mana);
-		mana->setTeamNum(getTeamNum());
+		ManaThing* manathing = new ManaThing(CONI("TICK_DROP"), getPosition());
+		Physics::getSingleton().addThing(manathing);
+		manathing->setTeamNum(getTeamNum());
 	}
 	else
 	{

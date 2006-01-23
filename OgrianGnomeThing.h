@@ -80,14 +80,13 @@ public:
 		}
 
 		// if there's enough mana
-		if (team && team->getCastle() && team->getCastle()->getMana() >= CONI("GNOME_COST"))
+		if (team && team->getCastle() && team->getCastle()->getManaStone() >= CONI("GNOME_COST"))
 		{
 			// make a sentinel
 			Physics::getSingleton().addThing(new GnomeThing(getTeamNum(), getPosition()));
 
 			// remove the mana from the castle
-			Castle* castle = team->getCastle();
-			castle->setMana(castle->getMana() - CONI("GNOME_COST"));
+			team->getCastle()->removeManaStone(CONI("GNOME_COST"));
 		}
 
 		// self destruct

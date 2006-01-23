@@ -50,8 +50,7 @@ AlbatrossThing::AlbatrossThing(int teamNum, ColourValue colour, Vector3 pos, Vec
 	{
 		// remove the mana from the castle
 		Team* team = Physics::getSingleton().getTeam(teamNum);
-		Castle* castle = team->getCastle();
-		castle->setMana(castle->getMana() - CONI("ALBATROSS_COST"));
+		team->getCastle()->removeManaStone(CONI("ALBATROSS_COST"));
 
 		// notify our wizard
 		WizardThing* wiz = (WizardThing*)Physics::getSingleton().getThing(team->getWizardUID());
@@ -129,7 +128,7 @@ void AlbatrossThing::die()
 	if (team && team->getCastle())
 	{
 		// return the mana to the castle
-		team->getCastle()->addMana(CONI("ALBATROSS_COST") - CONI("ALBATROSS_DROP"));
+		team->getCastle()->addManaStone(CONI("ALBATROSS_COST") - CONI("ALBATROSS_DROP"));
 		
 		// drop some of our mana
 		ManaThing* mana = new ManaThing(CONI("ALBATROSS_DROP"), getPosition());

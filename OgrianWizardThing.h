@@ -44,8 +44,8 @@ namespace Ogrian
 enum MessageType
 {
 	SET_HEALTH,
-	SET_ACTIVE_MANA,
-	SET_BASE_MANA,
+	SET_MANA,
+	SET_MANASTONE,
 
 	SET_NUM_MANABALLS,
 	SET_NUM_SHRINES,
@@ -94,10 +94,10 @@ public:
 	virtual void damage(int amount, int sourceTeamNum);
 	virtual void die();
 
-	virtual void setBaseMana(int baseMana);
-	virtual void setActiveMana(int activeMana);
-	virtual void subtractActiveMana(int amount);
-	virtual int getActiveMana();
+	virtual void setManaStone(int manaStone);
+	virtual void setMana(int mana);
+	virtual void subtractMana(int amount);
+	virtual int getMana();
 
 	virtual int getLevel();
 	
@@ -165,8 +165,8 @@ private:
 	Time mStopSpeedTime;
 	Real mFrameTime;
 
-	int mActiveMana;
-	int mBaseMana;
+	int mMana;
+	int mManaStone;
 
 	int mNumManaBalls;
 	int mNumShrines;
