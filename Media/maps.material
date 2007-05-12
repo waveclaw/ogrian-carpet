@@ -1,0 +1,144 @@
+material Ogrian/Lava
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.3 0.3 0.3
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture lava.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture lava.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/Ocean
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.3 0.3 0.3
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/Ocean2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.3 0.3 0.3
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water02.jpg
+			}
+		}
+		pass
+		{
+			ambient 1 1 1
+			scene_blend modulate
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture Water03.jpg
+				scroll_anim 0.02 0.02
+				scale 0.1 0.1
+			}
+		}
+	}
+}
+material Ogrian/CloudySky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture clouds.jpg
+				scroll_anim 0.015 0
+			}
+		}
+	}
+}
+material Ogrian/CloudySky2
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture clouds2.jpg
+				scroll_anim 0.015 0
+			}
+		}
+	}
+}
+material Ogrian/FireySky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture fireysky.jpg
+				scroll_anim 0.015 0
+			}
+		}
+	}
+}

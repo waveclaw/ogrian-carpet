@@ -1,0 +1,44 @@
+material Material/ALPHA/turretdark.png
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+	alpha_rejection greater_equal 128
+        texture turretdark.png
+      }
+    }
+  }
+}
+
+material Material/SOLID/walldark.png
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture walldark.png
+      }
+    }
+  }
+}
+
+
+material Material/SOLID/cupoladark.tga
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture cupoladark.tga
+      }
+    }
+  }
+}
+

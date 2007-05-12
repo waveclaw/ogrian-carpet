@@ -1,0 +1,234 @@
+
+material Ogrian/Mike/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting on
+
+			texture_unit
+			{
+				texture sprites/mike/mike_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Mike/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/halo.png
+				tex_address_mode clamp
+			}
+		}
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/mike/mike_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

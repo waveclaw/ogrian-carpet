@@ -1,0 +1,308 @@
+
+material Ogrian/Crane/Up/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Up/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_u_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Ogrian/Crane/Down/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Crane/Down/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/crane/crane_d_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/CraneBlast
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			ambient 1 1 1
+
+			texture_unit
+			{
+				texture sprites/fireballblast.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
