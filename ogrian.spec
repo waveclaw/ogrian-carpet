@@ -37,7 +37,7 @@ make
 %install
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/games/ogrian
 make install DESTDIR=$RPM_BUILD_ROOT%{_prefix}/ bindir=games/ogrian 
-cp -p *.cfg *.ico $RPM_BUILD_ROOT%{_prefix}/games/ogrian/
+cp -p *.cfg *.txt *.ico $RPM_BUILD_ROOT%{_prefix}/games/ogrian/
 cp -pR Media $RPM_BUILD_ROOT%{_prefix}/games/ogrian/
 
 %clean
@@ -48,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/games/ogrian/ogrian
 %{_prefix}/games/ogrian/ogrian.cfg  
 %{_prefix}/games/ogrian/plugins.cfg  
+%{_prefix}/games/ogrian/constants.cfg  
+%{_prefix}/games/ogrian/configure.cfg  
 %{_prefix}/games/ogrian/ogrian.ico
 %doc AUTHORS README INSTALL TODO ChangeLog
 
@@ -60,6 +62,11 @@ Contains the developer's content (resources) for Ogrian Carpet.  Can you say 'pr
 
 %files media
 %{_prefix}/games/ogrian/resources.cfg
+%{_prefix}/games/ogrian/castleskins.txt  
+%{_prefix}/games/ogrian/maps.txt  
+%{_prefix}/games/ogrian/shrineskins.txt  
+%{_prefix}/games/ogrian/strings.txt  
+%{_prefix}/games/ogrian/wizardskins.txt
 %{_prefix}/games/ogrian/Media
 
 %changelog -n ogrian
