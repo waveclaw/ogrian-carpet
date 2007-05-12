@@ -1,0 +1,205 @@
+Process:
+0. You might want to make a $PROJECT/lib directory to hold all the dependacy crap.
+1. d/l dependancies
+What		Name	Version		Where
+----		----	-------		-----
+3D engine	Ogre3D	1.4		http://www.ogre3d.org/ 
+audio		fModAPI	4.02.02_linux64	http://www.fmod.org/
+networking	RakNet	2.4		http://www.rakkarsoft.com/
+
+2. d/l sub-dependancies for above
+What	Version		UsedBy		Where
+----	-------		------		-----
+zLib	1.2.1		DevIL, RakNet
+DevIL	1.6.7		Ogre3D		http://www.il.org
+CeGUI	mk2-0.2.1	Ogre3D	
+CG	1.4.0-3 	Ogre3D		NVidia Cg Developer toolkit
+SDL	> 1.2.0		Orge3D
+zziplib	?		Ogre3D
+xerces	?		CeGUI
+slang   1.0		?		(sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
+
+3a. for each depenancy
+create a pkg-config info file (e.g. RakNet.pc for RakNet, note: capitalization is important!)
+./configure
+make
+sudo /usr/sbin/checkinstall
+sudo rpm -ivh *.rpm
+
+3b. Known to be Done
+------
+raknet-2.4-1.x86_64.rpm
+DevIL-1.6.7-1.x86_64.rpm
+fmod-4.02.02_linux64-1.x86_64.rpm
+
+3c. Super-crappy Hacks
+------
+sudo ln -s /usr/local/lib/libcairo.la /usr/lib/libcairo.la
+sudo ln -s /usr/local/lib/libcairo.la /usr/lib64/libcairo.la
+sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so
+sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib64/libslang.so
+
+4. CVS
+------
+setenv RSH `which ssh`
+setenv CVS_RSH `which ssh`
+
+cd ~/Documents/src/orgian_carpet
+
+cvs -z3 -d:ext:waveclaw@ogrian.cvs.sourceforge.net:/cvsroot/ogrian co -P Ogrian
+rm -rf ogrian-0.9.2
+mv Ogrian ogrian-0.9.2
+
+mkdir -p lib/ogre
+cd lib/ogre/
+cvs -d:pserver:anonymous@ogre.cvs.sourceforge.net:/cvsroot/ogre login
+cvs -z3 -d :pserver:anonymous@cvs.ogre3d.org:/cvsroot/ogre co -P ogrenew
+cvs -z3 -d :pserver:anonymous@cvs.ogre3d.org:/cvsroot/ogre co -P ogreaddons
+
+
+5. for Ogrian
+------
+cd ogrian-0.9.2
+./bootstrap
+./configure
+make
+make install
+
+or for an rpm (just use alien on the rpm for a .deb)
+cd ogrian-0.9.2
+./bootstrap
+./configure
+make dist
+rpmbuild -ta ogrian-0.9.2.tar.gz
+
+
+Notes
+------
+ Move Plugins.cfg -> plugins.cfg w/ OpenGL default render method becuase
+ Linux filesystems are case-sensitive.
+ Copy fmod libs to proper location since the fmod `make install` leaves it 
+ in the build location.
+ Only runable from a text-session (e.g. Xterminal, gnome-terminal, kterm) 
+ due to the (broken IMNSHO) Ogre-0.15 start menu.
+
+Detailed Dependancies
+let ARCH = "" if i386, i586, i686 or Debian
+let ARCH = "64" if x86_64 and not Debian
+ RakNet 2.013
+  networking: RakNet - http://www.rakkarsoft.com/
+  /usr/lib${ARCH}/pkgconfig/raknet.pc
+  ln -s /usr/local/lib${ARCH}/librakvoice.so.2.0.13 /usr/local/lib${ARCH}/librakvoice.so
+  ln -s /usr/local/lib${ARCH}/libraknet.so.2.0.13 /usr/local/lib${ARCH}/libraknet.so
+
+ fMod 4
+  audio: FMOD - http://www.fmod.org/
+  /usr/local/lib${ARCH}/pkgconfig/fMod.pc  (homemade)
+  /usr/local/lib${ARCH}/libfmodex.so
+
+ OGRE 0.15 (Trying 1.4, but going is tough)
+  rendering: Ogre3d - http://www.ogre3d.org/
+  /usr/local/pkgconfig/OGRE.pc
+  /usr/local/lib${ARCH}/OGRE/
+   Plugin_BSPSceneManager.so
+   Plugin_CgProgramManager.so
+   Plugin_FileSystem.so
+   Plugin_GuiElements.so
+   Plugin_NatureSceneManager.so
+   Plugin_OctreeSceneManager.so
+   Plugin_ParticleFX.so
+   RenderSystem_GL.so
+
+Subdependancies
+ CEGUI - can't get away from this now.  Pretty much an OGRE pre-requisite
+ Menu - http://www.cegui.org.uk/modules/news/
+ Xerces, Xerces-c-devel (for CEGUI)
+ DevIL 1.6.7 (for Ogre 0.15 and above, but at 1.2 they allow ImageLib, which is available)
+ NVidia Cg Developer toolkit 1.4.0-3 (for Ogre 0.15 and above)
+ SDL > 1.2.0
+ slang (sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
+ zLib 1.2.1 (for DevIL, RakNet)
+
+Build information
+ ldd ogrian-9.1_jdpowell@mingle.waveclaw.net_SuSE9.3-Linux-i686
+	linux-gate.so.1 =>  (0xffffe000)
+	libOgreMain.so.4 => /usr/local/lib/libOgreMain.so.4 (0x40019000)
+	/usr/lib/libraknet.so (0x40293000)
+	/opt/fmodapi374linux/api/libfmod-3.74.so (0x402d7000)
+	libgcc_s.so.1 => /lib/libgcc_s.so.1 (0x40396000)
+	libc.so.6 => /lib/tls/libc.so.6 (0x4039e000)
+	libstdc++.so.5 => /usr/X11R6/lib/tls/i686/libstdc++.so.5 (0x404b8000)
+	libm.so.6 => /lib/tls/libm.so.6 (0x40576000)
+	libfreetype.so.6 => /usr/X11R6/lib/tls/i686/libfreetype.so.6 (0x40599000)
+	libCg.so => /usr/X11R6/lib/tls/i686/libCg.so (0x40608000)
+	libILU.so.1 => /usr/local/lib/libILU.so.1 (0x40824000)
+	libIL.so.1 => /usr/local/lib/libIL.so.1 (0x40839000)
+	libz.so.1 => /usr/X11R6/lib/tls/i686/libz.so.1 (0x4093a000)
+	libdl.so.2 => /lib/libdl.so.2 (0x4094b000)
+	libSDL-1.2.so.0 => /usr/X11R6/lib/tls/i686/libSDL-1.2.so.0 (0x4094f000)
+	libpthread.so.0 => /lib/tls/libpthread.so.0 (0x409e1000)
+	/lib/ld-linux.so.2 (0x40000000)
+	libpng.so.3 => /usr/X11R6/lib/tls/i686/libpng.so.3 (0x409f3000)
+	libjpeg.so.62 => /usr/X11R6/lib/tls/i686/libjpeg.so.62 (0x40a22000)
+	libtiff.so.3 => /usr/X11R6/lib/tls/i686/libtiff.so.3 (0x40a41000)
+	libmng.so.1 => /usr/X11R6/lib/tls/i686/libmng.so.1 (0x40a91000)
+	libX11.so.6 => /usr/X11R6/lib/libX11.so.6 (0x40af6000)
+	libXext.so.6 => /usr/X11R6/lib/libXext.so.6 (0x40bf2000)
+	libaa.so.1 => /usr/X11R6/lib/tls/i686/libaa.so.1 (0x40c01000)
+	liblcms.so.1 => /usr/X11R6/lib/tls/i686/liblcms.so.1 (0x40c1b000)
+	libslang-utf8.so.1 => /usr/X11R6/lib/tls/i686/libslang-utf8.so.1 (0x40c49000)
+	libgpm.so.1 => /usr/X11R6/lib/tls/i686/libgpm.so.1 (0x40cbb000)
+	libncurses.so.5 => /lib/libncurses.so.5 (0x40cc1000)
+
+Known Errors:
+
+[9:10pm Thu Nov 17 2005] jdpowell@mingle:~/Documents/src/ogrian_carpet/lib/ogre-0.15.0/PlugIns/GuiElements/include 
+OgreBorderPanelGuiElement.h
+
+if g++ -DHAVE_CONFIG_H -I. -I. -I../../../OgreMain/include  -I../../../Samples/Gui/include -I../../../OgreMain/include -I../../../Samples/Common/include -I../../../PlugIns/GuiElements/include    -DGCC_3_1 -fPIC -I/usr/include/SDL -D_REENTRANT -MT Gui.o -MD -MP -MF ".deps/Gui.Tpo" \
+  -c -o Gui.o `test -f 'Gui.cpp' || echo './'`Gui.cpp; \
+then mv -f ".deps/Gui.Tpo" ".deps/Gui.Po"; \
+else rm -f ".deps/Gui.Tpo"; exit 1; \
+fi
+In file included from ../../../OgreMain/include/OgreOverlayManager.h:29,
+                 from ../../../Samples/Gui/include/Gui.h:23,
+                 from Gui.cpp:22:
+../../../OgreMain/include/OgrePrerequisites.h:30:1: warning: "GCC_3_1" redefined
+<command line>:1:1: warning: this is the location of the previous definition
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: ISO C++ forbids declaration of 'BorderRenderable' with no type
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: expected ';' before '*' token
+if g++ -DHAVE_CONFIG_H -I. -I. -I../../../OgreMain/include  -I../../../PlugIns/GuiElements/include -I../../../OgreMain/include -I/usr/include/freetype2     -DGCC_3_1 -fPIC -I/usr/include/SDL -D_REENTRANT -MT OgreListGuiElement.o -MD -MP -MF ".deps/OgreListGuiElement.Tpo" \
+  -c -o OgreListGuiElement.o `test -f 'OgreListGuiElement.cpp' || echo './'`OgreListGuiElement.cpp; \
+then mv -f ".deps/OgreListGuiElement.Tpo" ".deps/OgreListGuiElement.Po"; \
+else rm -f ".deps/OgreListGuiElement.Tpo"; exit 1; \
+fi
+In file included from ../../../PlugIns/GuiElements/include/OgreGuiElementPrerequisites.h:29,
+                 from ../../../PlugIns/GuiElements/include/OgreListGuiElement.h:28,
+                 from OgreListGuiElement.cpp:27:
+../../../OgreMain/include/OgrePrerequisites.h:30:1: warning: "GCC_3_1" redefined
+<command line>:1:1: warning: this is the location of the previous definition
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: ISO C++ forbids declaration of 'BorderRenderable' with no type
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: expected ';' before '*' token
+make[3]: Entering directory `/home/jdpowell/Documents/src/ogrian_carpet/lib/ogre-0.15.0/Samples/Gui/src'
+if g++ -DHAVE_CONFIG_H -I. -I. -I../../../OgreMain/include  -I../../../Samples/Gui/include -I../../../OgreMain/include -I../../../Samples/Common/include -I../../../PlugIns/GuiElements/include    -DGCC_3_1 -fPIC -I/usr/include/SDL -D_REENTRANT -MT Gui.o -MD -MP -MF ".deps/Gui.Tpo" \
+  -c -o Gui.o `test -f 'Gui.cpp' || echo './'`Gui.cpp; \
+then mv -f ".deps/Gui.Tpo" ".deps/Gui.Po"; \
+else rm -f ".deps/Gui.Tpo"; exit 1; \
+fi
+In file included from ../../../OgreMain/include/OgreOverlayManager.h:29,
+                 from ../../../Samples/Gui/include/Gui.h:23,
+                 from Gui.cpp:22:
+../../../OgreMain/include/OgrePrerequisites.h:30:1: warning: "GCC_3_1" redefined
+<command line>:1:1: warning: this is the location of the previous definition
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: ISO C++ forbids declaration of 'BorderRenderable' with no type
+../../../PlugIns/GuiElements/include/OgreBorderPanelGuiElement.h:298: error: expected ';' before '*' token
+
+
+The Problems: 
+  object incest.  BorderRenderable needs BorderPanelGuiElement defined. But BorderPanelGuiElement references BorderRenderable.  Dumb.  Only Visal Crap++ will compile such a steaming pile.
+	Solution: rip out 1 of the sets of references.
+
+  nvparse library has no Makefile.
+	Solution: grab the one from the 1.0 Ogre version.
+
+  nvparse library was written by an idiot.
+	Solution: fix the Linux section so that it uses the Linux-specific CPP flags (-fPIC, -DGCC_3_1) which configure is too stupid to add.

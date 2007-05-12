@@ -1,0 +1,42 @@
+dnl Autoconf script written in M4 to write the Configure script for writing Makefiles for Ogrian Carpet.
+
+AC_INIT([Ogrian Carpet],
+        [0.9.2],
+        [ogrian@ogrian.sourceforge.net],
+        [ogrian])
+AM_CONFIG_HEADER([include/config.h])
+AM_INIT_AUTOMAKE([dist-zip])
+
+AC_LANG_CPLUSPLUS
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+
+dnl AC_DEFINE([datadir],[Ogrian],[Shipped default content.])
+
+dnl AC_CHECK_DECLS([HAVE_WOMAN], AC_WARNING([Hands off scum!]),AC_WARNING([tehehe!]))
+
+dnl AC_CHECK_LIB([fmodexp64],FMOD_System_Create,[AC_DEFINE([FMOD_LIBS],[-Lfmodexp64],[fMod Sound API library.])],
+dnl	     AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]),)
+dnl AC_CHECK_HEADER([fmodex/fmod.h],[AC_DEFINE([FMOD_CFLAGS],[-Ifmodex/fmod.h],[fMod development headers.])],
+dnl		[AC_MSG_ERROR([Please install the fMod development headers from http://fmod.org.])],)
+
+PKG_CHECK_MODULES([fMod], [fMod >= 4.04.14],,
+		  AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]))
+PKG_CHECK_MODULES([OGRE], [OGRE >= 1.4],,
+		  AC_MSG_ERROR([Ogrian Carpet requires Ogre 3D at least of version 1.4.]))
+PKG_CHECK_MODULES([RakNet], [RakNet >= 2.4.5.2],,
+		  [AC_MSG_ERROR([Raknet networking support not found, please visit http://rakarsoft.net.])])
+
+
+AM_CXXFLAGS="$AM_CXXFLAGS $OGRE_CFLAGS $RakNet_CFLAGS $fMod_CFLAGS -Wall -Wimplicit -Wunused -Wmissing-prototypes -g -pg"
+AM_LDFLAGS="$AM_LDFLAGS $OGRE_LIBS $RakNet_LIBS $fMod_LIBS"
+
+AC_SUBST(AM_CXXFLAGS, "$AM_CXXFLAGS")
+AC_SUBST(AM_LDFLAGS, "$AM_LDFLAGS")
+AC_SUBST(PKGDATADIR, "${datadir}/${PACKAGE}")
+
+AC_CONFIG_FILES([Makefile include/Makefile src/Makefile])
+
+AC_OUTPUT

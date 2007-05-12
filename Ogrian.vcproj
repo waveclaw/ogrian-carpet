@@ -119,320 +119,320 @@
 			Name="Singletons"
 			Filter="">
 			<File
-				RelativePath="OgrianAudio.cpp">
+				RelativePath="src/OgrianAudio.cpp"
 			</File>
 			<File
-				RelativePath="OgrianAudio.h">
+				RelativePath="include/OgrianAudio.h"
 			</File>
 			<File
-				RelativePath="OgrianBuildingHeightMap.cpp">
+				RelativePath="src/OgrianBuildingHeightMap.cpp"
 			</File>
 			<File
-				RelativePath="OgrianBuildingHeightMap.h">
+				RelativePath="include/OgrianBuildingHeightMap.h"
 			</File>
 			<File
-				RelativePath="OgrianClock.cpp">
+				RelativePath="src/OgrianClock.cpp"
 			</File>
 			<File
-				RelativePath="OgrianClock.h">
+				RelativePath="include/OgrianClock.h"
 			</File>
 			<File
-				RelativePath="OgrianConst.cpp">
+				RelativePath="src/OgrianConst.cpp"
 			</File>
 			<File
-				RelativePath="OgrianConst.h">
+				RelativePath="include/OgrianConst.h"
 			</File>
 			<File
-				RelativePath="OgrianDotManager.cpp">
+				RelativePath="src/OgrianDotManager.cpp"
 			</File>
 			<File
-				RelativePath="OgrianDotManager.h">
+				RelativePath="include/OgrianDotManager.h"
 			</File>
 			<File
-				RelativePath="OgrianGame.cpp">
+				RelativePath="src/OgrianGame.cpp"
 			</File>
 			<File
-				RelativePath="OgrianGame.h">
+				RelativePath="include/OgrianGame.h"
 			</File>
 			<File
-				RelativePath="OgrianHealthBarManager.cpp">
+				RelativePath="src/OgrianHealthBarManager.cpp"
 			</File>
 			<File
-				RelativePath="OgrianHealthBarManager.h">
+				RelativePath="include/OgrianHealthBarManager.h"
 			</File>
 			<File
-				RelativePath="OgrianHeightMap.cpp">
+				RelativePath="src/OgrianHeightMap.cpp"
 			</File>
 			<File
-				RelativePath="OgrianHeightMap.h">
+				RelativePath="include/OgrianHeightMap.h"
 			</File>
 			<File
-				RelativePath="OgrianHud.cpp">
+				RelativePath="src/OgrianHud.cpp"
 			</File>
 			<File
-				RelativePath="OgrianHud.h">
+				RelativePath="include/OgrianHud.h"
 			</File>
 			<File
-				RelativePath="OgrianInput.cpp">
+				RelativePath="src/OgrianInput.cpp"
 			</File>
 			<File
-				RelativePath="OgrianInput.h">
+				RelativePath="include/OgrianInput.h"
 			</File>
 			<File
-				RelativePath="OgrianMenu.cpp">
+				RelativePath="src/OgrianMenu.cpp"
 			</File>
 			<File
-				RelativePath="OgrianMenu.h">
+				RelativePath="include/OgrianMenu.h"
 			</File>
 			<File
-				RelativePath="OgrianMultiplayer.cpp">
+				RelativePath="src/OgrianMultiplayer.cpp"
 			</File>
 			<File
-				RelativePath="OgrianMultiplayer.h">
+				RelativePath="include/OgrianMultiplayer.h"
 			</File>
 			<File
-				RelativePath="OgrianPhysics.cpp">
+				RelativePath="src/OgrianPhysics.cpp"
 			</File>
 			<File
-				RelativePath="OgrianPhysics.h">
+				RelativePath="include/OgrianPhysics.h"
 			</File>
 			<File
-				RelativePath="OgrianPlayerList.cpp">
+				RelativePath="src/OgrianPlayerList.cpp"
 			</File>
 			<File
-				RelativePath="OgrianPlayerList.h">
+				RelativePath="include/OgrianPlayerList.h"
 			</File>
 			<File
-				RelativePath="OgrianRenderer.cpp">
+				RelativePath="src/OgrianRenderer.cpp"
 			</File>
 			<File
-				RelativePath="OgrianRenderer.h">
+				RelativePath="include/OgrianRenderer.h"
 			</File>
 			<File
-				RelativePath="OgrianSkinManager.cpp">
+				RelativePath="src/OgrianSkinManager.cpp"
 			</File>
 			<File
-				RelativePath="OgrianSkinManager.h">
+				RelativePath="include/OgrianSkinManager.h"
 			</File>
 			<File
-				RelativePath="OgrianSpellManager.cpp">
+				RelativePath="src/OgrianSpellManager.cpp"
 			</File>
 			<File
-				RelativePath="OgrianSpellManager.h">
+				RelativePath="include/OgrianSpellManager.h"
 			</File>
 		</Filter>
 		<Filter
 			Name="Things"
 			Filter="">
 			<File
-				RelativePath="OgrianAIWizardThing.cpp">
+				RelativePath="src/OgrianAIWizardThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianAIWizardThing.h">
+				RelativePath="include/OgrianAIWizardThing.h"
 			</File>
 			<File
-				RelativePath="OgrianAlbatrossThing.cpp">
+				RelativePath="src/OgrianAlbatrossThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianAlbatrossThing.h">
+				RelativePath="include/OgrianAlbatrossThing.h"
 			</File>
 			<File
-				RelativePath="OgrianBuildSpellThing.cpp">
+				RelativePath="src/OgrianBuildSpellThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianBuildSpellThing.h">
+				RelativePath="include/OgrianBuildSpellThing.h"
 			</File>
 			<File
-				RelativePath="OgrianCameraThing.cpp">
+				RelativePath="src/OgrianCameraThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianCameraThing.h">
+				RelativePath="include/OgrianCameraThing.h"
 			</File>
 			<File
-				RelativePath="OgrianCastle.cpp">
+				RelativePath="src/OgrianCastle.cpp"
 			</File>
 			<File
-				RelativePath="OgrianCastle.h">
+				RelativePath="include/OgrianCastle.h"
 			</File>
 			<File
-				RelativePath="OgrianClaimSpellThing.h">
+				RelativePath="include/OgrianClaimSpellThing.h"
 			</File>
 			<File
-				RelativePath="OgrianCraneThing.cpp">
+				RelativePath="src/OgrianCraneThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianCraneThing.h">
+				RelativePath="include/OgrianCraneThing.h"
 			</File>
 			<File
-				RelativePath="OgrianDamageableThing.cpp">
+				RelativePath="src/OgrianDamageableThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianDamageableThing.h">
+				RelativePath="include/OgrianDamageableThing.h"
 			</File>
 			<File
-				RelativePath="OgrianFireballThing.cpp">
+				RelativePath="src/OgrianFireballThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianFireballThing.h">
+				RelativePath="include/OgrianFireballThing.h"
 			</File>
 			<File
-				RelativePath="OgrianFoliageThing.h">
+				RelativePath="include/OgrianFoliageThing.h"
 			</File>
 			<File
-				RelativePath="OgrianGnomeThing.cpp">
+				RelativePath="src/OgrianGnomeThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianGnomeThing.h">
+				RelativePath="include/OgrianGnomeThing.h"
 			</File>
 			<File
-				RelativePath="OgrianManaThing.cpp">
+				RelativePath="src/OgrianManaThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianManaThing.h">
+				RelativePath="include/OgrianManaThing.h"
 			</File>
 			<File
-				RelativePath="OgrianPortalThing.cpp">
+				RelativePath="src/OgrianPortalThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianPortalThing.h">
+				RelativePath="include/OgrianPortalThing.h"
 			</File>
 			<File
-				RelativePath="OgrianSentinelThing.cpp">
+				RelativePath="src/OgrianSentinelThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianSentinelThing.h">
+				RelativePath="include/OgrianSentinelThing.h"
 			</File>
 			<File
-				RelativePath="OgrianShrineThing.cpp">
+				RelativePath="src/OgrianShrineThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianShrineThing.h">
+				RelativePath="include/OgrianShrineThing.h"
 			</File>
 			<File
-				RelativePath="OgrianSummonSpellThing.h">
+				RelativePath="include/OgrianSummonSpellThing.h"
 			</File>
 			<File
-				RelativePath="OgrianThing.cpp">
+				RelativePath="src/OgrianThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianThing.h">
+				RelativePath="include/OgrianThing.h"
 			</File>
 			<File
-				RelativePath="OgrianTickThing.cpp">
+				RelativePath="src/OgrianTickThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianTickThing.h">
+				RelativePath="include/OgrianTickThing.h"
 			</File>
 			<File
-				RelativePath="OgrianTimedThing.h">
+				RelativePath="include/OgrianTimedThing.h"
 			</File>
 			<File
-				RelativePath="OgrianTowerThing.cpp">
+				RelativePath="src/OgrianTowerThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianTowerThing.h">
+				RelativePath="include/OgrianTowerThing.h"
 			</File>
 			<File
-				RelativePath="OgrianWizardThing.cpp">
+				RelativePath="src/OgrianWizardThing.cpp"
 			</File>
 			<File
-				RelativePath="OgrianWizardThing.h">
+				RelativePath="include/OgrianWizardThing.h"
 			</File>
 		</Filter>
 		<Filter
 			Name="Other"
 			Filter="">
 			<File
-				RelativePath="OgrianApplication.h">
+				RelativePath="include/OgrianApplication.h"
 			</File>
 			<File
-				RelativePath="OgrianFrameListener.cpp">
+				RelativePath="src/OgrianFrameListener.cpp"
 			</File>
 			<File
-				RelativePath="OgrianFrameListener.h">
+				RelativePath="include/OgrianFrameListener.h"
 			</File>
 			<File
-				RelativePath="OgrianMouseFrameListener.h">
+				RelativePath="include/OgrianMouseFrameListener.h"
 			</File>
 			<File
-				RelativePath="OgrianPacketEnum.h">
+				RelativePath="include/OgrianPacketEnum.h"
 			</File>
 			<File
-				RelativePath="OgrianTeam.cpp">
+				RelativePath="src/OgrianTeam.cpp"
 			</File>
 			<File
-				RelativePath="OgrianTeam.h">
+				RelativePath="include/OgrianTeam.h"
 			</File>
 			<File
-				RelativePath="fmod.h">
+				RelativePath="include/fmod.h"
 			</File>
 			<File
-				RelativePath="main.cpp">
+				RelativePath="src/main.cpp"
 			</File>
 			<File
-				RelativePath="resource.h">
+				RelativePath="include/resource.h"
 			</File>
 		</Filter>
 		<Filter
 			Name="VisReps"
 			Filter="">
 			<File
-				RelativePath="OgrianModel.cpp">
+				RelativePath="src/OgrianModel.cpp"
 			</File>
 			<File
-				RelativePath="OgrianModel.h">
+				RelativePath="include/OgrianModel.h"
 			</File>
 			<File
-				RelativePath="OgrianOrientedSprite.cpp">
+				RelativePath="src/OgrianOrientedSprite.cpp"
 			</File>
 			<File
-				RelativePath="OgrianOrientedSprite.h">
+				RelativePath="include/OgrianOrientedSprite.h"
 			</File>
 			<File
-				RelativePath="OgrianSprite.cpp">
+				RelativePath="src/OgrianSprite.cpp"
 			</File>
 			<File
-				RelativePath="OgrianSprite.h">
+				RelativePath="include/OgrianSprite.h"
 			</File>
 			<File
-				RelativePath="OgrianVisRep.h">
+				RelativePath="include/OgrianVisRep.h"
 			</File>
 		</Filter>
 		<Filter
 			Name="Spells"
 			Filter="">
 			<File
-				RelativePath="OgrianAlbatrossSpell.h">
+				RelativePath="include/OgrianAlbatrossSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianBuildSpell.h">
+				RelativePath="include/OgrianBuildSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianClaimSpell.h">
+				RelativePath="include/OgrianClaimSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianFireballSpell.h">
+				RelativePath="include/OgrianFireballSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianGnomeSpell.h">
+				RelativePath="include/OgrianGnomeSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianSentinelSpell.h">
+				RelativePath="include/OgrianSentinelSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianSpeedSpell.h">
+				RelativePath="include/OgrianSpeedSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianSpell.h">
+				RelativePath="include/OgrianSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianTeleportSpell.h">
+				RelativePath="include/OgrianTeleportSpell.h"
 			</File>
 			<File
-				RelativePath="OgrianTeleportSpellThing.h">
+				RelativePath="include/OgrianTeleportSpellThing.h"
 			</File>
 			<File
-				RelativePath="OgrianTickSpell.h">
+				RelativePath="include/OgrianTickSpell.h"
 			</File>
 		</Filter>
 	</Files>
