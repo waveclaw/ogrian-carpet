@@ -1,8 +1,0 @@
-rendering: 
-Ogre3d - http://www.ogre3d.org/
-
-audio:
-FMOD - http://www.fmod.org/
-
-networking:
-RakNet - http://www.rakkarsoft.com/
