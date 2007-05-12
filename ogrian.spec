@@ -49,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/games/ogrian/ogrian.cfg  
 %{_prefix}/games/ogrian/plugins.cfg  
 %{_prefix}/games/ogrian/constants.cfg  
-%{_prefix}/games/ogrian/configure.cfg  
+%{_prefix}/games/ogrian/config.cfg  
 %{_prefix}/games/ogrian/ogrian.ico
 %doc AUTHORS README INSTALL TODO ChangeLog
 
