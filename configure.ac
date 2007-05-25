@@ -22,16 +22,21 @@ dnl	     AC_MSG_ERROR([Please install the fMod Sound API library from http://fmo
 dnl AC_CHECK_HEADER([fmodex/fmod.h],[AC_DEFINE([FMOD_CFLAGS],[-Ifmodex/fmod.h],[fMod development headers.])],
 dnl		[AC_MSG_ERROR([Please install the fMod development headers from http://fmod.org.])],)
 
-PKG_CHECK_MODULES([fMod], [fMod >= 4.04.14],,
+PKG_CHECK_MODULES([fMod], [fMod >= 4.04],,
 		  AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]))
 PKG_CHECK_MODULES([OGRE], [OGRE >= 1.4],,
 		  AC_MSG_ERROR([Ogrian Carpet requires Ogre 3D at least of version 1.4.]))
 PKG_CHECK_MODULES([RakNet], [RakNet >= 2.4.5.2],,
 		  [AC_MSG_ERROR([Raknet networking support not found, please visit http://rakarsoft.net.])])
 
+PKG_CHECK_MODULES([CEGUI], [CEGUI >= 0.5],,
+		  [AC_MSG_ERROR([Crazy-Eddies GUI not found, please visit http://www.cegui.org.uk/])])
 
-AM_CXXFLAGS="$AM_CXXFLAGS $OGRE_CFLAGS $RakNet_CFLAGS $fMod_CFLAGS -Wall -Wimplicit -Wunused -Wmissing-prototypes -g -pg"
-AM_LDFLAGS="$AM_LDFLAGS $OGRE_LIBS $RakNet_LIBS $fMod_LIBS"
+PKG_CHECK_MODULES([OIS], [OIS >= 1.0],,
+		  [AC_MSG_ERROR([Object-Oriented Input System not found, please visit http://sourceforge.net/projects/wgois/])])
+
+AM_CXXFLAGS="$AM_CXXFLAGS $OGRE_CFLAGS $RakNet_CFLAGS $fMod_CFLAGS $CEGUI_CFLAGS $IOS_CFLAGS -Wall -Wimplicit -Wunused -Wmissing-prototypes -g -pg"
+AM_LDFLAGS="$AM_LDFLAGS $OGRE_LIBS $RakNet_LIBS $fMod_LIBS $CEGUI_LIBS $OIS_LIBS"
 
 AC_SUBST(AM_CXXFLAGS, "$AM_CXXFLAGS")
 AC_SUBST(AM_LDFLAGS, "$AM_LDFLAGS")
