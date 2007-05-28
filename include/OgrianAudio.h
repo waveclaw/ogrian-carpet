@@ -30,7 +30,9 @@ Description: The audio handler
 #define __OgrianAudio_H__
 
 #include <Ogre.h>
-#include "fmod.h"
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
 
 using namespace Ogre;
 
@@ -46,16 +48,16 @@ public:
 	int loadSound(String filename, bool isLong=false, bool loop=false);
 
 	// start playing a sound. Returns the channel of the sound.
-	int playSound(int id, Vector3 pos);
+	FMOD::Channel *playSound(int id, Vector3 pos);
 
 	// returns true if the sound is considered "long"
 	bool isLong(int id);
 	
 	// set the position of a sound
-	void setSoundPosition(int channel, Vector3 pos);
+	void setSoundPosition(FMOD::Channel *channel, Vector3 pos);
 
 	// stop a sound
-	void stopSound(int channel);
+	void stopSound(FMOD::Channel *channel);
 
 	// start playing a song. 
 	void playSong(String filename, Real volume);
@@ -77,12 +79,13 @@ public:
 private:
 	Audio();
     float listenerpos[3]; 
-	FSOUND_STREAM* mSongStream;
-	int mSongChannel;
-	bool mRunning; // wether or not the engine is running
+	FMOD::Sound *mSongStream;
+	FMOD::System *mSoundSystem;
+	FMOD::Channel *mSongChannel;
+	bool mRunning; // is the engine is running
 	Real mScale; // a scalar applied to 3d positioning
 
-	std::vector<FSOUND_SAMPLE*> mSamples;
+	std::vector<FMOD::Sound *> mSamples;
 	std::vector<bool> mIsLong;
 
 	String mCurrentSong;

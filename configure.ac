@@ -35,7 +35,7 @@ PKG_CHECK_MODULES([CEGUI], [CEGUI >= 0.5],,
 PKG_CHECK_MODULES([OIS], [OIS >= 1.0],,
 		  [AC_MSG_ERROR([Object-Oriented Input System not found, please visit http://sourceforge.net/projects/wgois/])])
 
-AM_CXXFLAGS="$AM_CXXFLAGS $OGRE_CFLAGS $RakNet_CFLAGS $fMod_CFLAGS $CEGUI_CFLAGS $IOS_CFLAGS -Wall -Wimplicit -Wunused -Wmissing-prototypes -g -pg"
+AM_CXXFLAGS="$AM_CXXFLAGS $OGRE_CFLAGS $RakNet_CFLAGS $fMod_CFLAGS $CEGUI_CFLAGS $IOS_CFLAGS -Wall -Wimplicit -Wunused -g -pg"
 AM_LDFLAGS="$AM_LDFLAGS $OGRE_LIBS $RakNet_LIBS $fMod_LIBS $CEGUI_LIBS $OIS_LIBS"
 
 AC_SUBST(AM_CXXFLAGS, "$AM_CXXFLAGS")

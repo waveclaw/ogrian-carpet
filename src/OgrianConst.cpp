@@ -40,8 +40,8 @@ namespace Ogrian
 
 Const::Const()
 {
-	mFile1.load("constants.txt");
-	mFile2.load("config.txt");
+	mFile1.load("constants.cfg");
+	mFile2.load("config.cfg");
 	mFile3.load("strings.txt");
 }
 
@@ -82,7 +82,7 @@ Time Const::getConstantTime(const String &key)
 	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
 	if (c == 0.0) 
 		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
-	return (Time) c*1000; /* re: se OgrianCock.h line 49 for definition - jdpowell */
+	return (Time) c*1000; /* re: see OgrianCock.h line 49 for definition - jdpowell */
 }
 
 //----------------------------------------------------------------------------
