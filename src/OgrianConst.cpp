@@ -18,26 +18,28 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/*------------------------------------*
-OgrianConst.cpp
-Original Author: Mike Prosser
-Additional Authors: 
-
-Description: A singleton that reads all of the constants from a text file
-
- *------------------------------------*/
-
-
+/**
+ * \file OgrianConst.cpp
+ * \author Mike Prosser <mikeprosser@gmail.com>
+ * \brief A singleton that reads all of the constants from a text file
+ **/
 #include "OgrianConst.h"
 
 using namespace Ogre;
 
+/**
+ * The reference to the Ogre Const. 
+ **/
 template<> Ogrian::Const * Singleton< Ogrian::Const >::ms_Singleton = 0;
 namespace Ogrian
 {
 
 //----------------------------------------------------------------------------
 
+/**
+ * The private constructor.
+ * Initializes the Confuration system.   
+ **/
 Const::Const()
 {
 	mFile1.load("constants.cfg");
@@ -54,6 +56,11 @@ Const::~Const()
 
 //----------------------------------------------------------------------------
 
+/**
+ * Aquire the given value from the configration file(s) as an integer.
+ * @param The key for the value.
+ * @return The integer value of the key provided.
+ **/
 int Const::getConstantInt(const String &key)
 {
 	int c = atoi(mFile1.getSetting(key).c_str());
@@ -65,6 +72,11 @@ int Const::getConstantInt(const String &key)
 
 //----------------------------------------------------------------------------
 
+/**
+ * Aquire the given value from the configration file(s) as a Real.
+ * @param The key for the value.
+ * @return The value of the key provided as a Real.
+ **/
 Real Const::getConstantReal(const String &key)
 {
 	Real c = atof(mFile1.getSetting(key).c_str());
@@ -76,6 +88,11 @@ Real Const::getConstantReal(const String &key)
 
 //----------------------------------------------------------------------------
 
+/**
+ * Aquire the given value from the configration file(s) as a Time object.
+ * @param The key for the value.
+ * @return The Time.
+ **/
 Time Const::getConstantTime(const String &key)
 {
 	Real c = atof(mFile1.getSetting(key).c_str());
@@ -87,6 +104,11 @@ Time Const::getConstantTime(const String &key)
 
 //----------------------------------------------------------------------------
 
+/**
+ * Aquire the given value from the configration file(s) as a String.
+ * @param The key for the value.
+ * @return The String of the key provided.
+ **/
 String Const::getConstantString(const String &key)
 {
 	// only read config and strings
@@ -99,6 +121,11 @@ String Const::getConstantString(const String &key)
 
 //----------------------------------------------------------------------------
 
+/**
+ * Aquire the given value from the configration file(s) as a boolean.
+ * @param The key for the value.
+ * @return True or False: the boolean value of the key provided.
+ **/
 bool Const::getConstantBool(const String &key)
 {
 	String c = mFile1.getSetting(key).c_str();
@@ -112,6 +139,12 @@ bool Const::getConstantBool(const String &key)
 
 //----------------------------------------------------------------------------
 
+/**
+ * Implement Singlton.
+ * Per the singleton pattern, create a Const object if does not exist or return
+ * the current one.
+ * @return Address of the current Const object in memory.
+ */	
 Const& Const::getSingleton(void)
 {
 	if (!ms_Singleton) 

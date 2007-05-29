@@ -18,28 +18,36 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/*------------------------------------*
-OgrianMultiplayer.h
-Original Author: Mike Prosser
-Additional Authors: 
-
-Description: This handles all of the multiplayer networking code.
-
- *------------------------------------*/
-
+/**
+ * \file OgrianMultiplayer.h
+ * \author Mike Prosser <mikeprosser@gmail.com>
+ * \brief Handles all of the multiplayer networking code.
+ **/
 #ifndef __OgrianMultiplayer_H__
 #define __OgrianMultiplayer_H__
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
 #include "OgrianPacketEnum.h"
-#include "OgrianThing.h"
+//include "OgrianThing.h"
 
-#include "RakNetworkFactory.h"
-#include "RakClientInterface.h"
-#include "RakServerInterface.h"
-#include "NetworkTypes.h"
-#include "BitStream.h"
+//include "OgrianMenu.h"
+//include "OgrianHud.h"
+//include "OgrianRenderer.h"
+//include "OgrianPlayerList.h"
+//include "OgrianPhysics.h"
+#include "OgreConfigFile.h"
+
+#include <RakNetworkFactory.h>
+#include <BitStream.h>
+#include <GetTime.h>
+#include <RakPeerInterface.h>
+//include "RakClientInterface.h"
+//include "RakServerInterface.h"
+//blocxx-devel gets us this, but I don't think that's what Prosser wanted:
+//include <NetworkTypes.h>
+
+#define STRING_MAX_LENGTH 256
 
 using namespace Ogre;
 using namespace RakNet;
@@ -150,8 +158,8 @@ private:
 	String mServerName;
 
 	// Pointers to the interfaces of our server and client.
-	RakClientInterface* mClient;
-	RakServerInterface* mServer;
+	RakPeerInterface* mClient;
+	RakPeerInterface* mServer;
 
 	// a list of connected players
 	std::vector<PlayerInfo> mPlayers;
@@ -165,7 +173,11 @@ private:
 	// receive packets on the server
 	void serverRecieve();
 
-	// get the packet identifier
+	/**
+	 * Get the Packet Identifier
+	 * @param The packet to ID
+	 * @return The ID of the Packet
+	 **/
 	PacketID getPacketIdentifier(Packet* p);
 
 	// handle misc RakNet packets, returns true if the packet was handled

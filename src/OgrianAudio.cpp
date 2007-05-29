@@ -24,8 +24,6 @@
  * \brief The audio handler
  **/
 #include "OgrianAudio.h"
-#include "OgrianRenderer.h"
-#include "OgrianCameraThing.h"
 
 template<> Ogrian::Audio * Singleton< Ogrian::Audio >::ms_Singleton = 0;
 

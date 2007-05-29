@@ -18,16 +18,11 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/*------------------------------------*
-OgrianConst.h
-Original Author: Mike Prosser
-Additional Authors: 
-
-Description: A singleton that reads all of the constants from a text file
-
- *------------------------------------*/
-
-
+/**
+ * \file OgrianConst.h
+ * \author Mike Prosser <mikeprosser@gmail.com>
+ * \brief A singleton that reads all of the constants from a text file
+ **/
 #ifndef __OgrianConst_H__
 #define __OgrianConst_H__
 
@@ -35,38 +30,110 @@ Description: A singleton that reads all of the constants from a text file
 #include <OgreSingleton.h>
 #include <OgreConfigFile.h>
 #include "OgrianClock.h"
-
+/**
+ * Computes the value in the configuration file of the ineger variable \a x
+ **/
 #define CONI(x) Const::getSingleton().getConstantInt(x)
+/**
+ * Computes the value in the configuration file of the Real variable \a x
+ **/
 #define CONR(x) Const::getSingleton().getConstantReal(x)
+/**
+ * Computes the value in the configuration file of the Time variable \a x
+ **/
 #define CONT(x) Const::getSingleton().getConstantTime(x)
+/**
+ * Computes the value in the configuration file of the String variable \a x
+ **/
 #define CONS(x) Const::getSingleton().getConstantString(x)
+/**
+ * Computes the value in the configuration file of the bool variable \a x
+ **/
 #define CONB(x) Const::getSingleton().getConstantBool(x)
 
 using namespace Ogre;
 
 namespace Ogrian
 {
-
+/*! \class Const OgrianConst.h "include/OgrianConst.h"
+ * \brief A reader of configuration files which create constants.
+ **/
 class Const : public Singleton< Const >
 {
 public:
+	/**
+ 	* The destructor for cleaning up the configuration object.
+ 	*/
 	virtual ~Const();
-    static Const& getSingleton(void);
 
+	/**
+	 * Implement Singlton.
+	 * Per the singleton pattern, create a Const object if does not exist or return
+	 * the current one.
+	 * @return Address of the current Const object in memory.
+	 */	
+    static Const& getSingleton(void);
+	
+	/**
+	 * Aquire the given value from the configration file(s) as an integer.
+	 * @param The key for the value.
+	 * @return The integer value of the key provided.
+	 **/
 	int getConstantInt(const String &key);
+	
+	/**
+	 * Aquire the given value from the configration file(s) as a Real.
+	 * @param The key for the value.
+	 * @return The value of the key provided as a Real.
+	 **/
 	Real getConstantReal(const String &key);
+
+	/**
+	 * Aquire the given value from the configration file(s) as a Time object.
+	 * @param The key for the value.
+	 * @return The Time.
+	 **/
 	Time getConstantTime(const String &key);
+	
+	/**
+	 * Aquire the given value from the configration file(s) as a String.
+	 * @param The key for the value.
+	 * @return The String of the key provided.
+	 **/
 	String getConstantString(const String &key);
+	
+	/**
+	 * Aquire the given value from the configration file(s) as a boolean.
+	 * @param The key for the value.
+	 * @return True or False: the boolean value of the key provided.
+	 **/
 	bool getConstantBool(const String &key);
+	
 
 private:
+	/**
+	 * The private constructor.
+	 * Initializes the Confuration system.   
+	 **/
 	Const();
 
-	ConfigFile mFile1; // constants.txt
+	/**
+	 * The name for the third configration file.
+	 * Currently this is "constants.cfg"
+	 **/
+	ConfigFile mFile1; 
 	
-	ConfigFile mFile2; // config.txt
+	/**
+	 * The name for the third configration file.
+	 * Currently this is "config.txt"
+	 **/
+	ConfigFile mFile2; 
 	
-	ConfigFile mFile3; // strings.txt
+	/**
+	 * The name for the third configration file.
+	 * Currently this is "strings.txt"
+	 **/
+	ConfigFile mFile3;
 };
 
 }

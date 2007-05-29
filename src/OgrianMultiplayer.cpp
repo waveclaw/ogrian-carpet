@@ -16,28 +16,20 @@
     You should have received a copy of the GNU General Public License
     along with Ogrian Carpet; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    
+    RakNet is Copyright rakkarsoft
+    Ogrian Carpet licenses RakNet under the Creative Commons 
+    Attribution - NonCommercial 2.5 license
+    See: http://creativecommons.org/licenses/by-nc/2.5/
 *****************************************************************************/
 
-/*------------------------------------*
-OgrianMultiplayer.cpp
-Original Author: Mike Prosser
-Additional Authors: 
-
-Description: This handles all of the multiplayer networking code.
-
- *------------------------------------*/
-
+/**
+ * \file OgrianMultiplayer.cpp
+ * \author Mike Prosser <mikeprosser@gmail.com>
+ * \brief Handles all of the multiplayer networking code.
+ **/
 #include "OgrianMultiplayer.h"
-#include "OgrianMenu.h"
-#include "OgrianHud.h"
-#include "OgrianRenderer.h"
-#include "OgrianPlayerList.h"
-#include "OgrianPhysics.h"
-#include "OgreConfigFile.h"
 
-#include "GetTime.h"
-
-#define STRING_MAX_LENGTH 256
 
 using namespace Ogre;
 
@@ -438,9 +430,14 @@ bool Multiplayer::isConnected()
 
 //----------------------------------------------------------------------------
 
-// Copied from Multiplayer.cpp (from RakNet)
-// If the first byte is ID_TIMESTAMP, then we want the 5th byte
-// Otherwise we want the 1st byte
+	/**
+	 * Get the Packet Identifier
+	 * Copied from Multiplayer.cpp (from RakNet)
+	 * If the first byte is ID_TIMESTAMP, then we want the 5th byte
+	 * Otherwise we want the 1st byte
+	 * @param The packet to ID
+	 * @return The ID of the Packet
+	 **/
 PacketID Multiplayer::getPacketIdentifier(Packet* p)
 {
 	if (p==0)

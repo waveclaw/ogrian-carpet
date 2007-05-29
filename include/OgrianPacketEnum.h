@@ -91,31 +91,31 @@ enum PacketID
 	//
 	// Ogrian Types
 	//
-	ID_ADD_PLAYER,
-	ID_SET_CASTLE_SKIN,
-	ID_KICK,
-	ID_KICKME,
-	ID_MAP_NAME,
-	ID_SET_WIZUID,
+	ID_ADD_PLAYER, /*< Player ADDed */
+	ID_SET_CASTLE_SKIN, /*< My Castle's Skin */
+	ID_KICK, /*< I kick you from the server */
+	ID_KICKME, /*< I kick me from the server */
+	ID_MAP_NAME,/*< Where am I? */
+	ID_SET_WIZUID,/*< Even Wizards need ID */
 
-	ID_UPDATE_THING, 
-	ID_REMOVE_THING,
+	ID_UPDATE_THING, /*< The thing, uh, updated */
+	ID_REMOVE_THING, /*< Easy come, easy go */
 
-	ID_CLEAR_SCOREBOARD,
-	ID_ADD_SCORE,
+	ID_CLEAR_SCOREBOARD,/*< Even the winners start from zeo */
+	ID_ADD_SCORE,/*< And a point goes to.. */
 
-	ID_DIE,
-	ID_TELEPORT,
-	ID_MESSAGE,
-	ID_SETSPELLLEVEL,
+	ID_DIE, /*< KILL IT! KILL IT, BECAUSE IT'S DIFFERENT! */
+	ID_TELEPORT, /*< It puts the wizards in the basket or it gets hurt. */
+	ID_MESSAGE, /*< Like a little oceanic bottle, I tell you this. */
+	ID_SETSPELLLEVEL, /*< Do your spells PWN! or just pwn!, now? */
 	
 	ID_PLAYSOUND,
-	ID_THINGMESSAGE,
+	ID_THINGMESSAGE, /*< And the Thing goes Moooooo */
 
-	ID_HUDMESSAGE,
+	ID_HUDMESSAGE, /*< Paging Doctor Butts, Doctor Seymore Butts in the living room? */
 
-	ID_GHOST,
-	ID_VICTORY,
+	ID_GHOST, /*< I see dead players!!! */
+	ID_VICTORY, /*< Teh winnnar is you! */
 };
 
 #endif
