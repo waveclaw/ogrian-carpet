@@ -30,6 +30,8 @@
 #include <Ogre.h>
 #include <fmod.hpp>
 #include <fmod_errors.h>
+//this file is used to bypass the Ogrian*.h files 
+//include "../Patches/fake.hpp"
 #include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
 

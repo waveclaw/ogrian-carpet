@@ -1,6 +1,6 @@
 sprites:
 =============
-from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/
+from WorldForge (http://purple.worldforge.org/wf/cvs/media/sprites/trees/pine/)
  pine.png
  pine_dead.png
 
@@ -24,14 +24,14 @@ John Michel
 
 sounds:
 =============
-from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/
+from worldforge (http://purple.worldforge.org/wf/cvs/media/soundfx/)
  boom2.mp3
  whoosh2.mp3
 
 
 music:
 =============
-Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/
+Adrian Ouarar, from WorldForge (http://purple.worldforge.org/wf/cvs/media/music/artists/adrian/)
  Riding the Dragon 
  Last Glimpse
 

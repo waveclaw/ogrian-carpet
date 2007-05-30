@@ -1,3 +1,11 @@
+20070530
+ - Buildable audio based on fMod 4.06, needs hacks to workaroud broken Ogre.
+ - Reimport of content as binaries.
+ - Proof of build working on Windows XP with Visual Studio Express.
+ - Proof of build working on i386 SuSE Linux
+ - Initial work on moving networking to RakNet 3.0
+ - Initial work on moving input to OIS
+
 20070512
  - realized gaming addiction ruining life.
  - Created autoconf files

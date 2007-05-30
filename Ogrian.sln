@@ -1,21 +1,20 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ogrian", "Ogrian.vcproj", "{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ogrian", "Ogrian.vcproj", "{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}"
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Debug|Win32.Build.0 = Debug|Win32
+		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Release|Win32.ActiveCfg = Release|Win32
+		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Debug.ActiveCfg = Debug|Win32
-		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Debug.Build.0 = Debug|Win32
-		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Release.ActiveCfg = Release|Win32
-		{CE0CD76A-321A-48AC-B2D9-B66E2AEF158F}.Release.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

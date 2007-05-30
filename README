@@ -1,3 +1,5 @@
+
+
 Notes:
  Move Plugins.cfg -> plugins.cfg w/ OpenGL default render method becuase
  Linux filesystems are case-sensitive.
@@ -31,21 +33,10 @@ Dependancies
    RenderSystem_GL.so
 
 Subdependancies
-#CEGUI 0.2.1
-# Menu - http://www.cegui.org.uk/modules/news/
-# Xerces, Xerces-c-devel (for CEGUI)
-# (all CEGUI uneeded - delete OgrianGUI* and related files.)
-
- DevIL 1.6.7 (for Ogre 0.15 and above)
-
- NVidia Cg Developer toolkit 1.4.0-3 (for Ogre 0.15 and above)
-
- slang (sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
-
- zLib 1.2.1 (for DevIL, RakNet)
+CEGUI 0.2.1
 
 Build information
- ldd ogrian-9.1_jdpowell@mingle.waveclaw.net_SuSE9.3-Linux-i686
+ ldd ogrian-9.1_anonymous@buildhost_SuSE9.3-Linux-i686
 	linux-gate.so.1 =>  (0xffffe000)
 	libOgreMain.so.4 => /usr/local/lib/libOgreMain.so.4 (0x40019000)
 	/usr/lib/libraknet.so (0x40293000)
