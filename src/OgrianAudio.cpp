@@ -79,14 +79,16 @@ if (result != FMOD_OK)
 Audio::~Audio()
 {
 	FMOD_RESULT result;
-	if (mSongStream != 0) result = mSongStream->release();
-    if (result != FMOD_OK)
+	if (mSongStream != 0) { 
+		result = mSongStream->release();
+        if (result != FMOD_OK)
 	    {
         	Except( Exception::ERR_NOT_IMPLEMENTED, 
         	    String("Error destoying Audio object. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	        "Audio::~Audio");
-    		    // stop(); <-- pointless
+    		    stop(); //<-- pointless
 	    }	
+	}
 	mSongStream = (FMOD::Sound *) 0;
 }
 
@@ -159,18 +161,15 @@ int Audio::loadSound(String filename, bool isLong, bool loop)
 	FMOD_RESULT result;
 	FMOD::Sound *sound = 0;
 	
-	if (loop) {
-		result = mSoundSystem->createSound(filename.c_str(), 
-			(FMOD_MODE)(FMOD_SOFTWARE | FMOD_3D | FMOD_LOOP_NORMAL), 0, &sound);
-	} else
-	{
-		result = mSoundSystem->createSound(filename.c_str(), 
-			(FMOD_MODE)(FMOD_SOFTWARE | FMOD_3D | FMOD_LOOP_OFF), 0, &sound);
-	}
+	result = mSoundSystem->createSound(filename.c_str(), 
+			(FMOD_MODE)(FMOD_SOFTWARE | FMOD_3D), false, &sound);
+    result = sound->set3DMinMaxDistance(0.0f, 10000.0f); // magic numbers!!!    	
+	if (loop) result = sound->setMode(FMOD_LOOP_NORMAL);		
+	
 	if (result != FMOD_OK)
 	{
     	Except( Exception::ERR_NOT_IMPLEMENTED, 
-    	    String("Error loading song. fMod had an error: ") + String(FMOD_ErrorString(result)),
+    	    String("Error loading soound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::loadSound");
     		stop();
 	}
@@ -227,7 +226,7 @@ FMOD::Channel *Audio::playSound(int id, Vector3 pos)
 	if (result != FMOD_OK)
 	{
     	Except( Exception::ERR_NOT_IMPLEMENTED, 
-    	    String("Error loading sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
+    	    String("Error playing sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::playSound");
     		stop();
 	}
@@ -300,7 +299,7 @@ void Audio::stopSound(FMOD::Channel *channel)
     	Except( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error stopping a sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSound");
-    		// stop(); <-- pointless, really.
+    		stop();// <-- pointless, really.
 	    }
 	    channel = 0;
 	}
@@ -326,7 +325,7 @@ void Audio::stopSong()
     	Except( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error stopping the song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSong");
-    		// stop(); <-- pointless, really.
+    		stop(); //<-- pointless, really.
 	    }		
 		result = mSongStream->release();
 		if (result != FMOD_OK)
@@ -334,7 +333,7 @@ void Audio::stopSong()
     	Except( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error cleaning up the song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSong");
-    		// stop(); <-- pointless, really.
+    		stop();// <-- pointless, really.
 	    }		
 		mSongStream = 0;
 		mSongChannel = (FMOD::Channel*) -1;
@@ -391,12 +390,14 @@ void Audio::frame(Real time)
     		stop();
 	}	
 
+/* not valid for a 2D sound in fMod > 2.  Besides, the 2D sound stays with you.
 	if (mSongStream != 0) {
 		cameraInfo[0] = listenerPosition.x;
 		cameraInfo[1] = listenerPosition.y;
 		cameraInfo[2] = listenerPosition.z;
 		setSoundPosition(&mSongChannel[0], cameraInfo); // keep the music between the ears
 	}
+	*/
 	
 	result = mSoundSystem->update(); // new for fMod 4, must call once per frame.
 	if (result != FMOD_OK)
@@ -432,7 +433,7 @@ void Audio::stop()
 //----------------------------------------------------------------------------
 
 /**
- * Implement Singlton.
+ * Implement Singleton.
  * Per the singleton pattern, create an audio object if does not exist or return
  * the current one.
  * @return Address of the current audio object in memory.
