@@ -18,12 +18,17 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/* In the src/ directory:
- * 1. copy this file and Patches/fake.cpp to the src directory.
+/**
+ * \note Usage
+ *  In the src/ directory:
+ * 1. copy this file and Patches/stub.cpp to the src directory.
  *    and make the header changes in ../include/OgrianAudio.h
- * 2. build it's pre-req with 
+ * 2. build it's pre-req with
+ * \code 
   	make OgrianAudio.o audioTest.o fake.o
+ * \endcode
  * 3. link with
+  * \code 
   	/bin/sh ../libtool --tag=CXX --mode=link g++ -DOGRE_GUI_gtk \
    -DOGRE_CONFIG_LITTLE_ENDIAN -I/usr/local/include \
    -I/usr/local/include/OGRE   -I/usr/local/include/RakNet \
@@ -31,19 +36,22 @@
    -Wall -Wimplicit -Wunused -g -pg -g -O2 -L/usr/local/lib64 -lOgreMain \
    -L/usr/local/lib64 -lRakNet -lpthread   -lfmodex64   -lCEGUIBase  \
    -L/usr/local/lib64 -lOIS    -o test OgrianAudio.o audioTest.o fake.o
+ * \endcode   
  * 4. run the test with
+ * \code
    test ../Media/sounds/hum1.wav ../Media/music/Bulerias.ogg
+ * \endcode
  */
 
 /**
  * \file main.cpp
  * \author Jeremiah Powell<waveclaw@hot_nospam_mail.com
  * \brief stub to test the Ogrian Audio system. 
- **/
+ */
 #include "OgrianAudio.h"
 #include <iostream>
-using namespace std;
 
+using namespace std;
 using namespace Ogrian;
 
 #ifdef WIN32
