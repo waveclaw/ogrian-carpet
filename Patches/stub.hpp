@@ -50,6 +50,7 @@ class Thing {
  	void makeGhost(void);
 	void handleMessage(String, Vector3, int);	
 	void addHealth(int);
+ 	void setHealth(int);	
 	private:
 };
 
@@ -61,13 +62,41 @@ class Wizard : public Thing {
 	public:
 };
 
-class WizardThing: public Wizard {
+class Menu : public Singleton< Menu >, Thing {
 	public:
-	WizardThing(bool);	
+	static Menu& getSingleton(void);
+ 	getChosenName
+ 	getChosenServer
+ 	getChosenCastleSkin
+ 	setMessage
+ 	hide
+ 	clearLoadingScreen
+ 	setMessage
+ 	show
+ 	button_disconnect
+ 	private:
+	Menu(void);
 };
 
-class Game: public Thing {
+class Hud : public Singleton< Hud >, Thing {
 	public:
+	static Hud& getSingleton(void);
+  	setMessage
+	private:
+	Hud(void);
+};
+	
+class SpellManager : public Singleton< SpellManager >, Thing {
+	public:
+	static SpellManager& getSingleton(void);
+	setLevel
+	private:
+	SpellManager(void);	
+};
+	
+class WizardThing: public Thing {
+	public:
+	WizardThing(bool);
 };
 
 class Renderer : public Singleton< Renderer >, Thing {
@@ -87,10 +116,21 @@ class Physics : public Singleton< Physics >, Thing {
  	int getTeam(int);	
 	void syncClient(void *);
 	void syncClient(void &);
-	void addThing(Thing &);
-	void addThing(WizardThing &);	
+	void addThing(WizardThing *&);
+ 	handleClientPacket
+ 	handleServerPacket
+ 	reset
 	private:
 	Physics(void);
+};
+
+class Game : public Singleton< Game >, Thing {
+	public:
+	static Game& getSingleton(void);
+	void victory(void);
+	Vector3 getStartPos(void);
+	private:
+	Game(void);
 };
 
 } // end Ogrian Namespace
