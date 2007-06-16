@@ -9,6 +9,7 @@ template<> Ogrian::Game* Singleton< Ogrian::Game >::ms_Singleton = 0;
 template<> Ogrian::Hud* Singleton< Ogrian::Hud >::ms_Singleton = 0;
 template<> Ogrian::SpellManager* Singleton< Ogrian::SpellManager >::ms_Singleton = 0;
 template<> Ogrian::Menu* Singleton< Ogrian::Menu >::ms_Singleton = 0;
+template<> Ogrian::Physics* Singleton< Ogrian::Physics >::ms_Singleton = 0;
 
 
 namespace Ogrian {
@@ -19,7 +20,6 @@ Thing *Physics::getThing(int id) { return new Thing();}
 int Physics::getTeam(int team) { return 0;}
 void Physics::addThing(WizardThing*&) {}
 void Physics::syncClient(void *) {}
-void Physics::syncClient(void &) {}
 
 Renderer& Renderer::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new Renderer(); return Singleton<Renderer>::getSingleton(); }
 Renderer::Renderer() {}
@@ -34,6 +34,19 @@ Vector3 getStartPos(void) { return Vector3(0.0f, 0.0f, 0.0f);}
 
 Menu& Menu::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new Menu(); return Singleton<Menu>::getSingleton(); }
 Menu::Menu() {}
+String Menu::getChosenName(void) { return String(" ");};
+int Menu::getChosenServer(void) {return 0;};
+int Menu::getChosenCastleSkin(void) { return 0;}
+void Menu::hide(bool flag) {}
+void Menu::clearLoadingScreen(void) {}
+void show(bool) {}
+void button_disconnect(void) {}
+
+LogManager& LogManager::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new LogManager(); return Singleton<LogManager>::getSingleton(); }
+LogManager::LogManager() {};
+void LogManager::logMessage(String str) { cout << str << endl; };
+
+WizardThing::WizardThing(bool visible) {};
 
 Hud& Hud::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new Hud(); return Singleton<Hud>::getSingleton(); }
 Hud::Hud() {}
@@ -41,26 +54,21 @@ Hud::Hud() {}
 SpellManager& SpellManager::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new SpellManager(); return Singleton<SpellManager>::getSingleton(); }
 SpellManager::SpellManager() {}
 
-
-Thing *Thing::getThing(int id) {return new Thing();}
+Thing* Thing::getThing(int id) {return new Thing();}
+Thing::Thing() {}
 Vector3 Thing::getDirection(void) { return Vector3(0.0f, 0.0f, 0.0f);}
 Vector3 Thing::getVelocity(void) { return Vector3(0.0f, 0.0f, 0.0f);}
 Vector3 Thing::getPosition(void) { return Vector3(0.0f, 0.0f, 0.0f);}
 int Thing::getUID(void) { return 0;}
 int Thing::getTeamNum(void) { return 0;}
 void Thing::setPosition(Vector3) {}
+int Thing::setMessage(void *message) {return 0;}
 void Thing::_setUID(int uid) {}	 	
 void Thing::playSound(int sound) {}
 void Thing::addHealth(int hp) {}
 void Thing::setHealth(int hp) {}
 void Thing::die(void) {}
-void Thing::destoy(void) {}
 void Thing::makeGhost(void) {}
 void Thing::handleMessage(String, Vector3, int) {}
 
-LogManager& LogManager::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new LogManager(); return Singleton<LogManager>::getSingleton(); }
-LogManager::LogManager() {};
-void LogManager::logMessage(String str) { cout << str << endl; };
-
-WizardThing::WizardThing(bool visible) {};
 } // end Ogrian namespace

@@ -22,7 +22,7 @@
  * \file OgrianAudio.h
  * \author Mike Prosser <mikeprosser@gmail.com>
  * \brief The audio handler
- **/
+ */
 
 #ifndef __OgrianAudio_H__
 #define __OgrianAudio_H__
@@ -31,9 +31,12 @@
 #include <fmod.hpp>
 #include <fmod_errors.h>
 //this file is used to bypass the Ogrian*.h files, use this before testing 
-//include "../Patches/fake.hpp"
+#ifdef USE_STUB_H 
+#include "../Patches/stub.hpp"
+#else
 #include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
+#endif
 
 using namespace Ogre;
 
@@ -41,7 +44,7 @@ namespace Ogrian
 {
 /*! \class Audio OgrianAudio.h "include/OgrianAudio.h"
  * \brief The audio engine for Ogrian Capret
- **/
+ */
 class Audio : public Singleton< Audio >
 {
 public:
@@ -59,7 +62,7 @@ public:
 	 * @param loop Should this sound be looped continually?
 	 * @exception Warns on files that were not found, if cannot load song.
 	 * @return The number of Samples loaded at this time.
-	  */
+	 */
 	int loadSound(String filename, bool isLong=false, bool loop=false);
 
 	/**
@@ -139,48 +142,48 @@ private:
 	 * Initializes the fMod audio system.   
 	 * @exception Warns if the sound system fails to initialize
 	 * @exception Warns if the sound system fails to start  
-	 **/
+	 */
 	Audio();
 	/**
 	 * Where are you?
-	 **/
+	 */
     float listenerpos[3];
     /**
      * The stream in which the current background song plays.
      * As there is only 1 song to play, this is simply a sond with FMOD_STREAM set.
-     **/
+     */
 	FMOD::Sound *mSongStream;
 	/**
 	 * The sound system itself.
-	 **/
+	 */
 	FMOD::System *mSoundSystem;
 	/**
 	 * The default channel for the default song.
 	 * Channels can be used to group sounds. 
 	 * We only play 1 song for background music at a time, so only need 1 channel.
-	 **/
+	 */
 	FMOD::Channel *mSongChannel;
 	/**
 	 * Should the sound engine be running?
-	 **/
+	 */
 	bool mRunning; 
 	/**
 	 *  A scalar applied to 3d positioning
-	 **/
+	 */
 	Real mScale;
 	/**
 	 * The collection of sounds currently loaded.
 	 * A vector of the loaded sounds so the engine can run them.
-	 **/
+	 */
 	std::vector<FMOD::Sound *> mSamples;
 	/**
 	 * Is this a long song?
-	 **/
+	 */
 	std::vector<bool> mIsLong;
 	/**
 	 * Title of the current Song.
 	 * Used to short-cut loading of duplicate songs.
-	 **/
+	 */
 	String mCurrentSong;
 };
 

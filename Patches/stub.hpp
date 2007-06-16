@@ -15,7 +15,7 @@ namespace Ogrian
 
 #define CONR(X) 0
 #define CONI(X) 0
-#define Except(X,Y,Z) LogManager::getSingleton().logMessage(X + Y + Z);
+#define Except(X,Y,Z) LogManager::getSingleton().logMessage( Ogre::Exception(X, Y, Z).getDescription());
 #define PlayerID int
 
 struct Packet {
@@ -42,6 +42,7 @@ class Thing {
  	int getTeamNum(void);
  	Vector3 getPosition(void);
 	void setPosition(Vector3);
+ 	int setMessage(void *);	
 	Vector3 getDirection(void);
 	Vector3 getVelocity(void);
 	void _setUID(int uid);		 	
@@ -62,26 +63,10 @@ class Wizard : public Thing {
 	public:
 };
 
-class Menu : public Singleton< Menu >, Thing {
-	public:
-	static Menu& getSingleton(void);
- 	getChosenName
- 	getChosenServer
- 	getChosenCastleSkin
- 	setMessage
- 	hide
- 	clearLoadingScreen
- 	setMessage
- 	show
- 	button_disconnect
- 	private:
-	Menu(void);
-};
 
 class Hud : public Singleton< Hud >, Thing {
 	public:
 	static Hud& getSingleton(void);
-  	setMessage
 	private:
 	Hud(void);
 };
@@ -89,7 +74,7 @@ class Hud : public Singleton< Hud >, Thing {
 class SpellManager : public Singleton< SpellManager >, Thing {
 	public:
 	static SpellManager& getSingleton(void);
-	setLevel
+	void setLevel(int);
 	private:
 	SpellManager(void);	
 };
@@ -115,11 +100,10 @@ class Physics : public Singleton< Physics >, Thing {
 	Thing *getThing(int);
  	int getTeam(int);	
 	void syncClient(void *);
-	void syncClient(void &);
 	void addThing(WizardThing *&);
- 	handleClientPacket
- 	handleServerPacket
- 	reset
+ 	void handleClientPacket(void);
+ 	void handleServerPacket(void);
+ 	void reset(void);
 	private:
 	Physics(void);
 };
@@ -133,6 +117,19 @@ class Game : public Singleton< Game >, Thing {
 	Game(void);
 };
 
+class Menu : public Singleton< Menu >, Thing {
+	public:
+	static Menu& getSingleton(void);
+ 	String getChosenName(void);
+ 	int getChosenServer(void);
+ 	int getChosenCastleSkin(void);
+ 	void hide(bool);
+ 	void clearLoadingScreen(void);
+ 	void show(bool);
+ 	void button_disconnect(void);
+ 	private:
+	Menu(void);
+};
 } // end Ogrian Namespace
 
 #endif

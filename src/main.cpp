@@ -18,15 +18,11 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/*------------------------------------*
-main.cpp
-Original Author: The OGRE Team
-Additional Authors: Mike Prosser
-
-Description: makes an app and makes it go, in a platform independant way
-
- *------------------------------------*/
-
+/**
+ * \file main.cpp
+ * \author\ The OGRE Team, Mike Prosser
+ * \brief  makes an app and makes it go, in a platform independant way
+ **/
 #include "Ogre.h"
 #include "OgrianApplication.h"
 

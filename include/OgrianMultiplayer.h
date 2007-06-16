@@ -28,25 +28,23 @@
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianPacketEnum.h"
-//include "OgrianThing.h"
+#include <RakNetworkFactory.h>
+#include <BitStream.h>
+#include <GetTime.h>
+#include <RakPeerInterface.h>
 
+#include "OgreConfigFile.h"
+#include "OgrianPacketEnum.h"
+
+#include "../Patches/stub.hpp"
+//include "OgrianThing.h"
 //include "OgrianMenu.h"
 //include "OgrianHud.h"
 //include "OgrianRenderer.h"
 //include "OgrianPlayerList.h"
 //include "OgrianPhysics.h"
-#include "OgreConfigFile.h"
 
-#include <RakNetworkFactory.h>
-#include <BitStream.h>
-#include <GetTime.h>
-#include <RakPeerInterface.h>
-//include "RakClientInterface.h"
-//include "RakServerInterface.h"
-//blocxx-devel gets us this, but I don't think that's what Prosser wanted:
-//include <NetworkTypes.h>
-
+#define UNASSIGNED_PLAYER_ID -1
 #define STRING_MAX_LENGTH 256
 
 using namespace Ogre;
@@ -55,6 +53,10 @@ using namespace RakNet;
 namespace Ogrian
 {
 
+/** \struct PlayerInfo
+ * \brief Collection of player-related data for networking
+ * Not that this shouldn't be somewhere fundamental?
+ */
 struct PlayerInfo
 {
 	PlayerID id;
@@ -64,24 +66,56 @@ struct PlayerInfo
 	int castleSkin;
 };
 
-// The Multiplayer class handles all of the multiplayer networking code.
+/* \class Multiplayer OgrianMultiplayer.h "include/OgrianMultiplayer.h"
+ * \brief The Multiplayer class handles all of the multiplayer networking code.
+ */
 class Multiplayer : public Singleton< Multiplayer >
 {
 public:
+	/**
+	 * Clean up after the multiplayer code, including kicking everyone, closing ports and thread shutdown. 
+	 */
 	virtual ~Multiplayer();
+
+	/**
+	 * Implement singleton, since the constructor is private.
+	 * @return If no object exists, return a new object, else reference the existing 'single' object
+	 */
     static Multiplayer& getSingleton(void);
 
-	// start a server
+	/**
+	 * Start a server
+	 */
 	void serverStart();
+		 
+	/**
+	 * Helper function to add the server-player's Camera to the world.
+	 */  
 	void serverAddCameraPlayer(Thing* cam);
 
-	// start a client
+	/**
+	 * Start a client
+	 */
 	void clientStart();
 
-	// send a message to the server
+	/**
+	 * Send a message to the server 
+	 * @param bitStream The RAW (native-binary-encoded) message
+	 * @param reliable Does this message need reliable transport? 
+	 */
 	void clientSend(BitStream* bitStream, bool reliable=true);
-	void clientSendText(String message, int type);
-	void clientSendInt(int num, int type);
+	/**
+	 * Send Text to the server 
+	 * @param message The string to send
+	 * @param type Of the enumerated types, which is this message? 
+	 */
+	void clientSend(String message, int type);
+	/**
+	 * Send a message to the server 
+	 * @param bitStream The RAW (native-binary-encoded) message
+	 * @param reliable Does this message need reliable transport? 
+	 */
+	void clientSend(int num, int type);
 
 	// send a message to a client
 	void serverSend(BitStream* bitStream, PlayerID player, bool reliable=true);

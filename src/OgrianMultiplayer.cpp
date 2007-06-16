@@ -104,7 +104,7 @@ void Multiplayer::clientStart()
 	char cn[16];
 	strcpy(cn, name.c_str());
 
-	LogManager::getSingleton().logMessage(String("Connecting to: ") + cn);
+	Except(Exception::ERR_NOT_IMPLEMENTED,"Connecting to: " + cn, "Multiplayer::client");
 
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger
@@ -112,10 +112,10 @@ void Multiplayer::clientStart()
 
 	if (!b)
 	{
-		LogManager::getSingleton().logMessage("Failed To Connect");
-		Menu::getSingleton().setMessage(CONS("MSG_JOIN_CONNECT_FAIL"));
+		Except(Exception::ERR_INTERNAL_ERROR, "Failed To Connect", "Multiplayer::clientStart");
+		// Menu::getSingleton().setMessage(CONS("MSG_JOIN_CONNECT_FAIL"));
 	}
-	else LogManager::getSingleton().logMessage("Client Started");
+	else Except(Exception::ERR_NOT_IMPLEMENTED,"Client Started", "Multiplayer::client");
 }
 
 //----------------------------------------------------------------------------
@@ -228,23 +228,23 @@ void Multiplayer::serverSendAll(BitStream* bitStream, bool reliable)
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::clientSendText(String message, int type)
+void Multiplayer::clientSend(String message, int type)
 {
-	BitStream bs;
-	stringToBitStream(message,bs,type);
+	BitStream stream;
+	stringToBitStream(message,stream,type);
 
-	clientSend(&bs);
+	clientSend(&stream);
 }
 
 //----------------------------------------------------------------------------
 
-void Multiplayer::clientSendInt(int num, int type)
+void Multiplayer::clientSend(int num, int type)
 {
-	BitStream bs;
+	BitStream stream;
 	bs.Write(type);
 	bs.Write(num);
 
-	clientSend(&bs);
+	clientSend(&stream);
 }
 
 //----------------------------------------------------------------------------
@@ -562,18 +562,16 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			LogManager::getSingleton().logMessage(String("Setting Wizard UID: ") + num.str());
 
 			// send in the castle skin
-			clientSendInt(Menu::getSingleton().getChosenCastleSkin(), ID_SET_CASTLE_SKIN);
+			clientSend(Menu::getSingleton().getChosenCastleSkin(), ID_SET_CASTLE_SKIN);
 
 			return true;
 		}
-
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 		{
 			// oddly, nothing is done here
 			Menu::getSingleton().setMessage("Connected, Loading .  .  .");
 			return true;
 		}
-
 		case ID_MAP_NAME: //////////////////////////////////////////////////////
 		{
 
@@ -589,7 +587,7 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Renderer::getSingleton().loadMap(themap, false);
 			
 			// send our name and skin to the server
-			clientSendText(mPlayerName,ID_ADD_PLAYER);
+			clientSend(mPlayerName,ID_ADD_PLAYER);
 
 			// hide the menu
 			Menu::getSingleton().hide();
@@ -599,7 +597,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			mClientReady = true;
 			return true;
 		}
-
 		case ID_KICK: //////////////////////////////////////////////////////
 		{
 			// disconnect
@@ -614,7 +611,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 
 			return true;
 		}
-
 		case ID_MESSAGE: //////////////////////////////////////////////////////
 		{
 			// get the message
@@ -625,7 +621,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Hud::getSingleton().setMessage(msg);
 			return true;
 		}
-
 		case ID_DIE: //////////////////////////////////////////////////////
 		{
 			int pid;
@@ -695,7 +690,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			SpellManager::getSingleton().setLevel(level);
 			return true;
 		}
-
 		case ID_HUDMESSAGE: //////////////////////////////////////////////////////
 		{
 			String msg;
@@ -704,7 +698,6 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 			Hud::getSingleton().setMessage(msg, true);
 			return true;
 		}
-		
 		case ID_PLAYSOUND: //////////////////////////////////////////////////////
 		{
 			// get the thing uid and sound index
@@ -740,6 +733,8 @@ bool Multiplayer::clientHandlePacket(Packet* packet, PacketID pid)
 				thing->handleMessage(msg, pos, val);
 			return true;
 		}
+		default:
+			;
 	}
 	return false;
 }
@@ -757,26 +752,26 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 			packetToString(packet,playerName);
 
 			// get a new wizard
-			WizardThing* wt = new WizardThing(true);
-			Physics::getSingleton().addThing(wt);
-			int wuid = wt->getUID();
+			WizardThing* wizard = new WizardThing(true);
+			Physics::getSingleton().addThing(wizard);
+			int wizardUID = wizard->getUID();
 
 			// update the player list
 			PlayerInfo player;
 			player.id = packet->playerId;
 			player.name = playerName;
-			player.wizardUID = wuid;
-			player.teamNum = wt->getTeamNum();
+			player.wizardUID = wizardUID;
+			player.teamNum = wizard->getTeamNum();
 			mPlayers.push_back(player);
 
 			// send a message to the client telling it what its wizardUID is
-			BitStream bs;
-			bs.Write(ID_SET_WIZUID);
-			bs.Write(wuid);
-			serverSend(&bs, player.id);
+			BitStream stream;
+			stream.Write(ID_SET_WIZUID);
+			stream.Write(wizardUID);
+			serverSend(&stream, player.id);
 
 			// set the health of the new wizard
-			wt->setHealth(CONI("WIZARD_HEALTH"));
+			wizard->setHealth(CONI("WIZARD_HEALTH"));
 
 			// update everyone's scoreboard
 			updateScores();
@@ -786,12 +781,12 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 
 			// tell them where to start
 			Vector3 spos = Game::getSingleton().getStartPos();
-			BitStream bs2;
-			bs2.Write(ID_TELEPORT);
-			bs2.Write(spos.x);
-			bs2.Write(spos.y);
-			bs2.Write(spos.z);
-			serverSend(&bs2, player.id);
+			BitStream clientStream;
+			clientStream.Write(ID_TELEPORT);
+			clientStream.Write(spos.x);
+			clientStream.Write(spos.y);
+			clientStream.Write(spos.z);
+			serverSend(&clientStream, player.id);
 
 			return true;
 		}
@@ -848,6 +843,8 @@ bool Multiplayer::serverHandlePacket(Packet* packet, PacketID pid)
 
 			return true;
 		}
+		default:
+			;
 	}
 	return false;
 }
@@ -891,6 +888,8 @@ bool Multiplayer::handleRakPacket(Packet* packet, PacketID pid)
 
 		case ID_CONNECTION_REQUEST_ACCEPTED: //////////////////////////////////////////////////////
 			return true;
+		default:
+			;
 	}
 	return false;
 }
@@ -904,7 +903,7 @@ void Multiplayer::clientRequestKick()
 	
 	if (cam!=0) cam->_setUID(0);
 
-	clientSendText(" ", ID_KICKME);
+	clientSend(" ", ID_KICKME);
 }
 
 //----------------------------------------------------------------------------
