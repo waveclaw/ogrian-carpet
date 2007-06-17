@@ -42,9 +42,14 @@ namespace Ogrian
  **/
 Const::Const()
 {
-	mFile1.load("constants.cfg");
-	mFile2.load("config.cfg");
-	mFile3.load("strings.txt");
+	#ifdef WIN32
+	 String path = "";
+	#else
+	 String path = "/usr/local/share/ogrian/"; // TODO - get this from config.h
+	#endif
+	mConstants.load(path + "constants.cfg");
+	mConfig.load(path + "config.cfg");
+	mStrings.load(path + "strings.txt");
 }
 
 //----------------------------------------------------------------------------
@@ -63,10 +68,12 @@ Const::~Const()
  **/
 int Const::getConstantInt(const String &key)
 {
-	int c = atoi(mFile1.getSetting(key).c_str());
-	if (c == 0.0) c = atoi(mFile2.getSetting(key).c_str());
+	int c = atoi(mConstants.getSetting(key).c_str());
+	if (c == 0.0) c = atoi(mConfig.getSetting(key).c_str());
 	if (c == 0.0) 
-		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+		Exception(Exception::ERR_ITEM_NOT_FOUND, 
+		 "Warning, key " + key + " read as 0.0",
+		  "Ogrian::Const::getConstantInt.");
 	return c;
 }
 
@@ -79,10 +86,12 @@ int Const::getConstantInt(const String &key)
  **/
 Real Const::getConstantReal(const String &key)
 {
-	Real c = atof(mFile1.getSetting(key).c_str());
-	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
+	Real c = atof(mConstants.getSetting(key).c_str());
+	if (c == 0.0) c = atof(mConfig.getSetting(key).c_str());
 	if (c == 0.0) 
-		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+		Exception(Exception::ERR_ITEM_NOT_FOUND, 
+		 "Warning, key " + key + " read as 0.0",
+		  "Ogrian::Const::getConstantReal.");
 	return c;
 }
 
@@ -95,10 +104,12 @@ Real Const::getConstantReal(const String &key)
  **/
 Time Const::getConstantTime(const String &key)
 {
-	Real c = atof(mFile1.getSetting(key).c_str());
-	if (c == 0.0) c = atof(mFile2.getSetting(key).c_str());
+	Real c = atof(mConstants.getSetting(key).c_str());
+	if (c == 0.0) c = atof(mConfig.getSetting(key).c_str());
 	if (c == 0.0) 
-		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+		Exception(Exception::ERR_ITEM_NOT_FOUND, 
+		 "Warning, key " + key + " read as 0.0",
+		  "Ogrian::Const::getConstantTime.");
 	return (Time) c*1000; /* re: see OgrianCock.h line 49 for definition - jdpowell */
 }
 
@@ -112,10 +123,12 @@ Time Const::getConstantTime(const String &key)
 String Const::getConstantString(const String &key)
 {
 	// only read config and strings
-	String c = mFile2.getSetting(key).c_str();
-	if (c == String("")) c = mFile3.getSetting(key).c_str();
+	String c = mConfig.getSetting(key).c_str();
+	if (c == String("")) c = mStrings.getSetting(key).c_str();
 	if (c == String("")) 
-		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
+		Exception(Exception::ERR_ITEM_NOT_FOUND, 
+		 "Warning, key " + key + " read as 0.0",
+		  "Ogrian::Const::getConstantString.");
 	return c;
 }
 
@@ -128,11 +141,12 @@ String Const::getConstantString(const String &key)
  **/
 bool Const::getConstantBool(const String &key)
 {
-	String c = mFile1.getSetting(key).c_str();
-	if (c == String("")) c = mFile2.getSetting(key).c_str();
+	String c = mConstants.getSetting(key).c_str();
+	if (c == String("")) c = mConfig.getSetting(key).c_str();
 	if (c == String("")) 
-		LogManager::getSingleton().logMessage(String("Warning, key ") + key + " read as 0.0");
-
+		Exception(Exception::ERR_ITEM_NOT_FOUND, 
+		 "Warning, key " + key + " read as 0.0",
+		  "Ogrian::Const::getConstantBool.");
 	if (c == String("true") || c == String("yes") || c == String("on")) return true;
 	return false;
 }
