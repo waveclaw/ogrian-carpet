@@ -51,7 +51,7 @@
  * Unit testing the Network system can use either the existing system or
  * the stub system.  To use the stub system, define USE_STUB_H when compling. 
  */
-#include "Multiplayer.h"
+#include "../Tests/Multiplayer.h"
 #include <iostream>
 
 using namespace std;

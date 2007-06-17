@@ -28,7 +28,7 @@
  * \autho Mike Prosser <mikeprosser@gmail.com>, Jeremiah Powell <waveclaw@hot_nospam_mail.com>
  * \brief Handles all of the multiplayer networking code.
  **/
-#include "Multiplayer.h"
+#include "../Tests/Multiplayer.h"
 
 
 using namespace Ogre;

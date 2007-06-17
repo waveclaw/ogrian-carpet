@@ -28,7 +28,7 @@
 
 #include <Ogre.h>
 #ifdef USE_STUB_H
-#include "../Patches/stub.hpp"
+#include "../Tests/stub.hpp"
 #else
 #include <OgreSingleton.h>
 #include <OgreException.h>
