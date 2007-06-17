@@ -1,0 +1,23 @@
+Index: OgreMain/src/OgreBillboardSet.cpp
+===================================================================
+RCS file: /cvsroot/ogre/ogrenew/OgreMain/src/OgreBillboardSet.cpp,v
+retrieving revision 1.41
+diff -u -r1.41 OgreBillboardSet.cpp
+--- OgreMain/src/OgreBillboardSet.cpp	2 Jan 2004 22:15:56 -0000	1.41
++++ OgreMain/src/OgreBillboardSet.cpp	12 Apr 2004 08:11:23 -0000
+@@ -874,6 +874,7 @@
+             *pY = mCommonDirection;
+             // Convert into billboard local space
+             *pX = invTransform * cam.getDerivedDirection().crossProduct(*pY);
++            pX->normalise();
+             
+             break;
+         case BBT_ORIENTED_SELF:
+@@ -882,6 +883,7 @@
+             *pY = pBill->mDirection;
+             // Convert into billboard local space
+             *pX = invTransform * cam.getDerivedDirection().crossProduct(*pY);
++            pX->normalise();
+ 
+             break;
+         }
