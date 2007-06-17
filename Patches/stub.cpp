@@ -4,7 +4,6 @@
 #include "../Patches/stub.hpp"
 
 template<> Ogrian::Renderer* Singleton< Ogrian::Renderer >::ms_Singleton = 0;
-template<> Ogrian::LogManager* Singleton< Ogrian::LogManager >::ms_Singleton = 0;
 template<> Ogrian::Game* Singleton< Ogrian::Game >::ms_Singleton = 0;
 template<> Ogrian::Hud* Singleton< Ogrian::Hud >::ms_Singleton = 0;
 template<> Ogrian::SpellManager* Singleton< Ogrian::SpellManager >::ms_Singleton = 0;
@@ -41,10 +40,6 @@ void Menu::hide(bool flag) {}
 void Menu::clearLoadingScreen(void) {}
 void show(bool) {}
 void button_disconnect(void) {}
-
-LogManager& LogManager::getSingleton(void) { if (!ms_Singleton) ms_Singleton = new LogManager(); return Singleton<LogManager>::getSingleton(); }
-LogManager::LogManager() {};
-void LogManager::logMessage(String str) { cout << str << endl; };
 
 WizardThing::WizardThing(bool visible) {};
 

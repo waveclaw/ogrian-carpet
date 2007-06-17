@@ -61,26 +61,32 @@ using namespace Ogrian;
 #include "windows.h"
 #include <stdio.h>
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT unused)
+{
+	char str[256];
 #else // #ifndef WIN32
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 int main(int argc, char *argv[], char **envp)
-#endif // #ifdef WIN32
 {
 	if (argc != 3) {
 		cout << "What to port on localhost to use?" << endl;
 		cout << "Server (s) or client (c)?" << endl;
 		return 1;
 	};
-	
+#endif // #ifdef WIN32
+
+	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();	
 	char* address = ""; // force raknet to use INADDR_ANY
-	unsigned short port = (unsigned short) atoi(argv[1]); // get this from CONI("Port")
-	cout << "Using port: " << port << endl;
+	unsigned short port;
 	bool isServer;	
 	
-	#ifdef WIN32 
-		printf("(C) or (S)erver?\n");
+	#ifdef WIN32
+		cout << "Port number?" << endl;
+		gets(str);
+		port = (unsigned short) atoi(str[0]);
+		cout << "Using port: " << port << endl;
+				cout << "(C) or (S)erver?" << endl;
 		gets(str);
 		if ((str[0]=='s')||(str[0]=='S'))
 		{
@@ -90,6 +96,8 @@ int main(int argc, char *argv[], char **envp)
 			isServer = false;
 		}
 	#else
+		port = (unsigned short) atoi(argv[1]); // get this from CONI("Port")
+		cout << "Using port: " << port << endl;
 		 //pid_t parent = fork();
 		 if ((argv[2][0] == 's')||(argv[2][0] == 'S')) {
 		 	cout << "Choosing server" << endl;

@@ -3,6 +3,7 @@
 
 #include <Ogre.h>
 #include <iostream>
+#include "../Patches/LogManager.hpp"
 
 #ifndef _STUB_HPP_
 #define _STUB_HPP_
@@ -13,9 +14,8 @@ using namespace Ogre;
 namespace Ogrian
 {
 
-#define CONR(X) 0
-#define CONI(X) 0
-#define Exception(X,Y,Z) LogManager::getSingleton().logMessage( Ogre::Exception(X, Y, Z).getDescription());
+//define CONR(X) 0 // not needed with patch for OgrianConst
+//define CONI(X) 0 // not needed with patch for OgrianConst
 #define PlayerID int
 
 struct Packet {
@@ -24,13 +24,6 @@ struct Packet {
 	char *data;
 };
 	
-class LogManager : public Singleton< LogManager > {
-	public:
-	static LogManager& getSingleton(void);
-	void logMessage(String);
-	private:
-	LogManager(void);
-};
 
 class Thing {
 	public:
