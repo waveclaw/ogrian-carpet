@@ -179,7 +179,7 @@ void HeightMap::loadTerrain(const String& filename)
 
 	if ( mImage->getFormat() != PF_L8 )
 	{
-		Except( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
+		Exception( Exception::ERR_INVALIDPARAMS, "Error: Image is not a grayscale image.",
 				"HeightMap::loadTerrain" );
 	}
 

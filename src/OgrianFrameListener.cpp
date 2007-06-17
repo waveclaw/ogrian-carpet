@@ -270,7 +270,7 @@ void OgrianFrameListener::showDebugOverlay(bool show)
 {
     Overlay* o = (Overlay*)OverlayManager::getSingleton().getByName("Core/DebugOverlay");
     if (!o)
-        Except( Exception::ERR_ITEM_NOT_FOUND, "Could not find overlay Core/DebugOverlay",
+        Exception( Exception::ERR_ITEM_NOT_FOUND, "Could not find overlay Core/DebugOverlay",
             "showDebugOverlay" );
     if (show)
     {

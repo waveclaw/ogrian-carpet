@@ -771,7 +771,7 @@ void Game::loadMapThingsFromImage(String textureKey, ConfigFile config, Real wor
 	{		
 		std::ostringstream num("");
 		num << image.getFormat();
-		Except( Exception::ERR_INVALIDPARAMS, String("Error: Image is not an RGBA image. ") + num.str(),
+		Exception( Exception::ERR_INVALIDPARAMS, String("Error: Image is not an RGBA image. ") + num.str(),
 				"Game::loadMapThings" );
 	}
 

@@ -26,6 +26,11 @@
 #ifndef __OgrianPacketEnum_H__
 #define __OgrianPacketEnum_H__
 
+	/**
+	 * \note Do not use this file and Raknet's MessageIdentifiers.h
+	 * Since you cannot extend an enum, this file conflicts with RakNet's file. 
+	 */
+
 /** 
  * \enum PacktID The unique ID of packet types.
  */
@@ -116,6 +121,15 @@ enum PacketID
 
 	ID_GHOST, /**< I see dead players!!! */
 	ID_VICTORY /**< Teh winnnar is you! */
+};
+
+/** 
+ * \enum PerrType is this a client, server, p2p network?
+ */
+enum PeerType {
+	CLIENT, /**< clients, who only have 1 connection and don't do conflict rez */
+	SERVER, /**< servers, who do confliict resolution and have many connections */
+	PEER2PEER /**< TODO - is P2P even useful? Perhaps use for lobby-less setup */
 };
 
 #endif

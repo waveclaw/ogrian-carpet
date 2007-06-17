@@ -494,7 +494,7 @@ void Physics::addThing(Thing* thing)
 		// make sure it's not too big
 		if (thing->getWidth() / 2.0 > mWorldSize / PHYSICS_GRID_SIZE)
 		{
-			Except( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
+			Exception( Exception::ERR_INTERNAL_ERROR, "Error: Thing Too Big for Grid. Make the world bigger, the thing smaller, or the grid coarser.",
 					"Physics::addThing" );
 		}
 

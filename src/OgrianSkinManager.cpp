@@ -83,7 +83,7 @@ void SkinManager::loadCastleSkins()
     /* Open the configuration file */
     std::ifstream fp(filename.c_str());
     if(!fp)
-        Except(
+        Exception(
             Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "ConfigFile::load" );
     
     /* Process the file line for line */
@@ -126,7 +126,7 @@ void SkinManager::loadShrineSkins()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		Except(
+		Exception(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "SkinManager::loadSkins" );
 
 	ret = fgets(rec, 100, fp);
@@ -166,7 +166,7 @@ void SkinManager::loadWizardSkins()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		Except(
+		Exception(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "SkinManager::loadSkins" );
 
 	ret = fgets(rec, 100, fp);

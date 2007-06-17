@@ -209,7 +209,7 @@ void Menu::writeConfig()
 
 	fp = fopen(filename.c_str(), "w");
 	if (!fp)
-		Except(Exception::ERR_CANNOT_WRITE_TO_FILE, "Cannot create settings file.",
+		Exception(Exception::ERR_CANNOT_WRITE_TO_FILE, "Cannot create settings file.",
 		"Menu::writeConfig");
 
 	// write the values
@@ -288,7 +288,7 @@ void Menu::loadMapList()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		Except(
+		Exception(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadMapList" );
 
 	ret = fgets(rec, 100, fp);
@@ -328,7 +328,7 @@ void Menu::loadWizardSkinList()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		Except(
+		Exception(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadWizardSkinList" );
 
 	ret = fgets(rec, 100, fp);
@@ -368,7 +368,7 @@ void Menu::loadCastleSkinList()
 	// Open and parse entire file
 	fp = fopen(filename.c_str(), "r");
 	if( !fp )
-		Except(
+		Exception(
 			Exception::ERR_FILE_NOT_FOUND, "'" + filename + "' file not found!", "Menu::loadCastleSkinList" );
 
 	ret = fgets(rec, 100, fp);

@@ -104,7 +104,7 @@ void Multiplayer::clientStart()
 	char cn[16];
 	strcpy(cn, name.c_str());
 
-	Except(Exception::ERR_NOT_IMPLEMENTED,"Connecting to: " + cn, "Multiplayer::client");
+	Exception(Exception::ERR_NOT_IMPLEMENTED,"Connecting to: " + cn, "Multiplayer::client");
 
 	// Connecting the client is very simple.  0 means we don't care about
 	// a connectionValidationInteger
@@ -112,10 +112,10 @@ void Multiplayer::clientStart()
 
 	if (!b)
 	{
-		Except(Exception::ERR_INTERNAL_ERROR, "Failed To Connect", "Multiplayer::clientStart");
+		Exception(Exception::ERR_INTERNAL_ERROR, "Failed To Connect", "Multiplayer::clientStart");
 		// Menu::getSingleton().setMessage(CONS("MSG_JOIN_CONNECT_FAIL"));
 	}
-	else Except(Exception::ERR_NOT_IMPLEMENTED,"Client Started", "Multiplayer::client");
+	else Exception(Exception::ERR_NOT_IMPLEMENTED,"Client Started", "Multiplayer::client");
 }
 
 //----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ void Multiplayer::serverStart()
 	bool b = mServer->Start(3, 0, CONI("RAKNET_THREAD_SLEEP_TIME"), CONR("PORT"));
 	
 	// error
-	if (!b) Except( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
+	if (!b) Exception( Exception::ERR_INTERNAL_ERROR, "Error: Could Not Create Server.",
 				"Multiplayer::serverStart" );
 
 }

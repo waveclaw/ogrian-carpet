@@ -15,7 +15,7 @@ namespace Ogrian
 
 #define CONR(X) 0
 #define CONI(X) 0
-#define Except(X,Y,Z) LogManager::getSingleton().logMessage( Ogre::Exception(X, Y, Z).getDescription());
+#define Exception(X,Y,Z) LogManager::getSingleton().logMessage( Ogre::Exception(X, Y, Z).getDescription());
 #define PlayerID int
 
 struct Packet {

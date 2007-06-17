@@ -52,7 +52,7 @@ Audio::Audio()
 	result = FMOD::System_Create(&mSoundSystem);
 	if (result != FMOD_OK) 
 {
-   	Except( Exception::ERR_NOT_IMPLEMENTED, 
+   	Exception( Exception::ERR_NOT_IMPLEMENTED, 
   	    String("Error pre-initalizing sound system. fMod had an error: ") + String(FMOD_ErrorString(result)),
         "Audio::Audio");
     stop();
@@ -60,7 +60,7 @@ Audio::Audio()
 	result = mSoundSystem->init(numberOfVoices, (FMOD_MODE)(FMOD_INIT_NORMAL), (void *) extraDriverData);
 if (result != FMOD_OK)
 {
-   	Except( Exception::ERR_NOT_IMPLEMENTED, 
+   	Exception( Exception::ERR_NOT_IMPLEMENTED, 
   	    String("Error iniitalizing sound system. fMod had an error: ") + String(FMOD_ErrorString(result)),
         "Audio::Audio");   
     stop();
@@ -83,7 +83,7 @@ Audio::~Audio()
 		result = mSongStream->release();
         if (result != FMOD_OK)
 	    {
-        	Except( Exception::ERR_NOT_IMPLEMENTED, 
+        	Exception( Exception::ERR_NOT_IMPLEMENTED, 
         	    String("Error destoying Audio object. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	        "Audio::~Audio");
     		    stop(); //<-- pointless
@@ -123,7 +123,7 @@ void Audio::playSong(String filename, Real volume)
 
         if (result != FMOD_OK)
 	    {
-        	Except( Exception::ERR_NOT_IMPLEMENTED, 
+        	Exception( Exception::ERR_NOT_IMPLEMENTED, 
         	    String("Error iniitalizing song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	        "Audio::playSong");
     		    stop();
@@ -133,7 +133,7 @@ void Audio::playSong(String filename, Real volume)
  		result = mSoundSystem->playSound(FMOD_CHANNEL_FREE, mSongStream, notPaused, &mSongChannel);
 		if (result != FMOD_OK)
 		{
-        	Except( Exception::ERR_NOT_IMPLEMENTED, 
+        	Exception( Exception::ERR_NOT_IMPLEMENTED, 
         	    String("Error playing song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	        "Audio::playSong");
     		stop();
@@ -168,7 +168,7 @@ int Audio::loadSound(String filename, bool isLong, bool loop)
 	
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error loading soound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::loadSound");
     		stop();
@@ -177,7 +177,7 @@ int Audio::loadSound(String filename, bool isLong, bool loop)
 	// error if not found
 	if (sound == 0 | result == FMOD_ERR_FILE_NOTFOUND) 
 	{
-		Except( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") + filename,
+		Exception( Exception::ERR_FILE_NOT_FOUND, String("Error: Sound file not found:") + filename,
 				"Audio::loadSound" );	
 	}
 
@@ -225,7 +225,7 @@ FMOD::Channel *Audio::playSound(int id, Vector3 pos)
 	result = mSoundSystem->playSound(FMOD_CHANNEL_FREE, sound, paused, &soundChannel);
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error playing sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::playSound");
     		stop();
@@ -235,7 +235,7 @@ FMOD::Channel *Audio::playSound(int id, Vector3 pos)
     result = soundChannel->set3DAttributes(&position, &velocity);
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error setting location of the sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::playSound");
     		stop();
@@ -245,7 +245,7 @@ FMOD::Channel *Audio::playSound(int id, Vector3 pos)
     result = soundChannel->setPaused(notPaused);	
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error actually playing the sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::playSound");
     		stop();
@@ -273,7 +273,7 @@ void Audio::setSoundPosition(FMOD::Channel *channel, Vector3 pos)
     result = channel->set3DAttributes(&position, &velocity);
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error setting location of the sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::setSoundPosition");
     		stop();
@@ -296,7 +296,7 @@ void Audio::stopSound(FMOD::Channel *channel)
 		result = channel->stop(); // this will free the channel, BTW
 		if (result != FMOD_OK)
 	    {
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error stopping a sound. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSound");
     		stop();// <-- pointless, really.
@@ -322,7 +322,7 @@ void Audio::stopSong()
 		result = mSongChannel->stop();
 		if (result != FMOD_OK)
 	    {
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error stopping the song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSong");
     		stop(); //<-- pointless, really.
@@ -330,7 +330,7 @@ void Audio::stopSong()
 		result = mSongStream->release();
 		if (result != FMOD_OK)
 	    {
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error cleaning up the song. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::stopSong");
     		stop();// <-- pointless, really.
@@ -384,7 +384,7 @@ void Audio::frame(Real time)
 		&listenerPosition, &velocity, &forward, &up);
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error setting location each frame. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::frame");
     		stop();
@@ -402,7 +402,7 @@ void Audio::frame(Real time)
 	result = mSoundSystem->update(); // new for fMod 4, must call once per frame.
 	if (result != FMOD_OK)
 	{
-    	Except( Exception::ERR_NOT_IMPLEMENTED, 
+    	Exception( Exception::ERR_NOT_IMPLEMENTED, 
     	    String("Error updating each frame. fMod had an error: ") + String(FMOD_ErrorString(result)),
     	    "Audio::frame");
     		stop(); // don't know about you, but a billion dupe errors on the console is shitty.
