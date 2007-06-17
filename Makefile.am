@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = src include
+SUBDIRS = src include Tests
 
 EXTRA_DIST = ogrian.spec ogrian.ico \
 	ogrian.cfg resources.cfg plugins.cfg \

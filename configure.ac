@@ -42,6 +42,6 @@ AC_SUBST(AM_CXXFLAGS, "$AM_CXXFLAGS")
 AC_SUBST(AM_LDFLAGS, "$AM_LDFLAGS")
 AC_SUBST(PKGDATADIR, "${datadir}/${PACKAGE}")
 
-AC_CONFIG_FILES([Makefile include/Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile include/Makefile src/Makefile Tests/Makefile])
 
 AC_OUTPUT
