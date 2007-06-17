@@ -121,19 +121,19 @@ private:
 	 * The name for the third configration file.
 	 * Currently this is "constants.cfg"
 	 **/
-	ConfigFile mFile1; 
+	ConfigFile mConstants; 
 	
 	/**
 	 * The name for the third configration file.
 	 * Currently this is "config.txt"
 	 **/
-	ConfigFile mFile2; 
+	ConfigFile mConfig; 
 	
 	/**
 	 * The name for the third configration file.
 	 * Currently this is "strings.txt"
 	 **/
-	ConfigFile mFile3;
+	ConfigFile mStrings;
 };
 
 }

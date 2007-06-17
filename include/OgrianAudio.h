@@ -32,7 +32,7 @@
 #include <fmod_errors.h>
 //this file is used to bypass the Ogrian*.h files, use this before testing 
 #ifdef USE_STUB_H 
-#include "../Patches/stub.hpp"
+#include "../Tests/stub.hpp"
 #else
 #include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
