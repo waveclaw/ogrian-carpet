@@ -1,0 +1,17 @@
+configure
+Makefile.in
+Makefile
+configure.in
+configure.stub
+configure.status
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+aclocal.m4
+autom4te.cache
+.deps
+config.guess
+config.status
+config.sub
