@@ -43,7 +43,7 @@ namespace Ogrian
  **/
 Multiplayer::Multiplayer()
 {
-	mIsActive = false;
+	mIsConnected = false;
 	// TODO - get these from CONI, CONS and CONB
 	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
 	mPort = CONI("PORT");
@@ -65,10 +65,11 @@ Multiplayer::Multiplayer()
  **/
 Multiplayer::~Multiplayer()
 {
-	if (mIsActive) {
+	if (mIsConnected) {
 		if (isConnected()) disconnect();
-		RakNetworkFactory::DestroyRakPeerInterface(mPeer);		
 	};
+	    mPeer->Shutdown(0,0); // wait 0 seconds, because we don't have a channel (0) to send notices out.
+		RakNetworkFactory::DestroyRakPeerInterface(mPeer);		
 } // end desctuctor
 
 /**
@@ -77,7 +78,7 @@ Multiplayer::~Multiplayer()
  **/
 void Multiplayer::disconnect()
 {
-	if (mIsActive) {
+	if (mIsConnected) {
 		if (mIsServer) {
 		// kick all players first
 		//serverSendAllText("kicked", ID_KICK);
@@ -85,7 +86,7 @@ void Multiplayer::disconnect()
 		};
 		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
 		 "Multiplayer::client");
-		mIsActive = false;					
+		mIsConnected = false;					
 	};
 } // end disconnect
 
@@ -113,7 +114,7 @@ bool Multiplayer::isClient()
  **/
 bool Multiplayer::isConnected()
 {
-		return(mIsActive); 
+		return(mIsConnected); 
 		// return mPeer->IsConnected(mAddress); <-- not what you think it is
 } // end isconnected
 
@@ -134,11 +135,11 @@ void Multiplayer::connect()
 		{
 			Exception(Exception::ERR_NOT_IMPLEMENTED,"Connected.",
 			 "Multiplayer::connect");
-			mIsActive = true;
+			mIsConnected = true;
 		} else {
 			Exception(Exception::ERR_INVALID_STATE,"Unable to connect.",
 			 "Multiplayer::connect");	
-			mIsActive = false;
+			mIsConnected = false;
 		};
 	}; // end if connected
 } //  end connect
@@ -149,15 +150,20 @@ void Multiplayer::connect()
  **/
 void Multiplayer::listen() 
 {
-	if (mIsActive) 
+	if (isConnected()) 
 	{
+		Exception(Exception::ERR_INVALID_STATE,"Already connected, use disconnect first! ",
+		 "Multiplayer::listen");			
+	} else {
 		if (mIsServer) 
 		{
-				connect();
+			mPeer->SetMaximumIncomingConnections(getMaxConnections());
+			mIsConnected = true;			
+			// connect();
 		} else {
 			Exception(Exception::ERR_INVALID_STATE,"Not a server, use connect! ",
 			 "Multiplayer::listen");			
-		}; // end if server
+		}; // end if server		
 	}; // end if active
 } // end listen
 
@@ -166,7 +172,7 @@ void Multiplayer::listen()
  **/
 void Multiplayer::startup(PeerType type) 
 {
-	if (mIsActive) {
+	if (mIsConnected) {
 		Exception(Exception::ERR_INVALID_STATE,
 			 "Starting client-server networking, but already started: ", 
 			 "Multiplayer::startup");		
@@ -176,34 +182,37 @@ void Multiplayer::startup(PeerType type)
 		case SERVER:
 		{
 			mIsServer = true;
-			*mSocket = SocketDescriptor(getPort(),getAddress());
-			if (!mMaxConnections) setMaxConnections(4); // TODO - get this from the map?
-			mPeer->Startup(mMaxConnections, mSleepTime, mSocket, mNumberPorts);
+			if (!mMaxConnections) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
+			mPeer->Startup(mMaxConnections, mSleepTime, &SocketDescriptor(getPort(),0), mNumberPorts);
 			Exception(Exception::ERR_NOT_IMPLEMENTED,
 			 "Starting client-server networking, set to server: ", 
 			 "Multiplayer::startup");
+			 break;
 		};
 		case CLIENT:
 		{
 			mIsServer = false;
-			*mSocket = SocketDescriptor();
-			setMaxConnections(0); // come-on people, nobody should be talking to you but the server.
-			mPeer->Startup(mMaxConnections,mSleepTime, mSocket, mNumberPorts);
+			
+			setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
+			mPeer->Startup(mMaxConnections,mSleepTime, &SocketDescriptor(), mNumberPorts);
 			Exception(Exception::ERR_NOT_IMPLEMENTED,
 			 "Starting client-server networking, set to server: ",
-			  "Multiplayer::startup");				
+			  "Multiplayer::startup");
+			  break;
 		};
 		case PEER2PEER:
 		{
 			Exception(Exception::ERR_INVALIDPARAMS,
 			 "P2P Not currently supported: ", "Multiplayer::client::startup");							
-			mIsActive = false;
+			mIsConnected = false;
+			 break;			
 		};
 		default:
 		{
 			Exception(Exception::ERR_INVALIDPARAMS,
 			 "Unsupported networking style.", "Multiplayer::startup");						
-			mIsActive = false;
+			mIsConnected = false;
+			 break;			
 		};
 	} // end which type
 	}; // end if active

@@ -27,24 +27,26 @@
 #define __OgrianMultiplayer_H__
 
 #include <Ogre.h>
-#ifdef USE_STUB_H
-#include "../Tests/stub.hpp"
-#else
-#include <OgreSingleton.h>
+//ifdef USE_STUB_H
+//include "../Tests/stub.hpp"
+//else
+#include <OgreSingleton.h>  // make sure your ldd and plugins.cfg are 'clean'
 #include <OgreException.h>
-#endif
+//endif
 using namespace Ogre;
 
 #include "RakNetworkFactory.h"
 #include "RakPeerInterface.h"
 #include "RakNetTypes.h"
-//include "MessageIdentifiers.h"
+//include "MessageIdentifiers.h" <-- incompatible with OgrianPacketEnum.h
 using namespace RakNet;
 
 #include "OgrianConst.h"
 #include "OgrianPacketEnum.h"
 #define UNASSIGNED_PLAYER_ID -1
 #define STRING_MAX_LENGTH 256
+#define DEFAULT_MAX_CONNECTIONS 10
+#define NO_REMOTE_CONNECTIONS 1
 
 namespace Ogrian
 {
@@ -137,14 +139,15 @@ public:
 	 
 private:
 	String* mAddress; // To force raknet to use INADDR_ANY set this.address to "".
-	SocketDescriptor* mSocket; // for debugging, really
 	unsigned short mPort;
 	unsigned short mMaxConnections;
 	int mSleepTime; // milliseconds
 	int mNumberPorts; // usually 1 or more, never 0
 	bool mIsServer;
-	bool mIsActive; 
-	RakPeerInterface* mPeer;		
+	bool mIsConnected; 
+	RakPeerInterface* mPeer;
+	Packet *mPacket; // current packet (see spin buffers)
+	//SpinBuffer<Packet*> mBuffer;		
 	Multiplayer();
 	
 }; // end class Multiplayer

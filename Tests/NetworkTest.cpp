@@ -18,31 +18,13 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *****************************************************************************/
 
-/**
+/** 
  * \note Usage
- *  In the src/ directory:
- * 1. copy or link this file and Patches/stub.cpp to the src directory.
- *    and make the header changes in ../include/OgrianAudio.h or -DUSE_STUB_H in 
- *    the Makefile
- * 2. build it's pre-req with
- * \code 
-  	make OgrianMultiplayer.o NetworkTest.o OgrianConst.o
- * \endcode
- * 3. link with
-  * \code 
-  	/bin/sh ../libtool --tag=CXX --mode=link g++ -DUSE_STUB_H -DOGRE_GUI_gtk \
-   -DOGRE_CONFIG_LITTLE_ENDIAN -I/usr/local/include \
-   -I/usr/local/include/OGRE   -I/usr/local/include/RakNet \
-   -I/usr/local/include   -I/usr/local/include/fmodex/   -I/usr/include/CEGUI \
-   -Wall -Wimplicit -Wunused -g -pg -g -O2 -L/usr/local/lib64 -lOgreMain \
-   -L/usr/local/lib64 -lRakNet -lpthread   -lfmodex64   -lCEGUIBase  \
-   -L/usr/local/lib64 -lOIS    -o test OgrianMultiplayer.o NetworkTest.o OgrianConst.o
- * \endcode   
- * 4. run the test with
- * \code
-   test
- * \endcode
- */
+ * Run two versions, one client and one server:
+ * ./NetworkTest 26000 s &
+ * ./NetworkTest 26000 c
+ * Yes, 26000 is the Quake port.
+ **/
 
 /**
  * \file NetworkTest.cpp
@@ -71,15 +53,18 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT unused)
 #include <stdlib.h>
 int main(int argc, char *argv[], char **envp)
 {
-	if (argc != 3) {
+	if (argc < 2) {
 		cout << "What to port on localhost to use?" << endl;
+	};
+	if (argc < 3) {
 		cout << "Server (s) or client (c)?" << endl;
 		return 1;
 	};
 #endif // #ifdef WIN32
 
-	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();	
-	char* address = ""; // force raknet to use INADDR_ANY
+	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();
+	//RakPeerInterface *peer = RakNetworkFactory::GetRakPeerInterface();	
+	char* address; 
 	unsigned short port;
 	bool isServer;	
 	
@@ -98,7 +83,7 @@ int main(int argc, char *argv[], char **envp)
 			isServer = false;
 		}
 	#else
-		port = (unsigned short) atoi(argv[1]); // get this from CONI("Port")
+		port = (unsigned short) atoi(argv[1]);
 		cout << "Using port: " << port << endl;
 		 //pid_t parent = fork();
 		 if ((argv[2][0] == 's')||(argv[2][0] == 'S')) {
@@ -112,13 +97,25 @@ int main(int argc, char *argv[], char **envp)
 
 	Multiplayer &peer = Multiplayer::getSingleton();
 	peer.setPort(port);
-	peer.setAddress(address);
 		 
 	if (isServer)
 	{
-		cout << "Starting server" << endl;
-		peer.startup(SERVER);
-		cout << "Stared server." << endl;
+		cout << "Starting server...";cout.flush();
+		address = "";// force raknet to use INADDR_ANY
+		peer.setAddress(address);
+		peer.startup(SERVER); //peer->Startup(MAX_CLIENTS, 30, &SocketDescriptor(SERVER_PORT,0), 1);
+		cout << "started server." << endl;
+		
+		cout << "Listening."; cout.flush();
+		peer.listen();
+		while (!peer.isConnected()) 
+		{
+			cout << ".";cout.flush();
+			sleep(1);
+		};
+		cout << "got a connection to listen!" << endl;
+		
+		
 	// TODO - Add code body here
 	
 /* batch processing of queue'd messages!
@@ -143,11 +140,26 @@ loop
 		generate a response multiplayer::message
 end loop after 10th round
 */
-	} else 
-	{
+ 	cout << "Quitting server...";cout.flush();
+	peer.disconnect();
+	cout << "quit server." << endl;
+
+	} else	{
 		cout << "Starting client" <<  endl;
-		peer.startup(CLIENT);
-		cout << "Started client." << endl;		
+		address = "127.0.0.1";// force raknet to use localhost
+		peer.setAddress(address);		
+		peer.startup(CLIENT); // 	peer->Startup(1,30,&SocketDescriptor(), 1);
+		cout << "Started client." << endl;
+		
+		cout << "Connecting...";cout.flush();
+		peer.connect();
+		if (peer.isConnected()) 
+		{
+			cout << "connected okay." << endl;
+		} else {
+			cout << "problem with connecting." << endl;
+		}; // end if connecting
+				
 		// TODO - Add code body here	
 /*if child (client) then
  	Create a multiplayer::client object
@@ -167,7 +179,9 @@ end loop after 10th round
  		send to server with multiplayer::client 
  end loop when kicked
  */ 
-
+ 	cout << "Quitting client." << endl;
+	peer.disconnect();
+	cout << "Quit client." << endl;
 	}; // end if server or client
 	
 	delete &peer; // force destroy to run.

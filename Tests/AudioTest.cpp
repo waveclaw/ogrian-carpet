@@ -20,25 +20,7 @@
 
 /**
  * \note Usage
- *  In the src/ directory:
- * 1. copy or link this file and Patches/stub.cpp to the src directory.
- *    and make the header changes in ../include/OgrianAudio.h or -DUSE_STUB_H in 
- *    the Makefile
- * 2. build it's pre-req with
- * \code 
-  	make OgrianAudio.o audioTest.o stub.o
- * \endcode
- * 3. link with
-  * \code 
-  	/bin/sh ../libtool --tag=CXX --mode=link g++ -DUSE_STUB_H -DOGRE_GUI_gtk \
-   -DOGRE_CONFIG_LITTLE_ENDIAN -I/usr/local/include \
-   -I/usr/local/include/OGRE   -I/usr/local/include/RakNet \
-   -I/usr/local/include   -I/usr/local/include/fmodex/   -I/usr/include/CEGUI \
-   -Wall -Wimplicit -Wunused -g -pg -g -O2 -L/usr/local/lib64 -lOgreMain \
-   -L/usr/local/lib64 -lRakNet -lpthread   -lfmodex64   -lCEGUIBase  \
-   -L/usr/local/lib64 -lOIS    -o test OgrianAudio.o audioTest.o stub.o
- * \endcode   
- * 4. run the test with
+ * Run the test with
  * \code
    test ../Media/sounds/hum1.wav ../Media/music/Bulerias.ogg
  * \endcode
