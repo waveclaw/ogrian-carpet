@@ -1,3 +1,21 @@
+/*****************************************************************************
+	Copyright 2007 Jeremiah Powell
+		
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This file is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this software; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*****************************************************************************/
+
 /**
  * This is the unit test for SpinBuffers.
  */
@@ -9,10 +27,11 @@
  * Based on work by Prashanth Hirematada, 
  * published in Dr. Dobbs Journal, July 2007 by CMP Media. 
  */
-#include "SpinBuffer.cpp"
+#include "SpinBuffer.h"
 #include <iostream>
 
 using namespace std;
+using namespace util;
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -27,9 +46,10 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT unused)
 int main(int argc, char *argv[], char **envp)
 #endif
 {
-	SpinBuffer<int> *integerBuffer1 = new SpinBuffer<int>();
+
+	SpinBuffer<int,500> *integerBuffer1 = new SpinBuffer<int,500>();
 	
-	SpinBuffer<char> *characterBuffer1 = new SpinBuffer<char>();
+	SpinBuffer<char, 100> *characterBuffer1 = new SpinBuffer<char, 100>();
 	SpinBuffer<char *> *strBuffer1 = new SpinBuffer<char *>();
 	cout << "Pre-allocation test....okay." << endl;
 
@@ -50,37 +70,91 @@ int main(int argc, char *argv[], char **envp)
 	cout << ".okay" << endl;
 			
     //Linear Puts
-	cout << "Testing linear puts on integers."; cout.flush();    
-    for (int i = 0;i < 32;i++) {
-    	integerBuffer1->put(i);
+	cout << "Testing linear puts on integers." << endl;
+   	try 
+   	{    
+    for (int i = 0;i < 25;i++)
+        integerBuffer1->put(i); 
     	cout <<".";cout.flush();
-    };
-    cout << ".okay" << endl;    
+   	}
+   	catch (outOfBuffersException &e) 
+   	{
+   		e.what();
+   	};
+    cout << ".okay" << endl;   	  
     	
-	cout << "Testing linear puts on characters."; cout.flush();    	
+	cout << "Testing linear puts on characters." << endl;    	
     char alphabet[27] = {'a','b','c','d','e','f','g','h','i','j','k',
     'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-    for (int i = 0;i < 27;i++) {
-    	characterBuffer1->put(alphabet[i]);
-		cout <<".";cout.flush();
-    };    	
+   	try 
+   	{
+    for (int i = 0;i < 6 && characterBuffer1->put(alphabet[i]);i++) 
+			cout <<".";cout.flush();
+   	//(void) characterBuffer1->get();
+   	for (int i = 6;i < 26 && characterBuffer1->put(alphabet[i]);i++) 
+			cout <<".";cout.flush();			
+   	}	
+   	catch (outOfBuffersException &e) 
+   	{
+   		e.what();
+   	};
     cout << ".okay" << endl;
+    
+	// content test
+    cout << "Testing raw output:" << endl;
+    //cout << characterBuffer1->ToString() << endl;
+    //cout << integerBuffer1->ToString() << endl;
     
     //Linear Gets
  	cout << "Testing linear gets on characters."; cout.flush();
-    while (!characterBuffer1->empty()) {
+    do
+    {
     	cout << characterBuffer1->get() << " ";cout.flush();
-    };    	
+    	//sleep(1);
+    } while (!characterBuffer1->empty());    	
     cout << ".okay" << endl;
 
 	cout << "Testing linear gets on integers."; cout.flush();
-	int crap;    
-    while (!integerBuffer1->empty()) {
-    	crap = integerBuffer1->get();
-    	cout << " " << &crap;cout.flush();    	 
-    };
-        cout << ".okay" << endl;
+	do    
+    {
+    	cout << " " << integerBuffer1->get();cout.flush();
+    	//sleep(1);    	    	 
+    } while (!integerBuffer1->empty());
+    cout << ".okay" << endl;
+        
+    //Buffered puts and gets
+    cout << "Testing buffered gets and puts on characters." << endl;
+   	try 
+   	{
+   	for (int i = 0;i < 27;i++) 
+	    {
+	    	cout << "Put " << alphabet[i];cout.flush();
+	    	(void) characterBuffer2->put(alphabet[i]);
+			cout << " and got " << characterBuffer2->get() << endl;			
+    	};
+   	}
+   	catch (exception &e) 
+   	{
+   		e.what();
+   	};    
+    cout << ".okay" << endl;   	
  
-    
+    cout << "Testing buffered gets and puts on integers." << endl;
+   	try 
+   	{
+    for (int i = 0;i < 32;i++) 
+	    {
+	    	cout << "Put " << i;cout.flush();
+	    	(void) integerBuffer2->put(i);
+			cout << " and got " << integerBuffer2->get() << endl;	
+			
+    	};
+   	}
+   	catch (exception &e) 
+   	{
+   		e.what();
+   	};    
+    cout << ".okay" << endl;
+        
     return 0;
 } // end main
