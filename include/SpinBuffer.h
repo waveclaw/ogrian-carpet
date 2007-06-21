@@ -94,7 +94,8 @@ class outOfBuffersException: public exception
  * and definition have to occur in this file, hence the .cpp.
  * You cannot belive the amount of duplication this causes.
  */
-template <class _ST, int _BS=NICE_BUFFER_SIZE> class SpinBuffer {
+template <class _ST, int _BS=NICE_BUFFER_SIZE> class SpinBuffer 
+{
     	_ST*   mArrayBuffer[SPIN_BUFFER_SIZE];
     	bool  mFree[SPIN_BUFFER_SIZE];
     	int   mBufferLowerBound[SPIN_BUFFER_SIZE];
@@ -141,7 +142,7 @@ template <class _ST, int _BS=NICE_BUFFER_SIZE> class SpinBuffer {
 		/**
 		 * Get a string image of this SpinBuffer
 		 **/	 	
-		string ToString(void);		
+		string str(void);		
 
 		/**
 		 * Write to the SpinBuffer
@@ -192,8 +193,22 @@ SpinBuffer<_ST,_BS>::~SpinBuffer(void)
  * Concat two SpinBuffers 
  **/	 	
 template<class _ST, int _BS>
-SpinBuffer<_ST, _BS>& SpinBuffer<_ST,_BS>::operator+(SpinBuffer<_ST, _BS> &right)
+SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator+(SpinBuffer<_ST, _BS> &right)
 {
+    for ( int i = 0; i < SPIN_BUFFER_SIZE; i++ ) 
+    {
+        for (int j = 0; j < _BS; j++) {
+        	try {
+        	put(new _ST(right.mArrayBuffer[i][j]));
+        	}
+        	catch (outOfBuffersException &e) 
+        	{
+#ifdef DEBUG
+        		cout << e.what() << endl;
+#endif        	
+        	} // end try
+        } // end inner for
+    }	// end outer for
 	return *this;
 } // end concat two SpinBuffers			
 
@@ -201,9 +216,21 @@ SpinBuffer<_ST, _BS>& SpinBuffer<_ST,_BS>::operator+(SpinBuffer<_ST, _BS> &right
  * Copy a SpinBuffer onto another SpinBuffer 
  **/	 	
 template<class _ST, int _BS>
-SpinBuffer<_ST, _BS>& SpinBuffer<_ST,_BS>::operator=(SpinBuffer<_ST, _BS> &right)
+SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator=(SpinBuffer<_ST, _BS> &right)
 {
-	return *right;
+	mWritePosition = right.mWritePosition;
+    mReadPosition = right.mReadPosition;
+    mPrimed = right.mPrimed;  
+    for ( int i=0; i<SPIN_BUFFER_SIZE; i++ ) 
+    {
+    	mFree[i] = right.mFree[i];
+        mBufferUpperBound[i] = right.mBufferUpperBound[i]; 
+        mBufferLowerBound[i] = right.mBufferLowerBound[i];
+        for (int j=0; j<_BS;j++)
+        	mArrayBuffer[i][j] = new _ST(right.mArrayBuffer[i][j]);
+        
+    }
+	return *this;
 } // end assign one SpinBuffer to another	
 
 /**
@@ -268,13 +295,13 @@ _ST SpinBuffer<_ST,_BS>::get(void) throw(emptyBufferException)
 	cout << endl;
 	cout <<	"Reading from " << mReadPosition << "," << mBufferLowerBound[mReadPosition] << 
 		" of " << mBufferUpperBound[mReadPosition] << " total." << endl;
-#endif	
-    _ST element = (_ST) NULL;
-    int next = (mReadPosition + 1) % SPIN_BUFFER_SIZE;    
+#endif
+		_ST* element = NULL;
+        int next = (mReadPosition + 1) % SPIN_BUFFER_SIZE;    
     if (mBufferLowerBound[mReadPosition] <= mBufferUpperBound[mReadPosition]) 
     {
     	// ooh! elements to read
-    	element = mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
+    	element = &mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
     	mBufferLowerBound[mReadPosition]++;
     } else {
        // this buffer is empty, check the next
@@ -295,18 +322,19 @@ _ST SpinBuffer<_ST,_BS>::get(void) throw(emptyBufferException)
    		   	mPrimed = false;
    		} else {
 	   	    // more itemz
-	    	element = mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
+	    	element = &mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
 	    	mBufferLowerBound[mReadPosition]++;
    		 } // end if all buffers empty
-    } // end if this array is empty
-    return element;
+    } // end if this array is empty   
+    return *element;    
 } // end get
 
 /**
  * Is this buffer full?
  **/
 template<class _ST, int _BS>
-bool SpinBuffer<_ST, _BS>::empty(void) {
+bool SpinBuffer<_ST, _BS>::empty(void)
+{
 	return (!mPrimed || (mReadPosition == mWritePosition && 
 		mBufferLowerBound[mReadPosition] == mBufferUpperBound[mWritePosition]));
 } // end empty
@@ -315,12 +343,31 @@ bool SpinBuffer<_ST, _BS>::empty(void) {
  * Is this buffer full?
  **/
 template<class _ST, int _BS>
-bool SpinBuffer<_ST, _BS>::full(void) {
+bool SpinBuffer<_ST, _BS>::full(void) 
+{
     int next = (mWritePosition+1)%SPIN_BUFFER_SIZE;	
 	return (!mFree[next] && _BS == mBufferUpperBound[mWritePosition]);
 } // end full
 
-
+/**
+ * Get a string image of this SpinBuffer
+ **/	 	
+template<class _ST, int _BS>
+string SpinBuffer<_ST, _BS>::str(void) 
+{
+	ostringstream description;
+	string desc;
+	description << "SpinBuffer: " << SPIN_BUFFER_SIZE << "x" << _BS << ",W" << 
+	mWritePosition << ",R" << mReadPosition << ",P" << mPrimed << ";";
+	for (int i = 0; i < SPIN_BUFFER_SIZE; i++) description << mFree[i] << ",";
+	for (int i = 0; i < SPIN_BUFFER_SIZE; i++) description << mBufferLowerBound[i] << ",";
+	for (int i = 0; i < SPIN_BUFFER_SIZE; i++) description << mBufferUpperBound[i] << ",";
+	//for (int i = 0; 0 < SPIN_BUFFER_SIZE; i++)
+	//	for (int j = 0; 0 < _BS; j++)	 	
+	// 	  	description << (char) mArrayBuffer[i][j];
+	desc = description.str();
+	return desc;    	   
+} // end ToString	
 } // end namespace util
 
 #endif

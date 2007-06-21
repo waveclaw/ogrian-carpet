@@ -102,8 +102,8 @@ int main(int argc, char *argv[], char **envp)
     
 	// content test
     cout << "Testing raw output:" << endl;
-    //cout << characterBuffer1->ToString() << endl;
-    //cout << integerBuffer1->ToString() << endl;
+    cout << characterBuffer1->str() << endl;
+    cout << integerBuffer1->str() << endl;
     
     //Linear Gets
  	cout << "Testing linear gets on characters."; cout.flush();
@@ -156,5 +156,39 @@ int main(int argc, char *argv[], char **envp)
    	};    
     cout << ".okay" << endl;
         
+cout << "Testing buffered gets and puts on char pointers." << endl;
+	char *strStuff = "nasty!";
+   	try 
+   	{
+   	for (int i = 0;i < 2;i++) 
+	    {
+	    	cout << "Put " << strStuff;cout.flush();
+	    	(void) strBuffer1->put(strStuff);
+			cout << " and got " << strBuffer1->get() << endl;			
+    	};
+   	}
+   	catch (exception &e) 
+   	{
+   		e.what();
+   	};    
+    cout << ".okay" << endl;
+    
+cout << "Testing buffered gets and puts on strings." << endl;
+	string struff = "funky!";
+   	try 
+   	{
+   	for (int i = 0;i < 2;i++) 
+	    {
+	    	cout << "Put " << struff;cout.flush();
+	    	(void) stringsBuffer1->put(struff);
+			cout << " and got " << stringsBuffer1->get() << endl;			
+    	};
+   	}
+   	catch (exception &e) 
+   	{
+   		e.what();
+   	};    
+    cout << ".okay" << endl;
+        	          
     return 0;
 } // end main
