@@ -33,8 +33,10 @@
 
 using namespace std;
 
-namespace util {
 #define SPIN_BUFFER_SIZE 3
+#define NICE_BUFFER_SIZE 5
+
+namespace util {
 
 /* \class noSuchBuffer SpinBuffer.hpp "include/SpinBuffer.hpp"
  * \brief implements an exception for noSuchBuffer
@@ -87,11 +89,18 @@ class outOfBuffersException: public exception
 /* \class SpinBuffer SpinBuffer.hpp "include/SpinBuffer.hpp"
  * \brief implements a SpinBuffer
  * This is a template specialization of the SpinBuffer, so implementation
- * and definition have to occur in this file, hence the .hpp.
+ * and definition have to occur in this file, hence the .cpp.
  * You cannot belive the amount of duplication this causes.
  */
-template <class _ST, int _BS=5> class SpinBuffer {
-	public:
+template <class _ST, int _BS=NICE_BUFFER_SIZE> class SpinBuffer {
+    	_ST*   mArrayBuffer[SPIN_BUFFER_SIZE];
+    	bool  mFree[SPIN_BUFFER_SIZE];
+    	int   mBufferLowerBound[SPIN_BUFFER_SIZE];
+    	int   mBufferUpperBound[SPIN_BUFFER_SIZE];
+    	int   mWritePosition;
+    	int   mReadPosition;
+    	bool  mPrimed;
+    public:
 		/**
 		 * Create a SpinBuffer
 		 **/
@@ -135,305 +144,180 @@ template <class _ST, int _BS=5> class SpinBuffer {
 		/**
 		 * Write to the SpinBuffer
 		 **/		
-		void put(_ST) throw(outOfBuffersException);
+		bool put(_ST) throw(outOfBuffersException);
 
 		/**
 		 * Read, destructively, a SpinBuffer
 		 * @exception Throws an exception if the buffer is empty.
 		 **/		
 		_ST get(void) throw(emptyBufferException);
+}; // end class SpinBuffer
 
-		/**
-		 * Examine a SpinBuffer without destroying 
-		 * @exception Throws an exception if the buffer is empty.
-		 **/
-		_ST peek(void) throw(emptyBufferException);
-	protected:
-		/**
-		 * Internal only use.  Reorder the buffers by inserting this item into buffer int.
-		 * @exception Throws an expception if the indicated buffer is outside the valid range for this spinBuffer. 
-		 **/	
-		void poke(_ST, int) throw(noSuchBufferException);
-	private:
-		/**
-		 *\note
-		 * The 3 buffers:
-		 * 	a. The buffer of 0 is 1
-		 *  b. The buffer of 1 is 2
-		 *  c. The buffer of 2 is 0 
-		 * Hence 'Spin' buffered.
-		 **/
-		_ST* mOrderedBuffer[SPIN_BUFFER_SIZE];
-		int mReadPtr;
-		int mWritePtr;
-		int ArrayIndex[SPIN_BUFFER_SIZE];
-}; // end PacketSpinBuffer
-
-//-------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 /**
  * Create a SpinBuffer
  **/
 template<class _ST, int _BS>
-SpinBuffer<_ST, _BS>::SpinBuffer() {
-	mReadPtr = mWritePtr = 0;
-	for (int i = 0;i < SPIN_BUFFER_SIZE;i++) 
-	{
-		mOrderedBuffer[i] = new _ST[_BS]; // yes, this is silly
-		ArrayIndex[i] = 0;
-	};
-	//put((_ST) NULL);// <-- prime the pump
-	//mWritePtr = (mWritePtr + 1) % SPIN_BUFFER_SIZE; // <-- prime the pump
-#ifdef DEBUG	
-	cout << "util::SpinBuffer::SpinBuffer: created a new SpinBuffer" << endl;
-#endif
-}; // end constructor
+SpinBuffer<_ST,_BS>::SpinBuffer() 
+{
+    mWritePosition = 0;
+    mReadPosition = 0;  
+    for ( int i=0; i<SPIN_BUFFER_SIZE; i++ ) 
+    {
+    	mFree[i] = true;
+        mBufferUpperBound[i] = mBufferLowerBound[i] = 0;
+        mArrayBuffer[i] = new _ST[_BS];
+    }
+    mPrimed = mFree[0] = false;
+} // end new SpinBuffer
 
 /**
  * Destroy a SpinBuffer
- **/
-template<class _ST, int _BS>
-SpinBuffer<_ST, _BS>::~SpinBuffer(void) {
-	mReadPtr = mWritePtr = 0;
-	for (int i = 0;i < SPIN_BUFFER_SIZE;i++) {
-		mOrderedBuffer[i].clear();
-	};	
-	delete [] mOrderedBuffer;
-#ifdef DEBUG
-		cout << "util::SpinBuffer::~SpinBuffer: Deleted SpinBuffer." << endl;
-#endif
-}; // end delete
-
-/**
- * Get a string image of this SpinBuffer
- **/
-template<class _ST, int _BS>	 	
-string SpinBuffer<_ST, _BS>::ToString(void) {
-	ostringstream description;
-	description << "SpinBuffer: reading at " << mReadPtr << ", writing to " <<
-	 mWritePtr << ", with buffers of: ";
-	 for (int i = 0;i < SPIN_BUFFER_SIZE;i++) 
-	 {
-	 	description << " " << ArrayIndex[i];
-	 }; 
-	 for (int i = 0;i < SPIN_BUFFER_SIZE;i++) 
-	 {  
-	 	for (int j = 0;j < ArrayIndex[i];j++)
-	 	{
-	 		if ((_ST) NULL != mOrderedBuffer[i][j]) 
-	 			description << 	" " << mOrderedBuffer[i][j];
-	 	}
-	 }
-	string desc = description.str(); 		
-#ifdef DEBUG	 		
-	 cout << "util::SpinBuffer::SpinBuffer: Convert to string:" << desc << endl;
-#endif	 
-	 return desc;
-
-}; // end ToString		
+ **/	 	
+ template<class _ST, int _BS>
+SpinBuffer<_ST,_BS>::~SpinBuffer(void)
+{
+	delete [] mFree, mBufferLowerBound, mBufferUpperBound;
+    for ( int i=0; i<SPIN_BUFFER_SIZE; i++ ) 
+    {
+        delete [] mArrayBuffer[i];
+    };	
+    delete [] mArrayBuffer;
+} // end destroy SpinBuffer
 
 /**
  * Concat two SpinBuffers 
  **/	 	
-template<class _ST, int _BS> 
-SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator+(SpinBuffer<_ST, _BS>& right) 
+template<class _ST, int _BS>
+SpinBuffer<_ST, _BS>& SpinBuffer<_ST,_BS>::operator+(SpinBuffer<_ST, _BS> &right)
 {
-	try {
-		//get everything in the read buffer, in reading order
-		for (int i = right.mReadPtr; i < right.arrayIndex[right.mReadPtr];i++) {
-			if ((_ST) NULL != right.mOrderedBuffer[right.mReadPtr][i]) {
-				put(right.mOrderedBuffer[right.mReadPtr][i]);
-			}; // if item not null, copy it
-		}; // for each possible item
-		// get everything that was written, but not read
-		for (int i = right.mWritePtr; i >= 0;i--) {
-			if ((_ST) NULL != right.mOrderedBuffer[right.mWritePtr][i]) {
-				put(right.mOrderedBuffer[right.mWritePtr][i]);
-			}; // if item not null, copy it
-		}; // for each possible item		  
-		 // who cares about the free buffers!!!		 
-	}
-	catch (exception &e) {
-		// cout << e.what() << endl;
-	};
-#ifdef DEBUG	
-	cout << "util::SpinBuffer::operator+: Adding two SpinBuffers" <<  endl;
-#endif	
-	return *this;	
-}; // end operator+
+	return *this;
+} // end concat two SpinBuffers			
 
 /**
  * Copy a SpinBuffer onto another SpinBuffer 
  **/	 	
-template<class _ST, int _BS> 
-SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator=(SpinBuffer<_ST, _BS> &right) 
+template<class _ST, int _BS>
+SpinBuffer<_ST, _BS>& SpinBuffer<_ST,_BS>::operator=(SpinBuffer<_ST, _BS> &right)
 {
-	mWritePtr = right.mWritePtr;
-	mReadPtr = right.mReadPtr;
-	ArrayIndex = right.ArrayIndex;
-	try {	
-	for (int i = 0;i < SPIN_BUFFER_SIZE;i++) 
-		mOrderedBuffer[i] = right.mOrderedBuffer[i];
-	}
-	catch (exception &e) {
-#ifdef DEBUG		
-		cout << e.what() << endl;
-#endif		
-	};
-#ifdef DEBUG
-	cout << "util::SpinBuffer::operator=: assignment called."<< endl;
-#endif
-	return *this; 
-}; // end operator=		
-	
+	return *right;
+} // end assign one SpinBuffer to another	
 
 /**
- * Is this buffer empty?
- **/	 	
-template<class _ST, int _BS>
-bool SpinBuffer<_ST, _BS>::empty(void) {
-	bool result = (_BS == (1 + ArrayIndex[mWritePtr]) &&
-   	 mReadPtr == ((mWritePtr + 1) % SPIN_BUFFER_SIZE));
-		if (!result) {	
-#ifdef DEBUG
-	cout << "util::SpinBuffer::empty: buffer IS empty." << endl;
-#endif	
-			return true;
-		} else {
-#ifdef DEBUG
-	cout << "util::SpinBuffer::empty: buffer NOT empty. At least " <<
-	ArrayIndex[mReadPtr] << " items left." << endl;
-#endif				
-			return false;
-		};
-} // end empty		
-	
-/**
- * Is this buffer full?
- **/	 	
-template<class _ST, int _BS>
-bool SpinBuffer<_ST, _BS>::full(void) {
-	bool result = (_BS == (1 + ArrayIndex[mWritePtr]) &&
-   	 mReadPtr == ((mWritePtr + 1) % SPIN_BUFFER_SIZE));
-		if (result) {	
-#ifdef DEBUG
-	cout << "util::SpinBuffer::full: buffer IS full." << endl;
-#endif	
-			return true;
-		} else {
-#ifdef DEBUG
-	cout << "util::SpinBuffer::full: buffer NOT full." << endl;
-#endif				
-			return false;
-		};
-} // end full
-	
-/**
- * Write to the SpinBuffer
- **/		
-template<class _ST, int _BS>
-void SpinBuffer<_ST, _BS>::put(_ST element) throw(outOfBuffersException) 
-{
-	// a consuquence of using fix-sized arrays
-   	//if (full()) { throw(outOfBuffers); return;};
-   	if (full()) return;
-   /**
-    * 1. Put the item into the write buffer.
-    * 2. If the next buffer is free, 
-    * 	make the free buffer become the write buffer, 
-    * 	and the current write buffer becomes free.
-    **/
-    int i = (mWritePtr + 1) % SPIN_BUFFER_SIZE;
-   	mOrderedBuffer[mWritePtr][ArrayIndex[mWritePtr]] = element;
-#ifdef DEBUG   	
-   	cout << "util:SpinBuffer::put: Added item. Writing at buffer " << 
-   	 mWritePtr << " and at array pos " << ArrayIndex[mWritePtr] << endl;
-#endif  	
-   	// march along the array
-   	ArrayIndex[mWritePtr] = (ArrayIndex[mWritePtr] + 1) % _BS;
-   	if (mReadPtr != i && 0 == ArrayIndex[mWritePtr]) 
-   	{ 
-   		// moving to the next buffer, clear out
-   		mWritePtr = i; 
-   		//ArrayIndex[mWritePtr] = 0;
-   	};   		
-}; // end put
-
-/**
- * Read, destructively, a SpinBuffer
- **/		
-template<class _ST, int _BS>
-_ST SpinBuffer<_ST, _BS>::get(void) throw(emptyBufferException) 
-{
-	//if (empty()) throw(emptyBuffer);
-	try {
-	/**
-	 *  1. Read the item from the read buffer.
-	 *  2. If the current read buffer is empty 
-	 * 		and the next buffer is free, 
-	 * 		make the next buffer the read buffer, 
-	 * 		and the current read buffer becomes free.
-	 **/
-		_ST element = mOrderedBuffer[mReadPtr][ArrayIndex[mReadPtr]];
-		mOrderedBuffer[mReadPtr][ArrayIndex[mReadPtr]] = (_ST) NULL;
-		// march along the array
-		ArrayIndex[mWritePtr] = (ArrayIndex[mWritePtr] + 1) % _BS; 
-		int i = (mReadPtr + 1) % SPIN_BUFFER_SIZE;		
-		if (mWritePtr != i) {
-			mReadPtr = i;
-			ArrayIndex[mWritePtr] = 0;
-		};
-#ifdef DEBUG		
-   		cout << "util::SpinBuffer::get: Returning item " << element << 
-   		  " from Buffer " << mReadPtr << " at pos " << ArrayIndex[mReadPtr] << endl;
-#endif		
-		return element;			
-	 }
-    catch (exception& e)
-	{
-#ifdef DEBUG		
-		cout << e.what() << endl;
-#endif		
-	}
-}; // end get
-/**
- * Examine a SpinBuffer without destroying 
+ * Add an item to the buffer
+ * The SpinBuffer algorithm for puts is:
+ * 	1.	Put the Item into the write buffer
+ *  2.	If the next buffer is free, make the free buffer the write buffer
+ *  	 and make the old write buffer the free buffer
  **/
 template<class _ST, int _BS>
-_ST SpinBuffer<_ST, _BS>::peek(void) throw(emptyBufferException) 
+bool SpinBuffer<_ST,_BS>::put(_ST element) throw(outOfBuffersException)
 {
-	if (0 == ArrayIndex[mReadPtr] &&
-	  (_ST) NULL == mOrderedBuffer[mReadPtr][ArrayIndex[mReadPtr]]) throw(emptyBuffer);
-#ifdef DEBUG	  
-   	cout << "util::SpinBuffer::peek: Examined item " << endl;
-#endif   		  
-	return mOrderedBuffer[mReadPtr][ArrayIndex[mReadPtr]];
-}; //end peek		
+#ifdef DEBUG
+	cout << endl;
+	cout <<	"Writing to " << mWritePosition << "," << mBufferUpperBound[mWritePosition] << endl;
+#endif
+ 	if (mPrimed) 
+ 	{
+ 		if (full()) 
+ 		{
+#ifdef DEBUG
+	cout << endl;
+	cout <<	"Writing to full buffers" << endl;
+#endif	 			
+ 			// throw(outOfBuffers);
+ 			return false;
+ 		};
+		mArrayBuffer[mWritePosition][mBufferUpperBound[mWritePosition]] = element;
+ 		int next = (mWritePosition + 1) % SPIN_BUFFER_SIZE;
+ 		if (mFree[next]) 
+ 		{
+ 			// move to next buffer
+ 			mFree[mWritePosition] = true;
+ 			mFree[next] = false;
+ 			mWritePosition = next; 			 
+ 		} else {
+ 			// stick it in the next part of this buffer
+ 			mBufferUpperBound[mWritePosition]++;
+ 		}; 				
+ 	} else {
+ 		// need to drop off an item for get() while we move along
+ 		mPrimed = true;
+ 		mArrayBuffer[mWritePosition][mBufferUpperBound[mWritePosition]] = element;
+ 		//mBufferUpperBound[mWritePosition]++; // means we leave behind upper bounds == _BS
+ 		mWritePosition++;
+ 	};
+    return true;
+} // end put
 
 /**
- * Internal only use.  Reorder the buffers by inserting this item. 
- **/	
-template<class _ST, int _BS> 
-void SpinBuffer<_ST, _BS>::poke(_ST element, int pos) throw(noSuchBufferException) 
+ * Get an item out of the buffer
+ * The SpinBuffer algorithm is
+ *  1.	Read the item from the read buffer
+ *  2.	If the urrent read buffer is empty and the next buffer is free,
+ * 			make the next bufer the read buffer and the old read buffer
+ * 			becomes the free buffer.
+ **/
+template<class _ST, int _BS>
+_ST SpinBuffer<_ST,_BS>::get(void) throw(emptyBufferException)
 {
-	if ((0 <= pos) && (pos < SPIN_BUFFER_SIZE)) {
-		try {
-#ifdef DEBUG			
-		cout << "util::SpinBufer::poke: Inserted item "  << endl;
-#endif
-		mOrderedBuffer[pos][ArrayIndex[mWritePtr]] = element;
-		ArrayIndex[mWritePtr] = (ArrayIndex[mWritePtr] + 1) % _BS;
-		} 
-	    catch (exception& e)
-  		{
-#ifdef DEBUG		
-		cout << e.what() << endl;
-#endif		
-  		}
-	} else {
-		throw(noSuchBuffer);
-	};
-}; // end poke
+#ifdef DEBUG
+	cout << endl;
+	cout <<	"Reading from " << mReadPosition << "," << mBufferLowerBound[mReadPosition] << 
+		" of " << mBufferUpperBound[mReadPosition] << " total." << endl;
+#endif	
+    _ST element = (_ST) NULL;
+    int next = (mReadPosition + 1) % SPIN_BUFFER_SIZE;    
+    if (mBufferLowerBound[mReadPosition] <= mBufferUpperBound[mReadPosition]) 
+    {
+    	// ooh! elements to read
+    	element = mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
+    	mBufferLowerBound[mReadPosition]++;
+    } else {
+       // this buffer is empty, check the next
+    	mBufferLowerBound[mReadPosition] = mBufferUpperBound[mReadPosition] = 0;       
+    	//if (mFree[next]) 
+    	mFree[mReadPosition] = true;
+    	mFree[next] = false;
+    	mReadPosition = next; // we've moved forward, possible into the write buffer
+    	mBufferLowerBound[mReadPosition] = 0;
+   		if (empty())
+   		{
+   		    	// else return NULL, we're empty
+#ifdef DEBUG
+	cout << endl;
+	cout <<	"Reading from empty buffers" << endl;
+#endif	
+   		 	// throw(emptyBuffers);
+   		   	mPrimed = false;
+   		} else {
+	   	    // more itemz
+	    	element = mArrayBuffer[mReadPosition][mBufferLowerBound[mReadPosition]];
+	    	mBufferLowerBound[mReadPosition]++;
+   		 } // end if all buffers empty
+    } // end if this array is empty
+    return element;
+} // end get
+
+/**
+ * Is this buffer full?
+ **/
+template<class _ST, int _BS>
+bool SpinBuffer<_ST, _BS>::empty(void) {
+	return (!mPrimed || (mReadPosition == mWritePosition && 
+		mBufferLowerBound[mReadPosition] == mBufferUpperBound[mWritePosition]));
+} // end empty
+
+/**
+ * Is this buffer full?
+ **/
+template<class _ST, int _BS>
+bool SpinBuffer<_ST, _BS>::full(void) {
+    int next = (mWritePosition+1)%SPIN_BUFFER_SIZE;	
+	return (!mFree[next] && _BS == mBufferUpperBound[mWritePosition]);
+} // end full
+
 
 } // end namespace util
 
