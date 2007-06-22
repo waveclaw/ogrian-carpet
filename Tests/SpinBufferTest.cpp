@@ -71,33 +71,21 @@ int main(int argc, char *argv[], char **envp)
 			
     //Linear Puts
 	cout << "Testing linear puts on integers." << endl;
-   	try 
-   	{    
     for (int i = 0;i < 25;i++)
         integerBuffer1->put(i); 
     	cout <<".";cout.flush();
-   	}
-   	catch (outOfBuffersException &e) 
-   	{
-   		e.what();
-   	};
     cout << ".okay" << endl;   	  
     	
 	cout << "Testing linear puts on characters." << endl;    	
     char alphabet[27] = {'a','b','c','d','e','f','g','h','i','j','k',
     'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-   	try 
-   	{
+
     for (int i = 0;i < 6 && characterBuffer1->put(alphabet[i]);i++) 
 			cout <<".";cout.flush();
    	//(void) characterBuffer1->get();
    	for (int i = 6;i < 26 && characterBuffer1->put(alphabet[i]);i++) 
 			cout <<".";cout.flush();			
-   	}	
-   	catch (outOfBuffersException &e) 
-   	{
-   		e.what();
-   	};
+
     cout << ".okay" << endl;
     
 	// content test
@@ -124,36 +112,22 @@ int main(int argc, char *argv[], char **envp)
         
     //Buffered puts and gets
     cout << "Testing buffered gets and puts on characters." << endl;
-   	try 
-   	{
    	for (int i = 0;i < 27;i++) 
 	    {
 	    	cout << "Put " << alphabet[i];cout.flush();
 	    	(void) characterBuffer2->put(alphabet[i]);
 			cout << " and got " << characterBuffer2->get() << endl;			
     	};
-   	}
-   	catch (exception &e) 
-   	{
-   		e.what();
-   	};    
     cout << ".okay" << endl;   	
  
     cout << "Testing buffered gets and puts on integers." << endl;
-   	try 
-   	{
     for (int i = 0;i < 32;i++) 
 	    {
 	    	cout << "Put " << i;cout.flush();
 	    	(void) integerBuffer2->put(i);
 			cout << " and got " << integerBuffer2->get() << endl;	
 			
-    	};
-   	}
-   	catch (exception &e) 
-   	{
-   		e.what();
-   	};    
+    	};  
     cout << ".okay" << endl;
         
 cout << "Testing buffered gets and puts on char pointers." << endl;

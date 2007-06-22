@@ -40,54 +40,6 @@ using namespace std;
 
 namespace util {
 
-/* \class noSuchBuffer SpinBuffer.h "include/SpinBuffer.h"
- * \brief implements an exception for noSuchBuffer
- * This is an exception for SpinBuffer.
- **/
-class noSuchBufferException: public exception
-{
-	public:
-  	/**
-  	 * Mandatory throw function
-  	 **/ 
-  	virtual const char* what() const throw()
-  	{
-	    return "Buffer Position requested outside limit.";
-  	}
-} noSuchBuffer;
-
-/* \class emptyBufferException SpinBuffer.h "include/SpinBuffer.h"
- * \brief implements an exception for emptyBuffers
- * This is an exception for SpinBuffer.
- **/
-class emptyBufferException: public exception
-{
-	public:
-  	/**
-  	 * Mandatory throw function
-  	 **/ 
-  	virtual const char* what() const throw()
-  	{
-	    return "All buffers are empty.";
-  	}
-} emptyBuffer;
-
-/* \class outOfBuffersException SpinBuffer.h "include/SpinBuffer.h"
- * \brief implements an exception for running out of buffers
- * This is an exception for SpinBuffer.
- **/
-class outOfBuffersException: public exception
-{
-	public:	
-  	/**
-  	 * Mandatory throw function
-  	 **/ 
-  	virtual const char* what() const throw()
-  	{
-	    return "Cannot add anything else, all buffers are used.";
-  	}
-} outOfBuffers;
-
 /* \class SpinBuffer SpinBuffer.h "include/SpinBuffer.h"
  * \brief implements a SpinBuffer
  * This is a template specialization of the SpinBuffer, so implementation
@@ -147,13 +99,13 @@ template <class _ST, int _BS=NICE_BUFFER_SIZE> class SpinBuffer
 		/**
 		 * Write to the SpinBuffer
 		 **/		
-		bool put(_ST) throw(outOfBuffersException);
+		bool put(_ST);
 
 		/**
 		 * Read, destructively, a SpinBuffer
 		 * @exception Throws an exception if the buffer is empty.
 		 **/		
-		_ST get(void) throw(emptyBufferException);
+		_ST get(void);
 }; // end class SpinBuffer
 
 //-----------------------------------------------------------------------------
@@ -181,7 +133,9 @@ SpinBuffer<_ST,_BS>::SpinBuffer()
  template<class _ST, int _BS>
 SpinBuffer<_ST,_BS>::~SpinBuffer(void)
 {
-	delete [] mFree, mBufferLowerBound, mBufferUpperBound;
+	delete [] mFree;
+	delete [] mBufferLowerBound;
+	delete [] mBufferUpperBound;
     for ( int i=0; i<SPIN_BUFFER_SIZE; i++ ) 
     {
         delete [] mArrayBuffer[i];
@@ -198,15 +152,7 @@ SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator+(SpinBuffer<_ST, _BS> &righ
     for ( int i = 0; i < SPIN_BUFFER_SIZE; i++ ) 
     {
         for (int j = 0; j < _BS; j++) {
-        	try {
         	put(new _ST(right.mArrayBuffer[i][j]));
-        	}
-        	catch (outOfBuffersException &e) 
-        	{
-#ifdef DEBUG
-        		cout << e.what() << endl;
-#endif        	
-        	} // end try
         } // end inner for
     }	// end outer for
 	return *this;
@@ -241,7 +187,7 @@ SpinBuffer<_ST, _BS>& SpinBuffer<_ST, _BS>::operator=(SpinBuffer<_ST, _BS> &righ
  *  	 and make the old write buffer the free buffer
  **/
 template<class _ST, int _BS>
-bool SpinBuffer<_ST,_BS>::put(_ST element) throw(outOfBuffersException)
+bool SpinBuffer<_ST,_BS>::put(_ST element)
 {
 #ifdef DEBUG
 	cout << endl;
@@ -289,7 +235,7 @@ bool SpinBuffer<_ST,_BS>::put(_ST element) throw(outOfBuffersException)
  * 			becomes the free buffer.
  **/
 template<class _ST, int _BS>
-_ST SpinBuffer<_ST,_BS>::get(void) throw(emptyBufferException)
+_ST SpinBuffer<_ST,_BS>::get(void)
 {
 #ifdef DEBUG
 	cout << endl;

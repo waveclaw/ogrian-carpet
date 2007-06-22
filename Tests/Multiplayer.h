@@ -27,12 +27,9 @@
 #define __OgrianMultiplayer_H__
 
 #include <Ogre.h>
-//ifdef USE_STUB_H
-//include "../Tests/stub.hpp"
-//else
 #include <OgreSingleton.h>  // make sure your ldd and plugins.cfg are 'clean'
 #include <OgreException.h>
-//endif
+
 using namespace Ogre;
 
 #include "RakNetworkFactory.h"
@@ -40,6 +37,10 @@ using namespace Ogre;
 #include "RakNetTypes.h"
 //include "MessageIdentifiers.h" <-- incompatible with OgrianPacketEnum.h
 using namespace RakNet;
+
+#include "SpinBuffer.h"
+
+using namespace util;
 
 #include "OgrianConst.h"
 #include "OgrianPacketEnum.h"
@@ -146,8 +147,9 @@ private:
 	bool mIsServer;
 	bool mIsConnected; 
 	RakPeerInterface* mPeer;
-	Packet *mPacket; // current packet (see spin buffers)
-	//SpinBuffer<Packet*> mBuffer;		
+	//Packet *mPacket; // current packet (see spin buffers)
+	SpinBuffer<Packet *,500> *mInputBuffer;
+	SpinBuffer<Packet *,500> *mOutputBuffer;	
 	Multiplayer();
 	
 }; // end class Multiplayer

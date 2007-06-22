@@ -68,8 +68,10 @@ Multiplayer::~Multiplayer()
 	if (mIsConnected) {
 		if (isConnected()) disconnect();
 	};
-	    mPeer->Shutdown(0,0); // wait 0 seconds, because we don't have a channel (0) to send notices out.
-		RakNetworkFactory::DestroyRakPeerInterface(mPeer);		
+	mPeer->Shutdown(0,0); // wait 0 seconds, because we don't have a channel (0) to send notices out.
+	RakNetworkFactory::DestroyRakPeerInterface(mPeer);
+	delete mInputBuffer;
+	delete mOutputBuffer;
 } // end desctuctor
 
 /**
