@@ -28,7 +28,7 @@
  * \autho Mike Prosser <mikeprosser@gmail.com>, Jeremiah Powell <waveclaw@hot_nospam_mail.com>
  * \brief Handles all of the multiplayer networking code.
  **/
-#include "../Tests/Multiplayer.h"
+#include "Multiplayer.h"
 
 
 using namespace Ogre;
@@ -184,8 +184,9 @@ void Multiplayer::startup(PeerType type)
 		case SERVER:
 		{
 			mIsServer = true;
+			mSocket = SocketDescriptor(getPort(),0);
 			if (!mMaxConnections) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
-			mPeer->Startup(mMaxConnections, mSleepTime, &SocketDescriptor(getPort(),0), mNumberPorts);
+			mPeer->Startup(mMaxConnections, mSleepTime, &mSocket, mNumberPorts);
 			Exception(Exception::ERR_NOT_IMPLEMENTED,
 			 "Starting client-server networking, set to server: ", 
 			 "Multiplayer::startup");
@@ -194,9 +195,9 @@ void Multiplayer::startup(PeerType type)
 		case CLIENT:
 		{
 			mIsServer = false;
-			
+			mSocket = SocketDescriptor();
 			setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
-			mPeer->Startup(mMaxConnections,mSleepTime, &SocketDescriptor(), mNumberPorts);
+			mPeer->Startup(mMaxConnections,mSleepTime, &mSocket, mNumberPorts);
 			Exception(Exception::ERR_NOT_IMPLEMENTED,
 			 "Starting client-server networking, set to server: ",
 			  "Multiplayer::startup");

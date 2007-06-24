@@ -33,7 +33,7 @@
  * Unit testing the Network system can use either the existing system or
  * the stub system.  To use the stub system, define USE_STUB_H when compling. 
  */
-#include "../Tests/Multiplayer.h"
+#include "Multiplayer.h"
 #include <iostream>
 
 using namespace std;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[], char **envp)
 		
 		cout << "Listening."; cout.flush();
 		peer.listen();
-		while (!peer.isConnected()) 
+		while (true) // !peer.isConnected()) 
 		{
 			cout << ".";cout.flush();
 			sleep(1);
@@ -183,8 +183,9 @@ end loop after 10th round
 	peer.disconnect();
 	cout << "Quit client." << endl;
 	}; // end if server or client
-	
-	delete &peer; // force destroy to run.
+
+	// cannot do this with a reference	
+	//delete peer; // force destroy to run.
 
     return 0;
 }

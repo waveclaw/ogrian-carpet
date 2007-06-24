@@ -39,6 +39,7 @@ using namespace Ogre;
 using namespace RakNet;
 
 #include "SpinBuffer.h"
+#include <stdlib.h>
 
 using namespace util;
 
@@ -147,6 +148,7 @@ private:
 	bool mIsServer;
 	bool mIsConnected; 
 	RakPeerInterface* mPeer;
+	SocketDescriptor mSocket;
 	//Packet *mPacket; // current packet (see spin buffers)
 	SpinBuffer<Packet *,500> *mInputBuffer;
 	SpinBuffer<Packet *,500> *mOutputBuffer;	
