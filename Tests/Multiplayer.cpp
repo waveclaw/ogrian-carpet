@@ -28,7 +28,7 @@
  * \autho Mike Prosser <mikeprosser@gmail.com>, Jeremiah Powell <waveclaw@hot_nospam_mail.com>
  * \brief Handles all of the multiplayer networking code.
  **/
-#include "Multiplayer.h"
+#include "../Tests/Multiplayer.h"
 
 
 using namespace Ogre;
@@ -39,7 +39,7 @@ namespace Ogrian
 
 /**
  * Initialize an empty multiplayer configuration
- * @exception Warns if the Interface fails to create
+ * \exception Warns if the Interface fails to create
  **/
 Multiplayer::Multiplayer()
 {
@@ -47,11 +47,11 @@ Multiplayer::Multiplayer()
 	// TODO - get these from CONI, CONS and CONB
 	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
 	mPort = CONI("PORT");
-	mMaxConnections = CONI("MAXCONNECTIONS");
-	mNumberPorts = CONI("NUMBEROFPORTS");
+	mMaxConnections = CONI("MAX_CONNECTIONS");
+	mNumberPorts = CONI("NUMBER_OF_PORTS"); // should always be 1 or more from the cfg file
 	mSleepTime = CONI("SLEEPTIME"); // milliseconds
-	mIsServer = CONB("RUNASERVER");
-	mPeer = RakNetworkFactory::GetRakPeerInterface();
+	mIsServer = CONB("RUN_AS_SERVER");
+	mPeer = RakNetworkFactory::GetRakPeerInterface(); 
 	if (0 == mPeer) 
 	{
 		Exception( Exception::ERR_INTERNAL_ERROR, 
@@ -65,10 +65,11 @@ Multiplayer::Multiplayer()
  **/
 Multiplayer::~Multiplayer()
 {
+	int waitSeconds = 30;
 	if (mIsConnected) {
 		if (isConnected()) disconnect();
 	};
-	mPeer->Shutdown(0,0); // wait 0 seconds, because we don't have a channel (0) to send notices out.
+	mPeer->Shutdown(waitSeconds);
 	RakNetworkFactory::DestroyRakPeerInterface(mPeer);
 	delete mInputBuffer;
 	delete mOutputBuffer;
@@ -76,14 +77,14 @@ Multiplayer::~Multiplayer()
 
 /**
  * Kick all the players, shutdown the server, clean up network
- * @exception logs the action of disconnecting
+ * \exception logs the action of disconnecting
  **/
 void Multiplayer::disconnect()
 {
 	if (mIsConnected) {
 		if (mIsServer) {
 		// kick all players first
-		//serverSendAllText("kicked", ID_KICK);
+		//sendAll("kicked", ID_KICK);
 		// TODO - other cleanup
 		};
 		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
@@ -94,7 +95,7 @@ void Multiplayer::disconnect()
 
 /**
  * Is this a server?
- * @return True if is a server, false otherwise
+ * \return True if is a server, false otherwise
  **/
 bool Multiplayer::isServer()
 {
@@ -103,7 +104,7 @@ bool Multiplayer::isServer()
 
 /**
  * Is this a client?
- * @return True if is a client, false otherwise
+ * \return True if is a client, false otherwise
  **/
 bool Multiplayer::isClient()
 {
@@ -112,7 +113,7 @@ bool Multiplayer::isClient()
 
 /**
  * Is this a client?
- * @return True if is running and connected, false otherwise
+ * \return True if is running and connected, false otherwise
  **/
 bool Multiplayer::isConnected()
 {
@@ -122,7 +123,7 @@ bool Multiplayer::isConnected()
 
 /**
  * Connect to the network
- * @exception Writes the connection to the log or the error if failure
+ * \exception Writes the connection to the log or the error if failure
  **/
 void Multiplayer::connect()
 {
@@ -133,22 +134,22 @@ void Multiplayer::connect()
 	} else {
 		const char* password = CONS("PASSWORD").c_str();
 		int passwordlength = strlen(password); 	
-		if (mPeer->Connect(getAddress(), getPort(), password, passwordlength))
+		mIsConnected = mPeer->Connect(getAddress(), getPort(), password, passwordlength);
+		if (mIsConnected) 
 		{
 			Exception(Exception::ERR_NOT_IMPLEMENTED,"Connected.",
 			 "Multiplayer::connect");
-			mIsConnected = true;
+			// TODO - spawn a thread to handle filling the input buffer			
 		} else {
 			Exception(Exception::ERR_INVALID_STATE,"Unable to connect.",
 			 "Multiplayer::connect");	
-			mIsConnected = false;
 		};
 	}; // end if connected
 } //  end connect
 
 /**
  * Connect to the network
- * @exception Writes the connection to the log or the error if failure
+ * \exception Writes the connection to the log or the error if failure
  **/
 void Multiplayer::listen() 
 {
@@ -159,7 +160,7 @@ void Multiplayer::listen()
 	} else {
 		if (mIsServer) 
 		{
-			mPeer->SetMaximumIncomingConnections(getMaxConnections());
+			// TODO - spawn a thread to handle filling the input buffer
 			mIsConnected = true;			
 			// connect();
 		} else {
@@ -171,9 +172,11 @@ void Multiplayer::listen()
 
 /**
  * start the network interface so we can (dis)connect
+ * \parameter The type of interface to start - client or server
  **/
 void Multiplayer::startup(PeerType type) 
 {
+	bool peerStart = false;
 	if (mIsConnected) {
 		Exception(Exception::ERR_INVALID_STATE,
 			 "Starting client-server networking, but already started: ", 
@@ -186,10 +189,18 @@ void Multiplayer::startup(PeerType type)
 			mIsServer = true;
 			mSocket = SocketDescriptor(getPort(),0);
 			if (!mMaxConnections) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
-			mPeer->Startup(mMaxConnections, mSleepTime, &mSocket, mNumberPorts);
-			Exception(Exception::ERR_NOT_IMPLEMENTED,
-			 "Starting client-server networking, set to server: ", 
-			 "Multiplayer::startup");
+			peerStart = mPeer->Startup(mMaxConnections, mSleepTime, &mSocket, mNumberPorts);
+			if (peerStart) 
+			{
+				Exception(Exception::ERR_NOT_IMPLEMENTED,
+			 	"Starting client-server networking, set to server: ", 
+			 	"Multiplayer::startup");
+				mPeer->SetMaximumIncomingConnections(mMaxConnections);			 	
+			} else {
+				Exception(Exception::ERR_INVALID_STATE,
+			 	"Failed client-server networking, server failed to startup: ", 
+			 	"Multiplayer::startup");
+			}; // end if started
 			 break;
 		};
 		case CLIENT:
@@ -198,10 +209,17 @@ void Multiplayer::startup(PeerType type)
 			mSocket = SocketDescriptor();
 			setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
 			mPeer->Startup(mMaxConnections,mSleepTime, &mSocket, mNumberPorts);
-			Exception(Exception::ERR_NOT_IMPLEMENTED,
-			 "Starting client-server networking, set to server: ",
-			  "Multiplayer::startup");
-			  break;
+			if (peerStart) 
+			{
+				Exception(Exception::ERR_NOT_IMPLEMENTED,
+			 	"Starting client-server networking, set to client: ", 
+			 	"Multiplayer::startup");
+			} else {
+				Exception(Exception::ERR_INVALID_STATE,
+			 	"Failed client-server networking, server failed to startup: ", 
+			 	"Multiplayer::startup");
+			}; // end if started
+			break;
 		};
 		case PEER2PEER:
 		{
@@ -241,8 +259,23 @@ const char* Multiplayer::getAddress(void) {
 int Multiplayer::getMaxConnections(void) {
 	return mMaxConnections;
 } // end getMaxConnections
+
+/**
+ * get the current simultanious clients for networking
+ * \returns the number of addresses accepting connections
+ **/
+int Multiplayer::getConnectionCount(void)
+{
+	int count = 0;
+	for (int i = 0; i < getMaxConnections();i++)
+		if (mPeer->GetSystemAddressFromIndex(i) != UNASSIGNED_SYSTEM_ADDRESS)
+			count++;
+	return count;
+} // end getConnectCount
+
 /**
  * set the port for the connection dynamically
+ * \parameter the port (0 through 4,294,967,295). Uses 26000, the quake port, by default)
  **/
 void Multiplayer::setPort(unsigned short port) {
 		mPort = port;
@@ -250,6 +283,7 @@ void Multiplayer::setPort(unsigned short port) {
 
 /**
  * set the remote address for the connection dynamically
+ * \parameter the address to listen on or connect to.  Use "" to listen on all addresses.
  **/
 void Multiplayer::setAddress(char *address) {
 	mAddress = new String(address);
@@ -257,6 +291,7 @@ void Multiplayer::setAddress(char *address) {
 
 /**
  * set the current maximum simultanious clients for networking (for map support)
+ * \parameter the number of connections to use.
  **/
 void Multiplayer::setMaxConnections(int connections) {
 	mMaxConnections = connections;

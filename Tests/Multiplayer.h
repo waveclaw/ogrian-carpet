@@ -29,18 +29,16 @@
 #include <Ogre.h>
 #include <OgreSingleton.h>  // make sure your ldd and plugins.cfg are 'clean'
 #include <OgreException.h>
-
 using namespace Ogre;
 
-#include "RakNetworkFactory.h"
-#include "RakPeerInterface.h"
-#include "RakNetTypes.h"
-//include "MessageIdentifiers.h" <-- incompatible with OgrianPacketEnum.h
+#include <RakNetworkFactory.h>
+#include <RakPeerInterface.h>
+#include <RakNetTypes.h>
+//include "MessageIdentifiers.h" <-- redundant with OgrianPacketEnum.h
 using namespace RakNet;
 
 #include "SpinBuffer.h"
 #include <stdlib.h>
-
 using namespace util;
 
 #include "OgrianConst.h"
@@ -66,25 +64,25 @@ public:
 
 	/**
 	 * Implement singleton, since the constructor is private.
-	 * @return If no object exists, return a new object, else reference the existing 'single' object
+	 * \return If no object exists, return a new object, else reference the existing 'single' object
 	 */
     static Multiplayer& getSingleton(void);
 
 	/**
 	 * Is this a server?
-	 * @return True if is a server and is running, false otherwise
+	 * \return True if is a server and is running, false otherwise
 	 **/
 	bool isServer();
 	
 	/**
 	 * Is this a client?
-	 * @return True if is a client and is running, false otherwise
+	 * \return True if is a client and is running, false otherwise
 	 **/
 	bool isClient(void);
 	
 	/**
 	 * Is this a client?
-	 * @return True if is a client and is running, false otherwise
+	 * \return True if is a client and is running, false otherwise
 	 **/
 	bool isConnected(void);
 	
@@ -124,20 +122,27 @@ public:
 	int getMaxConnections(void);
 	
 	/**
+	 * get the current simultanious clients for networking
+	 * \returns the number of addresses accepting connections
+	 **/
+	int getConnectionCount(void);
+		
+	/**
 	 * set the port for the connection dynamically
+	 * \parameter port (0 through 4,294,967,295). Uses 26000, the quake port, by default)
 	 **/
 	void setPort(unsigned short);
-	
 	/**
 	 * set the remote address for the connection dynamically
+	 * \parameter address the address to listen on or connect to.  Use "" to listen on all addresses.
 	 **/
 	void setAddress(char*);
 	
 	/**
 	 * set the current maximum simultanious clients for networking (for map support)
+	 * \parameter the number of connections to use.
 	 **/
-	void setMaxConnections(int connections);
-	
+	void setMaxConnections(int);	
 	 
 private:
 	String* mAddress; // To force raknet to use INADDR_ANY set this.address to "".
@@ -147,7 +152,7 @@ private:
 	int mNumberPorts; // usually 1 or more, never 0
 	bool mIsServer;
 	bool mIsConnected; 
-	RakPeerInterface* mPeer;
+	RakPeerInterface* mPeer; // either 1 server or N clients
 	SocketDescriptor mSocket;
 	//Packet *mPacket; // current packet (see spin buffers)
 	SpinBuffer<Packet *,500> *mInputBuffer;
