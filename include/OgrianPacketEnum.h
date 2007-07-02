@@ -28,7 +28,13 @@
 
 	/**
 	 * \note Do not use this file and Raknet's MessageIdentifiers.h
-	 * Since you cannot extend an enum, this file conflicts with RakNet's file. 
+	 * Since you cannot extend an enum, this file conflicts with RakNet's file.
+	 * In a perfect world you'd use something like
+	 * enum {
+	 * ID_ADD_PLAYER = ID_RESERVED9 + 1,
+	 * ID_ANOTHER_PACKET,
+	 * ID_YET_ANOTHER_PACKET_TYPE,
+	 * }; 
 	 */
 
 /** 
