@@ -1,5 +1,7 @@
 /*****************************************************************************
-	Copyright 2004 Mike Prosser
+	Copyright 2007 Jeremiah Powell, 
+	Based on OgrianMultiplayer Copyright 2004 Mike Prosser.
+
 
     This file is part of Ogrian Carpet.
 
@@ -26,14 +28,16 @@
 /**
  * \file OgrianMultiplayer.cpp
  * \autho Mike Prosser <mikeprosser@gmail.com>, Jeremiah Powell <waveclaw@hot_nospam_mail.com>
- * \brief Handles all of the multiplayer networking code.
+ * \brief Abstract the networking layer. 
  **/
 #include "../Tests/Multiplayer.h"
 
 
 using namespace Ogre;
 
-template<> Ogrian::Multiplayer * Singleton< Ogrian::Multiplayer >::ms_Singleton = 0;
+// Dear Lord, abusing Singleton to make global variables.... :-(
+//template<> Ogrian::Multiplayer * Singleton< Ogrian::Multiplayer >::ms_Singleton = 0;
+
 namespace Ogrian
 {
 
@@ -50,13 +54,12 @@ Multiplayer::Multiplayer()
 	mMaxConnections = CONI("MAX_CONNECTIONS");
 	mNumberPorts = CONI("NUMBER_OF_PORTS"); // should always be 1 or more from the cfg file
 	mSleepTime = CONI("SLEEPTIME"); // milliseconds
-	mIsServer = CONB("RUN_AS_SERVER");
 	mPeer = RakNetworkFactory::GetRakPeerInterface(); 
 	if (0 == mPeer) 
 	{
-		Exception( Exception::ERR_INTERNAL_ERROR, 
-  	    String("Error pre-initalizing network system. RakNet had an error: RakNetworkFactory::GetRakPeerInterface"),
-        String("Multiplayer::Multiplayer"));
+	Exception( Exception::ERR_INTERNAL_ERROR, 
+  	           String("Error pre-initalizing network system. RakNet had an error: RakNetworkFactory::GetRakPeerInterface"),
+                   String("Multiplayer::Multiplayer"));
 	};		
 } // end contructor
 
@@ -65,54 +68,17 @@ Multiplayer::Multiplayer()
  **/
 Multiplayer::~Multiplayer()
 {
-	int waitSeconds = 30;
-	if (mIsConnected) {
-		if (isConnected()) disconnect();
-	};
+	int waitSeconds = CONI("SHUTDOWN_WAIT_SECONDS");
+	// TODO - push this down into server, client or treat as an array
 	mPeer->Shutdown(waitSeconds);
 	RakNetworkFactory::DestroyRakPeerInterface(mPeer);
 	delete mInputBuffer;
 	delete mOutputBuffer;
-} // end desctuctor
+} // end destructor
+
 
 /**
- * Kick all the players, shutdown the server, clean up network
- * \exception logs the action of disconnecting
- **/
-void Multiplayer::disconnect()
-{
-	if (mIsConnected) {
-		if (mIsServer) {
-		// kick all players first
-		//sendAll("kicked", ID_KICK);
-		// TODO - other cleanup
-		};
-		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
-		 "Multiplayer::client");
-		mIsConnected = false;					
-	};
-} // end disconnect
-
-/**
- * Is this a server?
- * \return True if is a server, false otherwise
- **/
-bool Multiplayer::isServer()
-{
-	return (mIsServer);
-} // end isclient
-
-/**
- * Is this a client?
- * \return True if is a client, false otherwise
- **/
-bool Multiplayer::isClient()
-{
-	return (!mIsServer);
-} // end isclient
-
-/**
- * Is this a client?
+ * Is this a good connection?
  * \return True if is running and connected, false otherwise
  **/
 bool Multiplayer::isConnected()
@@ -122,136 +88,18 @@ bool Multiplayer::isConnected()
 } // end isconnected
 
 /**
- * Connect to the network
- * \exception Writes the connection to the log or the error if failure
- **/
-void Multiplayer::connect()
-{
-	if (isConnected())
-	{
-		Exception(Exception::ERR_INVALID_STATE,"Aready connected.",
-         "Multiplayer::connect");
-	} else {
-		const char* password = CONS("PASSWORD").c_str();
-		int passwordlength = strlen(password); 	
-		mIsConnected = mPeer->Connect(getAddress(), getPort(), password, passwordlength);
-		if (mIsConnected) 
-		{
-			Exception(Exception::ERR_NOT_IMPLEMENTED,"Connected.",
-			 "Multiplayer::connect");
-			// TODO - spawn a thread to handle filling the input buffer			
-		} else {
-			Exception(Exception::ERR_INVALID_STATE,"Unable to connect.",
-			 "Multiplayer::connect");	
-		};
-	}; // end if connected
-} //  end connect
-
-/**
- * Connect to the network
- * \exception Writes the connection to the log or the error if failure
- **/
-void Multiplayer::listen() 
-{
-	if (isConnected()) 
-	{
-		Exception(Exception::ERR_INVALID_STATE,"Already connected, use disconnect first! ",
-		 "Multiplayer::listen");			
-	} else {
-		if (mIsServer) 
-		{
-			// TODO - spawn a thread to handle filling the input buffer
-			mIsConnected = true;			
-			// connect();
-		} else {
-			Exception(Exception::ERR_INVALID_STATE,"Not a server, use connect! ",
-			 "Multiplayer::listen");			
-		}; // end if server		
-	}; // end if active
-} // end listen
-
-/**
- * start the network interface so we can (dis)connect
- * \parameter The type of interface to start - client or server
- **/
-void Multiplayer::startup(PeerType type) 
-{
-	bool peerStart = false;
-	if (mIsConnected) {
-		Exception(Exception::ERR_INVALID_STATE,
-			 "Starting client-server networking, but already started: ", 
-			 "Multiplayer::startup");		
-	} else {
-	switch (type)  
-	{
-		case SERVER:
-		{
-			mIsServer = true;
-			mSocket = SocketDescriptor(getPort(),0);
-			if (!mMaxConnections) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
-			peerStart = mPeer->Startup(mMaxConnections, mSleepTime, &mSocket, mNumberPorts);
-			if (peerStart) 
-			{
-				Exception(Exception::ERR_NOT_IMPLEMENTED,
-			 	"Starting client-server networking, set to server: ", 
-			 	"Multiplayer::startup");
-				mPeer->SetMaximumIncomingConnections(mMaxConnections);			 	
-			} else {
-				Exception(Exception::ERR_INVALID_STATE,
-			 	"Failed client-server networking, server failed to startup: ", 
-			 	"Multiplayer::startup");
-			}; // end if started
-			 break;
-		};
-		case CLIENT:
-		{
-			mIsServer = false;
-			mSocket = SocketDescriptor();
-			setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
-			mPeer->Startup(mMaxConnections,mSleepTime, &mSocket, mNumberPorts);
-			if (peerStart) 
-			{
-				Exception(Exception::ERR_NOT_IMPLEMENTED,
-			 	"Starting client-server networking, set to client: ", 
-			 	"Multiplayer::startup");
-			} else {
-				Exception(Exception::ERR_INVALID_STATE,
-			 	"Failed client-server networking, server failed to startup: ", 
-			 	"Multiplayer::startup");
-			}; // end if started
-			break;
-		};
-		case PEER2PEER:
-		{
-			Exception(Exception::ERR_INVALIDPARAMS,
-			 "P2P Not currently supported: ", "Multiplayer::client::startup");							
-			mIsConnected = false;
-			 break;			
-		};
-		default:
-		{
-			Exception(Exception::ERR_INVALIDPARAMS,
-			 "Unsupported networking style.", "Multiplayer::startup");						
-			mIsConnected = false;
-			 break;			
-		};
-	} // end which type
-	}; // end if active
-} // end startup
-
-/**
  * get the current port for networking
  **/
 unsigned short Multiplayer::getPort(void) {
 	return mPort;
-}; // end getPort
+} // end getPort
 
 /**
  * get the current address for networking
  **/
 const char* Multiplayer::getAddress(void) {
 	return mAddress->c_str(); 
-}; // end getAddress
+} // end getAddress
 
 /**
  * get the current maximum simultanious clients for networking
@@ -277,7 +125,8 @@ int Multiplayer::getConnectionCount(void)
  * set the port for the connection dynamically
  * \parameter the port (0 through 4,294,967,295). Uses 26000, the quake port, by default)
  **/
-void Multiplayer::setPort(unsigned short port) {
+void Multiplayer::setPort(unsigned short port) 
+{
 		mPort = port;
 } // end setPort
 
@@ -285,28 +134,256 @@ void Multiplayer::setPort(unsigned short port) {
  * set the remote address for the connection dynamically
  * \parameter the address to listen on or connect to.  Use "" to listen on all addresses.
  **/
-void Multiplayer::setAddress(char *address) {
+void Multiplayer::setAddress(char *address) 
+{
 	mAddress = new String(address);
-}// end setAddress
+} // end setAddress
 
 /**
  * set the current maximum simultanious clients for networking (for map support)
  * \parameter the number of connections to use.
  **/
-void Multiplayer::setMaxConnections(int connections) {
+void Multiplayer::setMaxConnections(int connections) 
+{
 	mMaxConnections = connections;
 } // end setMaxConnections
-	
-/**
- * Implement the singleton pattern
- **/
-Multiplayer& Multiplayer::getSingleton(void)
-{
-	if (!ms_Singleton) 
-	{
-		ms_Singleton = new Multiplayer();
-	}
-    return Singleton<Multiplayer>::getSingleton();
-}
 
+/**
+ * set the connection status
+ * \parameter the state of the connection
+ **/
+void Multiplayer::setConnected(bool status)
+{
+	mIsConnected = status;
+} // end setConnected
+
+/**
+ * set Time to Sleep in the network code
+ * \parameter time to sleep before returning
+ **/
+void Multiplayer::setSleepTime(int time)
+{
+	if(time > 0) 
+	{
+		mSleepTime = time;
+	} else {
+		mSleepTime = OGRIAN_DEFAULT_SLEEP_TIME; // no cheating!
+	}
+} // end setSleepTime
+
+/**
+ * set the number of Ports
+ * \parameter the number of ports > 1
+ **/
+void Multiplayer::setNumberPorts(int nPorts)
+{
+	if (nPorts > 0)
+	{
+		mNumberPorts = nPorts;
+	} else {
+		mNumberPorts = 1; // must be 1 or greater!
+	}
+} // end  setNumberPorts
+
+/**
+ * get the Time to Sleep in the network code
+ * \returns time to sleep in millisecons before returning
+ **/
+int Multiplayer::getSleepTime(void)
+{
+	return mSleepTime;
+} // end getSleepTime
+
+/**
+ * Get the number of ports
+ * \returns the number of ports
+ **/
+int Multiplayer::getNumberPorts(void)
+{
+	return mNumberPorts;
+} // end getNumberPorts
+	
+//----------------------------------------------------------------------------
+// server parts 
+
+/**
+ * stop the network interface so we can disconnect
+ **/
+Server::~Server() 
+{
+	if ( isConnected() ) disconnect();
+} // end destroyer
+
+/**
+ * start the network interface so we can (dis)connect
+ **/
+void Server::startup(void) 
+{
+	bool peerStart = false;
+	if (isConnected()) 
+	{
+		Exception(Exception::ERR_INVALID_STATE,
+			 "Starting client-server networking, but already started: ", 
+			 "Multiplayer::startup");		
+	} else {
+		mSocket = SocketDescriptor(getPort(),0);
+		if (!getMaxConnections()) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
+		// TODO - init an array of peers
+		peerStart = mPeer->Startup(getMaxConnections(), 
+					   getSleepTime(), 
+					   &mSocket, 
+					   getNumberPorts());
+		if (peerStart) 
+		{
+			Exception(Exception::ERR_NOT_IMPLEMENTED,
+		 	"Starting client-server networking, set to server: ", 
+		 	"Multiplayer::startup");
+			mPeer->SetMaximumIncomingConnections(getMaxConnections());			 	
+		} else {
+			Exception(Exception::ERR_INVALID_STATE,
+		 	"Failed client-server networking, server failed to startup: ", 
+		 	"Multiplayer::startup");
+		}; // end if started
+	}; // end if active
+} // end startup
+
+/**
+ * Connect to the network
+ * \exception Writes the connection to the log or the error if failure
+ **/
+void Server::listen(void) 
+{
+	if (isConnected()) 
+	{
+		Exception(Exception::ERR_INVALID_STATE,"Already connected, use disconnect first! ",
+		 "Multiplayer::listen");			
+	} else {
+		// TODO - spawn a thread to handle filling the input buffer
+		setConnected(true);			
+		// connect();
+	}; // end if active
+} // end listen
+
+/**
+ * Connect to the network
+ * \exception Writes the connection to the log or the error if failure
+ **/
+void Server::connect(void)
+{
+	Exception(Exception::ERR_NOT_IMPLEMENTED,"Use Connect on a listen, not connect.",
+	 "Server::listen");
+}; // end listen
+
+/**
+ * Kick all the players, shutdown the server, clean up network
+ * \exception logs the action of disconnecting
+ **/
+void Server::disconnect(void)
+{
+	if (isConnected()) 
+	{
+		// kick all players first
+		//sendAll("kicked", ID_KICK);
+		// TODO - other cleanup
+
+		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
+		 "Multiplayer::server");
+		setConnected(false);					
+	};
+} // end disconnect
+
+//----------------------------------------------------------------------------
+// client parts 
+
+/**
+ * stop the network interface so we can disconnect
+ **/
+Client::~Client() 
+{
+	if (isConnected()) disconnect();
+} // end destroyer
+
+/**
+ * start the network interface so we can (dis)connect
+ **/
+void Client::startup(void) 
+{
+	if (isConnected()) 
+	{
+		Exception(Exception::ERR_INVALID_STATE,
+			 "Starting client-server networking, but already started: ", 
+			 "Multiplayer::startup");		
+	} else {
+		mSocket = SocketDescriptor();
+		setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
+		setConnected( mPeer->Startup(getMaxConnections(),
+					     getSleepTime(),
+					     &mSocket,
+					     getNumberPorts() ) );
+		if (isConnected()) 
+		{
+			Exception(Exception::ERR_NOT_IMPLEMENTED,
+		 	"Starting client-server networking, set to client: ", 
+		 	"Multiplayer::startup");
+		} else {
+			Exception(Exception::ERR_INVALID_STATE,
+		 	"Failed client-server networking, server failed to startup: ", 
+		 	"Multiplayer::startup");
+		}; // end if started
+	}; // end if active
+} // end startup
+
+/**
+ * Connect to the network
+ * \exception Writes the connection to the log or the error if failure
+ **/
+void Client::connect(void)
+{
+	if (isConnected())
+	{
+		Exception(Exception::ERR_INVALID_STATE,"Aready connected.",
+         "Multiplayer::connect");
+	} else {
+		const char* password = CONS("PASSWORD").c_str();
+		int passwordlength = strlen(password); 	
+		setConnected( mPeer->Connect(getAddress(), 
+					     getPort(),
+					     password,
+					     passwordlength) );
+		if (isConnected()) 
+		{
+			Exception(Exception::ERR_NOT_IMPLEMENTED,"Connected.",
+			 "Multiplayer::connect");
+			// TODO - spawn a thread to handle filling the input buffer			
+		} else {
+			Exception(Exception::ERR_INVALID_STATE,"Unable to connect.",
+			 "Multiplayer::connect");	
+		};
+	}; // end if connected
+} //  end connect
+
+/**
+ * Connect to the network
+ * \exception Writes the connection to the log or the error if failure
+ **/
+void Client::listen(void) 
+{
+	Exception(Exception::ERR_NOT_IMPLEMENTED,"Use Connect on a client, not listen.",
+	 "Client::listen");
+}; // end listen
+
+/**
+ * Quit the network connection
+ * \exception logs the action of disconnecting
+ **/
+void Client::disconnect(void)
+{
+	if (isConnected()) 
+	{
+		// send leave notice to server
+		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
+		 "Multiplayer::client");
+		setConnected(false);					
+	};
+} // end disconnect
 } // end namespace Ogrian

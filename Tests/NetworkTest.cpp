@@ -64,6 +64,8 @@ int main(int argc, char *argv[], char **envp)
 
 	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();
 	//RakPeerInterface *peer = RakNetworkFactory::GetRakPeerInterface();	
+	// mIsServer = CONB("RUN_AS_SERVER");
+	Multiplayer* peer = new Server;
 	char* address; 
 	unsigned short port;
 	bool isServer;	
@@ -95,19 +97,17 @@ int main(int argc, char *argv[], char **envp)
 		 };
 	#endif // WIN32
 
-	Multiplayer &peer = Multiplayer::getSingleton();
-	peer.setPort(port);
-		 
 	if (isServer)
 	{
 		cout << "Starting server...";cout.flush();
 		address = "";// force raknet to use INADDR_ANY
-		peer.setAddress(address);
-		peer.startup(SERVER); //peer->Startup(MAX_CLIENTS, 30, &SocketDescriptor(SERVER_PORT,0), 1);
+		peer->setPort(port);
+		peer->setAddress(address);
+		peer->startup(); //peer->Startup(MAX_CLIENTS, 30, &SocketDescriptor(SERVER_PORT,0), 1);
 		cout << "started server." << endl;
 		
 		cout << "Listening." <<  endl;
-		peer.listen();
+		peer->listen();
 		while (true) // !peer.isConnected()) 
 		{
 			cout << ".";cout.flush();
@@ -141,19 +141,21 @@ loop
 end loop after 10th round
 */
  	cout << "Quitting server...";cout.flush();
-	peer.disconnect();
+	peer->disconnect();
 	cout << "quit server." << endl;
 
 	} else	{
 		cout << "Starting client" <<  endl;
 		address = "127.0.0.1";// force raknet to use localhost
-		peer.setAddress(address);		
-		peer.startup(CLIENT); // 	peer->Startup(1,30,&SocketDescriptor(), 1);
+		peer =  new Client;
+		peer->setPort(port);
+		peer->setAddress(address);		
+		peer->startup(); // 	peer->Startup(1,30,&SocketDescriptor(), 1);
 		cout << "Started client." << endl;
 		
 		cout << "Connecting...";cout.flush();
-		peer.connect();
-		if (peer.isConnected()) 
+		peer->connect();
+		if (peer->isConnected()) 
 		{
 			cout << "connected okay." << endl;
 		} else {
@@ -180,7 +182,7 @@ end loop after 10th round
  end loop when kicked
  */ 
  	cout << "Quitting client." << endl;
-	peer.disconnect();
+	peer->disconnect();
 	cout << "Quit client." << endl;
 	}; // end if server or client
 

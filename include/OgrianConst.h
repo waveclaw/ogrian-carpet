@@ -30,6 +30,14 @@
 #include <OgreSingleton.h>
 #include <OgreConfigFile.h>
 #include "OgrianClock.h"
+
+#define UNASSIGNED_PLAYER_ID -1
+#define STRING_MAX_LENGTH 256
+#define DEFAULT_MAX_CONNECTIONS 10
+#define NO_REMOTE_CONNECTIONS 1
+#define OGRIAN_DEFAULT_BUFFER_SIZE 500
+#define OGRIAN_DEFAULT_SLEEP_TIME 30
+
 /**
  * Computes the value in the configuration file of the ineger variable \a x
  **/

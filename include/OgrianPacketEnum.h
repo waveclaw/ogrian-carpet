@@ -27,6 +27,7 @@
 #define __OgrianPacketEnum_H__
 
 #include <MessageIdentifiers.h>
+// warning - this is not actually defined in MessageIdentifiers.h
 #define ID_RESERVED 9
 
 
