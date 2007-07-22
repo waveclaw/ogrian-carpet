@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C++ Express 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ogrian", "Ogrian.vcproj", "{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "..\Tests\Tests.vcproj", "{62531218-64C8-4CA9-914F-A49CF5F2814D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Debug|Win32.Build.0 = Debug|Win32
 		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Release|Win32.ActiveCfg = Release|Win32
 		{E76B2CC1-19F5-4607-B0EA-54A0AE95CDF6}.Release|Win32.Build.0 = Release|Win32
+		{62531218-64C8-4CA9-914F-A49CF5F2814D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{62531218-64C8-4CA9-914F-A49CF5F2814D}.Debug|Win32.Build.0 = Debug|Win32
+		{62531218-64C8-4CA9-914F-A49CF5F2814D}.Release|Win32.ActiveCfg = Release|Win32
+		{62531218-64C8-4CA9-914F-A49CF5F2814D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

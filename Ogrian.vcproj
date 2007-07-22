@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\FMOD SoundSystem\FMOD Programmers API Win32\api\inc&quot;;&quot;C:\Program Files\RakNet30Beta\Source&quot;;&quot;C:\Program Files\OgreSDK\include&quot;;&quot;C:\Documents and Settings\348242\My Documents\Visual Studio 2005\Projects\Ogrian\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&quot;;&quot;C:\Program Files\FMOD SoundSystem\FMOD Programmers API Win32\api\inc&quot;;&quot;C:\Program Files\RakNet30Beta\Source&quot;;&quot;C:\Program Files\OgreSDK\include&quot;;&quot;C:\Documents and Settings\348242\My Documents\Visual Studio 2005\Projects\Ogrian\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -178,6 +178,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\Tests\AudioTest.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\src\main.cpp"
 				>
@@ -336,6 +340,14 @@
 			</File>
 			<File
 				RelativePath=".\src\OgrianWizardThing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SpinBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tests\SpinBufferTest.cpp"
 				>
 			</File>
 		</Filter>
@@ -586,6 +598,10 @@
 			</File>
 			<File
 				RelativePath=".\include\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\SpinBuffer.h"
 				>
 			</File>
 		</Filter>

@@ -5,6 +5,7 @@ AC_INIT([Ogrian Carpet],
         [ogrian@ogrian.sourceforge.net],
         [ogrian])
 AM_CONFIG_HEADER([include/config.h])
+AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE([dist-zip])
 
 AC_LANG_CPLUSPLUS
