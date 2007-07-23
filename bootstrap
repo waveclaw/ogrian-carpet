@@ -1,6 +1,6 @@
 #!/bin/sh
 # run this file to initiate the Autoconf chain, turning *.AM into *.in for your configure
-# based on the autoconf simple file from ogre3d.org 'Homble Beginnings' project
+# based on the autoconf simple file from ogre3d.org 'Humble Beginnings' project
 set -x
 rm -rf config.cache autom4te.cache config
 mkdir -p ./config

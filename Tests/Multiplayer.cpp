@@ -48,7 +48,6 @@ namespace Ogrian
 Multiplayer::Multiplayer()
 {
 	mIsConnected = false;
-	// TODO - get these from CONI, CONS and CONB
 	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
 	mPort = CONI("PORT");
 	mMaxConnections = CONI("MAX_CONNECTIONS");

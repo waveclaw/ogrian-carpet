@@ -1,28 +1,40 @@
 dnl Autoconf script written in M4 to write the Configure script for writing Makefiles for Ogrian Carpet.
-
 AC_INIT([Ogrian Carpet],
         [0.9.2],
         [ogrian@ogrian.sourceforge.net],
         [ogrian])
-AM_CONFIG_HEADER([include/config.h])
+dnl AC_DEFINE([datadir],[Ogrian],[Shipped default content.])
+dnl AC_CHECK_DECLS([HAVE_WOMAN], AC_WARNING([Hands off scum!]),AC_WARNING([tehehe!]))
 AC_CONFIG_AUX_DIR(config)
+AM_CONFIG_HEADER([include/config.h])
 AM_INIT_AUTOMAKE([dist-zip])
 
 AC_LANG_CPLUSPLUS
 
+dnl Portability tests from autoscan
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_LIBTOOL
+AC_CHECK_FUNCS([gettimeofday]) 
+AC_CHECK_FUNCS([sqrt])
+AC_CHECK_HEADERS([sys/time.h])
+AC_C_CONST
+AC_C_INLINE
+AC_FUNC_FORK
+AC_HEADER_STDBOOL
+AC_HEADER_TIME
+AC_PROG_RANLIB
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
 
-dnl AC_DEFINE([datadir],[Ogrian],[Shipped default content.])
 
-dnl AC_CHECK_DECLS([HAVE_WOMAN], AC_WARNING([Hands off scum!]),AC_WARNING([tehehe!]))
+dnl Manual process to check for fmod
+dnl AC _CHECK_LIB([fmodexp64],FMOD_System_Create,[AC _DEFINE([FMOD_LIBS],[-Lfmodexp64],[fMod Sound API library.])],
+dnl	     AC _MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]),)
+dnl AC _CHECK_HEADER([fmodex/fmod.h],[AC _DEFINE([FMOD_CFLAGS],[-Ifmodex/fmod.h],[fMod development headers.])],
+dnl		[AC _MSG_ERROR([Please install the fMod development headers from http://fmod.org.])],)
 
-dnl AC_CHECK_LIB([fmodexp64],FMOD_System_Create,[AC_DEFINE([FMOD_LIBS],[-Lfmodexp64],[fMod Sound API library.])],
-dnl	     AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]),)
-dnl AC_CHECK_HEADER([fmodex/fmod.h],[AC_DEFINE([FMOD_CFLAGS],[-Ifmodex/fmod.h],[fMod development headers.])],
-dnl		[AC_MSG_ERROR([Please install the fMod development headers from http://fmod.org.])],)
-
+dnl These depend upon packages installed with pkg-config files
 PKG_CHECK_MODULES([fMod], [fMod >= 4.04],,
 		  AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]))
 PKG_CHECK_MODULES([OGRE], [OGRE >= 1.4],,

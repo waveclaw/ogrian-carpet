@@ -1,5 +1,4 @@
-noinst_HEADERS= fmod.h \
-	OgrianAIWizardThing.h \
+noinst_HEADERS=	OgrianAIWizardThing.h \
 	OgrianAlbatrossSpell.h \
 	OgrianAlbatrossThing.h \
 	OgrianApplication.h \
