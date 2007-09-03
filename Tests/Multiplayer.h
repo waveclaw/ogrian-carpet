@@ -56,7 +56,6 @@ class Multiplayer
 {
 	bool mIsConnected; 
 	int mSleepTime; // milliseconds
-	int mNumberPorts; // usually 1 or more, never 0
 	unsigned short mMaxConnections;	
 	unsigned short mPort;
 	String* mAddress; // To force raknet to use INADDR_ANY set this.address to "".
@@ -66,36 +65,38 @@ class Multiplayer
 protected:
 	RakPeerInterface* mPeer; // either 1 server or N clients
 	SocketDescriptor mSocket;
+	RakNetTime nextSendTime;
+	RakNetTime flipConnectionTime;
 
 	/**
 	 * set the connection status
 	 * \parameter the state of the connection
 	 **/
-	void setConnected(bool);
+	void setConnected(const bool);
 
 	/**
 	 * set Time to Sleep in the network code
 	 * \parameter time to sleep before returning
 	 **/
-	void setSleepTime(int);
-
-	/**
-	 * set the number of Ports
-	 * \parameter the number of ports > 1
-	 **/
-	void setNumberPorts(int);
+	void setSleepTime(const int);
 
 	/**
 	 * get the Time to Sleep in the network code
 	 * \returns time to sleep in millisecons before returning
 	 **/
-	int getSleepTime(void);
-
+	int getSleepTime(void) const;
+	
 	/**
-	 * Get the number of ports
-	 * \returns the number of ports
+	 * start the network interface so we can (dis)connect
+ 	**/
+	virtual void startup(void) =0;	
+	
+	/**
+	 * manage the internal state of the network connection and
+	 * bridge the data buffer to the network subsystem
 	 **/
-	int getNumberPorts(void);
+	 virtual void updateState(const RakNetTime curTime);
+	 
 public:
 	/**
 	 * Create a Multiplayer instance,  client or a server
@@ -108,70 +109,130 @@ public:
 	virtual ~Multiplayer();
 
 	/**
-	 * start the network interface so we can (dis)connect
- 	**/
-	virtual void startup(void) =0;
-
-	/**
 	 * disconnect from the connection
 	 **/
 	virtual void disconnect(void) =0;
 
 	/**
-	 * connect to the network (convenience function)
-	 **/
-	virtual void listen(void) =0;
-
-	/**
-	 * connect to the network
-	 **/
-	virtual void connect(void) =0;
-
-	/**
 	 * Is this connected?
 	 * \return True if is a client and is running, false otherwise
 	 **/
-	bool isConnected(void);
+	bool isConnected(void) const;
 		
 	/**
 	 * get the current port for networking
 	 **/
-	unsigned short getPort(void);
+	unsigned short getPort(void) const;
 	
 	/**
 	 * get the current address for networking
 	 **/
-	const char* getAddress(void);
+	const char* getAddress(void) const;
 
 	/**
 	 * get the current maximum simultanious clients for networking
 	 * \returns the current max connections
 	 **/
-	int getMaxConnections(void);
+	int getMaxConnections(void) const;
 	
 	/**
 	 * get the current simultanious clients for networking
 	 * \returns the number of addresses accepting connections
 	 **/
-	int getConnectionCount(void);		
+	int getConnectionCount(void) const;		
 
 	/**
 	 * set the port for the connection dynamically
 	 * \parameter port (0 through 4,294,967,295). Uses 26000, the quake port, by default)
 	 **/
-	void setPort(unsigned short);
+	void setPort(const unsigned short);
 	/**
 	 * set the remote address for the connection dynamically
 	 * \parameter address the address to listen on or connect to.  Use "" to listen on all addresses.
 	 **/
-	void setAddress(char*);
+	void setAddress(const char*);
 	
 	/**
 	 * set the current maximum simultanious clients for networking (for map support)
 	 * \parameter the number of connections to use.
 	 **/
-	void setMaxConnections(int);	
+	void setMaxConnections(const int);	
+
+	/**
+	 * Put this packet into the buffer to send at the next opportunity
+	 * the return value is meaningful when we don't let the buffers get beyond 1 packet
+	 * per cycle. This is also the best performance point for a spin-buffer based packet buffer.
+	 * \parameter the packet to send
+	 * \returns true if the buffer has "something" in it at least
+	 **/	
+	bool send(Packet *) const;
+
+	/**
+	 * Get the latest packet from the buffer
+	 * \returns the packet requested or null if no packet found
+	 **/
+	 Packet *receive() const;	
 }; // end class Multiplayer
+
+//----------------------------------------------------------------------------
+// server parts 
+
+/**
+ * \class Server 
+ * \brief Server class, which has several client connections to manage.
+ */
+class Server: public Multiplayer 
+{
+private:
+	int mNumberClients; // usually 1 or more, never 0
+protected:
+
+    /**
+     * update the internal State of the server
+     **/	
+	void updateState(const RakNetTime curTime);
+	
+public:
+	/**
+ 	* Create a server
+ 	**/
+	Server();
+	
+	/**
+	 * stop the network interface so we can disconnect
+	 **/
+	~Server();
+
+	/**
+	 * connect to the network (convenience function)
+	 **/
+	void listen(void);	
+	
+	/**
+	 * disconnect from the network
+	 **/
+	void disconnect(void);
+
+	/**
+	 * start the network interface so we can (dis)connect
+ 	**/
+	void startup(void);
+
+	/**
+	 * set the number of Ports
+	 * \parameter the number of ports > 1
+	 **/
+	void setNumberClients(const int);
+
+	/**
+	 * Get the number of ports
+	 * \returns the number of ports
+	 **/
+	int getNumberClients(void) const;	
+}; // end class Server
+
+//----------------------------------------------------------------------------
+// client parts 
 
 /**
  * \class Client 
@@ -179,6 +240,7 @@ public:
  */
 class Client: public Multiplayer 
 {
+     
 public:	
 	/**
 	 * stop the network interface so we can disconnect
@@ -186,14 +248,9 @@ public:
 	~Client();
 
 	/**
-	 * connect to the network (convenience function)
-	 **/
-	void listen(void);	
-
-	/**
 	 * connect to the network
 	 **/
-	void connect(void);
+	void connect(void);	
 
 	/**
 	 * disconnect from the network
@@ -205,39 +262,6 @@ public:
  	**/
 	void startup(void);
 }; // end class Client
-
-/**
- * \class Server 
- * \brief Server class, which has several client connections to manage.
- */
-class Server: public Multiplayer 
-{
-public:
-	/**
-	 * stop the network interface so we can disconnect
-	 **/
-	~Server();
-
-	/**
-	 * connect to the network (convenience function)
-	 **/
-	void listen(void);	
-
-	/**
-	 * connect to the network
-	 **/
-	void connect(void);
-	
-	/**
-	 * disconnect from the network
-	 **/
-	void disconnect(void);
-
-	/**
-	 * start the network interface so we can (dis)connect
- 	**/
-	void startup(void);
-}; // end class Server
 
 class Streamable {
 };

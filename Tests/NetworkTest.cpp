@@ -65,7 +65,9 @@ int main(int argc, char *argv[], char **envp)
 	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();
 	//RakPeerInterface *peer = RakNetworkFactory::GetRakPeerInterface();	
 	// mIsServer = CONB("RUN_AS_SERVER");
-	Multiplayer* peer = new Server;
+	//Multiplayer* peer = new Server;
+	Server* server = new Server;
+	Client* client = new Client;
 	char* address; 
 	unsigned short port;
 	bool isServer;	
@@ -101,13 +103,13 @@ int main(int argc, char *argv[], char **envp)
 	{
 		cout << "Starting server...";cout.flush();
 		address = "";// force raknet to use INADDR_ANY
-		peer->setPort(port);
-		peer->setAddress(address);
-		peer->startup(); //peer->Startup(MAX_CLIENTS, 30, &SocketDescriptor(SERVER_PORT,0), 1);
+		server->setPort(port);
+		server->setAddress(address);
+		server->startup(); //peer->Startup(MAX_CLIENTS, 30, &SocketDescriptor(SERVER_PORT,0), 1);
 		cout << "started server." << endl;
 		
 		cout << "Listening." <<  endl;
-		peer->listen();
+		server->listen();
 		while (true) // !peer.isConnected()) 
 		{
 			cout << ".";cout.flush();
@@ -141,21 +143,20 @@ loop
 end loop after 10th round
 */
  	cout << "Quitting server...";cout.flush();
-	peer->disconnect();
+	server->disconnect();
 	cout << "quit server." << endl;
 
 	} else	{
 		cout << "Starting client" <<  endl;
 		address = "127.0.0.1";// force raknet to use localhost
-		peer =  new Client;
-		peer->setPort(port);
-		peer->setAddress(address);		
-		peer->startup(); // 	peer->Startup(1,30,&SocketDescriptor(), 1);
+		client->setPort(port);
+		client->setAddress(address);		
+		client->startup(); // 	peer->Startup(1,30,&SocketDescriptor(), 1);
 		cout << "Started client." << endl;
 		
 		cout << "Connecting...";cout.flush();
-		peer->connect();
-		if (peer->isConnected()) 
+		client->connect();
+		if (client->isConnected()) 
 		{
 			cout << "connected okay." << endl;
 		} else {
@@ -182,7 +183,7 @@ end loop after 10th round
  end loop when kicked
  */ 
  	cout << "Quitting client." << endl;
-	peer->disconnect();
+	client->disconnect();
 	cout << "Quit client." << endl;
 	}; // end if server or client
 
