@@ -37,6 +37,7 @@ dnl		[AC _MSG_ERROR([Please install the fMod development headers from http://fmo
 dnl These depend upon packages installed with pkg-config files
 PKG_CHECK_MODULES([fMod], [fMod >= 4.04],,
 		  AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]))
+dnl This was OGRE3D, moved to OGRE to support Packman RPMs
 PKG_CHECK_MODULES([OGRE], [OGRE >= 1.4],,
 		  AC_MSG_ERROR([Ogrian Carpet requires Ogre 3D at least of version 1.4.]))
 PKG_CHECK_MODULES([RakNet], [RakNet >= 2.4.5.2],,
