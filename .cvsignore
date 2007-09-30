@@ -11,7 +11,9 @@ ltmain.sh
 missing
 aclocal.m4
 autom4te.cache
-.deps
 config.guess
 config.status
 config.sub
+.deps
+.settings
+config

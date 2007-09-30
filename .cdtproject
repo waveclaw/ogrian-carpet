@@ -51,6 +51,8 @@
 <pathentry kind="src" path="src"/>
 <pathentry kind="out" path=""/>
 <pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
+<pathentry include="/export/home/jdpowell/Documents/ogrian_carpet/ogrian" kind="inc" path="" system="true"/>
+<pathentry base-path="ogrian" include="include" kind="inc" path="" system="true"/>
 </item>
 </data>
 </cdtproject>
