@@ -33,41 +33,46 @@
  * Unit testing the Network system can use either the existing system or
  * the stub system.  To use the stub system, define USE_STUB_H when compling. 
  */
-#include "../Tests/Multiplayer.h"
+#include "../Tests/Server.h"
+#include "../Tests/Client.h"
 #include <iostream>
 
 using namespace std;
 using namespace Ogrian;
 
 #ifdef WIN32
-#define WIN32_LEAN_AND_MEAN
 
+#define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 #include <stdio.h>
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT unused)
 {
 	char str[256];
+	
 #else // #ifndef WIN32
+
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 int main(int argc, char *argv[], char **envp)
 {
-	if (argc < 2) {
-		cout << "What to port on localhost to use?" << endl;
+	if (argc < 2) 
+	{
+		cout << "What to port on localhost to use (e.g. 2600, the quake port)?" << endl;
 	};
-	if (argc < 3) {
-		cout << "Server (s) or client (c)?" << endl;
+	if (argc < 3) 
+	{
+		cout << "Start a Server or a Client [s/c]?" << endl;
 		return 1;
 	};
+	
 #endif // #ifdef WIN32
 
 	//Ogre::LogManager& logmanager = Ogre::LogManager::getSingleton();
 	//RakPeerInterface *peer = RakNetworkFactory::GetRakPeerInterface();	
 	// mIsServer = CONB("RUN_AS_SERVER");
 	//Multiplayer* peer = new Server;
-	Server* server = new Server;
-	Client* client = new Client;
+
 	char* address; 
 	unsigned short port;
 	bool isServer;	
@@ -90,10 +95,12 @@ int main(int argc, char *argv[], char **envp)
 		port = (unsigned short) atoi(argv[1]);
 		cout << "Using port: " << port << endl;
 		 //pid_t parent = fork();
-		 if ((argv[2][0] == 's')||(argv[2][0] == 'S')) {
+		 if ((argv[2][0] == 's')||(argv[2][0] == 'S')) 
+		 {
 		 	cout << "Choosing server" << endl;
 		 	isServer = true;
-		 } else {
+		 } else 
+		 {
 		 	cout << "Choosing client" << endl;		 	
 		 	isServer = false;
 		 };
@@ -102,6 +109,7 @@ int main(int argc, char *argv[], char **envp)
 	if (isServer)
 	{
 		cout << "Starting server...";cout.flush();
+		Server* server = new Server;		
 		address = "";// force raknet to use INADDR_ANY
 		server->setPort(port);
 		server->setAddress(address);
@@ -146,8 +154,10 @@ end loop after 10th round
 	server->disconnect();
 	cout << "quit server." << endl;
 
-	} else	{
+	} else	
+	{
 		cout << "Starting client" <<  endl;
+		Client* client = new Client;		
 		address = "127.0.0.1";// force raknet to use localhost
 		client->setPort(port);
 		client->setAddress(address);		

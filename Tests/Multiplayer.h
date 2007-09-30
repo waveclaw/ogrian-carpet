@@ -27,8 +27,8 @@
 #ifndef __OgrianMultiplayer_H__
 #define __OgrianMultiplayer_H__
 
-#include <Ogre.h>
-#include <OgreSingleton.h>  // make sure your ldd and plugins.cfg are 'clean'
+#include <Ogre.h> // make sure your ldd and plugins.cfg are 'clean'
+// TODO: remove include <OgreSingleton.h>  
 #include <OgreException.h>
 using namespace Ogre;
 
@@ -51,7 +51,7 @@ namespace Ogrian
 /**
  * \class Multiplayer 
  * \brief The Multiplayer class handles all of the multiplayer networking code.
- */
+ **/
 class Multiplayer
 {
 	bool mIsConnected; 
@@ -88,7 +88,7 @@ protected:
 	
 	/**
 	 * start the network interface so we can (dis)connect
- 	**/
+ 	 **/
 	virtual void startup(void) =0;	
 	
 	/**
@@ -100,12 +100,12 @@ protected:
 public:
 	/**
 	 * Create a Multiplayer instance,  client or a server
-	 */
+	 **/
 	Multiplayer();
 
 	/**
 	 * Clean up after the multiplayer code, including kicking everyone, closing ports and thread shutdown. 
-	 */
+	 **/
 	virtual ~Multiplayer();
 
 	/**
@@ -174,97 +174,6 @@ public:
 	 Packet *receive() const;	
 }; // end class Multiplayer
 
-//----------------------------------------------------------------------------
-// server parts 
-
-/**
- * \class Server 
- * \brief Server class, which has several client connections to manage.
- */
-class Server: public Multiplayer 
-{
-private:
-	int mNumberClients; // usually 1 or more, never 0
-protected:
-
-    /**
-     * update the internal State of the server
-     **/	
-	void updateState(const RakNetTime curTime);
-	
-public:
-	/**
- 	* Create a server
- 	**/
-	Server();
-	
-	/**
-	 * stop the network interface so we can disconnect
-	 **/
-	~Server();
-
-	/**
-	 * connect to the network (convenience function)
-	 **/
-	void listen(void);	
-	
-	/**
-	 * disconnect from the network
-	 **/
-	void disconnect(void);
-
-	/**
-	 * start the network interface so we can (dis)connect
- 	**/
-	void startup(void);
-
-	/**
-	 * set the number of Ports
-	 * \parameter the number of ports > 1
-	 **/
-	void setNumberClients(const int);
-
-	/**
-	 * Get the number of ports
-	 * \returns the number of ports
-	 **/
-	int getNumberClients(void) const;	
-}; // end class Server
-
-//----------------------------------------------------------------------------
-// client parts 
-
-/**
- * \class Client 
- * \brief We are a client, implement good client behavior
- */
-class Client: public Multiplayer 
-{
-     
-public:	
-	/**
-	 * stop the network interface so we can disconnect
-	 **/
-	~Client();
-
-	/**
-	 * connect to the network
-	 **/
-	void connect(void);	
-
-	/**
-	 * disconnect from the network
-	 **/
-	void disconnect(void);
-
-	/**
-	 * start the network interface so we can (dis)connect
- 	**/
-	void startup(void);
-}; // end class Client
-
-class Streamable {
-};
-
 } // end namespace ogrian
+
 #endif

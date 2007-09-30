@@ -212,26 +212,38 @@ void Multiplayer::updateState(const RakNetTime curTime)
 			break;
 			// print out errors
 		case ID_CONNECTION_ATTEMPT_FAILED:
-			printf("Client Error: ID_CONNECTION_ATTEMPT_FAILED\n");
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: Connection Attempt Failed: ", 
+  	    		"Multiplayer");		
 			isConnected=false;
 			break;
 		case ID_ALREADY_CONNECTED:
-			printf("Client Error: ID_ALREADY_CONNECTED\n");
-			break;
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: Already Connected: ", 
+  	    		"Multiplayer");		
+  	    	break;
 		case ID_NO_FREE_INCOMING_CONNECTIONS:
-			printf("Client Error: ID_NO_FREE_INCOMING_CONNECTIONS\n");
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: NO Free Incomming Connections: ", 
+  	    		"Multiplayer");		
 			isConnected=false;
 			break;
 		case ID_DISCONNECTION_NOTIFICATION:
-			//printf("ID_DISCONNECTION_NOTIFICATION\n");
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: Disconnected: ", 
+  	    		"Multiplayer");		
 			isConnected=false;
 			break;
 		case ID_CONNECTION_LOST:
-			printf("Client Error: ID_CONNECTION_LOST\n");
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: Connection Lost: ", 
+  	    		"Multiplayer");		
 			isConnected=false;
 			break;
 		case ID_MODIFIED_PACKET:
-			printf("Client Error: ID_MODIFIED_PACKET\n");
+			Exception( Exception::ERR_NOT_IMPLEMENTED, 
+  	    		"Error: Packed Modified In-flight: ", 
+  	    		"Multiplayer");		
 			break;
 		}
 		peer->DeallocatePacket(p);
@@ -239,288 +251,25 @@ void Multiplayer::updateState(const RakNetTime curTime)
 	
 	}
 
-	if (curTime>flipConnectionTime)
+	if ( curTime > flipConnectionTime )
 	{
 		if (isConnected)
 		{
-			Disconnect();
-			flipConnectionTime=curTime+5000+(randomMT()%10000);
+			Disconnect();			
 		}
 		else
 		{
 			Connect();
-			flipConnectionTime=curTime+5000+(randomMT()%15000);
-		}
+		};
+		flipConnectionTime = 
+			curTime + OGRIAN_BASETIME + ( randomMT() % OGRIAN_RANDOM_MULTIPLIER );		
 	}
 
 	if (curTime>nextSendTime && isConnected)
 	{
 		peer->Send((const char*)&randomData,RANDOM_DATA_SIZE,HIGH_PRIORITY,RELIABLE_ORDERED,0,UNASSIGNED_SYSTEM_ADDRESS,true);
-		nextSendTime=curTime+500+(randomMT()%1000);
+		nextSendTime = curTime + OGRIAN_BASETIME + ( randomMT() % OGRIAN_RANDOM_MULTIPLIER );
 	}
 }; // end update
 
-
-
-	
-//----------------------------------------------------------------------------
-// server parts 
-
-/**
- * Create a server
- **/
-Server::Server()
-{
-	// get the configured default number of clients
-	// TODO - get the map's number of clients
-	mNumberClients = CONI("NUMBER_OF_CLIENTS"); // should always be 1 or more from the cfg file
-	// get one or more peers
-	mIsConnected = false;
-	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
-	mPort = CONI("PORT");
-	mMaxConnections = CONI("MAX_CONNECTIONS");
-	mSleepTime = CONI("SLEEPTIME"); // milliseconds
-	mPeer = RakNetworkFactory::GetRakPeerInterface(); 
-	if (0 == mPeer) 
-	{
-	Exception( Exception::ERR_INTERNAL_ERROR, 
-  	           String("Error pre-initalizing network system. RakNet had an error: RakNetworkFactory::GetRakPeerInterface"),
-                   String("Multiplayer::Multiplayer"));
-	};		
-		
-} // end constructor
-
-/**
- * stop the network interface so we can disconnect
- **/
-Server::~Server() 
-{
-	if ( isConnected() ) disconnect();
-	int waitSeconds = CONI("SHUTDOWN_WAIT_SECONDS");
-	// shutdown the peers	
-	for (int i = 0;i < getNumberClients();i++) {
-		Multiplayer::mPeer[i]->Shutdown(waitSeconds);
-		RakNetworkFactory::DestroyRakPeerInterface(Multiplayer::mPeer[i]);
-	};	
-    // super
-    	
-} // end destroyer
-
-/**
- * start the network interface so we can (dis)connect
- **/
-void Server::startup(void) 
-{
-	bool peerStart = false;
-	if (isConnected()) 
-	{
-		Exception(Exception::ERR_INVALID_STATE,
-			 "Starting client-server networking, but already started: ", 
-			 "Multiplayer::startup");		
-	} else {
-		mSocket = SocketDescriptor(getPort(),0);
-		if (0 == getMaxConnections()) setMaxConnections(DEFAULT_MAX_CONNECTIONS); // TODO - get this from the map?
-		// TODO - init an array of peers
-		peerStart = mPeer->Startup(getMaxConnections(), 
-					   getSleepTime(), 
-					   &mSocket, 
-					   getNumberClients());
-		if (peerStart) 
-		{
-			Exception(Exception::ERR_NOT_IMPLEMENTED,
-		 	"Starting client-server networking, set to server: ", 
-		 	"Multiplayer::startup");
-			mPeer->SetMaximumIncomingConnections(getMaxConnections());			 	
-		} else {
-			Exception(Exception::ERR_INVALID_STATE,
-		 	"Failed client-server networking, server failed to startup: ", 
-		 	"Multiplayer::startup");
-		}; // end if started
-	}; // end if active
-} // end startup
-
-/**
- * Connect to the network
- * \exception Writes the connection to the log or the error if failure
- **/
-void Server::listen(void) 
-{
-	// initialize the system
-	startup();
-	if (isConnected()) 
-	{
-		Exception(Exception::ERR_INVALID_STATE,"Already connected, use disconnect first! ",
-		 "Multiplayer::listen");			
-	} else {
-		// TODO - spawn a thread to handle filling the input buffer
-		setConnected(true);			
-		// connect();
-	}; // end if active
-} // end listen
-
-/**
- * Kick all the players, shutdown the server, clean up network
- * \exception logs the action of disconnecting
- **/
-void Server::disconnect(void)
-{
-	if (isConnected()) 
-	{
-		// kick all players first
-		//sendAll("kicked", ID_KICK);
-		// TODO - other cleanup
-
-		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
-		 "Multiplayer::server");
-		setConnected(false);					
-	};
-} // end disconnect
-
-
-/**
- * set the number of Ports
- * \parameter the number of ports > 1
- **/
-void Server::setNumberClients(const int nClients)
-{
-	if (nClients > 0)
-	{
-		mNumberClients = nClients;
-	} else {
-		mNumberClients = 1; // must be 1 or greater!
-	}
-} // end  setNumberClients
-
-/**
- * Get the number of Clients
- * \returns the number of Clients
- **/
-int Server::getNumberClients(void) const
-{
-	return mNumberClients;
-} // end getNumberClients
-
-    /**
-     * update the internal State of the server
-     **/	
-void Server::updateState(const RakNetTime curTime)
-{
-for (int i = 0; i < getNumberClients(); i++) {
-	Packet *p = mPeer[i]->Receive();
-	while (p)
-	{
-		switch (p->data[0])
-		{
-		case ID_CONNECTION_LOST:
-		case ID_DISCONNECTION_NOTIFICATION:
-		case ID_NEW_INCOMING_CONNECTION:
-			printf("Connections = %i\n", ConnectionCount());
-			break;
-		case ID_USER_PACKET_ENUM:
-			{
-				if (memcmp(p->data, randomData, RANDOM_DATA_SIZE)!=0)
-				{
-					printf("Bad data on server!\n");
-				}
-				break;
-			}
-		}
-		mPeer[i]->DeallocatePacket(p);
-		p = mPeer[i]->Receive();
-	}
-} // end for clients
-}
-		
-//----------------------------------------------------------------------------
-// client parts 
-
-/**
- * stop the network interface so we can disconnect
- **/
-Client::~Client() 
-{
-	if (isConnected()) disconnect();
-	int waitSeconds = CONI("SHUTDOWN_WAIT_SECONDS");
-	// for a given program, there is only 1 peer 'object' which treats
-	// servers as N-ary connection objects and clients as unary connection objects	
-	Multiplayer::mPeer->Shutdown(waitSeconds);
-	RakNetworkFactory::DestroyRakPeerInterface(Multiplayer::mPeer);		
-} // end destroyer
-
-/**
- * start the network interface so we can (dis)connect
- **/
-void Client::startup(void) 
-{
-	if (isConnected()) 
-	{
-		Exception(Exception::ERR_INVALID_STATE,
-			 "Starting client-server networking, but already started: ", 
-			 "Multiplayer::startup");		
-	} else {
-		mSocket = SocketDescriptor();
-		setMaxConnections(NO_REMOTE_CONNECTIONS); // nobody likes you, nobody talks to you :-(
-		setConnected( Multiplayer::mPeer->Startup(getMaxConnections(),
-					     getSleepTime(),
-					     &mSocket,
-					     NUM_CLIENT_PORTS ) );
-		if (isConnected()) 
-		{
-			Exception(Exception::ERR_NOT_IMPLEMENTED,
-		 	"Starting client-server networking, set to client: ", 
-		 	"Multiplayer::startup");
-		} else {
-			Exception(Exception::ERR_INVALID_STATE,
-		 	"Failed client-server networking, server failed to startup: ", 
-		 	"Multiplayer::startup");
-		}; // end if started
-	}; // end if active
-} // end startup
-
-/**
- * Connect to the network
- * \exception Writes the connection to the log or the error if failure
- **/
-void Client::connect(void)
-{
-	// initialize the system
-	startup();
-	if (isConnected())
-	{
-		Exception(Exception::ERR_INVALID_STATE,"Aready connected.",
-         "Multiplayer::connect");
-	} else {
-		const char* password = CONS("PASSWORD").c_str();
-		int passwordlength = strlen(password); 	
-		setConnected( mPeer->Connect(getAddress(), 
-					     getPort(),
-					     password,
-					     passwordlength) );
-		if (isConnected()) 
-		{
-			Exception(Exception::ERR_NOT_IMPLEMENTED,"Connected.",
-			 "Multiplayer::connect");
-			// TODO - spawn a thread to handle filling the input buffer			
-		} else {
-			Exception(Exception::ERR_INVALID_STATE,"Unable to connect.",
-			 "Multiplayer::connect");	
-		};
-	}; // end if connected
-} //  end connect
-
-
-/**
- * Quit the network connection
- * \exception logs the action of disconnecting
- **/
-void Client::disconnect(void)
-{
-	if (isConnected()) 
-	{
-		// send leave notice to server
-		Exception(Exception::ERR_NOT_IMPLEMENTED,"Disconnecting",
-		 "Multiplayer::client");
-		setConnected(false);					
-	};
-} // end disconnect
-} // end namespace Ogrian
+}; // end namespace ogrian

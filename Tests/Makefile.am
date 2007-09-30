@@ -11,6 +11,8 @@ NetworkTest_CPPFLAGS= -I$(top_srcdir)/include -I$(top_srcdir)/Tests -DUSE_STUB_H
 NetworkTest_SOURCES= NetworkTest.cpp \
 	../src/OgrianConst.cpp \
 	Multiplayer.cpp \
+	Client.cpp \
+	Server.cpp \
 	LogManager.cpp \
 	stub.cpp
 
