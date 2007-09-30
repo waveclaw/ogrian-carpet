@@ -37,27 +37,29 @@
 #define NO_REMOTE_CONNECTIONS 1
 #define OGRIAN_DEFAULT_BUFFER_SIZE 500
 #define OGRIAN_DEFAULT_SLEEP_TIME 30
+#define OGRIAN_BASETIME 5000
+#define OGRIAN_RANDOM_MULTIPLIER 10000
 
 /**
  * Computes the value in the configuration file of the ineger variable \a x
  **/
-#define CONI(x) Const::getSingleton().getConstantInt(x)
+#define CONI(x) ( Const::getSingleton().getConstantInt(x) )
 /**
  * Computes the value in the configuration file of the Real variable \a x
  **/
-#define CONR(x) Const::getSingleton().getConstantReal(x)
+#define CONR(x) ( Const::getSingleton().getConstantReal(x) )
 /**
  * Computes the value in the configuration file of the Time variable \a x
  **/
-#define CONT(x) Const::getSingleton().getConstantTime(x)
+#define CONT(x) ( Const::getSingleton().getConstantTime(x) )
 /**
  * Computes the value in the configuration file of the String variable \a x
  **/
-#define CONS(x) Const::getSingleton().getConstantString(x)
+#define CONS(x) ( Const::getSingleton().getConstantString(x) )
 /**
  * Computes the value in the configuration file of the bool variable \a x
  **/
-#define CONB(x) Const::getSingleton().getConstantBool(x)
+#define CONB(x) ( Const::getSingleton().getConstantBool(x) )
 
 using namespace Ogre;
 
@@ -144,6 +146,6 @@ private:
 	ConfigFile mStrings;
 };
 
-}
+} // end namespace ogrian
 
 #endif
