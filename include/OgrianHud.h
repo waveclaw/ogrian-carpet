@@ -33,8 +33,11 @@ Description: The heads up display
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianSpellManager.h"
+#include "OgrianConst.h"
 #include "OgrianClock.h"
+#include "OgrianSpellManager.h"
+
+
 
 using namespace Ogre;
 

@@ -28,20 +28,7 @@ NOTE: to add buttons and stuff, be sure to edit OgrianMouseFrameListener.h
  *------------------------------------*/
 
 #include "OgrianMenu.h"
-#include "OgrianPlayerList.h"
-#include "OgrianRenderer.h"
-#include "OgrianMultiplayer.h"
-#include "OgrianAIWizardThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianSpellManager.h"
-#include "OgrianSkinManager.h"
 
-#include "OgreOverlayManager.h"
-
-#include "OgreCursorGuiElement.h"
-#include "OgreBorderButtonGuiElement.h"
-#include "OgreEventProcessor.h"
-#include "OgreStringResource.h"
 
 template<> Ogrian::Menu * Singleton< Ogrian::Menu >::ms_Singleton = 0;
 

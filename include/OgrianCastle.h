@@ -36,6 +36,12 @@ Description: This is a castle
 #include "OgrianConst.h"
 #include "OgrianMultiplayer.h"
 #include "OgrianBuildingHeightMap.h"
+#include "OgrianRenderer.h"
+#include "OgrianPhysics.h"
+#include "OgrianHud.h"
+#include "OgrianSpellManager.h"
+#include "OgrianSkinManager.h"
+#include "OgrianManaThing.h"
 #include "OgrianCraneThing.h"
 #include "OgrianPortalThing.h"
 

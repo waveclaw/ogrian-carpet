@@ -29,7 +29,6 @@ Description: The albatross is like a cruise missile, it just flies straight unti
 
 
 #include "OgrianAlbatrossThing.h"
-#include "OgrianSummonSpellThing.h"
 
 using namespace Ogre;
 

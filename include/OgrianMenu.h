@@ -31,12 +31,24 @@ to set your config options
 #define __OgrianMenu_H__
 
 #include <Ogre.h>
-#include "OgreKeyEvent.h"
-#include "OgreEventListeners.h"
-#include "OgrianInput.h"
-#include "OgreListGuiElement.h"
-#include "OgreListChanger.h"
+#include <OgreKeyEvent.h>
+#include <OgreEventListeners.h>
+#include <OgreOverlayManager.h>
+#include <OgreCursorGuiElement.h>
+#include <OgreBorderButtonGuiElement.h>
+#include <OgreEventProcessor.h>
+#include <OgreStringResource.h>
+#include <OgreListGuiElement.h>
+#include <OgreListChanger.h>
 
+#include "OgrianInput.h"
+#include "OgrianPlayerList.h"
+#include "OgrianRenderer.h"
+#include "OgrianMultiplayer.h"
+#include "OgrianAIWizardThing.h"
+#include "OgrianPhysics.h"
+#include "OgrianSpellManager.h"
+#include "OgrianSkinManager.h"
 #include "OgrianClock.h"
 
 using namespace Ogre;

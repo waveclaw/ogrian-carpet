@@ -31,7 +31,24 @@ starting games and detecting victory.
 #define __OgrianGame_H__
 
 #include <Ogre.h>
+#include "OgrianConst.h"
 #include "OgrianThing.h"
+#include "OgrianPhysics.h"
+#include "OgrianMultiplayer.h"
+#include "OgrianDotManager.h"
+#include "OgrianHealthBarManager.h"
+#include "OgrianBuildingHeightMap.h"
+#include "OgrianHud.h"
+#include "OgrianAIWizardThing.h"
+#include "OgrianSkinManager.h"
+#include "OgrianSpellManager.h"
+#include "OgrianManaThing.h"
+#include "OgrianGnomeThing.h"
+#include "OgrianTickThing.h"
+#include "OgrianSentinelThing.h"
+#include "OgrianTowerThing.h"
+#include "OgrianShrineThing.h"
+#include "OgrianFoliageThing.h"
 
 using namespace Ogre;
 

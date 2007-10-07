@@ -30,13 +30,8 @@ This is never rendered.
 
  *------------------------------------*/
 
-#include "OgrianRenderer.h"
 #include "OgrianCameraThing.h"
-#include "OgrianHud.h"
-#include "OgrianPhysics.h"
-#include "OgrianCastle.h"
 
-#include "OgreConfigFile.h"
 
 namespace Ogrian
 {

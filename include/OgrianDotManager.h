@@ -33,6 +33,7 @@ far from the camera
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
+#include "OgrianRenderer.h"
 
 using namespace Ogre;
 

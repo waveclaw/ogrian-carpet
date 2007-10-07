@@ -36,11 +36,29 @@ It is a Singleton.
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
-#include "OgrianThing.h"
-#include "OgrianWizardThing.h"
+#include <OgreLogManager.h>
 #include "OgrianConst.h"
-#include "OgrianMultiplayer.h"
+#include "OgrianRenderer.h"
+#include "OgrianClock.h"
 #include "OgrianTeam.h"
+#include "OgrianThing.h"
+#include "OgrianFireballThing.h"
+#include "OgrianClaimSpellThing.h"
+#include "OgrianBuildSpellThing.h"
+#include "OgrianManaThing.h"
+#include "OgrianCameraThing.h"
+#include "OgrianFoliageThing.h"
+#include "OgrianTowerThing.h"
+#include "OgrianPortalThing.h"
+#include "OgrianShrineThing.h"
+#include "OgrianSummonSpellThing.h"
+#include "OgrianSentinelThing.h"
+#include "OgrianTickThing.h"
+#include "OgrianGnomeThing.h"
+#include "OgrianAlbatrossThing.h"
+#include "OgrianTeleportSpellThing.h"
+#include "OgrianWizardThing.h"
+#include "OgrianMultiplayer.h"
 
 using namespace Ogre;
 

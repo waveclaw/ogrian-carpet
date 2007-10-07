@@ -33,8 +33,14 @@ Description: A computer controlled Wizard
 
 #include <Ogre.h>
 #include "OgrianClaimSpell.h"
+#include "OgrianConst.h"
 #include "OgrianFireballSpell.h"
 #include "OgrianWizardThing.h"
+#include "OgrianManaThing.h"
+#include "OgrianPhysics.h"
+#include "OgrianHeightMap.h"
+#include "OgrianGame.h"
+
 
 using namespace Ogre;
 

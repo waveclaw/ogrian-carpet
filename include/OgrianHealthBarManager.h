@@ -32,6 +32,7 @@ Description: This manages the health bars that are shown above nearby damageable
 
 #include <Ogre.h>
 #include <OgreSingleton.h>
+#include "OgrianRenderer.h"
 
 using namespace Ogre;
 

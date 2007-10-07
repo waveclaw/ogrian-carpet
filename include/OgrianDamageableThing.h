@@ -34,6 +34,9 @@ It also has an optional health bar
 #include <Ogre.h>
 #include "OgrianThing.h"
 #include "OgrianClock.h"
+#include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
+#include "OgrianHealthBarManager.h"
 
 using namespace Ogre;
 

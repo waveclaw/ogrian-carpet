@@ -29,8 +29,6 @@ sorted and has a unique material.
 *------------------------------------*/
 
 #include "OgrianSprite.h"
-#include "OgrianRenderer.h"
-#include "OgrianDotManager.h"
 
 using namespace Ogre;
 

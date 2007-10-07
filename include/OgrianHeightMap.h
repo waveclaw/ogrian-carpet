@@ -32,9 +32,14 @@ It is a Singleton.
 #ifndef __OgrianHeightMap_H__
 #define __OgrianHeightMap_H__
 
-
+#include <Ogre.h>
 #include <OgreSingleton.h>
-#include "Ogre.h"
+#include <OgreImage.h>
+#include <OgreConfigFile.h>
+#include <OgreException.h>
+#include "OgrianConst.h"
+#include "OgrianBuildingHeightMap.h"
+
 
 using namespace Ogre;
 

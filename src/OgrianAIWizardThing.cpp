@@ -27,22 +27,7 @@ Description: A computer controlled Wizard
 
  *------------------------------------*/
 
-#include <Ogre.h>
 #include "OgrianAIWizardThing.h"
-#include "OgrianManaThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianHeightMap.h"
-#include "OgrianGame.h"
-
-#define MODE_NULL 0
-#define MODE_GATHER 1
-#define MODE_ATTACK 2
-
-#define MOVE_NONE 0
-#define MOVE_FORWARD 1
-#define MOVE_BACK 2
-#define MOVE_LEFT 3
-#define MOVE_RIGHT 4
 
 using namespace Ogre;
 

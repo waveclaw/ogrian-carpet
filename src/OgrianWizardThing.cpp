@@ -30,12 +30,6 @@ it handles all wizard movement code and army tracking and mana regen
 
 
 #include "OgrianWizardThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianRenderer.h"
-#include "OgrianMultiplayer.h"
-#include "OgrianHud.h"
-#include "OgrianBuildingHeightMap.h"
-#include "OgrianSkinManager.h"
 
 using namespace Ogre;
 

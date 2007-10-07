@@ -30,15 +30,6 @@ It is rendered as a Billboard.
  *------------------------------------*/
 
 #include "OgrianThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianRenderer.h"
-#include "OgrianClock.h"
-#include "OgrianOrientedSprite.h"
-#include "OgrianModel.h"
-#include "OgrianBuildingHeightMap.h"
-
-#include <iostream>
-#include <sstream>
 
 namespace Ogrian
 {

@@ -29,9 +29,7 @@ It also has an optional health bar
  *------------------------------------*/
 
 #include "OgrianDamageableThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianRenderer.h"
-#include "OgrianHealthBarManager.h"
+
 
 using namespace Ogre;
 

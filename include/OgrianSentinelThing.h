@@ -35,6 +35,7 @@ nearby enemies.
 #include <Ogre.h>
 #include "OgrianDamageableThing.h"
 #include "OgrianSummonSpellThing.h"
+#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 

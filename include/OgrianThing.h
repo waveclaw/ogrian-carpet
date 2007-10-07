@@ -33,12 +33,20 @@ It is rendered as a Billboard.
 #define __OgrianThing_H__
 
 #include <Ogre.h>
+#include <iostream>
+#include <sstream>
 
 #include "OgrianConst.h"
 #include "OgrianSprite.h"
 #include "OgrianAudio.h"
 #include "OgrianPacketEnum.h"
 #include "OgrianClock.h"
+#include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
+#include "OgrianClock.h"
+#include "OgrianOrientedSprite.h"
+#include "OgrianModel.h"
+#include "OgrianBuildingHeightMap.h"
 
 #include "BitStream.h"
 

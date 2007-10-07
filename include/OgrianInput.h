@@ -30,8 +30,21 @@ Description: Handle game input
 #define __OgrianInput_H__
 
 #include <Ogre.h>
-#include "OgreKeyEvent.h"
-#include "OgreEventListeners.h"
+#include <OgreKeyEvent.h>
+#include <OgreEventListeners.h>
+
+#include "OgrianPhysics.h"
+#include "OgrianHud.h"
+#include "OgrianAudio.h"
+#include "OgrianMenu.h"
+#include "OgrianPlayerList.h"
+#include "OgrianManaThing.h"
+#include "OgrianFireballThing.h"
+#include "OgrianClaimSpellThing.h"
+#include "OgrianBuildSpellThing.h"
+#include "OgrianAIWizardThing.h"
+#include "OgrianRenderer.h"
+#include "OgrianSpellManager.h"
 
 using namespace Ogre;
 

@@ -47,6 +47,14 @@ Description: Defines a frame listener which responds to frame events.
 #include "OgreEventListeners.h"
 #include "OgreStringConverter.h"
 #include "OgreException.h"
+#include "OgreConfigFile.h"
+#include "OgrianHeightMap.h"
+#include "OgrianPhysics.h"
+#include "OgrianAudio.h"
+#include "OgrianInput.h"
+#include "OgrianCameraThing.h"
+#include "OgrianRenderer.h"
+#include "OgrianMenu.h"
 
 using namespace Ogre;
 

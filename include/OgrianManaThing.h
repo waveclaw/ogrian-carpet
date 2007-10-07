@@ -37,6 +37,7 @@ When they are claimed, they move to the castle
 #define __OgrianManaThing_H__
 
 #include <Ogre.h>
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 

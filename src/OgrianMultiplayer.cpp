@@ -30,7 +30,6 @@
  **/
 #include "OgrianMultiplayer.h"
 
-
 using namespace Ogre;
 
 template<> Ogrian::Multiplayer * Singleton< Ogrian::Multiplayer >::ms_Singleton = 0;

@@ -28,11 +28,6 @@ Description: This makes a castle or a tower
  *------------------------------------*/
 
 #include "OgrianBuildSpellThing.h"
-#include "OgrianTowerThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianRenderer.h"
-#include "OgrianHud.h"
-#include "OgrianBuildingHeightMap.h"
 
 using namespace Ogre;
 

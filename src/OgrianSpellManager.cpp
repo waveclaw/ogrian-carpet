@@ -28,16 +28,6 @@ Description: This manages the spells for the HUD, etc
  *------------------------------------*/
 
 #include "OgrianSpellManager.h"
-#include "OgrianHud.h"
-#include "OgrianTeleportSpell.h"
-#include "OgrianAlbatrossSpell.h"
-#include "OgrianGnomeSpell.h"
-#include "OgrianTickSpell.h"
-#include "OgrianSentinelSpell.h"
-#include "OgrianSpeedSpell.h"
-#include "OgrianFireballSpell.h"
-#include "OgrianClaimSpell.h"
-#include "OgrianBuildSpell.h"
 
 using namespace Ogre; 
 

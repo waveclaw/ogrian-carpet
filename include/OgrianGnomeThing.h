@@ -32,6 +32,7 @@ Description: The gnome attacks enemies by shooting fireballs at them. it also fo
 #define __OgrianGnomeThing_H__
 
 #include <Ogre.h>
+#include "OgrianFireballThing.h"
 #include "OgrianDamageableThing.h"
 #include "OgrianSummonSpellThing.h"
 

@@ -29,8 +29,6 @@ the eight cardinal directions and also from any of an arbitrary number of poses.
  *------------------------------------*/
 
 #include "OgrianOrientedSprite.h"
-#include "OgrianRenderer.h"
-#include "OgrianDotManager.h"
 
 using namespace Ogre;
 

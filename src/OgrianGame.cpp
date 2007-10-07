@@ -28,32 +28,6 @@ starting games and detecting victory.
  *------------------------------------*/
 
 #include "OgrianGame.h"
-#include "OgrianPhysics.h"
-#include "OgrianMultiplayer.h"
-#include "OgrianDotManager.h"
-#include "OgrianHealthBarManager.h"
-#include "OgrianBuildingHeightMap.h"
-#include "OgrianHud.h"
-#include "OgrianAIWizardThing.h"
-#include "OgrianSkinManager.h"
-#include "OgrianSpellManager.h"
-#include "OgrianManaThing.h"
-#include "OgrianGnomeThing.h"
-#include "OgrianTickThing.h"
-#include "OgrianSentinelThing.h"
-#include "OgrianTowerThing.h"
-#include "OgrianShrineThing.h"
-#include "OgrianFoliageThing.h"
-
-#define HEX_RED    0xff0000
-#define HEX_GREEN  0x00ff00
-#define HEX_BLUE   0x0000ff
-#define HEX_YELLOW 0xffff00
-#define HEX_CYAN   0x00ffff
-#define HEX_PURPLE 0xff00ff
-#define HEX_ORANGE 0xff7F00
-#define HEX_BLACK  0x000000
-#define HEX_WHITE  0xffffff
 
 template<> Ogrian::Game * Singleton< Ogrian::Game >::ms_Singleton = 0;
 

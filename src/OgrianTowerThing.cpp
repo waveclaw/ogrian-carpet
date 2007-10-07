@@ -28,17 +28,7 @@ a flock of cranes
 
  *------------------------------------*/
 
-#include <Ogre.h>
 #include "OgrianTowerThing.h"
-#include "OgrianHeightMap.h"
-#include "OgrianClaimSpellThing.h"
-#include "OgrianMultiplayer.h"
-#include "OgrianSkinManager.h"
-#include "OgrianConst.h"
-#include "OgrianModel.h"
-#include "OgrianCraneThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianManaThing.h"
 
 using namespace Ogre;
 

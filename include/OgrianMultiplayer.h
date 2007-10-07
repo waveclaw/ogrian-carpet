@@ -36,7 +36,7 @@
 #include "OgreConfigFile.h"
 #include "OgrianPacketEnum.h"
 
-#include "../Patches/stub.hpp"
+#include "../Tests/stub.hpp"
 //include "OgrianThing.h"
 //include "OgrianMenu.h"
 //include "OgrianHud.h"

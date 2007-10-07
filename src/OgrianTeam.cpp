@@ -29,7 +29,6 @@ Description: This is a team, it has a wizard and a score
 
 
 #include "OgrianTeam.h"
-#include "OgrianPhysics.h"
 
 using namespace Ogre;
 

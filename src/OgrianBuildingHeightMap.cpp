@@ -29,14 +29,7 @@ It is a Singleton.
 
  *------------------------------------*/
 
-
-#include "Ogre.h"
-#include "OgrianHeightMap.h"
 #include "OgrianBuildingHeightMap.h"
-#include "OgrianConst.h"
-#include <OgreImage.h>
-#include <OgreConfigFile.h>
-#include "OgreException.h"
 
 using namespace Ogre;
 

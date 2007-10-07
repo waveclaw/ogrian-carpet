@@ -27,18 +27,6 @@ Description: Handle game input, as opposed to menu input.
  *------------------------------------*/
 
 #include "OgrianInput.h"
-#include "OgrianPhysics.h"
-#include "OgrianHud.h"
-#include "OgrianAudio.h"
-#include "OgrianMenu.h"
-#include "OgrianPlayerList.h"
-#include "OgrianManaThing.h"
-#include "OgrianFireballThing.h"
-#include "OgrianClaimSpellThing.h"
-#include "OgrianBuildSpellThing.h"
-#include "OgrianAIWizardThing.h"
-#include "OgrianRenderer.h"
-#include "OgrianSpellManager.h"
 
 template<> Ogrian::Input * Singleton< Ogrian::Input >::ms_Singleton = 0;
 

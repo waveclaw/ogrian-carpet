@@ -31,10 +31,8 @@ When they are claimed, they move to the castle
 
  *------------------------------------*/
 
-#include <Ogre.h>
-#include "OgrianPhysics.h"
 #include "OgrianManaThing.h"
-#include "OgrianHeightMap.h"
+
 
 using namespace Ogre;
 

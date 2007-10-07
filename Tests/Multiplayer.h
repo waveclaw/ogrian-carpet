@@ -96,7 +96,15 @@ protected:
 	 * bridge the data buffer to the network subsystem
 	 **/
 	 virtual void updateState(const RakNetTime curTime);
-	 
+
+	/**
+	 * Create a Multiplayer instance from given settings
+	 * \parameter Address of the Server
+	 * \parameter Port for the Server
+	 * \parameter The size of a clock 'tick' for the network sub-system
+	 **/	 
+	 Multiplayer(const String Server, int port, int sleepTime);
+
 public:
 	/**
 	 * Create a Multiplayer instance,  client or a server

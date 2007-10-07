@@ -29,16 +29,8 @@ See OgrianFrameListener.h for command listings
  *------------------------------------*/
 
 
-#include "OgreConfigFile.h"
-
 #include "OgrianFrameListener.h"
-#include "OgrianHeightMap.h"
-#include "OgrianPhysics.h"
-#include "OgrianAudio.h"
-#include "OgrianInput.h"
-#include "OgrianCameraThing.h"
-#include "OgrianRenderer.h"
-#include "OgrianMenu.h"
+
 
 namespace Ogrian
 {

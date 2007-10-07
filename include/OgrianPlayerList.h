@@ -30,6 +30,10 @@ Description: The Player List
 #define __OgrianPlayerList_H__
 
 #include <Ogre.h>
+#include "OgrianRenderer.h"
+#include "OgreOverlayManager.h"
+#include "OgreBorderButtonGuiElement.h"
+#include "OgreStringResource.h"
 
 #define MAX_PLAYERS 8
 

@@ -28,12 +28,6 @@ Description: This is a castle
  *------------------------------------*/
 
 #include "OgrianCastle.h"
-#include "OgrianRenderer.h"
-#include "OgrianPhysics.h"
-#include "OgrianHud.h"
-#include "OgrianSpellManager.h"
-#include "OgrianSkinManager.h"
-#include "OgrianManaThing.h"
 
 namespace Ogrian
 {

@@ -27,11 +27,6 @@ Description: The Player List
  *------------------------------------*/
 
 #include "OgrianPlayerList.h"
-#include "OgrianRenderer.h"
-
-#include "OgreOverlayManager.h"
-#include "OgreBorderButtonGuiElement.h"
-#include "OgreStringResource.h"
 
 template<> Ogrian::PlayerList * Singleton< Ogrian::PlayerList >::ms_Singleton = 0;
 

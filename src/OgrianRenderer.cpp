@@ -30,19 +30,7 @@ It is a Singleton.
 
  *------------------------------------*/
 
-
-#include "Ogre.h"
-#include "OgreConfigFile.h"
-#include "OgrianFrameListener.h"
-#include "OgrianPhysics.h"
 #include "OgrianRenderer.h"
-#include "OgrianDotManager.h"
-#include "OgrianFoliageThing.h"
-#include "OgrianGame.h"
-#include "OgrianBuildingHeightMap.h"
-#include "OgrianMenu.h"
-#include "OgrianHud.h"
-#include "OgrianManaThing.h"
 
 using namespace Ogre;
 

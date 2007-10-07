@@ -27,12 +27,6 @@ Description: This is a shrine which can be claimed to increase mana regen for a 
 
  *------------------------------------*/
 
-#include "OgrianMultiplayer.h"
-#include "OgrianSkinManager.h"
-#include "OgrianBuildingHeightMap.h"
-#include "OgrianModel.h"
-#include "OgrianPhysics.h"
-#include "OgrianHeightMap.h"
 #include "OgrianShrineThing.h"
 
 using namespace Ogre;

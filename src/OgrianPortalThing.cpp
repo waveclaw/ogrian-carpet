@@ -30,9 +30,6 @@ Description: the Portal teleports its wizard to the next tower
 
 
 #include "OgrianPortalThing.h"
-#include "OgrianPhysics.h"
-#include "OgrianMultiplayer.h"
-
 
 using namespace Ogre;
 

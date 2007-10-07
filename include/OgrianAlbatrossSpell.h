@@ -35,6 +35,7 @@ Description: This summons an albatross
 #include "OgrianRenderer.h"
 #include "OgrianPhysics.h"
 #include "OgrianAlbatrossThing.h"
+#include "OgrianSummonSpellThing.h"
 
 using namespace Ogre;
 

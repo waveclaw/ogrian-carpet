@@ -34,6 +34,8 @@ In simple=false mode, they fly in an arc, leave a smoke trail, and hurt teammate
 
 #include <Ogre.h>
 #include "OgrianTimedThing.h"
+#include "OgrianRenderer.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 

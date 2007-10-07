@@ -35,6 +35,12 @@ Description: The wizard thing is the superclass of the CameraThing
 #include "OgrianConst.h"
 #include "OgrianDamageableThing.h"
 #include "OgrianTeam.h"
+#include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
+#include "OgrianMultiplayer.h"
+#include "OgrianHud.h"
+#include "OgrianBuildingHeightMap.h"
+#include "OgrianSkinManager.h"
 
 using namespace Ogre;
 

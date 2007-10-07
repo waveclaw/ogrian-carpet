@@ -34,7 +34,7 @@ Description: This is a 3D mesh VisRep
 /* WTF?  this doesn't exist. Using OgreMath, instead. --jdpowell 20050602
  include "Math.h" */
 #include <OgreMath.h>
-
+#include "OgrianRenderer.h"
 #include "OgrianSprite.h"
 
 using namespace Ogre;

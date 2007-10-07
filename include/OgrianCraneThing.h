@@ -38,6 +38,7 @@ and respawns back at its home point (around which it orbits).
 #include "OgrianTimedThing.h"
 #include "OgrianConst.h"
 #include "OgrianGame.h"
+#include "OgrianPhysics.h"
 
 using namespace Ogre;
 

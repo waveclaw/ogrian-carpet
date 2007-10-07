@@ -40,6 +40,26 @@
 #define OGRIAN_BASETIME 5000
 #define OGRIAN_RANDOM_MULTIPLIER 10000
 
+#define MODE_NULL 0
+#define MODE_GATHER 1
+#define MODE_ATTACK 2
+
+#define MOVE_NONE 0
+#define MOVE_FORWARD 1
+#define MOVE_BACK 2
+#define MOVE_LEFT 3
+#define MOVE_RIGHT 4
+
+#define HEX_RED    0xff0000
+#define HEX_GREEN  0x00ff00
+#define HEX_BLUE   0x0000ff
+#define HEX_YELLOW 0xffff00
+#define HEX_CYAN   0x00ffff
+#define HEX_PURPLE 0xff00ff
+#define HEX_ORANGE 0xff7F00
+#define HEX_BLACK  0x000000
+#define HEX_WHITE  0xffffff
+
 /**
  * Computes the value in the configuration file of the ineger variable \a x
  **/

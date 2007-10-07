@@ -33,7 +33,17 @@ It is a Singleton.
 #ifndef __OgrianRenderer_H__
 #define __OgrianRenderer_H__
 
-#include "Ogre.h"
+#include <Ogre.h>
+#include <OgreConfigFile.h>
+#include "OgrianFrameListener.h"
+#include "OgrianPhysics.h"
+#include "OgrianDotManager.h"
+#include "OgrianFoliageThing.h"
+#include "OgrianGame.h"
+#include "OgrianBuildingHeightMap.h"
+#include "OgrianMenu.h"
+#include "OgrianHud.h"
+#include "OgrianManaThing.h"
 #include "OgrianFrameListener.h"
 #include "OgrianMouseFrameListener.h"
 #include "OgrianCameraThing.h"

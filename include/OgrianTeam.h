@@ -33,6 +33,7 @@ Description: This is a team, it has a wizard and a score
 
 #include <Ogre.h>
 #include "OgrianGame.h"
+#include "OgrianPhysics.h"
 #include "OgrianCastle.h"
 #include "OgrianDamageableThing.h"
 

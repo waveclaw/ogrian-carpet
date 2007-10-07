@@ -29,7 +29,7 @@ far from the camera
  *------------------------------------*/
 
 #include "OgrianDotManager.h"
-#include "OgrianRenderer.h"
+
 
 using namespace Ogre;
 

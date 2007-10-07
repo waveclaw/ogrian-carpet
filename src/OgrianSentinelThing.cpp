@@ -30,7 +30,6 @@ nearby enemies.
 
 
 #include "OgrianSentinelThing.h"
-#include "OgrianFireballThing.h"
 
 using namespace Ogre;
 

@@ -36,9 +36,16 @@ is... difficult.
 #ifndef __OgrianBuildingHeightMap_H__
 #define __OgrianBuildingHeightMap_H__
 
-
+#include <Ogre.h>
 #include <OgreSingleton.h>
+#include <OgreImage.h>
+#include <OgreConfigFile.h>
+
 #include "OgrianThing.h"
+#include "OgrianHeightMap.h"
+#include "OgrianConst.h"
+#include "OgreException.h"
+
 
 using namespace Ogre;
 

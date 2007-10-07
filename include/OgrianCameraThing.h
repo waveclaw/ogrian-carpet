@@ -36,6 +36,11 @@ This is never rendered.
 #include <Ogre.h>
 #include "OgrianWizardThing.h"
 #include "OgrianHeightMap.h"
+#include "OgrianRenderer.h"
+#include "OgrianHud.h"
+#include "OgrianPhysics.h"
+#include "OgrianCastle.h"
+#include "OgreConfigFile.h"
 
 using namespace Ogre;
 

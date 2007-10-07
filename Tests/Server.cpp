@@ -40,25 +40,12 @@ namespace Ogrian
 /**
  * Create a server
  **/
-Server::Server()
+Server::Server() : Multiplayer(CONS("SERVER"), CONI("PORT"), CONI("SLEEPTIME"))
 {
 	// get the configured default number of clients
 	// TODO - get the map's number of clients
 	mNumberClients = CONI("NUMBER_OF_CLIENTS"); // should always be 1 or more from the cfg file
 	// get one or more peers
-	mIsConnected = false;
-	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
-	mPort = CONI("PORT");
-	mMaxConnections = CONI("MAX_CONNECTIONS");
-	mSleepTime = CONI("SLEEPTIME"); // milliseconds
-	mPeer = RakNetworkFactory::GetRakPeerInterface(); 
-	if (0 == mPeer) 
-	{
-	Exception( Exception::ERR_INTERNAL_ERROR, 
-  	           "Error pre-initalizing network system. RakNet had an error: RakNetworkFactory::GetRakPeerInterface",
-                "Multiplayer::Multiplayer");
-	};		
-		
 } // end constructor
 
 /**
@@ -66,12 +53,14 @@ Server::Server()
  **/
 Server::~Server() 
 {
+	RakPeerInterface *peer = NULL:
 	if ( isConnected() ) disconnect();
 	int waitSeconds = CONI("SHUTDOWN_WAIT_SECONDS");
 	// shutdown the peers	
 	for (int i = 0;i < getNumberClients();i++) {
-		Multiplayer::mPeer[i]->Shutdown(waitSeconds);
-		RakNetworkFactory::DestroyRakPeerInterface(Multiplayer::mPeer[i]);
+		peer = Multiplayer::getPeer(i);
+		peer->Shutdown(waitSeconds);
+		RakNetworkFactory::DestroyRakPeerInterface(peer);
 	};	
     // super
     	

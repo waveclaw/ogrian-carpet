@@ -47,20 +47,29 @@ namespace Ogrian
  **/
 Multiplayer::Multiplayer()
 {
+	return Multiplayer(CONS("SERVER"), CONI("PORT"), CONI("SLEEPTIME"));
+} // end contructor
+
+/**
+ * Initialize a multiplayer configuration based on details
+ * \exception Warns if the Interface fails to create
+ **/
+Multiplayer::Multiplayer(const String Server, int port, int sleepTime)
+{
 	// get one or more peers
 	mIsConnected = false;
-	mAddress = new String(CONS("SERVER")); // force raknet to use INADDR_ANY with ""
-	mPort = CONI("PORT");
+	mAddress = new Server; // force raknet to use INADDR_ANY with ""
+	mPort = port;
 	mMaxConnections = CONI("MAX_CONNECTIONS");
-	mSleepTime = CONI("SLEEPTIME"); // milliseconds
+	mSleepTime = sleepTime; // milliseconds
 	mPeer = RakNetworkFactory::GetRakPeerInterface(); 
 	if (0 == mPeer) 
 	{
 	Exception( Exception::ERR_INTERNAL_ERROR, 
   	           String("Error pre-initalizing network system. RakNet had an error: RakNetworkFactory::GetRakPeerInterface"),
                    String("Multiplayer::Multiplayer"));
-	};		
-} // end contructor
+	};	
+} // end hidden constructor
 
 /**
  * We're done with the network

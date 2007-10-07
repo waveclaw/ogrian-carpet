@@ -28,7 +28,7 @@ Description: The heads up display
  *------------------------------------*/
 
 #include "OgrianHud.h"
-#include "OgrianConst.h"
+
 
 using namespace Ogre;
 

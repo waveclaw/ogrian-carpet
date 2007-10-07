@@ -34,6 +34,11 @@ Description: This makes a castle or a tower
 #include "OgrianTimedThing.h"
 #include "OgrianGame.h"
 #include "OgrianConst.h"
+#include "OgrianTowerThing.h"
+#include "OgrianPhysics.h"
+#include "OgrianRenderer.h"
+#include "OgrianHud.h"
+#include "OgrianBuildingHeightMap.h"
 
 using namespace Ogre;
 
