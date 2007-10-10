@@ -11,6 +11,8 @@ AM_INIT_AUTOMAKE([dist-zip])
 
 AC_LANG_CPLUSPLUS
 
+AM_PATH_CPPUNIT(1.9.6)
+
 dnl Portability tests from autoscan
 AC_PROG_CC
 AC_PROG_CXX
@@ -26,6 +28,7 @@ AC_HEADER_TIME
 AC_PROG_RANLIB
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_FUNC_MEMCMP
 
 
 dnl Manual process to check for fmod
@@ -35,7 +38,8 @@ dnl AC _CHECK_HEADER([fmodex/fmod.h],[AC _DEFINE([FMOD_CFLAGS],[-Ifmodex/fmod.h]
 dnl		[AC _MSG_ERROR([Please install the fMod development headers from http://fmod.org.])],)
 
 dnl These depend upon packages installed with pkg-config files
-PKG_CHECK_MODULES([fMod], [fMod >= 4.04],,
+dnl Altered to use custom /usr/lib/pkgconfig/fModEX.pc for libfmodex4 and libfmodex-devel from Packman
+PKG_CHECK_MODULES([fMod], [fModEX >= 4.04],,
 		  AC_MSG_ERROR([Please install the fMod Sound API library from http://fmod.org.]))
 dnl This was OGRE3D, moved to OGRE to support Packman RPMs
 PKG_CHECK_MODULES([OGRE], [OGRE >= 1.4],,

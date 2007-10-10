@@ -11,7 +11,7 @@ Packager    : Jeremiah D. Powell <waveclaw@hotmail.com>
 Vendor      : Waveclaw.net
 Distribution: SuSE
 Url         : http://orgian.sourceforge.net
-Requires    : ogre3d >= 1.4, RakNet >= 2.4.5.2, fMod >= 4.04.14
+Requires    : ogre3d >= 1.4, RakNet >= 2.4.5.2, fMod >= 4.04.14, cppunit
 
 
 %description

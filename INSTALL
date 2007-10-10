@@ -70,7 +70,8 @@ with the executable.  The txt and cfg files need to be present as well.
 
 For Linux
 =============
-2. d/l sub-dependancies for the SDKs
+2. d/l sub-dependancies for the SDKs.  
+Note that modern distributions of Linux will have ogre, CEGUI and OIS packages available.  Users so blessed can skip to step 5.
 What	Version		UsedBy		Where
 ----	-------		------		-----
 zLib	1.2.1		DevIL, RakNet
@@ -81,6 +82,7 @@ SDL	> 1.2.0		Orge3D
 zziplib	?		Ogre3D
 xerces	?		CeGUI
 slang   1.0		?		(sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
+cppunit > 1.9           make check      cppunit.sourceforge.net
 
 3. for each dependency either locate the rpm for it or create a pkg-config info file 
 (e.g. RakNet.pc for RakNet, note: capitalization is important!) and use checkinstall.
@@ -89,7 +91,7 @@ make
 sudo /usr/sbin/checkinstall
 sudo rpm -ivh *.rpm
 
-Known to have black market rpms:
+Known to have 'black market' rpms:
 	raknet-2.4-1.x86_64.rpm
 	DevIL-1.6.7-1.x86_64.rpm
 	fmod-4.02.02_linux64-1.x86_64.rpm

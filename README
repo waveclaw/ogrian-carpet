@@ -1,5 +1,3 @@
-
-
 Notes:
  Move Plugins.cfg -> plugins.cfg w/ OpenGL default render method becuase
  Linux filesystems are case-sensitive.

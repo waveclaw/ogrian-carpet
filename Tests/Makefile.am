@@ -16,5 +16,6 @@ NetworkTest_SOURCES= NetworkTest.cpp \
 	LogManager.cpp \
 	stub.cpp
 
-SpinBufferTest_CPPFLAGS= -I$(top_srcdir)/include -I$(top_srcdir)/Tests -I$(top_srcdir) -DDEBUG
+SpinBufferTest_CPPFLAGS = $(CPPUNIT_CFLAGS) -I$(top_srcdir)/include -I$(top_srcdir)/Tests -I$(top_srcdir) -frepo
+SpinBufferTest_LDFLAGS = $(CPPUNIT_LIBS) -ldl
 SpinBufferTest_SOURCES= SpinBufferTest.cpp ../src/SpinBuffer.cpp
