@@ -1,0 +1,219 @@
+2007-05-30 Jeremiah Powell <waveclaw@hotmail.com>
+
+	* Buildable audio based on fMod 4.06, needs hacks to workaroud broken Ogre.
+
+	* Reimport of content as binaries.
+	
+	* Proof of build working on Windows XP with Visual Studio Express.
+	
+	* Proof of build working on i386 SuSE Linux
+	
+	* Initial work on moving networking to RakNet 3.0
+	
+	* Initial work on moving input to OIS
+
+2007-05-12 Jeremiah Powell <waveclaw@hotmail.com>
+
+	*  realized gaming addiction ruining life.
+	
+	*  Created autoconf files
+
+2005-08-07 Jeremiah Powell <waveclaw@hotmail.com>
+
+	*  Updated for commit.
+
+	*  New Changelog.  New ReadMe.  New dependancy check and notes log.
+
+2005-08-05 Jeremiah Powell <waveclaw@hotmail.com>
+
+	* Abandoned autoconf system for simplified Makefile.
+
+	* TODO: autoconf + automake to add Linux 5 step install.
+
+2005-07-20 Jeremiah Powell <waveclaw@hotmail.com>
+
+	* Built 0.9 (0.7 + Linux + New Castles) with profile information.  
+
+	* Still super-slow even with OpenGL accelration.  
+
+	* Sound only works if no other sound using application is running becuase 
+   fmod ONLY wants exclusive access to the raw HW.
+
+2005-07-19   Mike Prosser <mikeprosser@gmail.com>
+
+	*  Wrote /tests scripts for dependancy verification.
+	
+2005-07-19   Jeremiah Powell <waveclaw@hotmail.com>
+
+	*  Builds on Linux without hacked configuration.
+
+	*  First version with simple autoconf configuration.
+
+2005-06-11  Mike Prosser <mikeprosser@gmail.com>
+
+	*  Version 0.9.1
+
+	*  I changed the cliffs map and the hell map
+
+	*  Wizards move faster 
+
+	*  Speed spell is cheaper
+
+	*  Fixes some multiplayer crash bugs. 
+
+2005-05-10  Mike Prosser <mikeprosser@gmail.com>
+
+	*  Version 0.9
+
+	*  AI bot player for skirmish
+	
+	*  things can now be loaded from an image, rather then randomly
+
+	*  option for old randomized maps
+
+	*  trees can now always be seen
+
+	*  made castle mana drops aggregate more
+	
+	*  loosened the restrictions on summoning
+
+	*  made the config menu better
+
+	*  added victory conditions to skirmish: kill all enemy towers/castles
+
+	*  made ticks and gnomes stay in the formation you put them in
+
+	*  made monsters and towers drop less then their cost when they have no wizard
+
+	*  made mana float higher
+
+	*  made towers cheaper (50)
+
+	*  made sentinels drop much less (3)
+
+	*  changed speed behavior on lava maps
+
+2005-05-10  John Michel <anonymous@nowhere.com>
+
+	*  added victory music
+
+	*  new music
+
+2005-04-10  Mike Prosser <mikeprosser@gmail.com>
+
+	* Version 0.8
+
+	* made health bars always visible when in range
+	
+	* added hud counters for your posessions
+	
+	* added a background to the hud to make the text more visible
+	
+	* added a loading graphic
+
+	* reorganized the menu into separate screens
+
+	* menu config screen saves its values to ogrian.cfg
+	
+	* now you can enter your name and choose a server in-game
+	
+	* added 
+		map previews
+		credits page
+
+2005-04-01  Mike Prosser <mikeprosser@gmail.com>
+
+	* Version 0.7.2
+
+	* huts are now shrines
+
+	* skinning support for castles, towers, and shrines
+
+	* new map: lowerlands
+
+	* new map textures
+
+	* new castle textures
+
+	* new shrine mesh
+
+	* claim spell now heals monsters
+
+	* can claim shrines and mana by just touching them
+
+
+2005-03-15  Mike Prosser <mikeprosser@gmail.com>
+
+	* 0.7.1
+
+	* some new sprites
+
+	* removed baloons, mana go to castles on their own
+
+	* nerfed ticks and put them higher on the "tech tree"
+
+	* improved gnomes by speeding them up
+
+	* made sentinels cheaper
+
+	* added a map option to make lava deadly
+
+	* gave towers a healing ball and a teleport portal
+
+	* lots more settings for maps including start location(s)
+
+	* monsters dont spawn right next to you in skirmish
+
+	* towers now dont drop all of their mana when they die, some is sent back 
+	to the castle, like monsters
+	
+	* monsters now have health bars
+
+	* players can now be allies by choosing the same colour
+
+	* allies share portals
+
+	* you can give your ally mana by casting build on his castle
+
+	* made error messages when building or summoning fails
+
+	* added teleport home spell
+
+	* fireball, akimbo fireball, and firestorm all occupy the same slot
+
+2005-08-25  Mike Prosser <mikeprosser@gmail.com>
+
+	* Version 0.7
+	
+	* new castle model and behavior
+	
+	*spell selection system
+
+	* spells:
+	 Summon Spells
+	 Firestorm
+	 Speed
+	 Akimbo Fireball
+
+	* gave towers new models and beacons
+
+	* added 
+	 huts
+	 sentinels
+	 ticks
+	 gnomes
+	 albatross!es
+
+2005-08-25 Mike Prosser <mikeprosser@gmail.com>
+
+	* Ogrian Carpet is now Linux-compatible. 
+	
+	* There's no binary distribution yet, but the source can be CVS'ed 
+	and there is a makefile to build with. Thanks to J.D. 'Waveclaw' 
+	Powell for making the necessary fixes to the code to make it compile 
+	under linux.
+
+
+
+
+

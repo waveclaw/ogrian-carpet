@@ -1,0 +1,162 @@
+Author=Mike Prosser
+Difficulty=normal
+Players=four
+Preview=Ogrian/Preview/Cliffs
+
+Scale.xz=2
+Scale.y=.5
+
+OceanMaterial=Ogrian/Ocean
+SkyMaterial=Ogrian/CloudySky
+FoliageMaterial=Ogrian/PineTree
+
+# foliage numbers
+FOLIAGE_SCALE=10
+FOLIAGE_SCALE_VAR=5
+FOLIAGE_LINE_MIN=5
+FOLIAGE_LINE_MAX=500
+FoliageAmount=300
+
+#shrine skin
+SHRINE_SKIN=0
+
+#tower skin
+TOWER_SKIN=1
+
+#bot information for this map
+botstartX=900
+botstartZ=900
+
+BOT_BRAIN=joe
+BOT_CASTLE_SKIN=1
+
+# the RGB colour of the bot
+BOT_RED=221
+BOT_GREEN=10
+BOT_BLUE=32
+
+#music for this map
+MAP_MUSIC=Media/music/ogrian_rocky.ogg
+
+# Lava on(1) or off(0)
+Lava=0
+
+# Single-player start location
+startX=100
+startZ=100
+
+# Multi-player start locations
+p1startX=100
+p1startZ=100
+
+p2startX=900
+p2startZ=900
+
+p3startX=100
+p3startZ=900
+
+p4startX=900
+p4startZ=100
+
+# the RGB colour of the native monsters
+MONSTERS_RED=221
+MONSTERS_GREEN=108
+MONSTERS_BLUE=32
+
+# the number of starting stuff in random skirmish mode
+NUM_TOWERS=6
+NUM_TICKS=60
+NUM_SENTINELS=30
+
+MANA_DROP_MULTIPLIER=0.5
+
+# keep monsters this far away from the start location
+MONSTER_MIN_DIST=200
+
+# the number of shrines
+NUM_SHRINES=10
+
+# starting mana in multiplayer
+MANA_START_NUM=40
+MANA_START_AMOUNT=20
+
+# thing definition image for skirmish
+SkirmishThingsTexture=s_cliffs.png
+
+# thing definition image for multiplayer
+MultiplayerThingsTexture=m_cliffs.png
+
+
+# The main world texture (if you wish the terrain manager to create a material for you)
+WorldTexture=t_cliffs.jpg
+
+# The detail texture (if you wish the terrain manager to create a material for you)
+DetailTexture=terrain_detail.jpg
+
+#number of times the detail texture will tile in a terrain tile
+DetailTile=3
+
+# Heightmap source
+PageSource=Heightmap
+
+# Heightmap-source specific settings
+Heightmap.image=h_cliffs.png
+
+# If you use RAW, fill in the below too
+# RAW-specific setting - size (horizontal/vertical)
+#Heightmap.raw.size=513
+# RAW-specific setting - bytes per pixel (1 = 8bit, 2=16bit)
+#Heightmap.raw.bpp=2
+# Use this if you want to flip the terrain (eg Terragen exports raw upside down)
+#Heightmap.flip=true
+
+# How large is a page of tiles (in vertices)? Must be (2^n)+1
+PageSize=513
+
+# How large is each tile? Must be (2^n)+1 and be smaller than PageSize
+TileSize=65
+
+# The maximum error allowed when determining which LOD to use
+MaxPixelError=10
+
+# The size of a terrain page, in world units
+PageWorldX=1026
+PageWorldZ=1026
+# Maximum height of the terrain 
+MaxHeight=128
+
+# Upper LOD limit
+MaxMipMapLevel=5
+
+#VertexNormals=yes
+#VertexColors=yes
+#UseTriStrips=yes
+
+# Use vertex program to morph LODs, if available
+VertexProgramMorph=yes
+
+# The proportional distance range at which the LOD morph starts to take effect
+# This is as a proportion of the distance between the current LODs effective range,
+# and the effective range of the next lower LOD
+LODMorphStart=0.2
+
+# This following section is for if you want to provide your own terrain shading routine
+# Note that since you define your textures within the material this makes the 
+# WorldTexture and DetailTexture settings redundant
+
+# The name of the vertex program parameter you wish to bind the morph LOD factor to
+# this is 0 when there is no adjustment (highest) to 1 when the morph takes it completely
+# to the same position as the next lower LOD
+# USE THIS IF YOU USE HIGH-LEVEL VERTEX PROGRAMS WITH LOD MORPHING
+#MorphLODFactorParamName=morphFactor
+
+# The index of the vertex program parameter you wish to bind the morph LOD factor to
+# this is 0 when there is no adjustment (highest) to 1 when the morph takes it completely
+# to the same position as the next lower LOD
+# USE THIS IF YOU USE ASSEMBLER VERTEX PROGRAMS WITH LOD MORPHING
+#MorphLODFactorParamIndex=4
+
+# The name of the material you will define to shade the terrain
+#CustomMaterialName=TestTerrainMaterial
+
+

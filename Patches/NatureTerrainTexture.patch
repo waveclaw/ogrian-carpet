@@ -1,0 +1,173 @@
+Index: PlugIns/NatureSceneManager/include/NatureTerrainPatch.h
+===================================================================
+RCS file: /cvsroot/ogre/ogrenew/PlugIns/NatureSceneManager/include/NatureTerrainPatch.h,v
+retrieving revision 1.7
+diff -u -r1.7 NatureTerrainPatch.h
+--- PlugIns/NatureSceneManager/include/NatureTerrainPatch.h	1 Jan 2004 22:58:57 -0000	1.7
++++ PlugIns/NatureSceneManager/include/NatureTerrainPatch.h	23 Apr 2004 06:55:15 -0000
+@@ -1,10 +1,11 @@
+ /*****************************************************************************
+ 
+ 	File: NatureTerrainPatch.h
+-	Desc: A block ot terrain generated from a heightmap
++	Desc: A block of terrain generated from a heightmap
+ 	Date: 2003/02/22
+ 
+ 	Author: Martin Persson
++	Modified by Mike Prosser
+ 
+ *****************************************************************************/
+ 
+@@ -29,46 +30,46 @@
+ {
+     class QuadTreeNode
+     {
+-    public:
+-	enum
+-	{
+-	    QUAD_ENABLED = 0x80,
+-	    ERROR_MASK   = 0x7f
+-	};
+-
+-	/// sets errorvalue (0..127)
+-	inline void setError(unsigned char err)
+-	{
+-	    if ((err = err & ERROR_MASK) > (mData & ERROR_MASK))	
+-		mData = mData | err;
+-	}
+-
+-	/// returns the errorvalue (0..127)
+-	inline unsigned char getError()
+-	{
+-	    return (mData & ERROR_MASK);
+-	}
+-
+-	/// returns true if this node is enabled
+-	inline bool isEnabled()
+-	{
+-	    return ((mData & QUAD_ENABLED) == QUAD_ENABLED);
+-	}
+-
+-	/// marks this node as enabled
+-	inline void enable()
+-	{
+-	    mData = mData | QUAD_ENABLED;
+-	}
+-
+-	/// marks this node as disabled
+-	inline void disable()
+-	{
+-	    mData = mData & (~QUAD_ENABLED);
+-	}
++	public:
++		enum
++		{
++			QUAD_ENABLED = 0x80,
++			ERROR_MASK   = 0x7f
++		};
++
++		/// sets errorvalue (0..127)
++		inline void setError(unsigned char err)
++		{
++			if ((err = err & ERROR_MASK) > (mData & ERROR_MASK))	
++			mData = mData | err;
++		}
++
++		/// returns the errorvalue (0..127)
++		inline unsigned char getError()
++		{
++			return (mData & ERROR_MASK);
++		}
++
++		/// returns true if this node is enabled
++		inline bool isEnabled()
++		{
++			return ((mData & QUAD_ENABLED) == QUAD_ENABLED);
++		}
++
++		/// marks this node as enabled
++		inline void enable()
++		{
++			mData = mData | QUAD_ENABLED;
++		}
++
++		/// marks this node as disabled
++		inline void disable()
++		{
++			mData = mData & (~QUAD_ENABLED);
++		}
+ 
+-    private:
+-	unsigned char mData;
++		private:
++		unsigned char mData;
+     };
+ 
+ public:
+@@ -82,10 +83,10 @@
+ 
+     /// Select which vertices to render
+     void prepareMesh();
++
+     /// Creates vertex/index/colour... buffers for mesh
+     void generateMesh();
+     
+-   
+     void getRenderOperation(RenderOperation& op);
+     
+     void _notifyCurrentCamera(Camera *cam);
+@@ -93,33 +94,34 @@
+     /// Returns height in world units for given position (x/z unscaled)
+     Real getHeightAt(int x, int z) const
+     {
+-	return mHeight[z * mData->terrain.heightMapWidth + x]
++		return mHeight[z * mData->terrain.heightMapWidth + x]
+ 	       * mScale.y + mWorld.y;
+     }
+ 
+     /// Returns true if a vertex on the north edge is enabled
+     bool isNorthEdgeVertexEnabled(int vertexPos)
+     {
+-	return mQuadTree[mManager->mNorthEdgeQuad[vertexPos]].isEnabled();
++		return mQuadTree[mManager->mNorthEdgeQuad[vertexPos]].isEnabled();
+     }
+ 
+     /// Returns true if a vertex on the south edge is enabled
+     bool isSouthEdgeVertexEnabled(int vertexPos)
+     {
+-	return mQuadTree[mManager->mSouthEdgeQuad[vertexPos]].isEnabled();
++		return mQuadTree[mManager->mSouthEdgeQuad[vertexPos]].isEnabled();
+     }
+ 
+     /// Returns true if a vertex on the west edge is enabled
+     bool isWestEdgeVertexEnabled(int vertexPos)
+     {
+-	return mQuadTree[mManager->mWestEdgeQuad[vertexPos]].isEnabled();
++		return mQuadTree[mManager->mWestEdgeQuad[vertexPos]].isEnabled();
+     }
+ 
+     /// Returns true if a vertex on the east edge is enabled
+     bool isEastEdgeVertexEnabled(int vertexPos)
+     {
+-	return mQuadTree[mManager->mEastEdgeQuad[vertexPos]].isEnabled();
++		return mQuadTree[mManager->mEastEdgeQuad[vertexPos]].isEnabled();
+     }
++
+     /** Overridden from MovableObject */
+     Real getBoundingRadius(void) const { return 0; /* not needed */ }
+ 
+@@ -184,10 +186,12 @@
+ 
+ #if USE_TEXTURES
+         // calculate texture coordinates
++		// detail texture
+         *pBuffer++ = 1.0 - (static_cast<Real>(x) / EDGE_LENGTH);
+         *pBuffer++ = 1.0 - (static_cast<Real>(z) / EDGE_LENGTH);
+-        *pBuffer++ = (x + mZone.x) / mManager->mZoneSize;
+-        *pBuffer   = (z + mZone.z) / mManager->mZoneSize;
++		// terrain texture
++        *pBuffer++ = 0.5*(x + mWorld.x) / mManager->mZoneSize;
++        *pBuffer++ = 0.5*(z + mWorld.z) / mManager->mZoneSize;
+ #endif
+         // add vertex to lookup table
+         mManager->mVertexLookup[idx] = v;

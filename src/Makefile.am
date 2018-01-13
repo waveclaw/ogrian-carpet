@@ -1,14 +1,42 @@
-INCLUDES = $(STLPORT_CFLAGS) -I$(top_srcdir)/PlugIns/NatureSceneManager/include -I$(top_srcdir)/OgreMain/include
-
-pkglib_PROGRAMS = Plugin_NatureSceneManager.so
-
-Plugin_NatureSceneManager_so_SOURCES = NaturePatch.cpp \
-				       NatureCustomPatch.cpp \
-				       NatureTerrainPatch.cpp \
-				       NaturePatchManager.cpp \
-				       NatureSceneManager.cpp \
-				       NatureSceneManagerDll.cpp \
-				       HeightmapLoader.cpp
-
-Plugin_NatureSceneManager_so_LDFLAGS = $(SHARED_FLAGS) -L$(top_srcdir)/OgreMain/src
-Plugin_NatureSceneManager_so_LDADD = -lOgreMain
+bin_PROGRAMS= ogrian
+ogrian_CPPFLAGS= -I$(top_srcdir)/include
+ogrian_SOURCES= main.cpp \
+	OgrianAIWizardThing.cpp \
+	OgrianAlbatrossThing.cpp \
+	OgrianAudio.cpp \
+	OgrianBuildingHeightMap.cpp \
+	OgrianBuildSpellThing.cpp \
+	OgrianCameraThing.cpp \
+	OgrianCastle.cpp \
+	OgrianClock.cpp \
+	OgrianConst.cpp \
+	OgrianCraneThing.cpp \
+	OgrianDamageableThing.cpp \
+	OgrianDotManager.cpp \
+	OgrianFireballThing.cpp \
+	OgrianFrameListener.cpp \
+	OgrianGame.cpp \
+	OgrianGnomeThing.cpp \
+	OgrianHealthBarManager.cpp \
+	OgrianHeightMap.cpp \
+	OgrianHud.cpp \
+	OgrianInput.cpp \
+	OgrianManaThing.cpp \
+	OgrianMenu.cpp \
+	OgrianModel.cpp \
+	OgrianMultiplayer.cpp \
+	OgrianOrientedSprite.cpp \
+	OgrianPhysics.cpp \
+	OgrianPlayerList.cpp \
+	OgrianPortalThing.cpp \
+	OgrianRenderer.cpp \
+	OgrianSentinelThing.cpp \
+	OgrianShrineThing.cpp \
+	OgrianSkinManager.cpp \
+	OgrianSpellManager.cpp \
+	OgrianSprite.cpp \
+	OgrianTeam.cpp \
+	OgrianThing.cpp \
+	OgrianTickThing.cpp \
+	OgrianTowerThing.cpp \
+	OgrianWizardThing.cpp

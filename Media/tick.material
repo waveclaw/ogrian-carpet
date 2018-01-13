@@ -1,0 +1,290 @@
+
+material Ogrian/Tick/Sitting/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Sitting/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_s_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Ogrian/Tick/Jumping/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Tick/Jumping/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			lighting off
+
+			texture_unit
+			{
+				texture sprites/tick/tick_j_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

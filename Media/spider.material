@@ -1,0 +1,274 @@
+
+material Ogrian/Spider/Sitting/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Sitting/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_s_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Ogrian/Spider/Jumping/f
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_f.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/fl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_fl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/l
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_l.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/bl
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_bl.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/b
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_b.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/br
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_br.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/r
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_r.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Ogrian/Spider/Jumping/fr
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture sprites/monsters/spider/spider_j_fr.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}

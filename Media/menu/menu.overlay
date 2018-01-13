@@ -1,0 +1,771 @@
+// Ogre overlay scripts
+#include <BasicOgreGuiTemplates.inc>
+
+Ogrian/Menu/LoadingOverlay
+{
+	zorder 500
+
+	container Panel(Ogrian/Menu/LoadingPanel)
+	{
+		left 0.25 
+		top 0.25
+		width 0.5
+		height 0.5
+		material Ogrian/Menu/Loading
+	}
+}
+
+Ogrian/Menu/Overlay
+{
+	zorder 490
+
+	container Panel(Ogrian/Menu/BackPanel)
+	{
+		left 0 
+		top 0
+		width 1
+		height 1
+		material Ogrian/Menu/Background
+
+		container Panel(Ogrian/Menu/MapListPanel)
+		{
+			left 0.01 
+			top 0.2
+			width 0.3
+			height 0.6
+			material Core/StatsBlockCenter
+			
+			container TextArea(Ogrian/Menu/MapListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption map 
+			}
+			container List(Ogrian/Menu/MapList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.55
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/ColourListPanel)
+		{
+			left 0.01 
+			top 0.2
+			width 0.3
+			height 0.75
+			material Core/StatsBlockCenter
+
+			container TextArea(Ogrian/Menu/ColourListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption colour 
+			}
+			container List(Ogrian/Menu/ColourList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.7
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/WizardSkinListPanel)
+		{
+			left 0.69 
+			top 0.2
+			width 0.3
+			height 0.39
+			material Core/StatsBlockCenter
+			container Panel(Ogrian/Menu/WizardSkinListPanel/Preview)
+			{
+				left 0.15
+				top 0.0
+				width 0.12
+				height 0.15
+				material Ogrian/Menu/Background	
+			}
+			container TextArea(Ogrian/Menu/WizardSkinListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.02
+				width 1
+   				caption wizard 
+			}
+			container TextArea(Ogrian/Menu/WizardSkinListPanel/Text2) : SS/Templates/BasicText
+			{
+				left 0.01
+				top .07
+				width 1
+   				caption skin 
+			}
+			container List(Ogrian/Menu/WizardSkinList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.15
+				width 0.3
+				height 0.34
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/CastleSkinListPanel)
+		{
+			left 0.69 
+			top 0.7
+			width 0.3
+			height 0.27
+			material Core/StatsBlockCenter
+
+			container TextArea(Ogrian/Menu/CastleSkinListPanel/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0
+				width 1
+   				caption castle skin 
+			}
+			container List(Ogrian/Menu/CastleSkinList)
+			{
+				item_template SS/Templates/BasicText
+				v_spacing 0.005
+				h_spacing 0.005
+				left 0 
+				top 0.05
+				width 0.3
+				height 0.22
+				item_material_selected Examples/Hilite/Yellow
+				material Core/StatsBlockCenter
+				scroll_bar SS/Templates/ScrollBar
+			}
+		}
+		
+		container Panel(Ogrian/Menu/MapPanel)
+		{
+			left 0.33 
+			top 0.4
+			width 0.4
+			height 0.55
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/MapMenu/Name/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.31
+				width 1
+   				caption MAP NAME: 
+			}		
+			container TextArea(Ogrian/MapMenu/Author/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.36
+				width 1
+   				caption Author: 
+			}		
+			container TextArea(Ogrian/MapMenu/Difficulty/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.41
+				width 1
+   				caption Difficulty: 
+			}	
+			container TextArea(Ogrian/MapMenu/Players/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.46
+				width 1
+   				caption PLAYERS: 
+			}
+			
+			
+			container TextArea(Ogrian/MapMenu/Name) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.31
+				width 1
+   				caption Map Name: 
+			}		
+			container TextArea(Ogrian/MapMenu/Author) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.36
+				width 1
+   				caption Author: 
+			}		
+			container TextArea(Ogrian/MapMenu/Difficulty) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.41
+				width 1
+   				caption Difficulty: 
+			}
+			container TextArea(Ogrian/MapMenu/Players) : SS/Templates/BasicText
+			{
+				left 0.15
+				top 0.46
+				width 1
+   				caption players: 
+			}
+			
+			container Panel(Ogrian/MapMenu/Preview)
+			{
+				left 0.01 
+				top 0.01
+				width 0.3
+				height 0.3
+				material Ogrian/Menu/Background	
+			}
+		}
+		
+		container Panel(Ogrian/Menu/SkirmishMenuPanel)
+		{
+			left 0.33 
+			top 0.15
+			width 0.6
+			height 0.24
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/SkirmishMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===skirmish===
+			}
+		
+			container BorderButton(Ogrian/SkirmishMenu/Load) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.1 
+				caption SS/Templates/BasicText load
+			}
+			
+			container BorderButton(Ogrian/SkirmishMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.14
+				top 0.07
+				width 0.1 
+				caption SS/Templates/BasicText back
+			}
+																			
+			container TextArea(Ogrian/SkirmishMenu/NormalText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.02
+				width 1
+   				caption NORMAL
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/SelectNormal) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.01
+				width 0.06 
+				caption SS/Templates/BasicText  X
+			}
+				
+			container TextArea(Ogrian/SkirmishMenu/RandomText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.09
+				width 1
+   				caption RandOMized
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/SelectRandom) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.08
+				width 0.06 
+				caption SS/Templates/BasicText  
+			}
+										
+			container TextArea(Ogrian/SkirmishMenu/BotText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.16
+				width 1
+   				caption VS    AI    BOT
+			}
+					
+			container BorderButton(Ogrian/SkirmishMenu/SelectBot) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.15
+				width 0.06 
+				caption SS/Templates/BasicText  
+			}
+
+		}
+    	
+		container Panel(Ogrian/Menu/HostMenuPanel)
+		{
+			left 0.33 
+			top 0.15
+			width 0.6
+			height 0.24
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/HostMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===hOst lan game===
+			}
+		
+			container BorderButton(Ogrian/HostMenu/Load) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.1 
+				caption SS/Templates/BasicText load
+			}
+			
+			container BorderButton(Ogrian/HostMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.14
+				top 0.07
+				width 0.1 
+				caption SS/Templates/BasicText back
+			}
+																	
+			container TextArea(Ogrian/HostMenu/NormalText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.02
+				width 1
+   				caption NORMAL
+			}
+					
+			container BorderButton(Ogrian/HostMenu/SelectNormal) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.01
+				width 0.06 
+				caption SS/Templates/BasicText  X
+			}
+				
+			container TextArea(Ogrian/HostMenu/RandomText) : SS/Templates/BasicText
+			{
+				left 0.4
+				top 0.09
+				width 1
+   				caption RandOMized
+			}
+					
+			container BorderButton(Ogrian/HostMenu/SelectRandom) : SS/Templates/BasicButton
+			{
+				left 0.32
+				top 0.08
+				width 0.06 
+				caption SS/Templates/BasicText  
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/JoinMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.4
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/JoinMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===join lan game===
+			}
+					
+			container TextArea(Ogrian/JoinMenu/Server/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.07
+				width 1
+   				caption SERVER NAME OR ADDRESS:
+			}
+					
+			container TextArea(Ogrian/JoinMenu/Sever) : SS/Templates/BasicText
+			{
+				left 0.02
+				top 0.12
+				width 1
+   				caption 999.999.999.999
+			}
+		
+			container BorderButton(Ogrian/JoinMenu/Load) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.2
+				width 0.2 
+				caption SS/Templates/BasicText connect
+			}
+			
+			container BorderButton(Ogrian/JoinMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.3
+				width 0.1
+				caption SS/Templates/BasicText back
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/ConfigMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.75
+			material Core/StatsBlockCenter
+			    
+			container TextArea(Ogrian/ConfigMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===cOnfiguratiOn===
+			}
+		
+			container TextArea(Ogrian/ConfigMenu/Name/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.11
+				width 1
+   				caption name:
+			}
+		
+			container TextArea(Ogrian/ConfigMenu/Name) : SS/Templates/BasicText
+			{
+				left 0.12
+				top 0.11
+				width 1
+   				caption Player
+			}
+		
+			container TextArea(Ogrian/ConfigMenu/Yinvert/Text) : SS/Templates/BasicText
+			{
+				left 0.1
+				top 0.21
+				width 0.2
+				caption INVERT MOUSE
+			}
+	   
+			container BorderButton(Ogrian/ConfigMenu/Yinvert) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.2
+				width 0.06 
+				caption SS/Templates/BasicText X
+			}
+	   		
+			container TextArea(Ogrian/ConfigMenu/Music/Text) : SS/Templates/BasicText
+			{
+				left 0.02
+				top 0.3
+				width 0.2
+				caption music:
+			}
+	   
+			container TextArea(Ogrian/ConfigMenu/MusicOff/Text) : SS/Templates/BasicText
+			{
+				left 0.1
+				top 0.37
+				width 0.2
+				caption off
+			}
+	   
+			container TextArea(Ogrian/ConfigMenu/MusicSoft/Text) : SS/Templates/BasicText
+			{
+				left 0.1
+				top 0.43
+				width 0.2
+				caption soft
+			}
+	   
+			container TextArea(Ogrian/ConfigMenu/MusicMed/Text) : SS/Templates/BasicText
+			{
+				left 0.1
+				top 0.49
+				width 0.2
+				caption medium
+			}
+	   
+			container TextArea(Ogrian/ConfigMenu/MusicLoud/Text) : SS/Templates/BasicText
+			{
+				left 0.1
+				top 0.55
+				width 0.2
+				caption loud
+			}
+	   
+			container BorderButton(Ogrian/ConfigMenu/MusicOff) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.36
+				width 0.06
+				caption SS/Templates/BasicText X
+			}
+			
+			container BorderButton(Ogrian/ConfigMenu/MusicSoft) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.42
+				width 0.06
+				caption SS/Templates/BasicText X
+			}
+			
+			container BorderButton(Ogrian/ConfigMenu/MusicMed) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.48
+				width 0.06
+				caption SS/Templates/BasicText X
+			}
+			
+			container BorderButton(Ogrian/ConfigMenu/MusicLoud) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.54
+				width 0.06
+				caption SS/Templates/BasicText X
+			}
+			
+			container BorderButton(Ogrian/ConfigMenu/Ok) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.65
+				width 0.15 
+				caption SS/Templates/BasicText Ok
+			}
+		}
+    	
+		container Panel(Ogrian/Menu/ConnectionMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+						
+			container TextArea(Ogrian/ConnectionMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===cOnnection===
+			}
+		
+			container BorderButton(Ogrian/ConnectionMenu/Disconnect) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.57
+				width 0.2 
+				caption SS/Templates/BasicText DISCONNECT
+			}
+						
+			container BorderButton(Ogrian/ConnectionMenu/StartGame) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.47
+				width 0.2 
+				caption SS/Templates/BasicText START GAME
+			}
+		}
+    	    	
+		container Panel(Ogrian/Menu/CreditsMenuPanel)
+		{
+			left 0.2 
+			top 0.2
+			width 0.6
+			height 0.75
+			material Core/StatsBlockCenter
+			
+			container TextArea(Ogrian/CreditsMenu/Text1) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===credits===
+			}
+			
+			container TextArea(Ogrian/CreditsMenu/Text2) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.06
+				width 1
+   				caption Mike Prosser - PROJECT LEAD, PrograMMing, 
+			}
+			container TextArea(Ogrian/CreditsMenu/Text3) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.11
+				width 1
+   				caption ......... Maps, SouNds, and Sprites
+			}
+			container TextArea(Ogrian/CreditsMenu/Text4) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.16
+				width 1
+   				caption Carl Olsen - Castle Models
+			}
+			container TextArea(Ogrian/CreditsMenu/Text5) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.21
+				width 1
+   				caption Adrian Ouarar - Music
+			}
+			container TextArea(Ogrian/CreditsMenu/Text6) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.26
+				width 1
+   				caption Corey (Akfeka) Ulmer - Maps
+			}
+			container TextArea(Ogrian/CreditsMenu/Text7) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.31
+				width 1
+   				caption John Michel - Music, Sprite and Map
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text8) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.36
+				width 1
+   				caption JereMiah (WaveclaW) PoWell - Sprites
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text9) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.41
+				width 1
+   				caption Chris Browning - The MaNa shrine
+			}
+			
+			container TextArea(Ogrian/CreditsMenu/Text10) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.51
+				width 1
+   				caption Libraries: Ogre, RakNet, FMOD
+			}
+				
+			container TextArea(Ogrian/CreditsMenu/Text11) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.56
+				width 1
+   				caption Additional Media: WorldForge
+			}
+						
+			container BorderButton(Ogrian/CreditsMenu/Back) : SS/Templates/BasicButton
+			{
+				left 0.25
+				top 0.65
+				width 0.1 
+				caption SS/Templates/BasicText Back
+			}
+		}
+		
+		container Panel(Ogrian/Menu/MainMenuPanel)
+		{
+			left 0.33 
+			top 0.2
+			width 0.33
+			height 0.65
+			material Core/StatsBlockCenter
+			
+			container TextArea(Ogrian/MainMenu/Text) : SS/Templates/BasicText
+			{
+				left 0.01
+				top 0.01
+				width 1
+   				caption ===main menu===
+			}
+		
+			container BorderButton(Ogrian/MainMenu/Skirmish) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.07
+				width 0.2
+				caption SS/Templates/BasicText SINGLEPLAYER
+			}
+				
+			container BorderButton(Ogrian/MainMenu/Host) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.17
+				width 0.22
+				caption SS/Templates/BasicText host lan game
+			}
+				
+			container BorderButton(Ogrian/MainMenu/Join) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.27
+				width 0.22 
+				caption SS/Templates/BasicText join lan game
+			}
+			
+			container BorderButton(Ogrian/MainMenu/Config) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.47
+				width 0.15 
+				caption SS/Templates/BasicText Config
+			}
+			container BorderButton(Ogrian/MainMenu/Credits) : SS/Templates/BasicButton
+			{
+				left 0.2
+				top 0.57
+				width 0.1
+				caption SS/Templates/BasicText Credits
+			}
+			container BorderButton(Ogrian/MainMenu/Quit) : SS/Templates/BasicButton
+			{
+				left 0.02
+				top 0.57
+				width 0.1 
+				caption SS/Templates/BasicText QUIT
+			}
+		}
+		
+		container TextArea(Ogrian/Menu/Text) : SS/Templates/BasicText
+		{
+			left 0.33
+			top 0.95
+			width 1
+   			caption menu
+		}
+	}
+}
+

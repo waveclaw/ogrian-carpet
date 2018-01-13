@@ -1,0 +1,3 @@
+# keep mesh and tower mesh, separated by a space
+keep tower1
+keepdark towerdark

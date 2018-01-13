@@ -1,0 +1,517 @@
+Intalling (well, building) Ogrian Carpet.
+
+Common part of the Process
+=============================
+0. You might want to make a $PROJECT/lib directory to hold all the dependacy crap.
+1. d/l dependancies
+What		Name	Version		Where
+----		----	-------		-----
+3D engine	Ogre3D	>1.4		http://www.ogre3d.org/ 
+audio		fModAPI	>4.02	   	http://www.fmod.org/
+networking	RakNet	>3.0beta	http://www.rakkarsoft.com/
+
+
+For Windows
+================
+
+2. Install the Visual Studio 2005 Express Edition (or the real version if you paid for it.) 
+It's free but someone limited. This still gets you C and C++ development.  
+Ogrian Carpet ships with a (hopefully) fixed Project and Solution for Express 2005.  
+
+3. Don't forget to install the PlatformSDK.  You need the windows.h header to do anything on Microsoft 90% of the time.
+
+4. Install the raknet, fMod and OgreSDK from their dowloaded sites. (see above)
+
+5. Adjust the location of the OgreSDK, RakNet uncompressed files and fMod install.
+The fMod installer puts itself into Program Files by default.  
+It is suggested you do the same with OgreSDK and RakNet.  
+Beware: the RakNet zipfile as of 3.0 beta has no root directory and will spoo files 
+all over the directory it is unzipped to.  It also has a very old Visual Studio project
+which you can import and create an automatic dependancy upon.
+
+6. Check out Ogrian from the CVS repository
+(Install CVS if needed.)
+cd "Your Project Directory"
+cvs -z3 -d:ext:anonymous@ogrian.cvs.sourceforge.net:/cvsroot/ogrian co -P Ogrian
+
+7. Open the Project in Visual Studio.
+
+8. Add the custom headers for the depenancies.  Replace with your locations:
+Open: Ogrian Property Pages
+Select Configuration: All Configurations
+Select Platform: Active(Win32)
+Open: Configuration Properties -> C/C++ -> General -> Additional Include Directories
+Add the location of your fMod, RakNet and Ogre headers:
+"C:\Program Files\FMOD SoundSystem\FMOD Programmers API Win32\api\inc"
+"C:\Program Files\RakNet30Beta\Source"
+"C:\Program Files\OgreSDK\include"
+"THE DIRECTORY IN WHICH YOU PUT THE PROJECT\include"
+
+
+9. Add the library files. Same replace as above:
+Open: Ogrian Property Pages
+Select Configuration: All Configurations
+Select Platform: Active(Win32)
+Open: Configuration Properties -> linker -> Input -> Additional Depenencies
+Add the libraries you want to link (DLL users need not apply this):
+"C:\Program Files\FMOD SoundSystem\FMOD Programmers API Win32\api\lib\fmodex_vc.lib"
+"C:\Program Files\OgreSDK\lib\CEGUIBase.lib"
+"C:\Program Files\OgreSDK\lib\OgreGUIRenderer.lib"
+"C:\Program Files\OgreSDK\lib\OgreMain.lib"
+"C:\Program Files\OgreSDK\lib\OIS.lib"
+"C:\Program Files\RakNet30Beta\LibRakNetDLL.lib"
+
+Note: There are some DLLs located in the win32 directory.  
+These are needed to run the Ogre 0.15 version of Ogrian Carpet if you want 
+to compare the in progress update with the really old version (checkout the tags in CVS, it will be obvious.)
+
+10. Build the Debug or Release version.  The Media folder needs to be placed below the directory 
+with the executable.  The txt and cfg files need to be present as well.
+
+For Linux
+=============
+2. d/l sub-dependancies for the SDKs.  
+Note that modern distributions of Linux will have ogre, CEGUI and OIS packages available.  Users so blessed can skip to step 5.
+What	Version		UsedBy		Where
+----	-------		------		-----
+zLib	1.2.1		DevIL, RakNet
+DevIL	1.6.7		Ogre3D		http://www.il.org
+CeGUI	mk2-0.2.1	Ogre3D	
+CG	1.4.0-3 	Ogre3D		NVidia Cg Developer toolkit
+SDL	> 1.2.0		Orge3D
+zziplib	?		Ogre3D
+xerces	?		CeGUI
+slang   1.0		?		(sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
+cppunit > 1.9           make check      cppunit.sourceforge.net
+
+3. for each dependency either locate the rpm for it or create a pkg-config info file 
+(e.g. RakNet.pc for RakNet, note: capitalization is important!) and use checkinstall.
+./configure
+make
+sudo /usr/sbin/checkinstall
+sudo rpm -ivh *.rpm
+
+Known to have 'black market' rpms:
+	raknet-2.4-1.x86_64.rpm
+	DevIL-1.6.7-1.x86_64.rpm
+	fmod-4.02.02_linux64-1.x86_64.rpm
+
+4. If you had to download cairo and slang, use this workaround.
+------
+sudo ln -s /usr/local/lib/libcairo.la /usr/lib/libcairo.la
+sudo ln -s /usr/local/lib/libcairo.la /usr/lib64/libcairo.la
+sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so
+sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib64/libslang.so
+
+5. Checkout the source from CVS
+------
+setenv RSH `which ssh`
+setenv CVS_RSH `which ssh`
+
+cd ~/Documents/src/orgian_carpet
+
+rm ogrian-0.9.2
+cvs -z3 -d:ext:anonymous@ogrian.cvs.sourceforge.net:/cvsroot/ogrian co -P Ogrian
+mv Ogrian ogrian-0.9.2
+
+mkdir -p lib/ogre
+cd lib/ogre/
+cvs -d:pserver:anonymous@ogre.cvs.sourceforge.net:/cvsroot/ogre login
+cvs -z3 -d :pserver:anonymous@cvs.ogre3d.org:/cvsroot/ogre co -P ogrenew
+cvs -z3 -d :pserver:anonymous@cvs.ogre3d.org:/cvsroot/ogre co -P ogreaddons
+
+
+5a. Build and Install Ogrian
+cd ogrian-0.9.2
+./bootstrap
+./configure
+make
+make install
+
+or 
+
+5b. Create and install an rpm (just use alien on the rpm for a .deb)
+cd ogrian-0.9.2
+./bootstrap
+./configure
+make dist
+rpmbuild -ta ogrian-0.9.2.tar.gz
+rpm --install ogrian-0.9.2-x86_64.rpm
+
+Notes
+------
+ Moved Plugins.cfg -> plugins.cfg w/ OpenGL default render method becuase
+ Linux filesystems are case-sensitive.
+ Copy fmod libs to proper location since the fmod `make install` leaves it 
+ in the build location.
+ Only runable from a text-session (e.g. Xterminal, gnome-terminal, kterm) 
+ due to the (broken IMNSHO) Ogre-0.15 start menu.
+
+Detailed Dependancies
+let ARCH = "" if i386, i586, i686 or Debian
+let ARCH = "64" if x86_64 and not Debian
+ RakNet 2.013
+  networking: RakNet - http://www.rakkarsoft.com/
+  /usr/lib${ARCH}/pkgconfig/raknet.pc
+  ln -s /usr/local/lib${ARCH}/librakvoice.so.2.0.13 /usr/local/lib${ARCH}/librakvoice.so
+  ln -s /usr/local/lib${ARCH}/libraknet.so.2.0.13 /usr/local/lib${ARCH}/libraknet.so
+
+ fMod 4
+  audio: FMOD - http://www.fmod.org/
+  /usr/local/lib${ARCH}/pkgconfig/fMod.pc  (homemade)
+  /usr/local/lib${ARCH}/libfmodex.so
+
+ OGRE 0.15 (Trying 1.4, but going is tough)
+  rendering: Ogre3d - http://www.ogre3d.org/
+  /usr/local/pkgconfig/OGRE.pc
+  /usr/local/lib${ARCH}/OGRE/
+   Plugin_BSPSceneManager.so
+   Plugin_CgProgramManager.so
+   Plugin_FileSystem.so
+   Plugin_GuiElements.so
+   Plugin_NatureSceneManager.so
+   Plugin_OctreeSceneManager.so
+   Plugin_ParticleFX.so
+   RenderSystem_GL.so
+
+Subdependancies
+ CEGUI - can't get away from this now.  Pretty much an OGRE pre-requisite
+ OIS  - The SDK ships with this.  
+ Menu - http://www.cegui.org.uk/modules/news/
+ Xerces, Xerces-c-devel (for CEGUI)
+ DevIL 1.6.7 (for Ogre 0.15 and above, but at 1.2 they allow ImageLib, which is available)
+ NVidia Cg Developer toolkit 1.4.0-3 (for Ogre 0.15 and above)
+ SDL > 1.2.0
+ slang (sudo ln -s /usr/lib/libslang-utf8.so.1 /usr/lib/libslang.so)
+ zLib 1.2.1 (for DevIL, RakNet)
+
+Build information
+ ldd ogrian-9.1_jdpowell@mingle.waveclaw.net_SuSE9.3-Linux-i686
+	linux-gate.so.1 =>  (0xffffe000)
+	libOgreMain.so.4 => /usr/local/lib/libOgreMain.so.4 (0x40019000)
+	/usr/lib/libraknet.so (0x40293000)
+	/opt/fmodapi374linux/api/libfmod-3.74.so (0x402d7000)
+	libgcc_s.so.1 => /lib/libgcc_s.so.1 (0x40396000)
+	libc.so.6 => /lib/tls/libc.so.6 (0x4039e000)
+	libstdc++.so.5 => /usr/X11R6/lib/tls/i686/libstdc++.so.5 (0x404b8000)
+	libm.so.6 => /lib/tls/libm.so.6 (0x40576000)
+	libfreetype.so.6 => /usr/X11R6/lib/tls/i686/libfreetype.so.6 (0x40599000)
+	libCg.so => /usr/X11R6/lib/tls/i686/libCg.so (0x40608000)
+	libILU.so.1 => /usr/local/lib/libILU.so.1 (0x40824000)
+	libIL.so.1 => /usr/local/lib/libIL.so.1 (0x40839000)
+	libz.so.1 => /usr/X11R6/lib/tls/i686/libz.so.1 (0x4093a000)
+	libdl.so.2 => /lib/libdl.so.2 (0x4094b000)
+	libSDL-1.2.so.0 => /usr/X11R6/lib/tls/i686/libSDL-1.2.so.0 (0x4094f000)
+	libpthread.so.0 => /lib/tls/libpthread.so.0 (0x409e1000)
+	/lib/ld-linux.so.2 (0x40000000)
+	libpng.so.3 => /usr/X11R6/lib/tls/i686/libpng.so.3 (0x409f3000)
+	libjpeg.so.62 => /usr/X11R6/lib/tls/i686/libjpeg.so.62 (0x40a22000)
+	libtiff.so.3 => /usr/X11R6/lib/tls/i686/libtiff.so.3 (0x40a41000)
+	libmng.so.1 => /usr/X11R6/lib/tls/i686/libmng.so.1 (0x40a91000)
+	libX11.so.6 => /usr/X11R6/lib/libX11.so.6 (0x40af6000)
+	libXext.so.6 => /usr/X11R6/lib/libXext.so.6 (0x40bf2000)
+	libaa.so.1 => /usr/X11R6/lib/tls/i686/libaa.so.1 (0x40c01000)
+	liblcms.so.1 => /usr/X11R6/lib/tls/i686/liblcms.so.1 (0x40c1b000)
+	libslang-utf8.so.1 => /usr/X11R6/lib/tls/i686/libslang-utf8.so.1 (0x40c49000)
+	libgpm.so.1 => /usr/X11R6/lib/tls/i686/libgpm.so.1 (0x40cbb000)
+	libncurses.so.5 => /lib/libncurses.so.5 (0x40cc1000)
+
+Known Errors
+==================
+(note that this file compiles when the Ogre depenancies are faked.)
+[12:11am Wed May 30 2007] anonymous@buildhost:~/Documents/ogrian_carpet/ogrian/src                                                               tcsh-6.14.00>make OgrianAudio.o
+if g++ -DHAVE_CONFIG_H -I. -I. -I../include    -DOGRE_GUI_gtk -DOGRE_CONFIG_LITTLE_ENDIAN -I/usr/local/include -I/usr/local/include/OGRE   -I/usr/local/include/RakNet -I/usr/local/include   -I/usr/local/include/fmodex/   -I/usr/include/CEGUI    -Wall -Wimplicit -Wunused -g -pg -g -O2 -MT OgrianAudio.o -MD -MP -MF ".deps/OgrianAudio.Tpo" -c -o OgrianAudio.o OgrianAudio.cpp; \
+        then mv -f ".deps/OgrianAudio.Tpo" ".deps/OgrianAudio.Po"; else rm -f ".deps/OgrianAudio.Tpo"; exit 1; fi
+In file included from ../include/OgrianRenderer.h:37,
+                 from ../include/OgrianAudio.h:35,
+                 from OgrianAudio.cpp:26:
+../include/OgrianFrameListener.h:46:26: error: OgreKeyEvent.h: No such file or directory
+../include/OgrianFrameListener.h:47:32: error: OgreEventListeners.h: No such file or directory
+In file included from ../include/OgrianRenderer.h:38,
+                 from ../include/OgrianAudio.h:35,
+                 from OgrianAudio.cpp:26:
+../include/OgrianMouseFrameListener.h:37:34: error: OgreButtonGuiElement.h: No such file or directory
+In file included from ../include/OgrianMouseFrameListener.h:39,
+                 from ../include/OgrianRenderer.h:38,
+                 from ../include/OgrianAudio.h:35,
+                 from OgrianAudio.cpp:26:
+../include/OgrianMenu.h:37:32: error: OgreListGuiElement.h: No such file or directory
+../include/OgrianMenu.h:38:29: error: OgreListChanger.h: No such file or directory
+../include/OgrianFrameListener.h:57: error: expected class-name before '{' token
+../include/OgrianFrameListener.h:95: error: 'KeyEvent' has not been declared
+../include/OgrianFrameListener.h:96: error: 'KeyEvent' has not been declared
+../include/OgrianFrameListener.h:97: error: 'KeyEvent' has not been declared
+../include/OgrianFrameListener.h:100: error: ISO C++ forbids declaration of 'EventProcessor' with no type
+../include/OgrianFrameListener.h:100: error: expected ';' before '*' token
+../include/OgrianFrameListener.h:101: error: ISO C++ forbids declaration of 'InputReader' with no type
+../include/OgrianFrameListener.h:101: error: expected ';' before '*' token
+../include/OgrianInput.h:49: error: 'InputReader' has not been declared
+../include/OgrianMenu.h:77: error: 'InputReader' has not been declared
+../include/OgrianMenu.h:86: error: 'KeyEvent' has not been declared
+../include/OgrianMenu.h:163: error: ISO C++ forbids declaration of 'GuiContainer' with no type
+../include/OgrianMenu.h:163: error: expected ';' before '*' token
+../include/OgrianMenu.h:165: error: ISO C++ forbids declaration of 'ListChanger' with no type
+../include/OgrianMenu.h:165: error: expected ';' before '*' token
+../include/OgrianMenu.h:166: error: ISO C++ forbids declaration of 'ListChanger' with no type
+../include/OgrianMenu.h:166: error: expected ';' before '*' token
+../include/OgrianMenu.h:167: error: ISO C++ forbids declaration of 'ListChanger' with no type
+../include/OgrianMenu.h:167: error: expected ';' before '*' token
+../include/OgrianMenu.h:168: error: ISO C++ forbids declaration of 'ListChanger' with no type
+../include/OgrianMenu.h:168: error: expected ';' before '*' token
+../include/OgrianMenu.h:171: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:171: error: expected ';' before '*' token
+../include/OgrianMenu.h:172: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:172: error: expected ';' before '*' token
+../include/OgrianMenu.h:173: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:173: error: expected ';' before '*' token
+../include/OgrianMenu.h:174: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:174: error: expected ';' before '*' token
+../include/OgrianMenu.h:176: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:176: error: expected ';' before '*' token
+../include/OgrianMenu.h:177: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:177: error: expected ';' before '*' token
+../include/OgrianMenu.h:180: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:180: error: expected ';' before '*' token
+../include/OgrianMenu.h:181: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:181: error: expected ';' before '*' token
+../include/OgrianMenu.h:182: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:182: error: expected ';' before '*' token
+../include/OgrianMenu.h:183: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:183: error: expected ';' before '*' token
+../include/OgrianMenu.h:184: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:184: error: expected ';' before '*' token
+../include/OgrianMenu.h:185: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:185: error: expected ';' before '*' token
+../include/OgrianMenu.h:186: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:186: error: expected ';' before '*' token
+../include/OgrianMenu.h:189: error: ISO C++ forbids declaration of 'GuiElement' with no type
+../include/OgrianMenu.h:189: error: expected ';' before '*' token
+../include/OgrianMouseFrameListener.h:47: error: expected class-name before '{' token
+../include/OgrianMouseFrameListener.h:84: error: 'ActionEvent' has not been declared
+../include/OgrianMouseFrameListener.h:134: error: ISO C++ forbids declaration of 'EventProcessor' with no type
+../include/OgrianMouseFrameListener.h:134: error: expected ';' before '*' token
+../include/OgrianMouseFrameListener.h:135: error: ISO C++ forbids declaration of 'InputReader' with no type
+../include/OgrianMouseFrameListener.h:135: error: expected ';' before '*' token
+../include/OgrianMouseFrameListener.h: In constructor 'Ogrian::OgrianMouseFrameListener::OgrianMouseFrameListener(Ogre::RenderWindow*)':
+../include/OgrianMouseFrameListener.h:54: error: 'mEventProcessor' was not declared in this scope
+../include/OgrianMouseFrameListener.h:54: error: expected type-specifier before 'EventProcessor'
+../include/OgrianMouseFrameListener.h:54: error: expected `;' before 'EventProcessor'
+../include/OgrianMouseFrameListener.h:56: error: 'class Ogre::OverlayManager' has no member named 'createCursorOverlay'
+../include/OgrianMouseFrameListener.h:58: error: 'mInputDevice' was not declared in this scope
+../include/OgrianMouseFrameListener.h: In destructor 'virtual Ogrian::OgrianMouseFrameListener::~OgrianMouseFrameListener()':
+../include/OgrianMouseFrameListener.h:64: error: 'mEventProcessor' was not declared in this scope
+../include/OgrianMouseFrameListener.h: In member function 'void Ogrian::OgrianMouseFrameListener::actionPerformed(int*)':
+../include/OgrianMouseFrameListener.h:86: error: request for member 'getActionCommand' in '* e', which is of non-class type 'int'
+../include/OgrianMouseFrameListener.h: In member function 'void Ogrian::OgrianMouseFrameListener::registerButtons()':
+../include/OgrianMouseFrameListener.h:142: error: 'ActionTarget' was not declared in this scope
+../include/OgrianMouseFrameListener.h:142: error: 'button' was not declared in this scope
+../include/OgrianMouseFrameListener.h:144: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:144: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:144: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:144: error: 'ButtonGuiElement' was not declared in this scope
+../include/OgrianMouseFrameListener.h:144: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:145: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:145: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:148: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:148: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:148: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:148: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:149: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:149: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:152: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:152: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:152: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:152: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:153: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:153: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:156: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:156: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:156: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:156: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:157: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:157: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:160: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:160: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:160: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:160: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:161: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:161: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:164: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:164: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:164: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:164: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:165: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:165: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:168: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:168: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:168: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:168: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:169: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:169: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:172: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:172: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:172: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:172: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:173: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:173: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:176: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:176: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:176: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:176: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:177: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:177: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:180: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:180: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:180: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:180: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:181: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:181: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:184: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:184: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:184: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:184: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:185: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:185: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:188: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:188: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:188: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:188: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:189: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:189: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:192: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:192: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:192: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:192: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:193: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:193: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:196: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:196: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:196: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:196: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:197: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:197: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:200: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:200: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:200: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:200: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:201: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:201: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:204: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:204: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:204: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:204: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:205: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:205: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:208: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:208: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:208: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:208: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:209: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:209: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:212: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:212: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:212: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:212: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:213: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:213: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:216: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:216: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:216: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:216: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:217: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:217: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:220: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:220: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:220: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:220: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:221: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:221: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:224: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:224: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:224: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:224: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:225: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:225: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:228: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:228: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:228: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:228: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:229: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:229: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:232: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:232: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:232: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:232: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:233: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:233: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:236: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:236: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:236: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:236: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:237: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:237: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:240: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:240: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:240: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:240: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:241: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:241: error: expected `)' before ';' token
+../include/OgrianMouseFrameListener.h:244: error: expected type-specifier before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:244: error: expected `>' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:244: error: expected `(' before 'ButtonGuiElement'
+../include/OgrianMouseFrameListener.h:244: error: expected primary-expression before '>' token
+../include/OgrianMouseFrameListener.h:245: error: 'GuiManager' has not been declared
+../include/OgrianMouseFrameListener.h:245: error: expected `)' before ';' token
+/usr/local/include/RakNet/BitStream.h: In copy constructor 'RakNet::BitStream::BitStream(const RakNet::BitStream&)':
+/usr/local/include/RakNet/BitStream.h:577: warning: statement has no effect
+../include/OgrianGame.h: At global scope:
+../include/OgrianGame.h:44: error: extra qualification 'Ogrian::PlayerMarkerThing::' on member 'PlayerMarkerThing'
+../include/OgrianMultiplayer.h:60: error: 'PlayerID' does not name a type
+../include/OgrianMultiplayer.h:87: error: 'PlayerID' has not been declared
+../include/OgrianMultiplayer.h:88: error: 'PlayerID' has not been declared
+../include/OgrianMultiplayer.h:89: error: 'PlayerID' has not been declared
+../include/OgrianMultiplayer.h:95: error: 'PlayerID' has not been declared
+../include/OgrianMultiplayer.h:125: error: 'PlayerID' has not been declared
+../include/OgrianMultiplayer.h:128: error: 'PlayerID' does not name a type
+../include/OgrianMultiplayer.h:131: error: expected ';' before '(' token
+OgrianAudio.cpp: In constructor 'Ogrian::Audio::Audio()':
+OgrianAudio.cpp:57: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:65: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In destructor 'virtual Ogrian::Audio::~Audio()':
+OgrianAudio.cpp:87: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'void Ogrian::Audio::playSong(Ogre::String, Ogre::Real)':
+OgrianAudio.cpp:126: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:136: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'int Ogrian::Audio::loadSound(Ogre::String, bool, bool)':
+OgrianAudio.cpp:174: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:182: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'FMOD::Channel* Ogrian::Audio::playSound(int, Ogre::Vector3)':
+OgrianAudio.cpp:231: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:241: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:251: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'void Ogrian::Audio::setSoundPosition(FMOD::Channel*, Ogre::Vector3)':
+OgrianAudio.cpp:279: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'void Ogrian::Audio::stopSound(FMOD::Channel*)':
+OgrianAudio.cpp:302: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'void Ogrian::Audio::stopSong()':
+OgrianAudio.cpp:328: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:336: error: 'Except' was not declared in this scope
+OgrianAudio.cpp: In member function 'void Ogrian::Audio::frame(Ogre::Real)':
+OgrianAudio.cpp:390: error: 'Except' was not declared in this scope
+OgrianAudio.cpp:406: error: 'Except' was not declared in this scope
+../include/OgrianThing.h: At global scope:
+../include/OgrianThing.h:156: warning: inline function 'virtual void Ogrian::Thing::setShape(Ogrian::ThingShape)' used but never defined
+../include/OgrianThing.h:159: warning: inline function 'virtual Ogrian::ThingShape Ogrian::Thing::getShape()' used but never defined
+make: *** [OgrianAudio.o] Error 1
+
+
+The Problems
+==================
+  object incest.  BorderRenderable needs BorderPanelGuiElement defined. But BorderPanelGuiElement references BorderRenderable.  Dumb.  Only Visal Crap++ will compile such a steaming pile.
+	Solution: rip out 1 of the sets of references.
+
+  nvparse library has no Makefile.
+	Solution: grab the one from the 1.0 Ogre version.
+
+  nvparse library was written by an idiot.
+	Solution: fix the Linux section so that it uses the Linux-specific CPP flags (-fPIC, -DGCC_3_1) which configure is too stupid to add.

@@ -1,0 +1,30 @@
+
+MOUSE_SENSITIVITY=1
+
+# mouse bindings:
+#0: claim
+#1: build
+#2: fireball
+#3: summon sentinel
+#4: summon tick
+#5: summon gnome
+#6: speeed
+#7: akimbo fireball
+#8: summon albatross!
+#9: firestorm
+MOUSE_BUTTON_2_SPELL=6
+MOUSE_BUTTON_3_SPELL=2
+MOUSE_BUTTON_4_SPELL=7
+MOUSE_BUTTON_5_SPELL=9
+
+# how long, in seconds, messages should remain on your HUD
+HUD_MESSAGE_TIME=5
+
+# the period of the flashing of the text cursor in the menu
+TEXT_CURSOR_FLASH_PERIOD=.5
+
+# Performance variables
+# all units are in meters, seconds, or meters per second
+THING_CULL_DIST=100
+THING_EARSHOT=300
+CORPSE_LIFETIME=10

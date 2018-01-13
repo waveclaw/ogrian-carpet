@@ -1,0 +1,316 @@
+// Ogre overlay scripts
+#include <BasicOgreGuiTemplates.inc>
+
+Ogrian/HUD/BackgroundOverlay
+{
+	zorder 440
+
+	container Panel(Ogrian/HUD/Background/Image)
+	{
+		left 0
+		top 0
+		width 1
+		height 1
+		material Ogrian/HudBackground
+	}
+}
+
+Ogrian/HUD/GhostOverlay
+{
+	zorder 440
+
+	container Panel(Ogrian/HUD/Ghost/Image)
+	{
+		left 0
+		top 0
+		width 1
+		height 1
+		material Ogrian/HudGhost
+	}
+}
+
+Ogrian/HUD/HudOverlay
+{
+	zorder 450
+
+	container TextArea(Ogrian/HUD/Manas) : SS/Templates/BasicText
+	{
+		left .40
+		top .95
+		width .15
+   		caption X1
+	}
+	container TextArea(Ogrian/HUD/Shrines) : SS/Templates/BasicText
+	{
+		left .55
+		top .95
+		width .15
+   		caption X1
+	}
+	container TextArea(Ogrian/HUD/Towers) : SS/Templates/BasicText
+	{
+		left .70
+		top .95
+		width .15
+   		caption X2
+	}
+	container TextArea(Ogrian/HUD/Sentinels) : SS/Templates/BasicText
+	{
+		left .40
+		top .9
+		width .15
+   		caption X3
+	}
+	container TextArea(Ogrian/HUD/Gnomes) : SS/Templates/BasicText
+	{
+		left .55
+		top .9
+		width .15
+   		caption X4
+	}
+	container TextArea(Ogrian/HUD/Ticks) : SS/Templates/BasicText
+	{
+		left .70
+		top .9
+		width .15
+   		caption X5
+	}
+	container TextArea(Ogrian/HUD/Albatrosses) : SS/Templates/BasicText
+	{
+		left .85
+		top .9
+		width .15
+   		caption X5
+	}
+
+	container Panel(Ogrian/HUD/ManasIcon)
+	{
+		left .44
+		top .95
+		width .0375
+		height .05
+		material Ogrian/HudMana
+	}
+	container Panel(Ogrian/HUD/ShrinesIcon)
+	{
+		left .59
+		top .95
+		width .0375
+		height .05
+		material Ogrian/HudShrineGlow
+	}
+	container Panel(Ogrian/HUD/TowersIcon)
+	{
+		left .74
+		top .95
+		width .0375
+		height .05
+		material Ogrian/SpellIcon/BuildSpell/Enabled
+	}
+	container Panel(Ogrian/HUD/SentinelsIcon)
+	{
+		left .44
+		top .9
+		width .0375
+		height .05
+		material Ogrian/SpellIcon/Sentinel/Enabled
+	}
+	container Panel(Ogrian/HUD/GnomesIcon)
+	{
+		left .59
+		top .9
+		width .0375
+		height .05
+		material Ogrian/SpellIcon/Gnome/Enabled
+	}
+	container Panel(Ogrian/HUD/TicksIcon)
+	{
+		left .74
+		top .9
+		width .0375
+		height .05
+		material Ogrian/SpellIcon/Tick/Enabled
+	}
+	container Panel(Ogrian/HUD/AlbatrossesIcon)
+	{
+		left .89
+		top .9
+		width .0375
+		height .05
+		material Ogrian/SpellIcon/Albatross/Enabled
+	}
+
+
+
+	container TextArea(Ogrian/HUD/Score) : SS/Templates/BasicText
+	{
+		left .85
+		top .95
+		width .25
+   		caption SCORE: 0
+	}
+
+	container TextArea(Ogrian/HUD/Health) : SS/Templates/BasicText
+	{
+		left .01
+		top .8
+		width .25
+   		caption Health: 100
+		colour_top 1 .5 .5
+		colour_bottom 1 .5 .5
+	}
+
+	container TextArea(Ogrian/HUD/Mana) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.88
+		width .25
+   		caption mana
+		colour_top .5 .5 1
+		colour_bottom .5 .5 1
+	}
+
+	container TextArea(Ogrian/HUD/ManaStone) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.94
+		width .25
+   		caption manastone
+		colour_top .5 .5 1
+		colour_bottom .5 .5 1
+	}
+
+	container Panel(Ogrian/HUD/HealthBar)
+	{
+		left .01
+		top .84
+		width .25
+		height .02
+		material Ogrian/HudHealthBar
+	}
+	
+	container Panel(Ogrian/HUD/ManaBar)
+	{
+		left .01
+		top .92
+		width .25
+		height .02
+		material Ogrian/HudManaBar
+	}
+	
+	container TextArea(Ogrian/HUD/Message) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.7
+		width .95
+		caption Message
+	}
+	
+	container Panel(Ogrian/HUD/Crosshair)
+	{
+		left .45 
+		top 0.44
+		width .1
+		height .12
+		material Ogrian/Crosshair
+	}
+
+	container TextArea(Ogrian/HUD/SpellName) : SS/Templates/BasicText
+	{
+		left .01
+		top 0.14
+		width .95
+		caption Spell Name
+	}
+	
+	container Panel(Ogrian/HUD/SpellIcon/0)
+	{
+		left .0
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/1)
+	{
+		left .1
+		top 0.0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/2)
+	{
+		left .2
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/3)
+	{
+		left .3
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/4)
+	{
+		left .4
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/5)
+	{
+		left .5
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/6)
+	{
+		left .6
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/7)
+	{
+		left .7
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/8)
+	{
+		left .8
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/9)
+	{
+		left .9
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+	container Panel(Ogrian/HUD/SpellIcon/10)
+	{
+		left .95
+		top 0
+		width .1
+		height .13
+		material Ogrian/Clear
+	}
+
+}
+

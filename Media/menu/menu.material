@@ -1,0 +1,168 @@
+material Ogrian/Menu/Background
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture menu_background.jpg
+			}
+		}
+	}
+}
+material Ogrian/Menu/Loading
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture menu_loading.jpg
+			}
+		}
+	}
+}
+
+material Examples/Scrollbar/Up
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-up.png
+			}
+		}
+	}
+}
+material Examples/Scrollbar/Up/Pressed
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-up-p.png
+			}
+		}
+	}
+}
+material Examples/Scrollbar/Down
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-down.png
+			}
+		}
+	}
+}
+material Examples/Scrollbar/Down/Pressed
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-down-p.png
+			}
+		}
+	}
+}
+material Examples/Scrollbar/Thumb
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-thumb.png
+			}
+		}
+	}
+}
+material Examples/Scrollbar/Background
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture scr-back.png
+			}
+		}
+	}
+}
+material Examples/Hilite/Yellow
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture dkyellow.png
+			}
+		}
+	}
+}
+material Cursor/default
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+
+			texture_unit
+			{
+				texture cursor.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+material Core/StatsBlockBorder/Down
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_check off
+
+			texture_unit
+			{
+				texture ogreborder.png
+			}
+		}
+	}
+}
+material Core/StatsBlockBorder/Up
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_check off
+
+			texture_unit
+			{
+				texture ogreborderUp.png
+			}
+		}
+	}
+}
