@@ -135,7 +135,11 @@ We use [SemVer](http://semver.org/) for version numbering. For the versions avai
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Ogrian Carpet is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+Ogre3D is licensed under the MIT License.
+CEGUI is license under the MIT License.
+fmod is licensed under the [Indie license tier](https://www.fmod.com/licensing).
+RakNet source code for PCs, under the BSD license with a patent granting license, per Oculus VR.
 
 ## Acknowledgments
 
