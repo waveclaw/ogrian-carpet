@@ -1,6 +1,8 @@
-# Project Title
+# Ogrian Carpet
 
-One Paragraph of project description goes here
+ Fly around an island casting spells, summon monsters, collect mana, and build castles.
+
+ An outdoor first person shooter game with real-time strategy elements inspired by the game 'Magic Carpet.'
 
 ## Getting Started
 
